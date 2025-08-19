@@ -37,11 +37,27 @@ export default defineEventHandler(async event => {
       },
     })
 
+    // BigInt를 String으로 변환하여 직렬화 문제 해결
+    const serializedUsers = users.map(user => ({
+      ...user,
+      id: user.id.toString(),
+      dept_id: user.dept_id.toString(),
+      role_id: user.role_id.toString(),
+      departments: {
+        ...user.departments,
+        id: user.departments.id.toString()
+      },
+      roles: {
+        ...user.roles,
+        id: user.roles.id.toString()
+      }
+    }))
+
     // 성공 응답
     return {
       success: true,
       message: 'admin_users 데이터 조회 성공',
-      data: users,
+      data: serializedUsers,
       total: users.length,
       timestamp: new Date().toISOString(),
     }
