@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin_users {
+  id            BigInt        @id @default(autoincrement())
+  email         String        @unique(map: "email") @db.VarChar(255)
+  password_hash String        @db.VarChar(255)
+  dept_id       BigInt
+  role_id       BigInt
+  is_active     Boolean       @default(true)
+  created_at    DateTime?     @default(now()) @db.DateTime(0)
+  updated_at    DateTime?     @default(now()) @db.DateTime(0)
+  departments   departments   @relation(fields: [dept_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_admin_dept")
+  roles         roles         @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_admin_role")
+  audit_logs    audit_logs[]
+  newsletters   newsletters[]
+  recruits      recruits[]
+  sessions      sessions[]
+
+  @@index([dept_id], map: "idx_admin_dept")
+  @@index([role_id], map: "idx_admin_role")
+}
+
+model audit_logs {
+  id          BigInt            @id @default(autoincrement())
+  user_id     BigInt?
+  entity      String            @db.VarChar(50)
+  entity_id   BigInt
+  action      audit_logs_action
+  changes     Json?
+  created_at  DateTime?         @default(now()) @db.DateTime(0)
+  admin_users admin_users?      @relation(fields: [user_id], references: [id], onUpdate: NoAction, map: "fk_audit_user")
+
+  @@index([entity, entity_id], map: "idx_audit_entity")
+  @@index([user_id], map: "idx_audit_user")
+}
+
+model departments {
+  id          BigInt        @id @default(autoincrement())
+  code        String        @unique(map: "code") @db.VarChar(50)
+  name        String        @db.VarChar(100)
+  admin_users admin_users[]
+}
+
+model newsletters {
+  id           BigInt             @id @default(autoincrement())
+  title        String             @db.VarChar(255)
+  body_html    String             @db.MediumText
+  status       newsletters_status @default(draft)
+  author_id    BigInt
+  published_at DateTime?          @db.DateTime(0)
+  created_at   DateTime?          @default(now()) @db.DateTime(0)
+  updated_at   DateTime?          @default(now()) @db.DateTime(0)
+  admin_users  admin_users        @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_news_author")
+
+  @@index([author_id], map: "idx_news_author")
+  @@index([status, published_at], map: "idx_news_status_pub")
+}
+
+model recruits {
+  id              BigInt                   @id @default(autoincrement())
+  title           String                   @db.VarChar(255)
+  description     String                   @db.MediumText
+  location        String?                  @db.VarChar(100)
+  employment_type recruits_employment_type @default(fulltime)
+  status          recruits_status          @default(draft)
+  editor_id       BigInt
+  posted_at       DateTime?                @db.DateTime(0)
+  created_at      DateTime?                @default(now()) @db.DateTime(0)
+  updated_at      DateTime?                @default(now()) @db.DateTime(0)
+  admin_users     admin_users              @relation(fields: [editor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_recruit_editor")
+
+  @@index([editor_id], map: "idx_recruit_editor")
+  @@index([status, posted_at], map: "idx_recruit_status_post")
+}
+
+model roles {
+  id          BigInt        @id @default(autoincrement())
+  name        String        @unique(map: "name") @db.VarChar(50)
+  level       Int
+  admin_users admin_users[]
+}
+
+model sessions {
+  id          String      @id @db.Char(36)
+  user_id     BigInt
+  expires_at  DateTime    @db.DateTime(0)
+  created_at  DateTime?   @default(now()) @db.DateTime(0)
+  user_agent  String?     @db.VarChar(255)
+  ip_addr     String?     @db.VarChar(45)
+  admin_users admin_users @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_session_user")
+
+  @@index([expires_at], map: "idx_sessions_expire")
+  @@index([user_id], map: "idx_sessions_user")
+}
+
+enum newsletters_status {
+  draft
+  published
+  archived
+}
+
+enum recruits_employment_type {
+  fulltime
+  contract
+  intern
+  parttime
+}
+
+enum audit_logs_action {
+  create
+  update
+  delete
+  publish
+  close
+}
+
+enum recruits_status {
+  draft
+  open
+  closed
+  archived
+}
