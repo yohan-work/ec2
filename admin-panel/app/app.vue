@@ -1,148 +1,139 @@
 <template>
-  <div>
+  <div class="min-h-screen bg-background">
     <NuxtRouteAnnouncer />
 
-    <!-- 로딩 중일 때 -->
-    <div
-      v-if="isInitializing"
-      class="min-h-screen flex items-center justify-center bg-background"
-    >
-      <div class="text-center">
+    <!-- 헤더 -->
+    <header class="border-b bg-card px-6 py-4">
+      <h1 class="text-2xl font-bold text-foreground">
+        관리자 페이지 - Nuxt 3 + Prisma + AWS Cognito 준비
+      </h1>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="container mx-auto px-6 py-8">
+      <div class="space-y-6">
+        <!-- API 테스트 카드 -->
         <div
-          class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"
-        ></div>
-        <p class="mt-2 text-muted-foreground">로딩 중...</p>
-      </div>
-    </div>
+          class="rounded-lg border bg-card p-6 text-card-foreground shadow-sm"
+        >
+          <h3 class="mb-4 text-lg font-semibold">🧪 API 테스트</h3>
+          <p class="mb-4 text-sm text-muted-foreground">
+            기본 데이터 조회는 여전히 작동합니다:
+          </p>
+          <a
+            href="/api/test"
+            target="_blank"
+            class="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+          >
+            📊 /api/test - admin_users 데이터 조회 (인증 없음)
+          </a>
+        </div>
 
-    <!-- 로그인하지 않은 경우 -->
-    <LoginForm v-else-if="!isLoggedIn" />
-
-    <!-- 로그인한 경우 메인 페이지 -->
-    <div v-else class="min-h-screen bg-background" data-logged-in="true">
-      <!-- 헤더 -->
-      <header class="border-b bg-card px-6 py-4">
-        <div class="flex items-center justify-between">
-          <h1 class="text-2xl font-bold text-foreground">관리자 페이지</h1>
-
-          <!-- 사용자 정보 및 로그아웃 -->
-          <div class="flex items-center space-x-4">
-            <div class="text-sm">
-              <span class="text-muted-foreground">안녕하세요,</span>
-              <span class="font-medium text-foreground">{{
-                currentUser?.email
-              }}</span>
+        <!-- 데이터베이스 스키마 정보 -->
+        <div
+          class="rounded-lg border bg-card p-6 text-card-foreground shadow-sm"
+        >
+          <h3 class="mb-4 text-lg font-semibold">
+            🗄️ 업데이트된 데이터베이스 스키마
+          </h3>
+          <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded border p-3 text-sm">
+              <strong>admin_users</strong><br />
               <span class="text-muted-foreground"
-                >({{ currentUser?.dept_name }},
-                {{ currentUser?.role_name }})</span
+                >관리자 사용자 (cognito_id 추가)</span
               >
             </div>
-            <button
-              @click="handleLogout"
-              class="inline-flex items-center rounded-md bg-secondary px-3 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary/80 transition-colors"
-            >
-              로그아웃
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <!-- 메인 컨텐츠 -->
-      <main class="container mx-auto px-6 py-8">
-        <div class="space-y-6">
-          <!-- 환영 메시지 -->
-          <div
-            class="rounded-lg border bg-card p-6 text-card-foreground shadow-sm"
-          >
-            <h2 class="text-xl font-semibold mb-2">✅ 로그인 성공!</h2>
-            <p class="text-muted-foreground">
-              인증 기능이 정상적으로 동작하고 있습니다.
-            </p>
-          </div>
-
-          <!-- API 테스트 -->
-          <div
-            class="rounded-lg border bg-card p-6 text-card-foreground shadow-sm"
-          >
-            <h3 class="mb-4 text-lg font-semibold">🧪 API 테스트</h3>
-            <div class="space-y-2">
-              <a
-                href="/api/test"
-                target="_blank"
-                class="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors mr-2"
-              >
-                📊 /api/test - admin_users 데이터 조회
-              </a>
-              <a
-                href="/api/me"
-                target="_blank"
-                class="inline-flex items-center rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary/80 transition-colors"
-              >
-                👤 /api/me - 내 정보 조회
-              </a>
+            <div class="rounded border p-3 text-sm">
+              <strong>departments</strong><br />
+              <span class="text-muted-foreground">부서 정보</span>
             </div>
-          </div>
-
-          <!-- 데이터베이스 스키마 정보 -->
-          <div
-            class="rounded-lg border bg-card p-6 text-card-foreground shadow-sm"
-          >
-            <h3 class="mb-4 text-lg font-semibold">🗄️ 데이터베이스 스키마</h3>
-            <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-              <div class="rounded border p-3 text-sm">
-                <strong>admin_users</strong><br />
-                <span class="text-muted-foreground">관리자 사용자</span>
-              </div>
-              <div class="rounded border p-3 text-sm">
-                <strong>departments</strong><br />
-                <span class="text-muted-foreground">부서 정보</span>
-              </div>
-              <div class="rounded border p-3 text-sm">
-                <strong>roles</strong><br />
-                <span class="text-muted-foreground">사용자 역할</span>
-              </div>
-              <div class="rounded border p-3 text-sm">
-                <strong>newsletters</strong><br />
-                <span class="text-muted-foreground">뉴스레터</span>
-              </div>
-              <div class="rounded border p-3 text-sm">
-                <strong>recruits</strong><br />
-                <span class="text-muted-foreground">채용 공고</span>
-              </div>
-              <div class="rounded border p-3 text-sm">
-                <strong>audit_logs</strong><br />
-                <span class="text-muted-foreground">감사 로그</span>
-              </div>
-              <div class="rounded border p-3 text-sm">
-                <strong>sessions</strong><br />
-                <span class="text-muted-foreground">사용자 세션</span>
-              </div>
+            <div class="rounded border p-3 text-sm">
+              <strong>roles</strong><br />
+              <span class="text-muted-foreground">사용자 역할</span>
+            </div>
+            <div class="rounded border p-3 text-sm">
+              <strong>newsletters</strong><br />
+              <span class="text-muted-foreground">뉴스레터</span>
+            </div>
+            <div class="rounded border p-3 text-sm">
+              <strong>recruits</strong><br />
+              <span class="text-muted-foreground">채용 공고</span>
+            </div>
+            <div class="rounded border p-3 text-sm">
+              <strong>audit_logs</strong><br />
+              <span class="text-muted-foreground">감사 로그</span>
+            </div>
+            <div class="rounded border p-3 text-sm bg-red-50 border-red-200">
+              <strong>sessions</strong><br />
+              <span class="text-red-600 text-xs"
+                >⚠️ Cognito JWT 사용 pending</span
+              >
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useAuth } from '../composables/useAuth'
-import LoginForm from '../components/LoginForm.vue'
+<style>
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-const { currentUser, isLoggedIn, logout, initialize } = useAuth()
-const isInitializing = ref(true)
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --radius: 0.5rem;
+  }
 
-const handleLogout = async () => {
-  await logout()
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
 }
 
-onMounted(async () => {
-  await initialize()
-  isInitializing.value = false
-})
-</script>
-
-<style>
-@import '~/assets/css/main.css';
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
 </style>
