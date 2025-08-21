@@ -8,6 +8,13 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
+// BigInt 직렬화 처리
+if (typeof BigInt !== 'undefined') {
+  ;(BigInt.prototype as any).toJSON = function () {
+    return this.toString()
+  }
+}
+
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({

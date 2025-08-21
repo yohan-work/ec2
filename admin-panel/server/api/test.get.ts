@@ -45,12 +45,12 @@ export default defineEventHandler(async event => {
       role_id: user.role_id.toString(),
       departments: {
         ...user.departments,
-        id: user.departments.id.toString()
+        id: user.departments.id.toString(),
       },
       roles: {
         ...user.roles,
-        id: user.roles.id.toString()
-      }
+        id: user.roles.id.toString(),
+      },
     }))
 
     // 성공 응답
@@ -61,7 +61,7 @@ export default defineEventHandler(async event => {
       total: users.length,
       timestamp: new Date().toISOString(),
     }
-  } catch (error) {
+  } catch (error: any) {
     // 에러 로깅
     console.error('Database query error:', error)
 
