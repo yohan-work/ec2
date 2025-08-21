@@ -1,99 +1,129 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex items-center justify-center">
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-      <h1 class="text-3xl font-bold text-gray-800 mb-4">
-        🎉 Nuxt 3 + AWS Cognito
-      </h1>
+  <div class="min-h-screen bg-background">
+    <!-- 헤더 -->
+    <header class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <NuxtLink to="/" class="text-xl font-bold text-gray-900">
+              📰 뉴스레터 & 채용공고
+            </NuxtLink>
+          </div>
 
-      <!-- 로딩 상태 -->
-      <div v-if="isLoading" class="text-center py-4">
-        <div
-          class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"
-        ></div>
-        <p class="text-gray-600 mt-2">인증 상태 확인 중...</p>
+          <nav class="flex space-x-8">
+            <NuxtLink
+              to="/newsletters"
+              class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              📰 뉴스레터
+            </NuxtLink>
+            <NuxtLink
+              to="/recruits"
+              class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              💼 채용공고
+            </NuxtLink>
+          </nav>
+        </div>
       </div>
+    </header>
 
-      <!-- 로그인 상태 -->
-      <div v-else-if="isAuthenticated" class="space-y-4">
-        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-          <p class="text-green-800 font-semibold">✅ 로그인됨</p>
-          <p class="text-green-600 text-sm mt-1">관리자로 로그인되었습니다</p>
-          <div v-if="user" class="mt-2 text-xs text-green-700">
-            <p><strong>사용자 ID:</strong> {{ user.username }}</p>
-            <p><strong>User ID:</strong> {{ user.userId }}</p>
+    <!-- 메인 콘텐츠 -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <!-- 히어로 섹션 -->
+      <div class="px-4 py-6 sm:px-0">
+        <div class="text-center">
+          <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl">
+            뉴스레터 & 채용공고
+          </h1>
+          <p
+            class="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl"
+          >
+            최신 뉴스레터와 채용 정보를 확인하세요
+          </p>
+
+          <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
+            <div class="rounded-md shadow">
+              <NuxtLink
+                to="/newsletters"
+                class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+              >
+                📰 뉴스레터 보기
+              </NuxtLink>
+            </div>
+            <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+              <NuxtLink
+                to="/recruits"
+                class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+              >
+                💼 채용공고 보기
+              </NuxtLink>
+            </div>
           </div>
         </div>
-
-        <div class="space-y-3">
-          <NuxtLink
-            to="/test"
-            class="block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center transition-colors"
-          >
-            📊 테스트 페이지로 이동
-          </NuxtLink>
-
-          <button
-            @click="handleLogout"
-            class="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-          >
-            🚪 로그아웃
-          </button>
-        </div>
       </div>
 
-      <!-- 비로그인 상태 -->
-      <div v-else class="space-y-4">
-        <p class="text-gray-600 mb-6">
-          관리자 페이지에 접근하려면 로그인이 필요합니다.
-        </p>
+      <!-- 최근 게시물 미리보기 -->
+      <div class="mt-16">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <!-- 최근 뉴스레터 -->
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                📰 최근 뉴스레터
+              </h3>
+              <div class="text-center py-8 text-gray-500">
+                <NuxtLink
+                  to="/newsletters"
+                  class="text-indigo-600 hover:text-indigo-500"
+                >
+                  뉴스레터 목록 보기 →
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
 
-        <div class="space-y-3">
-          <NuxtLink
-            to="/login"
-            class="block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-center transition-colors"
-          >
-            🔐 관리자 로그인
-          </NuxtLink>
-
-          <NuxtLink
-            to="/test"
-            class="block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-center transition-colors"
-          >
-            📊 테스트 페이지 (공개)
-          </NuxtLink>
+          <!-- 최근 채용공고 -->
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                💼 최근 채용공고
+              </h3>
+              <div class="text-center py-8 text-gray-500">
+                <NuxtLink
+                  to="/recruits"
+                  class="text-indigo-600 hover:text-indigo-500"
+                >
+                  채용공고 목록 보기 →
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="bg-white">
+      <div
+        class="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8"
+      >
+        <div class="mt-8 md:mt-0 md:order-1">
+          <p class="text-center text-base text-gray-400">
+            &copy; 2024 뉴스레터 & 채용공고. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
 <script setup>
-// 인증 상태 관리
-const { user, isAuthenticated, isLoading, checkAuth, logout } = useAuth()
-
-// 페이지 로드 시 인증 상태 확인
-onMounted(async () => {
-  console.log('Index page loaded! - 인증 상태 확인 시작')
-  await checkAuth()
-  console.log('인증 상태 확인 완료:', {
-    isAuthenticated: isAuthenticated.value,
-    isLoading: isLoading.value,
-    hasUser: !!user.value,
-  })
-})
-
-// 로그아웃 처리
-const handleLogout = async () => {
-  try {
-    console.log('로그아웃 시작')
-    await logout()
-    console.log('로그아웃 완료')
-  } catch (error) {
-    console.error('로그아웃 실패:', error)
-  }
-}
-
+// 메타 태그
 useHead({
-  title: 'Nuxt 3 + AWS Cognito 관리자 페이지',
+  title: '뉴스레터 & 채용공고',
+  meta: [
+    { name: 'description', content: '최신 뉴스레터와 채용 정보를 확인하세요' },
+  ],
 })
 </script>
