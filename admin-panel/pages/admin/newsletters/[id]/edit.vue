@@ -206,6 +206,47 @@
               >
                 1.
               </button>
+              <div class="border-l border-input mx-2"></div>
+              <button
+                type="button"
+                @click="insertImage"
+                class="px-2 py-1 text-xs border border-input rounded hover:bg-background"
+                title="이미지 삽입"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                @click="insertLink"
+                class="px-2 py-1 text-xs border border-input rounded hover:bg-background"
+                title="링크 삽입"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                  />
+                </svg>
+              </button>
             </div>
 
             <!-- 에디터 -->
@@ -352,6 +393,33 @@ const updateContent = () => {
   }
 }
 
+// 커서 위치에 텍스트 삽입
+const insertTextAtCursor = text => {
+  if (editorRef.value) {
+    editorRef.value.focus()
+    const selection = window.getSelection()
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0)
+      range.deleteContents()
+      const textNode = document.createTextNode(text)
+      range.insertNode(textNode)
+      range.setStartAfter(textNode)
+      range.setEndAfter(textNode)
+      selection.removeAllRanges()
+      selection.addRange(range)
+    } else {
+      // 커서가 없으면 에디터 끝에 추가
+      const range = document.createRange()
+      range.selectNodeContents(editorRef.value)
+      range.collapse(false)
+      const textNode = document.createTextNode(text)
+      range.insertNode(textNode)
+      selection.removeAllRanges()
+      selection.addRange(range)
+    }
+  }
+}
+
 // 붙여넣기 처리
 const handlePaste = e => {
   e.preventDefault()
@@ -394,6 +462,103 @@ const insertList = type => {
     range.insertNode(listElement)
     updateContent()
   }
+}
+
+// 이미지 삽입
+const insertImage = async () => {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = 'image/*'
+  input.multiple = false
+
+  input.addEventListener('change', async event => {
+    const file = event.target.files[0]
+    if (!file) return
+
+    // 파일 크기 검사 (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('파일 크기가 너무 큽니다. (최대 5MB)')
+      return
+    }
+
+    try {
+      // 로딩 상태 표시
+      const loadingText = '[이미지 업로드 중...]'
+      insertTextAtCursor(loadingText)
+
+      // FormData로 파일 업로드
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await $fetch('/api/upload/image', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.success) {
+        // 로딩 텍스트 제거하고 이미지 삽입
+        const editorContent = editorRef.value.innerHTML
+        const imageHTML = `<img src="${response.data.url}" alt="${response.data.originalName}" style="max-width: 100%; height: auto; margin: 10px 0;" />`
+        editorRef.value.innerHTML = editorContent.replace(
+          loadingText,
+          imageHTML
+        )
+        updateContent()
+      }
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error)
+      alert('이미지 업로드에 실패했습니다.')
+
+      // 로딩 텍스트 제거
+      const editorContent = editorRef.value.innerHTML
+      editorRef.value.innerHTML = editorContent.replace(
+        '[이미지 업로드 중...]',
+        ''
+      )
+    }
+  })
+
+  input.click()
+}
+
+// 링크 삽입
+const insertLink = () => {
+  const selection = window.getSelection()
+  if (selection.rangeCount === 0) {
+    alert('링크를 적용할 텍스트를 먼저 선택해주세요.')
+    return
+  }
+
+  const range = selection.getRangeAt(0)
+  const selectedText = range.toString()
+
+  if (!selectedText.trim()) {
+    alert('링크를 적용할 텍스트를 선택해주세요.')
+    return
+  }
+
+  const url = prompt('링크 URL을 입력하세요:', 'https://')
+  if (!url) return
+
+  // URL 유효성 검사
+  try {
+    new URL(url)
+  } catch {
+    alert('올바른 URL을 입력해주세요.')
+    return
+  }
+
+  // 링크 생성
+  const link = document.createElement('a')
+  link.href = url
+  link.textContent = selectedText
+  link.target = '_blank'
+  link.rel = 'noopener noreferrer'
+
+  range.deleteContents()
+  range.insertNode(link)
+
+  updateContent()
 }
 
 // 단어 수 계산
