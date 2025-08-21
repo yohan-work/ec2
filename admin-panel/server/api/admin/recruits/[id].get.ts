@@ -1,21 +1,22 @@
 import { prisma } from '../../../../lib/prisma'
+import { serializeBigInt } from '../../../utils/bigint'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   try {
     // TODO: 인증 검증 추가 필요
-    
+
     const id = getRouterParam(event, 'id')
-    
+
     if (!id) {
       throw createError({
         statusCode: 400,
-        statusMessage: 'ID가 필요합니다.'
+        statusMessage: 'ID가 필요합니다.',
       })
     }
 
     const recruit = await prisma.recruits.findUnique({
       where: {
-        id: BigInt(id)
+        id: BigInt(id),
       },
       include: {
         admin_users: {
@@ -24,39 +25,35 @@ export default defineEventHandler(async (event) => {
             email: true,
             departments: {
               select: {
-                name: true
-              }
-            }
-          }
-        }
-      }
+                name: true,
+              },
+            },
+          },
+        },
+      },
     })
 
     if (!recruit) {
       throw createError({
         statusCode: 404,
-        statusMessage: '채용공고를 찾을 수 없습니다.'
+        statusMessage: '채용공고를 찾을 수 없습니다.',
       })
     }
 
     return {
       success: true,
-      data: {
-        ...recruit,
-        id: recruit.id.toString(),
-        editor_id: recruit.editor_id.toString()
-      }
+      data: serializeBigInt(recruit),
     }
   } catch (error: any) {
     console.error('채용공고 조회 오류:', error)
-    
+
     if (error.statusCode) {
       throw error
     }
-    
+
     throw createError({
       statusCode: 500,
-      statusMessage: '채용공고 조회 중 오류가 발생했습니다.'
+      statusMessage: '채용공고 조회 중 오류가 발생했습니다.',
     })
   }
 })

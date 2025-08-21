@@ -249,12 +249,12 @@ const fetchRecruits = async () => {
       query.search = searchQuery.value
     }
     
-    const { data } = await $fetch('/api/admin/recruits', {
+    const response = await $fetch('/api/admin/recruits', {
       query
     })
     
-    recruits.value = data.data
-    pagination.value = data.pagination
+    recruits.value = response.data
+    pagination.value = response.pagination
   } catch (error) {
     console.error('채용공고 목록 조회 실패:', error)
     // TODO: 에러 알림 추가
@@ -338,7 +338,7 @@ const getExcerpt = (html) => {
   return text.length > 150 ? text.substring(0, 150) + '...' : text
 }
 
-// 날짜 포맷
+// 날짜 포맷 (한국 시간대로 표시)
 const formatDate = (dateString) => {
   if (!dateString) return ''
   return new Date(dateString).toLocaleString('ko-KR', {
@@ -346,7 +346,8 @@ const formatDate = (dateString) => {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
+    timeZone: 'Asia/Seoul'
   })
 }
 

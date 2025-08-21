@@ -1,4 +1,5 @@
 import { prisma } from '../../../../lib/prisma'
+import { serializeBigInt } from '../../../utils/bigint'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -132,11 +133,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      data: {
-        ...updatedRecruit,
-        id: updatedRecruit.id.toString(),
-        editor_id: updatedRecruit.editor_id.toString()
-      },
+      data: serializeBigInt(updatedRecruit),
       message: '채용공고가 성공적으로 업데이트되었습니다.'
     }
   } catch (error: any) {

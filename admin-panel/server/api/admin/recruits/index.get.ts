@@ -1,4 +1,5 @@
 import { prisma } from '../../../../lib/prisma'
+import { serializeBigInt } from '../../../utils/bigint'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -60,11 +61,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      data: recruits.map(recruit => ({
-        ...recruit,
-        id: recruit.id.toString(),
-        editor_id: recruit.editor_id.toString()
-      })),
+      data: serializeBigInt(recruits),
       pagination: {
         page,
         limit,

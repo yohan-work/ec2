@@ -198,8 +198,8 @@ const fetchRecruit = async () => {
     loading.value = true
     error.value = null
     
-    const { data } = await $fetch(`/api/admin/recruits/${recruitId}`)
-    recruit.value = data.data
+    const response = await $fetch(`/api/admin/recruits/${recruitId}`)
+    recruit.value = response.data
   } catch (err) {
     console.error('채용공고 조회 실패:', err)
     error.value = err.data?.message || '채용공고를 불러올 수 없습니다.'
@@ -236,14 +236,14 @@ const openRecruit = async () => {
   try {
     publishing.value = true
     
-    const { data } = await $fetch(`/api/admin/recruits/${recruitId}`, {
+    const response = await $fetch(`/api/admin/recruits/${recruitId}`, {
       method: 'PUT',
       body: {
         status: 'open'
       }
     })
     
-    recruit.value = data.data
+    recruit.value = response.data
     alert('채용공고가 성공적으로 공개되었습니다!')
   } catch (error) {
     console.error('채용공고 공개 실패:', error)
@@ -262,14 +262,14 @@ const closeRecruit = async () => {
   try {
     publishing.value = true
     
-    const { data } = await $fetch(`/api/admin/recruits/${recruitId}`, {
+    const response = await $fetch(`/api/admin/recruits/${recruitId}`, {
       method: 'PUT',
       body: {
         status: 'closed'
       }
     })
     
-    recruit.value = data.data
+    recruit.value = response.data
     alert('채용공고가 마감되었습니다.')
   } catch (error) {
     console.error('채용공고 마감 실패:', error)
@@ -323,7 +323,7 @@ const getEmploymentTypeText = (type) => {
   return texts[type] || '알 수 없음'
 }
 
-// 날짜 포맷
+// 날짜 포맷 (한국 시간대로 표시)
 const formatDate = (dateString) => {
   if (!dateString) return ''
   return new Date(dateString).toLocaleString('ko-KR', {
@@ -331,7 +331,8 @@ const formatDate = (dateString) => {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
+    timeZone: 'Asia/Seoul'
   })
 }
 

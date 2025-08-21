@@ -1,5 +1,6 @@
 import { prisma } from '../../../../lib/prisma'
 import { getAdminUserByCognitoId } from '../../../utils/auth'
+import { serializeBigInt } from '../../../utils/bigint'
 
 export default defineEventHandler(async event => {
   try {
@@ -87,11 +88,7 @@ export default defineEventHandler(async event => {
 
     return {
       success: true,
-      data: {
-        ...recruit,
-        id: recruit.id.toString(),
-        editor_id: recruit.editor_id.toString(),
-      },
+      data: serializeBigInt(recruit),
       message: '채용공고가 성공적으로 생성되었습니다.',
     }
   } catch (error: any) {
