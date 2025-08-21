@@ -39,10 +39,10 @@
             환영합니다, {{ getUserDisplayName() }}님
           </p>
           <button
-            @click="redirectToHome"
+            @click="redirectToDashboard"
             class="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
           >
-            관리자 페이지로 이동
+            관리자 대시보드로 이동
           </button>
         </div>
 
@@ -102,9 +102,9 @@ const getUserDisplayName = () => {
   return userInfo.username || userInfo.userId || 'User'
 }
 
-// 홈으로 리다이렉트
-const redirectToHome = () => {
-  navigateTo('/')
+// 대시보드로 리다이렉트
+const redirectToDashboard = () => {
+  navigateTo('/dashboard')
 }
 
 // 재시도
@@ -184,10 +184,10 @@ const processCallback = async () => {
       console.log('로그인 성공! 사용자 정보:', user.value)
       isSuccess.value = true
 
-      // 3초 후 자동으로 홈으로 리다이렉트
+      // 3초 후 자동으로 대시보드로 리다이렉트
       setTimeout(() => {
-        console.log('홈으로 자동 리다이렉트')
-        redirectToHome()
+        console.log('대시보드로 자동 리다이렉트')
+        redirectToDashboard()
       }, 3000)
     } else {
       console.error('인증 실패. 상태:', {

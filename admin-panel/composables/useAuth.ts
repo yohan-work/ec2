@@ -135,16 +135,34 @@ export const useAuth = () => {
     if (process.server) return
 
     try {
+      console.log('로그아웃 시작 - AWS Cognito 세션 종료')
       await signOut()
+
+      // 로컬 상태 초기화
       authState.value.user = null
       authState.value.isAuthenticated = false
+      authState.value.isLoading = false
+
+      console.log('로그아웃 완료 - 홈페이지로 리다이렉트')
 
       // 홈페이지로 리다이렉트
       if (process.client) {
+        // 완전히 새로운 페이지로 이동하여 상태를 완전히 초기화
         ;(globalThis as any).location.href = '/'
       }
     } catch (error) {
       console.error('Logout error:', error)
+
+      // 에러가 발생해도 상태는 초기화
+      authState.value.user = null
+      authState.value.isAuthenticated = false
+      authState.value.isLoading = false
+
+      // 에러 발생 시에도 홈페이지로 이동
+      if (process.client) {
+        ;(globalThis as any).location.href = '/'
+      }
+
       throw error
     }
   }

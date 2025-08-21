@@ -92,12 +92,12 @@ const maskedClientId = computed(() => {
   return clientId.slice(0, 4) + '***' + clientId.slice(-4)
 })
 
-// 이미 로그인된 경우 홈으로 리다이렉트
+// 이미 로그인된 경우 대시보드로 리다이렉트
 watch(isAuthenticated, newVal => {
   if (newVal) {
-    console.log('이미 인증됨 - 홈으로 리다이렉트')
+    console.log('이미 인증됨 - 대시보드로 리다이렉트')
     if (process.client) {
-      globalThis.location.href = '/'
+      navigateTo('/dashboard')
     }
   }
 })
