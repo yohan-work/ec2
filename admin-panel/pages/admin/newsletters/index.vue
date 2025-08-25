@@ -11,9 +11,7 @@
             >
               ← 대시보드
             </NuxtLink>
-            <h1 class="text-xl font-semibold text-foreground">
-              📰 뉴스레터 관리
-            </h1>
+            <h1 class="text-xl font-semibold text-foreground">뉴스레터 관리</h1>
           </div>
 
           <button

@@ -6,7 +6,7 @@
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
             <h1 class="text-xl font-semibold text-foreground">
-              🛠️ 관리자 대시보드
+              관리자 대시보드
             </h1>
           </div>
 

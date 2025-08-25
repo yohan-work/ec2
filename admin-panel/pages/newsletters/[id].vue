@@ -6,7 +6,7 @@
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
             <NuxtLink to="/" class="text-xl font-bold text-gray-900">
-              📰 뉴스레터 & 채용공고
+              뉴스레터 & 채용공고
             </NuxtLink>
           </div>
           
@@ -15,13 +15,13 @@
               to="/newsletters"
               class="text-indigo-600 bg-indigo-50 px-3 py-2 rounded-md text-sm font-medium"
             >
-              📰 뉴스레터
+              뉴스레터
             </NuxtLink>
             <NuxtLink
               to="/recruits"
               class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
             >
-              💼 채용공고
+              채용공고
             </NuxtLink>
           </nav>
         </div>
