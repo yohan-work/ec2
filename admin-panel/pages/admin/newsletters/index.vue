@@ -165,7 +165,6 @@
               </button>
 
               <button
-                v-if="newsletter.status !== 'published'"
                 @click="deleteNewsletter(newsletter)"
                 class="p-2 text-destructive hover:text-destructive/80 rounded-md hover:bg-destructive/10"
                 title="삭제"
@@ -394,22 +393,37 @@ const editNewsletter = newsletter => {
 }
 
 const deleteNewsletter = async newsletter => {
-  if (!confirm(`"${newsletter.title}" 뉴스레터를 삭제하시겠습니까?`)) {
+  // 발행된 뉴스레터의 경우 더 강한 경고
+  let confirmMessage = `"${newsletter.title}" 뉴스레터를 삭제하시겠습니까?`
+  if (newsletter.status === 'published') {
+    confirmMessage = `⚠️ 주의: "${newsletter.title}" 뉴스레터는 현재 발행 중입니다.\n\n삭제하시면 복구할 수 없습니다. 정말 삭제하시겠습니까?`
+  }
+
+  if (!confirm(confirmMessage)) {
     return
   }
 
+  // 한번 더 확인 (중요한 항목인 경우)
+  if (newsletter.status === 'published') {
+    if (!confirm('마지막 확인: 정말로 삭제하시겠습니까?')) {
+      return
+    }
+  }
+
   try {
+    loading.value = true
     await $fetch(`/api/admin/newsletters/${newsletter.id}`, {
       method: 'DELETE',
     })
 
     // 목록 새로고침
     await fetchNewsletters()
-
-    // TODO: 성공 알림 추가
+    alert('뉴스레터가 성공적으로 삭제되었습니다.')
   } catch (error) {
     console.error('뉴스레터 삭제 실패:', error)
-    // TODO: 에러 알림 추가
+    alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.')
+  } finally {
+    loading.value = false
   }
 }
 

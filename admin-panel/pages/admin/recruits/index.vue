@@ -186,7 +186,6 @@
               </button>
 
               <button
-                v-if="recruit.status !== 'open'"
                 @click="deleteRecruit(recruit)"
                 class="p-2 text-destructive hover:text-destructive/80 rounded-md hover:bg-destructive/10"
                 title="삭제"
@@ -444,22 +443,36 @@ const editRecruit = recruit => {
 }
 
 const deleteRecruit = async recruit => {
-  if (!confirm(`"${recruit.title}" 채용공고를 삭제하시겠습니까?`)) {
+  let confirmMessage = `"${recruit.title}" 채용공고를 삭제하시겠습니까?`
+  if (recruit.status === 'open') {
+    confirmMessage = `⚠️ 주의: "${recruit.title}" 채용공고는 현재 공개 중입니다.\n\n삭제하시면 복구할 수 없습니다. 정말 삭제하시겠습니까?`
+  }
+
+  if (!confirm(confirmMessage)) {
     return
   }
 
+  // 한번 더 확인(이미 공개되었기 때문에 더블체크)
+  if (recruit.status === 'open') {
+    if (!confirm('마지막 확인: 정말로 삭제하시겠습니까?')) {
+      return
+    }
+  }
+
   try {
+    loading.value = true
     await $fetch(`/api/admin/recruits/${recruit.id}`, {
       method: 'DELETE',
     })
 
     // 목록 새로고침
     await fetchRecruits()
-
-    // TODO: 성공 알림 추가
+    alert('채용공고가 성공적으로 삭제되었습니다.')
   } catch (error) {
     console.error('채용공고 삭제 실패:', error)
-    // TODO: 에러 알림 추가
+    alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.')
+  } finally {
+    loading.value = false
   }
 }
 

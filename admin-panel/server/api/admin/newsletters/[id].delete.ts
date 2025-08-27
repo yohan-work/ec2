@@ -25,13 +25,8 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // 발행된 뉴스레터는 삭제 불가 (archived 상태로만 변경 가능)
-    if (existingNewsletter.status === 'published') {
-      throw createError({
-        statusCode: 403,
-        statusMessage: '발행된 뉴스레터는 삭제할 수 없습니다. 보관 처리해주세요.'
-      })
-    }
+    // 관리자는 모든 상태의 뉴스레터를 삭제할 수 있음
+    // 발행 중인 뉴스레터 삭제 시에는 audit log에 추가 정보 기록
 
     // 뉴스레터 삭제
     await prisma.newsletters.delete({
