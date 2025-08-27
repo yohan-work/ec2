@@ -9,7 +9,7 @@
               뉴스레터 & 채용공고
             </NuxtLink>
           </div>
-          
+
           <nav class="flex space-x-8">
             <NuxtLink
               to="/newsletters"
@@ -37,8 +37,18 @@
             to="/newsletters"
             class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
           >
-            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            <svg
+              class="mr-2 h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             뉴스레터 목록으로 돌아가기
           </NuxtLink>
@@ -46,18 +56,34 @@
 
         <!-- 로딩 상태 -->
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+          <div
+            class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"
+          ></div>
           <p class="mt-2 text-sm text-gray-500">뉴스레터를 불러오는 중...</p>
         </div>
 
         <!-- 에러 상태 -->
         <div v-else-if="error" class="text-center py-12">
-          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-            <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          <div
+            class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100"
+          >
+            <svg
+              class="h-6 w-6 text-red-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
             </svg>
           </div>
-          <h3 class="mt-2 text-sm font-medium text-gray-900">오류가 발생했습니다</h3>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">
+            오류가 발생했습니다
+          </h3>
           <p class="mt-1 text-sm text-gray-500">{{ error }}</p>
           <div class="mt-6">
             <button
@@ -70,25 +96,48 @@
         </div>
 
         <!-- 뉴스레터 내용 -->
-        <article v-else-if="newsletter" class="bg-white shadow rounded-lg overflow-hidden">
+        <article
+          v-else-if="newsletter"
+          class="bg-white shadow rounded-lg overflow-hidden"
+        >
           <!-- 헤더 -->
           <div class="px-6 py-8 border-b border-gray-200">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">
               {{ newsletter.title }}
             </h1>
-            
+
             <!-- 메타 정보 -->
             <div class="flex items-center text-sm text-gray-500 space-x-4">
               <div class="flex items-center">
-                <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                <svg
+                  class="mr-1.5 h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
                 </svg>
                 {{ newsletter.admin_users?.departments?.name || '알 수 없음' }}
               </div>
-              
+
               <div class="flex items-center">
-                <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  class="mr-1.5 h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
                 {{ formatDate(newsletter.published_at) }}
               </div>
@@ -97,7 +146,7 @@
 
           <!-- 본문 -->
           <div class="px-6 py-8">
-            <div 
+            <div
               class="prose prose-indigo max-w-none"
               v-html="newsletter.body_html"
             ></div>
@@ -105,10 +154,10 @@
 
           <!-- 하단 정보 -->
           <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
-            <div class="flex items-center justify-between text-sm text-gray-500">
-              <div>
-                작성일: {{ formatDate(newsletter.created_at) }}
-              </div>
+            <div
+              class="flex items-center justify-between text-sm text-gray-500"
+            >
+              <div>작성일: {{ formatDate(newsletter.created_at) }}</div>
               <div v-if="newsletter.updated_at !== newsletter.created_at">
                 수정일: {{ formatDate(newsletter.updated_at) }}
               </div>
@@ -116,14 +165,114 @@
           </div>
         </article>
 
+        <!-- 관련 뉴스레터 -->
+        <div v-if="newsletter && relatedNewsletters.length > 0" class="mt-12">
+          <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h2 class="text-xl font-semibold text-gray-900">최근 뉴스레터</h2>
+              <p class="text-sm text-gray-500 mt-1">
+                다른 최신 뉴스레터도 확인해보세요
+              </p>
+            </div>
+
+            <div class="divide-y divide-gray-200">
+              <article
+                v-for="item in relatedNewsletters"
+                :key="item.id"
+                class="px-6 py-6 hover:bg-gray-50 transition-colors duration-200"
+              >
+                <NuxtLink :to="`/newsletters/${item.id}`" class="block group">
+                  <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                      <h3
+                        class="text-lg font-medium text-gray-900 group-hover:text-indigo-600 transition-colors duration-200"
+                      >
+                        {{ item.title }}
+                      </h3>
+
+                      <!-- 메타 정보 -->
+                      <div
+                        class="mt-2 flex items-center text-sm text-gray-500 space-x-4"
+                      >
+                        <div class="flex items-center">
+                          <svg
+                            class="mr-1.5 h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                            />
+                          </svg>
+                          {{
+                            item.admin_users?.departments?.name || '알 수 없음'
+                          }}
+                        </div>
+
+                        <div class="flex items-center">
+                          <svg
+                            class="mr-1.5 h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                          {{ formatDate(item.published_at) }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 화살표 -->
+                    <div class="flex-shrink-0">
+                      <svg
+                        class="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors duration-200"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </NuxtLink>
+              </article>
+            </div>
+          </div>
+        </div>
+
         <!-- 하단 네비게이션 -->
         <div v-if="newsletter" class="mt-8 flex justify-center">
           <NuxtLink
             to="/newsletters"
             class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
           >
-            <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <svg
+              class="mr-2 h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
             </svg>
             다른 뉴스레터 보기
           </NuxtLink>
@@ -141,15 +290,19 @@ const newsletterId = route.params.id
 const newsletter = ref(null)
 const loading = ref(true)
 const error = ref(null)
+const relatedNewsletters = ref([])
 
 // 뉴스레터 조회
 const fetchNewsletter = async () => {
   try {
     loading.value = true
     error.value = null
-    
+
     const response = await $fetch(`/api/public/newsletters/${newsletterId}`)
     newsletter.value = response.data
+
+    // 뉴스레터 조회 성공 시 관련 뉴스레터도 가져오기
+    await fetchRelatedNewsletters()
   } catch (err) {
     console.error('뉴스레터 조회 실패:', err)
     if (err.statusCode === 404) {
@@ -162,8 +315,29 @@ const fetchNewsletter = async () => {
   }
 }
 
+// 관련 뉴스레터 조회 (현재 뉴스레터 제외하고 최근 3개)
+const fetchRelatedNewsletters = async () => {
+  try {
+    const response = await $fetch('/api/public/newsletters', {
+      query: {
+        limit: 4, // 현재 뉴스레터를 제외할 수 있도록 여분으로 가져오기
+      },
+    })
+
+    // 현재 뉴스레터 제외하고 3개만 선택
+    const filtered = response.data.filter(
+      item => String(item.id) !== String(newsletterId)
+    )
+    relatedNewsletters.value = filtered.slice(0, 3)
+  } catch (err) {
+    console.error('관련 뉴스레터 조회 실패:', err)
+    // 관련 뉴스레터는 실패해도 메인 콘텐츠에 영향 없도록 빈 배열 유지
+    relatedNewsletters.value = []
+  }
+}
+
 // 날짜 포맷 (한국 시간대로 표시)
-const formatDate = (dateString) => {
+const formatDate = dateString => {
   if (!dateString) return ''
   return new Date(dateString).toLocaleString('ko-KR', {
     year: 'numeric',
@@ -171,8 +345,22 @@ const formatDate = (dateString) => {
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'Asia/Seoul'
+    timeZone: 'Asia/Seoul',
   })
+}
+
+// HTML에서 텍스트 추출하여 요약 생성
+const getTextSummary = htmlContent => {
+  if (!htmlContent) return ''
+
+  // HTML 태그 제거
+  const textContent = htmlContent.replace(/<[^>]*>/g, ' ')
+  // 연속된 공백 정리
+  const cleanText = textContent.replace(/\s+/g, ' ').trim()
+  // 120자로 제한하고 말줄임표 추가
+  return cleanText.length > 120
+    ? cleanText.substring(0, 120) + '...'
+    : cleanText
 }
 
 // 컴포넌트 마운트 시 데이터 로드
@@ -182,14 +370,17 @@ onMounted(() => {
 
 // 메타 태그
 useHead({
-  title: () => newsletter.value ? newsletter.value.title : '뉴스레터',
+  title: () => (newsletter.value ? newsletter.value.title : '뉴스레터'),
   meta: [
-    { 
-      name: 'description', 
-      content: () => newsletter.value 
-        ? newsletter.value.body_html.replace(/<[^>]*>/g, '').substring(0, 160) + '...'
-        : '뉴스레터 상세 내용'
-    }
+    {
+      name: 'description',
+      content: () =>
+        newsletter.value
+          ? newsletter.value.body_html
+              .replace(/<[^>]*>/g, '')
+              .substring(0, 160) + '...'
+          : '뉴스레터 상세 내용',
+    },
   ],
 })
 </script>
@@ -201,7 +392,12 @@ useHead({
   line-height: 1.75;
 }
 
-.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
   color: #111827;
   font-weight: 600;
   line-height: 1.25;
@@ -209,16 +405,23 @@ useHead({
   margin-bottom: 1rem;
 }
 
-.prose h1 { font-size: 2.25rem; }
-.prose h2 { font-size: 1.875rem; }
-.prose h3 { font-size: 1.5rem; }
+.prose h1 {
+  font-size: 2.25rem;
+}
+.prose h2 {
+  font-size: 1.875rem;
+}
+.prose h3 {
+  font-size: 1.5rem;
+}
 
 .prose p {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
 }
 
-.prose ul, .prose ol {
+.prose ul,
+.prose ol {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
   padding-left: 1.625rem;
@@ -250,5 +453,16 @@ useHead({
   margin: 1.5rem 0;
   font-style: italic;
   color: #6b7280;
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  line-height: 1.5;
+  max-height: 3em;
 }
 </style>

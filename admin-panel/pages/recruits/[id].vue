@@ -237,6 +237,130 @@
           </div>
         </article>
 
+        <!-- 관련 채용공고 -->
+        <div v-if="recruit && relatedRecruits.length > 0" class="mt-12">
+          <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h2 class="text-xl font-semibold text-gray-900">최근 채용공고</h2>
+              <p class="text-sm text-gray-500 mt-1">
+                다른 최신 채용공고도 확인해보세요
+              </p>
+            </div>
+
+            <div class="divide-y divide-gray-200">
+              <article
+                v-for="item in relatedRecruits"
+                :key="item.id"
+                class="px-6 py-6 hover:bg-gray-50 transition-colors duration-200"
+              >
+                <NuxtLink :to="`/recruits/${item.id}`" class="block group">
+                  <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                      <!-- 상단: 뱃지와 제목 -->
+                      <div class="flex items-start space-x-3 mb-2">
+                        <span
+                          :class="
+                            getEmploymentTypeBadgeClass(item.employment_type)
+                          "
+                          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium flex-shrink-0"
+                        >
+                          {{ getEmploymentTypeText(item.employment_type) }}
+                        </span>
+                        <h3
+                          class="text-lg font-medium text-gray-900 group-hover:text-indigo-600 transition-colors duration-200"
+                        >
+                          {{ item.title }}
+                        </h3>
+                      </div>
+
+                      <!-- 메타 정보 -->
+                      <div
+                        class="mt-2 flex items-center text-sm text-gray-500 space-x-4"
+                      >
+                        <div class="flex items-center">
+                          <svg
+                            class="mr-1.5 h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                            />
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                          {{ item.location || '위치 미정' }}
+                        </div>
+
+                        <div class="flex items-center">
+                          <svg
+                            class="mr-1.5 h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                            />
+                          </svg>
+                          {{
+                            item.admin_users?.departments?.name || '알 수 없음'
+                          }}
+                        </div>
+
+                        <div class="flex items-center">
+                          <svg
+                            class="mr-1.5 h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                          {{ formatDate(item.created_at) }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 화살표 -->
+                    <div class="flex-shrink-0">
+                      <svg
+                        class="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors duration-200"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </NuxtLink>
+              </article>
+            </div>
+          </div>
+        </div>
+
         <!-- 하단 네비게이션 -->
         <div v-if="recruit" class="mt-8 flex justify-center">
           <NuxtLink
@@ -272,6 +396,7 @@ const recruitId = route.params.id
 const recruit = ref(null)
 const loading = ref(true)
 const error = ref(null)
+const relatedRecruits = ref([])
 
 // 채용공고 조회
 const fetchRecruit = async () => {
@@ -281,6 +406,9 @@ const fetchRecruit = async () => {
 
     const response = await $fetch(`/api/public/recruits/${recruitId}`)
     recruit.value = response.data
+
+    // 채용공고 조회 성공 시 관련 채용공고도 가져오기
+    await fetchRelatedRecruits()
   } catch (err) {
     console.error('채용공고 조회 실패:', err)
     if (err.statusCode === 404) {
@@ -290,6 +418,27 @@ const fetchRecruit = async () => {
     }
   } finally {
     loading.value = false
+  }
+}
+
+// 관련 채용공고 조회 (현재 채용공고 제외하고 최근 3개)
+const fetchRelatedRecruits = async () => {
+  try {
+    const response = await $fetch('/api/public/recruits', {
+      query: {
+        limit: 4, // 현재 채용공고를 제외할 수 있도록 여분으로 가져오기
+      },
+    })
+
+    // 현재 채용공고 제외하고 3개만 선택
+    const filtered = response.data.filter(
+      item => String(item.id) !== String(recruitId)
+    )
+    relatedRecruits.value = filtered.slice(0, 3)
+  } catch (err) {
+    console.error('관련 채용공고 조회 실패:', err)
+    // 관련 채용공고는 실패해도 메인 콘텐츠에 영향 없도록 빈 배열 유지
+    relatedRecruits.value = []
   }
 }
 
@@ -326,6 +475,20 @@ const formatDate = dateString => {
     minute: '2-digit',
     timeZone: 'Asia/Seoul',
   })
+}
+
+// HTML에서 텍스트 추출하여 요약 생성
+const getTextSummary = htmlContent => {
+  if (!htmlContent) return ''
+
+  // HTML 태그 제거
+  const textContent = htmlContent.replace(/<[^>]*>/g, ' ')
+  // 연속된 공백 정리
+  const cleanText = textContent.replace(/\s+/g, ' ').trim()
+  // 120자로 제한하고 말줄임표 추가
+  return cleanText.length > 120
+    ? cleanText.substring(0, 120) + '...'
+    : cleanText
 }
 
 // 컴포넌트 마운트 시 데이터 로드
@@ -418,5 +581,16 @@ useHead({
   margin: 1.5rem 0;
   font-style: italic;
   color: #6b7280;
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  line-height: 1.5;
+  max-height: 3em;
 }
 </style>
