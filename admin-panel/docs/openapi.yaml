@@ -1,0 +1,868 @@
+openapi: 3.0.3
+info:
+  title: Admin Panel API
+  description: '관리자 패널을 위한 뉴스레터 관리 API'
+  version: 1.0.0
+  contact:
+    name: Admin Panel Team
+    email: admin@company.com
+
+servers:
+  - url: http://localhost:3000
+    description: '로컬 개발 서버'
+  - url: https://your-production-domain.com
+    description: '운영 서버'
+
+components:
+  schemas:
+    # 공통 응답 스키마
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: '요청이 성공적으로 처리되었습니다'
+        data:
+          type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 400
+        statusMessage:
+          type: string
+          example: 'Bad Request'
+        message:
+          type: string
+          example: '잘못된 요청입니다'
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          example: 25
+        pages:
+          type: integer
+          example: 3
+
+    # 뉴스레터 관련 스키마
+    Newsletter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '11'
+          description: '뉴스레터 고유 ID'
+        title:
+          type: string
+          example: '2024년 신제품 출시 공지'
+          description: '뉴스레터 제목'
+        body_html:
+          type: string
+          example: '<h1>신제품 소식</h1><p>새로운 제품을 출시했습니다.</p>'
+          description: 'HTML 형태의 본문 내용'
+        status:
+          type: string
+          enum: [draft, published, archived]
+          example: 'published'
+          description: '뉴스레터 상태'
+        author_id:
+          type: string
+          example: '4'
+          description: '작성자 ID'
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2025-08-26T07:11:35.000Z'
+          description: '발행 일시'
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-08-26T07:11:35.000Z'
+          description: '생성 일시'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-08-26T07:12:19.000Z'
+          description: '수정 일시'
+        admin_users:
+          $ref: '#/components/schemas/AdminUser'
+
+    AdminUser:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '4'
+        email:
+          type: string
+          example: 'admin@company.com'
+        departments:
+          $ref: '#/components/schemas/Department'
+
+    Department:
+      type: object
+      properties:
+        name:
+          type: string
+          example: '마케팅팀'
+
+    NewsletterCreate:
+      type: object
+      required:
+        - title
+        - body_html
+        - cognito_user_id
+      properties:
+        title:
+          type: string
+          example: '2024년 4분기 실적 발표'
+          description: '뉴스레터 제목'
+        body_html:
+          type: string
+          example: '<h1>실적 발표</h1><p>올해 4분기 실적을 발표합니다.</p>'
+          description: 'HTML 형태의 본문 내용'
+        status:
+          type: string
+          enum: [draft, published, archived]
+          example: 'draft'
+          description: '상태 (기본값: draft)'
+        cognito_user_id:
+          type: string
+          example: 'user-abc123-def456'
+          description: '작성자의 Cognito User ID'
+
+    NewsletterUpdate:
+      type: object
+      required:
+        - cognito_user_id
+      properties:
+        title:
+          type: string
+          example: '수정된 제목'
+          description: '수정할 제목'
+        body_html:
+          type: string
+          example: '<h1>수정된 내용</h1>'
+          description: '수정할 HTML 본문'
+        status:
+          type: string
+          enum: [draft, published, archived]
+          example: 'published'
+          description: '수정할 상태'
+        cognito_user_id:
+          type: string
+          example: 'user-abc123-def456'
+          description: '수정자의 Cognito User ID'
+
+    NewslettersListResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Newsletter'
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+
+    NewsletterResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Newsletter'
+
+    # 채용공고 관련 스키마
+    Recruit:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '21'
+          description: '채용공고 고유 ID'
+        title:
+          type: string
+          example: '프론트엔드 개발자 채용'
+          description: '채용공고 제목'
+        body_html:
+          type: string
+          example: '<h2>업무 내용</h2><p>React 기반 프론트엔드 개발</p>'
+          description: 'HTML 형태의 채용 내용'
+        status:
+          type: string
+          enum: [draft, published, archived]
+          example: 'published'
+          description: '채용공고 상태'
+        employment_type:
+          type: string
+          enum: [fulltime, contract, intern, parttime]
+          example: 'fulltime'
+          description: '고용 형태'
+        author_id:
+          type: string
+          example: '4'
+          description: '작성자 ID'
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2025-08-26T07:11:35.000Z'
+          description: '발행 일시'
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-08-26T07:11:35.000Z'
+          description: '생성 일시'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-08-26T07:12:19.000Z'
+          description: '수정 일시'
+        admin_users:
+          $ref: '#/components/schemas/AdminUser'
+
+    RecruitCreate:
+      type: object
+      required:
+        - title
+        - body_html
+        - employment_type
+        - cognito_user_id
+      properties:
+        title:
+          type: string
+          example: '백엔드 개발자 채용'
+          description: '채용공고 제목'
+        body_html:
+          type: string
+          example: '<h2>업무 내용</h2><p>Node.js 기반 백엔드 개발</p>'
+          description: 'HTML 형태의 채용 내용'
+        employment_type:
+          type: string
+          enum: [fulltime, contract, intern, parttime]
+          example: 'fulltime'
+          description: '고용 형태'
+        status:
+          type: string
+          enum: [draft, published, archived]
+          example: 'draft'
+          description: '상태 (기본값: draft)'
+        cognito_user_id:
+          type: string
+          example: 'user-abc123-def456'
+          description: '작성자의 Cognito User ID'
+
+    RecruitUpdate:
+      type: object
+      required:
+        - cognito_user_id
+      properties:
+        title:
+          type: string
+          example: '수정된 채용공고 제목'
+          description: '수정할 제목'
+        body_html:
+          type: string
+          example: '<h2>수정된 업무 내용</h2>'
+          description: '수정할 HTML 본문'
+        employment_type:
+          type: string
+          enum: [fulltime, contract, intern, parttime]
+          example: 'contract'
+          description: '수정할 고용 형태'
+        status:
+          type: string
+          enum: [draft, published, archived]
+          example: 'published'
+          description: '수정할 상태'
+        cognito_user_id:
+          type: string
+          example: 'user-abc123-def456'
+          description: '수정자의 Cognito User ID'
+
+    RecruitsListResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Recruit'
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+
+    RecruitResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Recruit'
+
+  parameters:
+    NewsletterIdPath:
+      name: id
+      in: path
+      required: true
+      description: '뉴스레터 ID'
+      schema:
+        type: string
+        example: '11'
+
+    PageQuery:
+      name: page
+      in: query
+      description: '페이지 번호'
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+
+    LimitQuery:
+      name: limit
+      in: query
+      description: '페이지당 항목 수'
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+        example: 10
+
+    StatusQuery:
+      name: status
+      in: query
+      description: '상태 필터'
+      schema:
+        type: string
+        enum: [draft, published, archived]
+        example: 'published'
+
+    SearchQuery:
+      name: search
+      in: query
+      description: '제목 또는 내용 검색 키워드'
+      schema:
+        type: string
+        example: '공지'
+
+    # 채용공고용 파라미터
+    RecruitIdPath:
+      name: id
+      in: path
+      required: true
+      description: '채용공고 ID'
+      schema:
+        type: string
+        example: '21'
+
+    EmploymentTypeQuery:
+      name: employment_type
+      in: query
+      description: '고용 형태 필터'
+      schema:
+        type: string
+        enum: [fulltime, contract, intern, parttime]
+        example: 'fulltime'
+
+  responses:
+    BadRequest:
+      description: '잘못된 요청'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            required_field_missing:
+              summary: 필수 필드 누락
+              value:
+                statusCode: 400
+                statusMessage: 'Bad Request'
+                message: '제목, 내용, 사용자 인증 정보는 필수입니다.'
+            invalid_status:
+              summary: 잘못된 상태값
+              value:
+                statusCode: 400
+                statusMessage: 'Bad Request'
+                message: '올바른 상태값이 아닙니다.'
+
+    Unauthorized:
+      description: '인증되지 않음'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            statusCode: 401
+            statusMessage: 'Unauthorized'
+            message: '인증이 필요합니다.'
+
+    Forbidden:
+      description: '권한 없음'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            statusCode: 403
+            statusMessage: 'Forbidden'
+            message: '권한이 없습니다.'
+
+    NotFound:
+      description: '리소스를 찾을 수 없음'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            statusCode: 404
+            statusMessage: 'Not Found'
+            message: '뉴스레터를 찾을 수 없습니다.'
+
+    InternalServerError:
+      description: '서버 내부 오류'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            statusCode: 500
+            statusMessage: 'Internal Server Error'
+            message: '서버 내부 오류가 발생했습니다.'
+
+paths:
+  /api/admin/newsletters:
+    get:
+      tags:
+        - 📰 관리자 뉴스레터
+      summary: 뉴스레터 목록 조회
+      description: '관리자용 뉴스레터 목록을 조회합니다. 페이징, 검색, 상태 필터링을 지원합니다.'
+      parameters:
+        - $ref: '#/components/parameters/PageQuery'
+        - $ref: '#/components/parameters/LimitQuery'
+        - $ref: '#/components/parameters/StatusQuery'
+        - $ref: '#/components/parameters/SearchQuery'
+      responses:
+        '200':
+          description: '성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewslettersListResponse'
+              example:
+                success: true
+                data:
+                  - id: '11'
+                    title: '2024년 신제품 출시 공지'
+                    body_html: '<h1>신제품 소식</h1><p>새로운 제품을 출시했습니다.</p>'
+                    status: 'published'
+                    author_id: '4'
+                    published_at: '2025-08-26T07:11:35.000Z'
+                    created_at: '2025-08-26T07:11:35.000Z'
+                    updated_at: '2025-08-26T07:12:19.000Z'
+                    admin_users:
+                      id: '4'
+                      email: 'admin@company.com'
+                      departments:
+                        name: '마케팅팀'
+                pagination:
+                  page: 1
+                  limit: 10
+                  total: 1
+                  pages: 1
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - 📰 관리자 뉴스레터
+      summary: 뉴스레터 생성
+      description: '새로운 뉴스레터를 생성합니다. 작성자 인증이 필요합니다.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsletterCreate'
+            example:
+              title: '2024년 4분기 실적 발표'
+              body_html: '<h1>실적 발표</h1><p>올해 4분기 실적을 발표합니다.</p><ul><li>매출: 100억</li><li>순이익: 20억</li></ul>'
+              status: 'draft'
+              cognito_user_id: 'user-abc123-def456'
+      responses:
+        '201':
+          description: '생성 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterResponse'
+              example:
+                success: true
+                data:
+                  id: '12'
+                  title: '2024년 4분기 실적 발표'
+                  body_html: '<h1>실적 발표</h1><p>올해 4분기 실적을 발표합니다.</p>'
+                  status: 'draft'
+                  author_id: '4'
+                  published_at: null
+                  created_at: '2025-08-26T08:30:00.000Z'
+                  updated_at: '2025-08-26T08:30:00.000Z'
+                  admin_users:
+                    id: '4'
+                    email: 'admin@company.com'
+                    departments:
+                      name: '경영지원팀'
+                message: '뉴스레터가 성공적으로 생성되었습니다.'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/admin/newsletters/{id}:
+    get:
+      tags:
+        - 📰 관리자 뉴스레터
+      summary: 특정 뉴스레터 조회
+      description: 'ID로 특정 뉴스레터의 상세 정보를 조회합니다.'
+      parameters:
+        - $ref: '#/components/parameters/NewsletterIdPath'
+      responses:
+        '200':
+          description: '조회 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterResponse'
+              example:
+                success: true
+                data:
+                  id: '11'
+                  title: '2024년 신제품 출시 공지'
+                  body_html: '<h1>신제품 소식</h1><p>새로운 제품을 출시했습니다.</p>'
+                  status: 'published'
+                  author_id: '4'
+                  published_at: '2025-08-26T07:11:35.000Z'
+                  created_at: '2025-08-26T07:11:35.000Z'
+                  updated_at: '2025-08-26T07:12:19.000Z'
+                  admin_users:
+                    id: '4'
+                    email: 'admin@company.com'
+                    departments:
+                      name: '마케팅팀'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - 📰 관리자 뉴스레터
+      summary: 뉴스레터 수정
+      description: '기존 뉴스레터를 수정합니다. 작성자 인증이 필요합니다.'
+      parameters:
+        - $ref: '#/components/parameters/NewsletterIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsletterUpdate'
+            example:
+              title: '2024년 4분기 실적 발표 (수정)'
+              body_html: '<h1>수정된 실적 발표</h1><p>수정된 내용입니다.</p>'
+              status: 'published'
+              cognito_user_id: 'user-abc123-def456'
+      responses:
+        '200':
+          description: '수정 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterResponse'
+              example:
+                success: true
+                data:
+                  id: '12'
+                  title: '2024년 4분기 실적 발표 (수정)'
+                  body_html: '<h1>수정된 실적 발표</h1><p>수정된 내용입니다.</p>'
+                  status: 'published'
+                  published_at: '2025-08-26T09:15:00.000Z'
+                  updated_at: '2025-08-26T09:15:00.000Z'
+                  admin_users:
+                    id: '4'
+                    email: 'admin@company.com'
+                message: '뉴스레터가 성공적으로 수정되었습니다.'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - 📰 관리자 뉴스레터
+      summary: 뉴스레터 삭제
+      description: '특정 뉴스레터를 삭제합니다. 관리자 권한이 필요합니다.'
+      parameters:
+        - $ref: '#/components/parameters/NewsletterIdPath'
+      responses:
+        '200':
+          description: '삭제 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                success: true
+                message: '뉴스레터가 성공적으로 삭제되었습니다.'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # 관리자 채용공고 API
+  /api/admin/recruits:
+    get:
+      tags:
+        - 👥 관리자 채용공고
+      summary: 채용공고 목록 조회
+      description: '관리자용 채용공고 목록을 조회합니다. 페이징, 검색, 상태 및 고용형태 필터링을 지원합니다.'
+      parameters:
+        - $ref: '#/components/parameters/PageQuery'
+        - $ref: '#/components/parameters/LimitQuery'
+        - $ref: '#/components/parameters/StatusQuery'
+        - $ref: '#/components/parameters/EmploymentTypeQuery'
+        - $ref: '#/components/parameters/SearchQuery'
+      responses:
+        '200':
+          description: '성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecruitsListResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - 👥 관리자 채용공고
+      summary: 채용공고 생성
+      description: '새로운 채용공고를 생성합니다. 작성자 인증이 필요합니다.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecruitCreate'
+            example:
+              title: '풀스택 개발자 채용'
+              body_html: '<h2>업무 내용</h2><p>React + Node.js 풀스택 개발</p>'
+              employment_type: 'fulltime'
+              status: 'draft'
+              cognito_user_id: 'user-abc123-def456'
+      responses:
+        '201':
+          description: '생성 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecruitResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/admin/recruits/{id}:
+    get:
+      tags:
+        - 👥 관리자 채용공고
+      summary: 특정 채용공고 조회
+      description: 'ID로 특정 채용공고의 상세 정보를 조회합니다.'
+      parameters:
+        - $ref: '#/components/parameters/RecruitIdPath'
+      responses:
+        '200':
+          description: '조회 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecruitResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - 👥 관리자 채용공고
+      summary: 채용공고 수정
+      description: '기존 채용공고를 수정합니다. 작성자 인증이 필요합니다.'
+      parameters:
+        - $ref: '#/components/parameters/RecruitIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecruitUpdate'
+            example:
+              title: '시니어 풀스택 개발자 채용'
+              body_html: '<h2>수정된 업무 내용</h2><p>5년 이상 경력자 우대</p>'
+              employment_type: 'fulltime'
+              status: 'published'
+              cognito_user_id: 'user-abc123-def456'
+      responses:
+        '200':
+          description: '수정 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecruitResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - 👥 관리자 채용공고
+      summary: 채용공고 삭제
+      description: '특정 채용공고를 삭제합니다. 관리자 권한이 필요합니다.'
+      parameters:
+        - $ref: '#/components/parameters/RecruitIdPath'
+      responses:
+        '200':
+          description: '삭제 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                success: true
+                message: '채용공고가 성공적으로 삭제되었습니다.'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # 공개 뉴스레터 API
+  /api/public/newsletters:
+    get:
+      tags:
+        - 🌐 공개 뉴스레터
+      summary: 공개 뉴스레터 목록 조회
+      description: '발행된 뉴스레터 목록을 조회합니다. 인증이 불필요합니다.'
+      parameters:
+        - $ref: '#/components/parameters/PageQuery'
+        - $ref: '#/components/parameters/LimitQuery'
+        - $ref: '#/components/parameters/SearchQuery'
+      responses:
+        '200':
+          description: '성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewslettersListResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/public/newsletters/{id}:
+    get:
+      tags:
+        - 🌐 공개 뉴스레터
+      summary: 공개 뉴스레터 상세 조회
+      description: '발행된 특정 뉴스레터의 상세 정보를 조회합니다.'
+      parameters:
+        - $ref: '#/components/parameters/NewsletterIdPath'
+      responses:
+        '200':
+          description: '조회 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # 공개 채용공고 API
+  /api/public/recruits:
+    get:
+      tags:
+        - 💼 공개 채용공고
+      summary: 공개 채용공고 목록 조회
+      description: '발행된 채용공고 목록을 조회합니다. 인증이 불필요합니다.'
+      parameters:
+        - $ref: '#/components/parameters/PageQuery'
+        - $ref: '#/components/parameters/LimitQuery'
+        - $ref: '#/components/parameters/EmploymentTypeQuery'
+        - $ref: '#/components/parameters/SearchQuery'
+      responses:
+        '200':
+          description: '성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecruitsListResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/public/recruits/{id}:
+    get:
+      tags:
+        - 💼 공개 채용공고
+      summary: 공개 채용공고 상세 조회
+      description: '발행된 특정 채용공고의 상세 정보를 조회합니다.'
+      parameters:
+        - $ref: '#/components/parameters/RecruitIdPath'
+      responses:
+        '200':
+          description: '조회 성공'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecruitResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+tags:
+  - name: 📰 관리자 뉴스레터
+    description: '관리자용 뉴스레터 CRUD 관리 API'
+  - name: 👥 관리자 채용공고
+    description: '관리자용 채용공고 CRUD 관리 API'
+  - name: 🌐 공개 뉴스레터
+    description: '발행된 뉴스레터 조회 API (인증 불필요)'
+  - name: 💼 공개 채용공고
+    description: '발행된 채용공고 조회 API (인증 불필요)'
