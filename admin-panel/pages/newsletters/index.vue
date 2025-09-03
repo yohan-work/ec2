@@ -94,30 +94,14 @@
                 <div class="flex-shrink-0">
                   <div class="w-80 h-56 bg-gray-200 rounded-lg overflow-hidden">
                     <img
-                      v-if="newsletter.thumbnail_image"
-                      :src="newsletter.thumbnail_image"
+                      :src="
+                        newsletter.thumbnail_image ||
+                        '/images/default-newsletter-thumbnail.png'
+                      "
                       :alt="newsletter.title"
                       class="w-full h-full object-cover"
                       @error="handleImageError"
                     />
-                    <div
-                      v-else
-                      class="w-full h-full flex items-center justify-center bg-gray-100"
-                    >
-                      <svg
-                        class="w-12 h-12 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
@@ -343,8 +327,8 @@ const getExcerpt = html => {
 
 // 이미지 로딩 실패 시 기본 이미지 표시
 const handleImageError = event => {
-  // 기본 SVG 이미지로 대체
-  event.target.src = '/images/default-newsletter-thumbnail.svg'
+  // 기본 PNG 이미지로 대체
+  event.target.src = '/images/default-newsletter-thumbnail.png'
 }
 
 // 날짜 포맷 (한국 시간대로 표시)

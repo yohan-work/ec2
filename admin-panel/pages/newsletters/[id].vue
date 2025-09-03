@@ -325,17 +325,14 @@ const fetchNewsletter = async () => {
 // 관련 뉴스레터 조회 (현재 뉴스레터 제외하고 최근 3개)
 const fetchRelatedNewsletters = async () => {
   try {
-    const response = await $fetch('/api/public/newsletters', {
+    const response = await $fetch('/api/public/newsletters/related', {
       query: {
-        limit: 4, // 현재 뉴스레터를 제외할 수 있도록 여분으로 가져오기
+        id: newsletterId,
+        limit: 3,
       },
     })
 
-    // 현재 뉴스레터 제외하고 3개만 선택
-    const filtered = response.data.filter(
-      item => String(item.id) !== String(newsletterId)
-    )
-    relatedNewsletters.value = filtered.slice(0, 3)
+    relatedNewsletters.value = response.data
   } catch (err) {
     console.error('관련 뉴스레터 조회 실패:', err)
     // 관련 뉴스레터는 실패해도 메인 콘텐츠에 영향 없도록 빈 배열 유지
