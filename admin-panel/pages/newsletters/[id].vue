@@ -102,44 +102,51 @@
         >
           <!-- 헤더 -->
           <div class="px-6 py-8 border-b border-gray-200">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">
-              {{ newsletter.title }}
-            </h1>
+            <div class="flex items-start space-x-6">
+              <!-- 제목 및 메타 정보 -->
+              <div class="flex-1">
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                  {{ newsletter.title }}
+                </h1>
 
-            <!-- 메타 정보 -->
-            <div class="flex items-center text-sm text-gray-500 space-x-4">
-              <div class="flex items-center">
-                <svg
-                  class="mr-1.5 h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                  />
-                </svg>
-                {{ newsletter.admin_users?.departments?.name || '알 수 없음' }}
-              </div>
+                <!-- 메타 정보 -->
+                <div class="flex items-center text-sm text-gray-500 space-x-4">
+                  <div class="flex items-center">
+                    <svg
+                      class="mr-1.5 h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      />
+                    </svg>
+                    {{
+                      newsletter.admin_users?.departments?.name || '알 수 없음'
+                    }}
+                  </div>
 
-              <div class="flex items-center">
-                <svg
-                  class="mr-1.5 h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-                {{ formatDate(newsletter.published_at) }}
+                  <div class="flex items-center">
+                    <svg
+                      class="mr-1.5 h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    {{ formatDate(newsletter.published_at) }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -224,7 +231,7 @@
                               stroke-linecap="round"
                               stroke-linejoin="round"
                               stroke-width="2"
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v12a2 2 0 002 2z"
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                             />
                           </svg>
                           {{ formatDate(item.published_at) }}

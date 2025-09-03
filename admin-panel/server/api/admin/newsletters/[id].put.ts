@@ -15,7 +15,7 @@ export default defineEventHandler(async event => {
       })
     }
 
-    const { title, body_html, status, author_id } = body
+    const { title, body_html, thumbnail_image, status, author_id } = body
 
     // 기존 뉴스레터 확인
     const existingNewsletter = await prisma.newsletters.findUnique({
@@ -50,6 +50,11 @@ export default defineEventHandler(async event => {
     if (body_html !== undefined) {
       updateData.body_html = body_html
       changes.body_html = { changed: true }
+    }
+
+    if (thumbnail_image !== undefined) {
+      updateData.thumbnail_image = thumbnail_image
+      changes.thumbnail_image = { changed: true }
     }
 
     if (status !== undefined) {

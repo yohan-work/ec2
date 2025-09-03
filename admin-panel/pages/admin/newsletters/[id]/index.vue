@@ -98,7 +98,7 @@
         <!-- 메타데이터 -->
         <div class="bg-card rounded-lg shadow p-6">
           <div class="flex justify-between items-start mb-4">
-            <div>
+            <div class="flex-1">
               <h1 class="text-2xl font-bold text-foreground mb-2">
                 {{ newsletter.title }}
               </h1>
@@ -106,7 +106,7 @@
                 class="flex items-center space-x-4 text-sm text-muted-foreground"
               >
                 <span
-                  class="px-2 py-1 text-xs rounded-full"
+                  class="px-2 py-1"
                   :class="getStatusBadgeClass(newsletter.status)"
                 >
                   {{ getStatusText(newsletter.status) }}
@@ -117,6 +117,15 @@
                   >발행: {{ formatDate(newsletter.published_at) }}</span
                 >
               </div>
+            </div>
+
+            <!-- 썸네일 이미지 -->
+            <div v-if="newsletter.thumbnail_image" class="flex-shrink-0 ml-6">
+              <img
+                :src="newsletter.thumbnail_image"
+                :alt="newsletter.title"
+                class="w-32 h-24 object-cover rounded-lg border border-input"
+              />
             </div>
           </div>
         </div>

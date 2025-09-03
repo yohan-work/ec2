@@ -106,6 +106,62 @@
               />
             </div>
 
+            <!-- 썸네일 이미지 -->
+            <div>
+              <label
+                for="thumbnail"
+                class="block text-sm font-medium text-foreground mb-1"
+              >
+                썸네일 이미지
+              </label>
+              <div class="flex items-center space-x-4">
+                <div
+                  v-if="
+                    form.thumbnail_image || originalNewsletter?.thumbnail_image
+                  "
+                  class="flex-shrink-0"
+                >
+                  <img
+                    :src="
+                      form.thumbnail_image ||
+                      originalNewsletter?.thumbnail_image
+                    "
+                    alt="썸네일 미리보기"
+                    class="w-32 h-24 object-cover rounded-lg border border-input"
+                  />
+                </div>
+                <div class="flex-1">
+                  <input
+                    id="thumbnail"
+                    v-model="form.thumbnail_image"
+                    type="text"
+                    class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="이미지 URL을 입력하거나 아래 버튼으로 업로드하세요"
+                  />
+                  <div class="mt-2 flex space-x-2">
+                    <button
+                      type="button"
+                      @click="uploadThumbnail"
+                      class="inline-flex items-center px-3 py-1 border border-input text-xs font-medium rounded hover:bg-accent"
+                    >
+                      이미지 업로드
+                    </button>
+                    <button
+                      v-if="
+                        form.thumbnail_image ||
+                        originalNewsletter?.thumbnail_image
+                      "
+                      type="button"
+                      @click="removeThumbnail"
+                      class="inline-flex items-center px-3 py-1 border border-red-300 text-xs font-medium rounded text-red-600 hover:bg-red-50"
+                    >
+                      제거
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label
@@ -347,6 +403,7 @@ const showPreview = ref(false)
 const form = reactive({
   title: '',
   body_html: '',
+  thumbnail_image: '',
   status: 'draft',
 })
 
@@ -370,6 +427,7 @@ const fetchNewsletter = async () => {
     // 폼에 데이터 채우기
     form.title = originalNewsletter.value.title
     form.body_html = originalNewsletter.value.body_html
+    form.thumbnail_image = originalNewsletter.value.thumbnail_image || ''
     form.status = originalNewsletter.value.status
 
     // 에디터에 내용 설정
@@ -391,6 +449,50 @@ const updateContent = () => {
   if (editorRef.value) {
     form.body_html = editorRef.value.innerHTML
   }
+}
+
+// 썸네일 이미지 업로드
+const uploadThumbnail = async () => {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = 'image/*'
+  input.multiple = false
+
+  input.addEventListener('change', async event => {
+    const file = event.target.files[0]
+    if (!file) return
+
+    // 파일 크기 검사 (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('파일 크기가 너무 큽니다. (최대 5MB)')
+      return
+    }
+
+    try {
+      // FormData로 파일 업로드
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await $fetch('/api/upload/image', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.success) {
+        form.thumbnail_image = response.data.url
+      }
+    } catch (error) {
+      console.error('썸네일 이미지 업로드 실패:', error)
+      alert('썸네일 이미지 업로드에 실패했습니다.')
+    }
+  })
+
+  input.click()
+}
+
+// 썸네일 이미지 제거
+const removeThumbnail = () => {
+  form.thumbnail_image = ''
 }
 
 // 커서 위치에 텍스트 삽입
@@ -598,6 +700,7 @@ const saveNewsletter = async status => {
     const payload = {
       title: form.title,
       body_html: form.body_html,
+      thumbnail_image: form.thumbnail_image || null,
       status: status || form.status,
       cognito_user_id: userInfo.userId || userInfo.username,
     }
