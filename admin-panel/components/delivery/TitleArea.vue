@@ -1,0 +1,57 @@
+<template>
+  <div class="title-area" v-if="props.title">
+    <div class="title-area-left">
+      <h1>{{ props.title || '' }}</h1>
+      <slot name="left"></slot>
+    </div>
+    <template v-if="$slots.center">
+      <div class="title-area-center">
+        <slot name="center"></slot>
+      </div>
+    </template>
+    <template v-if="$slots.right">
+      <div class="title-area-right">
+        <slot name="right"></slot>
+      </div>
+    </template>
+  </div>
+</template>
+
+<script setup>
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
+    default: '',
+  },
+})
+</script>
+
+<style lang="scss" scoped>
+.title-area {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .title-area-left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+
+    h1 {
+      color: #333;
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+
+  .title-area-right {
+    display: flex;
+    align-items: center;
+  }
+}
+</style>

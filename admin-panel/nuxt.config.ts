@@ -45,4 +45,9 @@ export default defineNuxtConfig({
 
   // SSR 설정
   ssr: true,
+
+  // Vite 설정
+  vite: {
+    assetsInclude: ['**/*.svg'],
+  },
 })

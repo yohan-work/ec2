@@ -1,0 +1,196 @@
+// 감사 로그 스타일
+
+.action-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+}
+
+.action-create {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.action-update {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.action-delete {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.action-login {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.action-logout {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+.action-password_change {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.action-assign {
+  background-color: #d1f2eb;
+  color: #0e6251;
+}
+
+.action-unassign {
+  background-color: #fadbd8;
+  color: #922b21;
+}
+
+.action-move {
+  background-color: #fdeaa7;
+  color: #b7950b;
+}
+
+// 페이지네이션 스타일
+.pagination-wrapper {
+  .pagination-info {
+    text-align: center;
+    font-size: 14px;
+
+    .text-muted {
+      color: #6c757d;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+
+    .btn {
+      padding: 6px 12px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      min-width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background-color: #f8f9fa;
+        border-color: #adb5bd;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &.btn-primary {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+
+        &:hover {
+          background-color: #0056b3;
+          border-color: #0056b3;
+        }
+      }
+
+      &.btn-outline-secondary {
+        color: #6c757d;
+        border-color: #6c757d;
+
+        &:hover:not(:disabled) {
+          background-color: #6c757d;
+          color: white;
+        }
+      }
+    }
+
+    .pagination-ellipsis {
+      padding: 6px 8px;
+      color: #6c757d;
+      font-weight: bold;
+    }
+  }
+}
+
+// 감사 로그 상세 보기 스타일
+.audit-detail {
+  .detail-content {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .value-list {
+    .value-item {
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e9ecef;
+
+      &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      strong {
+        color: #495057;
+        min-width: 80px;
+        display: inline-block;
+      }
+    }
+  }
+
+  h6 {
+    color: #495057;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  // 변경된 값 하이라이트
+  .before-change {
+    .changed-value:not(:has(.color-chip)) {
+      background-color: #fff3e0;
+      color: #f57c00;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+  }
+  .after-change {
+    .changed-value:not(:has(.color-chip)) {
+      background-color: #e8f5e9;
+      color: #388e3c;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+  }
+
+  .color-chip {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 2px solid #000;
+    background-color: #000;
+  }
+}

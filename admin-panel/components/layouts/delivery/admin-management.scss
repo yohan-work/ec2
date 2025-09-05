@@ -1,0 +1,243 @@
+// 어드민 관리 모달 스타일
+#adminModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#adminModal .modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+#adminModal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+#adminModal .modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+#adminModal .close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+#adminModal .close:hover {
+  color: #000;
+}
+
+#adminModal form {
+  padding: 24px;
+}
+
+#adminModal .form-group {
+  margin-bottom: 20px;
+}
+
+#adminModal .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+#adminModal .form-group input,
+#adminModal .form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  &[type='checkbox'],
+  &[type='radio'] {
+    width: 16px;
+    margin-right: 8px;
+    padding: 0;
+  }
+}
+
+#adminModal .form-group input:focus,
+#adminModal .form-group select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+// 권한 설정 섹션
+.permissions-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.permissions-section h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.permissions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.permissions-grid .form-group {
+  margin-bottom: 0;
+}
+
+.permissions-grid label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.permissions-grid input[type='checkbox'] {
+  width: auto;
+  margin-right: 8px;
+}
+
+// 그룹 섹션
+.groups-section {
+  margin-top: 20px;
+}
+
+.groups-section h5 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.groups-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.groups-list .form-group {
+  margin-bottom: 8px;
+}
+
+.groups-list .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.groups-list label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.groups-list input[type='checkbox'] {
+  width: 16px;
+  margin-right: 8px;
+}
+
+// 모달 액션 버튼
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.modal-actions .btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-actions .btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-actions .btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.modal-actions .btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-actions .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+// 알림 메시지
+.alert {
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  #adminModal .modal-content {
+    width: 95%;
+    margin: 10% auto;
+  }
+
+  .permissions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+  }
+}
