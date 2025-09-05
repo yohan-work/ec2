@@ -39,6 +39,9 @@ defineOptions({
   .concentrix-logo {
     @include desktop(width, 175px);
     @include mobile(width, 210px);
+    img {
+      min-width: 100%;
+    }
   }
 }
 header {
