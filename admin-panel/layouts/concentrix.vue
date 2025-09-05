@@ -52,7 +52,7 @@ footer {
   width: 100%;
   background: #001933;
   color: #fff;
-  padding: 0 32px;
+  padding: 32px;
   @include mobile(padding, 48px);
 }
 </style>
