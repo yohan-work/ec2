@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background">
+  <div class="flex flex-col min-h-screen bg-background">
     <header class="bg-white shadow">
       <div class="concentrix-layout">
         <div class="flex justify-between items-center h-16">
@@ -17,7 +17,9 @@
       <slot />
     </main>
 
-    <footer>Footer</footer>
+    <footer>
+      <div class="concentrix-layout">Footer</div>
+    </footer>
   </div>
 </template>
 
@@ -28,7 +30,7 @@ defineOptions({
 </script>
 
 <style lang="scss" scoped>
-@use './delivery/mixins.scss' as *;
+@use './scss/mixins.scss' as *;
 
 .concentrix-layout {
   container-type: inline-size;
@@ -38,5 +40,19 @@ defineOptions({
     @include desktop(width, 175px);
     @include mobile(width, 210px);
   }
+}
+header {
+  @include desktop(padding, 0 48px);
+  @include mobile(padding, 48px);
+}
+main {
+  flex: 1;
+}
+footer {
+  width: 100%;
+  background: #001933;
+  color: #fff;
+  @include desktop(padding, 48px);
+  @include mobile(padding, 48px);
 }
 </style>

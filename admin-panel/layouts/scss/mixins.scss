@@ -44,7 +44,7 @@
 
   @each $val in $values {
     @if math.unit($val) == 'px' {
-      // px → vw 변환 (720px 기준)
+      // px → vw 변환 (720px 기준) - 디자인이 720이므로.
       $vw-value: math.div($val, 720px) * 100vw;
       $vw-list: list.append($vw-list, #{$vw-value});
     } @else {
