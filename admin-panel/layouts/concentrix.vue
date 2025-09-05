@@ -8,7 +8,7 @@
               <img src="~/public/assets/concentrix-logo.svg" alt="Concentrix" />
             </NuxtLink>
           </div>
-          <div>Header 테스트</div>
+          <div>👈 로고 이미지에 cqi(데스크탑), vw(모바일) 적용</div>
         </div>
       </div>
     </header>
@@ -42,8 +42,8 @@ defineOptions({
   }
 }
 header {
-  @include desktop(padding, 0 48px);
-  @include mobile(padding, 48px);
+  padding: 0 32px;
+  @include mobile(padding, 0 48px);
 }
 main {
   flex: 1;
@@ -52,7 +52,7 @@ footer {
   width: 100%;
   background: #001933;
   color: #fff;
-  @include desktop(padding, 48px);
+  padding: 0 32px;
   @include mobile(padding, 48px);
 }
 </style>
