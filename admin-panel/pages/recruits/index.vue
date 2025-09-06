@@ -6,7 +6,7 @@
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
             <NuxtLink to="/" class="text-xl font-bold text-gray-900">
-              뉴스레터 & 채용공고
+              <img src="~/public/assets/concentrix-logo.svg" alt="Concentrix" />
             </NuxtLink>
           </div>
 
