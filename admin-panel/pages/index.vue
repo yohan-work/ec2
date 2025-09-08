@@ -1,5 +1,5 @@
 <template>
-  <div class="concentrix-layout">
+  <div class="layout">
     <!-- 히어로 섹션 -->
     <div class="px-4 py-6 sm:px-0">
       <div class="text-center">
@@ -49,3 +49,7 @@ useHead({
   ],
 })
 </script>
+
+<style lang="scss" scoped>
+@use '~/layouts/scss/mixins.scss' as *;
+</style>

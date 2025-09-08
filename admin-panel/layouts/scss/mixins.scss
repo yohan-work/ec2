@@ -1,54 +1,48 @@
-// ✅ desktop mixin: px → px + cqi 변환
 @use 'sass:list';
 @use 'sass:math';
+@use 'sass:meta';
 
-@mixin desktop($property, $values, $baseline: 1320px) {
-  // fallback 그대로 출력
-  #{$property}: $values;
-
-  @supports (container-type: inline-size) {
-    // CSS calc()를 사용하여 cqi 단위로 변환
-    $cqi-values: ();
-    @each $val in $values {
-      @if math.unit($val) == 'px' {
-        $cqi-value: math.div($val, $baseline) * 100cqi;
-        $cqi-values: list.append($cqi-values, #{$cqi-value}, space);
-      } @else {
-        $cqi-values: list.append($cqi-values, $val, space);
-      }
-    }
-    #{$property}: $cqi-values;
-  }
-}
-
-// ✅ mobile mixin: px → rem 변환
-@mixin mobile($property, $values, $breakpoint: 1023px, $root: 16px) {
-  // 변환 리스트 생성
-  // $rem-list: ();
-
-  // @each $val in $values {
-  //   @if math.unit($val) == 'px' {
-  //     // px → rem 변환
-  //     $rem-list: list.append($rem-list, (math.div($val, $root)) * 1rem);
-  //   } @else {
-  //     // px 아닌 값은 그대로
-  //     $rem-list: list.append($rem-list, $val);
-  //   }
-  // }
-
-  // @media (max-width: $breakpoint) {
-  //   #{$property}: $rem-list;
-  // }
-
+@mixin desktop($property, $values, $breakpoint: 1024px) {
   $vw-list: ();
 
   @each $val in $values {
-    @if math.unit($val) == 'px' {
-      // px → vw 변환 (720px 기준) - 디자인이 720이므로.
-      $vw-value: math.div($val, 720px) * 100vw;
+    @if meta.type-of($val) == 'string' {
+      // CSS 키워드 (none, auto, inherit 등) - 그대로 유지
+      $vw-list: list.append($vw-list, $val);
+    } @else if meta.type-of($val) == 'number' and math.unit($val) == 'px' {
+      // px → vw 변환 (1320px 기준) - 디자인 컨텐츠가 1320이므로.
+      $vw-value: math.div($val, 1320px) * 100vw;
       $vw-list: list.append($vw-list, #{$vw-value});
+    } @else if meta.type-of($val) == 'number' and math.unit($val) == null {
+      // 단위가 없는 숫자 - 그대로 유지
+      $vw-list: list.append($vw-list, $val);
     } @else {
-      // px 아닌 값은 그대로
+      // px 아닌 다른 단위 값은 그대로
+      $vw-list: list.append($vw-list, $val);
+    }
+  }
+  #{$property}: $values;
+  @media (max-width: 1320px) and (min-width: $breakpoint) {
+    #{$property}: $vw-list;
+  }
+}
+
+@mixin mobile($property, $values, $breakpoint: 1023px, $root: 16px) {
+  $vw-list: ();
+
+  @each $val in $values {
+    @if meta.type-of($val) == 'string' {
+      // CSS 키워드 (none, auto, inherit 등) - 그대로 유지
+      $vw-list: list.append($vw-list, $val);
+    } @else if meta.type-of($val) == 'number' and math.unit($val) == 'px' {
+      // px → vw 변환 (360px 기준) - 디자인이 360이므로.
+      $vw-value: math.div($val, 360px) * 100vw;
+      $vw-list: list.append($vw-list, #{$vw-value});
+    } @else if meta.type-of($val) == 'number' and math.unit($val) == null {
+      // 단위가 없는 숫자 - 그대로 유지
+      $vw-list: list.append($vw-list, $val);
+    } @else {
+      // px 아닌 다른 단위 값은 그대로
       $vw-list: list.append($vw-list, $val);
     }
   }
@@ -57,26 +51,3 @@
     #{$property}: $vw-list;
   }
 }
-
-// 사용예시: .test {
-//   position: relative;
-//   @include desktop(padding, 10px 20px auto 5%);
-//   @include mobile(margin, 20px auto 0 30px);
-// }
-
-// == > 아래와 같이 CSS 변환 됨 .test {
-//   position: relative;
-//   padding: 10px 20px auto 5%;
-// }
-
-// @supports (container-type: inline-size) {
-//   .test {
-//     padding: 0.5208333333cqi 1.0416666667cqi auto 5%;
-//   }
-// }
-
-// @media (max-width: 780px) {
-//   .test {
-//     margin: 1.25rem auto 0 1.875rem;
-//   }
-// }

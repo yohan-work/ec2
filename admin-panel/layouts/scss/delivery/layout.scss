@@ -13,7 +13,7 @@
   background: #f0f0f0 !important;
   &:has(.toolbar.show) {
     .page-container {
-      padding: 24px 366px 24px 40px;
+      padding: 24px 366px 0 40px;
     }
   }
 }
@@ -24,7 +24,7 @@
   height: calc(100vh - 75px); // 75px is gnb height
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   padding: 24px 40px 0;
   transition: padding 0.3s ease;
 }
