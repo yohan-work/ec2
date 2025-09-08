@@ -1,260 +1,319 @@
 <template>
-  <div class="min-h-screen bg-background">
-    <!-- 헤더 -->
-    <header class="bg-card border-b">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center space-x-4">
-            <NuxtLink
-              :to="
-                isEditing
-                  ? `/admin/newsletters/${newsletterId}`
-                  : '/admin/newsletters'
-              "
-              class="text-muted-foreground hover:text-foreground"
-            >
-              ← {{ isEditing ? '뉴스레터 보기' : '뉴스레터 목록' }}
-            </NuxtLink>
-            <h1 class="text-xl font-semibold text-foreground">
-              {{ isEditing ? '뉴스레터 편집' : '새 뉴스레터 작성' }}
-            </h1>
-          </div>
-
-          <div class="flex items-center space-x-2">
-            <button
-              @click="saveDraft"
-              :disabled="saving"
-              class="inline-flex items-center px-3 py-2 border border-input text-sm font-medium rounded-md hover:bg-accent disabled:opacity-50"
-            >
-              <div
-                v-if="saving"
-                class="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"
-              ></div>
-              {{ saving ? '저장 중...' : '임시저장' }}
-            </button>
-
-            <button
-              @click="saveAndPublish"
-              :disabled="saving || !form.title.trim() || !hasContent()"
-              class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 disabled:opacity-50"
-            >
-              <div
-                v-if="saving"
-                class="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"
-              ></div>
-              {{ saving ? '저장 중...' : '저장 및 발행' }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- 메인 콘텐츠 -->
-    <main class="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <!-- 로딩 상태 -->
-      <div v-if="loading" class="text-center py-8">
-        <div
-          class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"
-        ></div>
-        <p class="text-muted-foreground mt-2">로딩 중...</p>
-      </div>
-
-      <!-- 에러 상태 -->
-      <div v-else-if="error" class="text-center py-8">
-        <div
-          class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4"
+  <div>
+    <!-- 페이지 헤더 -->
+    <div class="flex justify-between items-center mb-6">
+      <div class="flex items-center space-x-4">
+        <NuxtLink
+          :to="
+            isEditing
+              ? `/admin/newsletters/${newsletterId}`
+              : '/admin/newsletters'
+          "
+          class="text-gray-600 hover:text-gray-900"
         >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </div>
-        <h3 class="text-lg font-medium text-foreground">오류 발생</h3>
-        <p class="text-muted-foreground mt-1">{{ error }}</p>
+          ← {{ isEditing ? '뉴스레터 보기' : '뉴스레터 목록' }}
+        </NuxtLink>
+        <h1 class="text-2xl font-semibold text-gray-900">
+          {{ isEditing ? '뉴스레터 편집' : '새 뉴스레터 작성' }}
+        </h1>
       </div>
 
-      <!-- 편집 폼 -->
-      <form v-else @submit.prevent="saveDraft" class="space-y-6">
-        <!-- 기본 정보 -->
-        <div class="bg-card rounded-lg shadow p-6">
-          <h2 class="text-lg font-medium text-foreground mb-4">기본 정보</h2>
+      <div class="flex items-center space-x-2">
+        <button
+          @click="saveDraft"
+          :disabled="saving"
+          class="inline-flex items-center px-3 py-2 border border-input text-sm font-medium rounded-md hover:bg-accent disabled:opacity-50"
+        >
+          <div
+            v-if="saving"
+            class="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"
+          ></div>
+          {{ saving ? '저장 중...' : '임시저장' }}
+        </button>
 
-          <div class="space-y-4">
-            <div>
-              <label
-                for="title"
-                class="block text-sm font-medium text-foreground mb-1"
-              >
-                제목 *
-              </label>
-              <input
-                id="title"
-                v-model="form.title"
-                type="text"
-                required
-                class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="뉴스레터 제목을 입력하세요"
-              />
-            </div>
+        <button
+          @click="saveAndPublish"
+          :disabled="saving || !form.title.trim() || !hasContent()"
+          class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 disabled:opacity-50"
+        >
+          <div
+            v-if="saving"
+            class="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"
+          ></div>
+          {{ saving ? '저장 중...' : '저장 및 발행' }}
+        </button>
+      </div>
+    </div>
+    <!-- 로딩 상태 -->
+    <div v-if="loading" class="text-center py-8">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"
+      ></div>
+      <p class="text-muted-foreground mt-2">로딩 중...</p>
+    </div>
 
-            <!-- 썸네일 이미지 -->
-            <div>
-              <label
-                for="thumbnail"
-                class="block text-sm font-medium text-foreground mb-1"
+    <!-- 에러 상태 -->
+    <div v-else-if="error" class="text-center py-8">
+      <div
+        class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-foreground">오류 발생</h3>
+      <p class="text-muted-foreground mt-1">{{ error }}</p>
+    </div>
+
+    <!-- 편집 폼 -->
+    <form v-else @submit.prevent="saveDraft" class="space-y-6">
+      <!-- 기본 정보 -->
+      <div class="bg-card rounded-lg shadow p-6">
+        <h2 class="text-lg font-medium text-foreground mb-4">기본 정보</h2>
+
+        <div class="space-y-4">
+          <div>
+            <label
+              for="title"
+              class="block text-sm font-medium text-foreground mb-1"
+            >
+              제목 *
+            </label>
+            <input
+              id="title"
+              v-model="form.title"
+              type="text"
+              required
+              class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="뉴스레터 제목을 입력하세요"
+            />
+          </div>
+
+          <!-- 썸네일 이미지 -->
+          <div>
+            <label
+              for="thumbnail"
+              class="block text-sm font-medium text-foreground mb-1"
+            >
+              썸네일 이미지
+            </label>
+            <div class="flex items-center space-x-4">
+              <div
+                v-if="
+                  form.thumbnail_image || originalNewsletter?.thumbnail_image
+                "
+                class="flex-shrink-0"
               >
-                썸네일 이미지
-              </label>
-              <div class="flex items-center space-x-4">
-                <div
-                  v-if="
+                <img
+                  :src="
                     form.thumbnail_image || originalNewsletter?.thumbnail_image
                   "
-                  class="flex-shrink-0"
-                >
-                  <img
-                    :src="
+                  alt="썸네일 미리보기"
+                  class="w-32 h-24 object-cover rounded-lg border border-input"
+                />
+              </div>
+              <div class="flex-1">
+                <input
+                  id="thumbnail"
+                  v-model="form.thumbnail_image"
+                  type="text"
+                  class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="이미지 URL을 입력하거나 아래 버튼으로 업로드하세요"
+                />
+                <div class="mt-2 flex space-x-2">
+                  <button
+                    type="button"
+                    @click="uploadThumbnail"
+                    class="inline-flex items-center px-3 py-1 border border-input text-xs font-medium rounded hover:bg-accent"
+                  >
+                    이미지 업로드
+                  </button>
+                  <button
+                    v-if="
                       form.thumbnail_image ||
                       originalNewsletter?.thumbnail_image
                     "
-                    alt="썸네일 미리보기"
-                    class="w-32 h-24 object-cover rounded-lg border border-input"
-                  />
-                </div>
-                <div class="flex-1">
-                  <input
-                    id="thumbnail"
-                    v-model="form.thumbnail_image"
-                    type="text"
-                    class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="이미지 URL을 입력하거나 아래 버튼으로 업로드하세요"
-                  />
-                  <div class="mt-2 flex space-x-2">
-                    <button
-                      type="button"
-                      @click="uploadThumbnail"
-                      class="inline-flex items-center px-3 py-1 border border-input text-xs font-medium rounded hover:bg-accent"
-                    >
-                      이미지 업로드
-                    </button>
-                    <button
-                      v-if="
-                        form.thumbnail_image ||
-                        originalNewsletter?.thumbnail_image
-                      "
-                      type="button"
-                      @click="removeThumbnail"
-                      class="inline-flex items-center px-3 py-1 border border-red-300 text-xs font-medium rounded text-red-600 hover:bg-red-50"
-                    >
-                      제거
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 본문 이미지 -->
-            <div>
-              <label
-                for="body-image"
-                class="block text-sm font-medium text-foreground mb-1"
-              >
-                본문 이미지
-              </label>
-              <div class="flex items-center space-x-4">
-                <div
-                  v-if="form.body_image || originalNewsletter?.body_image"
-                  class="flex-shrink-0"
-                >
-                  <img
-                    :src="form.body_image || originalNewsletter?.body_image"
-                    alt="본문 이미지 미리보기"
-                    class="w-32 h-24 object-cover rounded-lg border border-input"
-                  />
-                </div>
-                <div class="flex-1">
-                  <input
-                    id="body-image"
-                    v-model="form.body_image"
-                    type="text"
-                    class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="이미지 URL을 입력하거나 아래 버튼으로 업로드하세요"
-                  />
-                  <div class="mt-2 flex space-x-2">
-                    <button
-                      type="button"
-                      @click="uploadBodyImage"
-                      class="inline-flex items-center px-3 py-1 border border-input text-xs font-medium rounded hover:bg-accent"
-                    >
-                      이미지 업로드
-                    </button>
-                    <button
-                      v-if="form.body_image || originalNewsletter?.body_image"
-                      type="button"
-                      @click="removeBodyImage"
-                      class="inline-flex items-center px-3 py-1 border border-red-300 text-xs font-medium rounded text-red-600 hover:bg-red-50"
-                    >
-                      제거
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label
-                  for="status"
-                  class="block text-sm font-medium text-foreground mb-1"
-                >
-                  상태
-                </label>
-                <select
-                  id="status"
-                  v-model="form.status"
-                  class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                  <option value="draft">초안</option>
-                  <option value="published">발행</option>
-                  <option value="archived">보관</option>
-                </select>
-              </div>
-
-              <div v-if="isEditing">
-                <label class="block text-sm font-medium text-foreground mb-1">
-                  작성자
-                </label>
-                <div
-                  class="w-full px-3 py-2 text-sm bg-muted border border-input rounded-md"
-                >
-                  {{ originalNewsletter?.admin_users?.email || '알 수 없음' }}
+                    type="button"
+                    @click="removeThumbnail"
+                    class="inline-flex items-center px-3 py-1 border border-red-300 text-xs font-medium rounded text-red-600 hover:bg-red-50"
+                  >
+                    제거
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- 본문 이미지 -->
+          <div>
+            <label
+              for="body-image"
+              class="block text-sm font-medium text-foreground mb-1"
+            >
+              본문 이미지
+            </label>
+            <div class="flex items-center space-x-4">
+              <div
+                v-if="form.body_image || originalNewsletter?.body_image"
+                class="flex-shrink-0"
+              >
+                <img
+                  :src="form.body_image || originalNewsletter?.body_image"
+                  alt="본문 이미지 미리보기"
+                  class="w-32 h-24 object-cover rounded-lg border border-input"
+                />
+              </div>
+              <div class="flex-1">
+                <input
+                  id="body-image"
+                  v-model="form.body_image"
+                  type="text"
+                  class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="이미지 URL을 입력하거나 아래 버튼으로 업로드하세요"
+                />
+                <div class="mt-2 flex space-x-2">
+                  <button
+                    type="button"
+                    @click="uploadBodyImage"
+                    class="inline-flex items-center px-3 py-1 border border-input text-xs font-medium rounded hover:bg-accent"
+                  >
+                    이미지 업로드
+                  </button>
+                  <button
+                    v-if="form.body_image || originalNewsletter?.body_image"
+                    type="button"
+                    @click="removeBodyImage"
+                    class="inline-flex items-center px-3 py-1 border border-red-300 text-xs font-medium rounded text-red-600 hover:bg-red-50"
+                  >
+                    제거
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                for="status"
+                class="block text-sm font-medium text-foreground mb-1"
+              >
+                상태
+              </label>
+              <select
+                id="status"
+                v-model="form.status"
+                class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="draft">초안</option>
+                <option value="published">발행</option>
+                <option value="archived">보관</option>
+              </select>
+            </div>
+
+            <div v-if="isEditing">
+              <label class="block text-sm font-medium text-foreground mb-1">
+                작성자
+              </label>
+              <div
+                class="w-full px-3 py-2 text-sm bg-muted border border-input rounded-md"
+              >
+                {{ originalNewsletter?.admin_users?.email || '알 수 없음' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 내용 -->
+      <div class="bg-card rounded-lg shadow p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-medium text-foreground">내용</h2>
+          <div class="flex space-x-2">
+            <button
+              type="button"
+              @click="addParagraph"
+              class="inline-flex items-center px-3 py-1 border border-input text-xs font-medium rounded hover:bg-accent"
+            >
+              <svg
+                class="w-4 h-4 mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              문단 추가
+            </button>
+          </div>
         </div>
 
-        <!-- 내용 -->
-        <div class="bg-card rounded-lg shadow p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-medium text-foreground">내용</h2>
-            <div class="flex space-x-2">
+        <div class="space-y-4">
+          <!-- Subtitle -->
+          <div class="border border-input rounded-md p-4">
+            <div class="flex justify-between items-center mb-2">
+              <label class="text-sm font-medium text-foreground">
+                부제목 (선택사항)
+              </label>
+              <div class="flex items-center space-x-2">
+                <input
+                  id="subtitle-bold"
+                  v-model="form.subtitle_bold"
+                  type="checkbox"
+                  class="rounded border-input"
+                />
+                <label
+                  for="subtitle-bold"
+                  class="text-xs text-muted-foreground"
+                >
+                  굵게
+                </label>
+              </div>
+            </div>
+            <input
+              v-model="form.subtitle"
+              type="text"
+              class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="부제목을 입력하세요 (선택사항)"
+            />
+            <div class="mt-2 text-xs text-muted-foreground">
+              {{ form.subtitle.length }} 글자
+            </div>
+          </div>
+
+          <!-- 문단들 -->
+          <div
+            v-for="(paragraph, index) in form.paragraphs"
+            :key="paragraph.id"
+            class="border border-input rounded-md p-4"
+          >
+            <div class="flex justify-between items-center mb-2">
+              <label class="text-sm font-medium text-foreground">
+                문단 {{ index + 1 }}
+              </label>
               <button
+                v-if="form.paragraphs.length > 1"
                 type="button"
-                @click="addParagraph"
-                class="inline-flex items-center px-3 py-1 border border-input text-xs font-medium rounded hover:bg-accent"
+                @click="removeParagraph(index)"
+                class="inline-flex items-center px-2 py-1 border border-red-300 text-xs font-medium rounded text-red-600 hover:bg-red-50"
               >
                 <svg
-                  class="w-4 h-4 mr-1"
+                  class="w-3 h-3"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -263,181 +322,110 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M12 4v16m8-8H4"
+                    d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
-                문단 추가
               </button>
+            </div>
+            <textarea
+              v-model="paragraph.content"
+              :placeholder="`문단 ${index + 1} 내용을 입력하세요...`"
+              class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+              rows="4"
+            ></textarea>
+            <div class="mt-2 text-xs text-muted-foreground">
+              {{ paragraph.content.length }} 글자
             </div>
           </div>
 
-          <div class="space-y-4">
-            <!-- Subtitle -->
-            <div class="border border-input rounded-md p-4">
-              <div class="flex justify-between items-center mb-2">
-                <label class="text-sm font-medium text-foreground">
-                  부제목 (선택사항)
-                </label>
-                <div class="flex items-center space-x-2">
-                  <input
-                    id="subtitle-bold"
-                    v-model="form.subtitle_bold"
-                    type="checkbox"
-                    class="rounded border-input"
-                  />
-                  <label
-                    for="subtitle-bold"
-                    class="text-xs text-muted-foreground"
-                  >
-                    굵게
-                  </label>
-                </div>
+          <!-- 미리보기 -->
+          <div v-if="showPreview" class="mt-4">
+            <h3 class="text-sm font-medium text-foreground mb-2">미리보기</h3>
+            <div class="p-4 border border-input rounded-md bg-muted">
+              <!-- 본문 이미지가 있으면 제일 위에 표시 -->
+              <div v-if="form.body_image" class="mb-4">
+                <img
+                  :src="form.body_image"
+                  alt="본문 이미지"
+                  class="w-full max-w-2xl mx-auto object-cover rounded-lg"
+                />
               </div>
-              <input
-                v-model="form.subtitle"
-                type="text"
-                class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="부제목을 입력하세요 (선택사항)"
-              />
-              <div class="mt-2 text-xs text-muted-foreground">
-                {{ form.subtitle.length }} 글자
-              </div>
-            </div>
 
-            <!-- 문단들 -->
-            <div
-              v-for="(paragraph, index) in form.paragraphs"
-              :key="paragraph.id"
-              class="border border-input rounded-md p-4"
-            >
-              <div class="flex justify-between items-center mb-2">
-                <label class="text-sm font-medium text-foreground">
-                  문단 {{ index + 1 }}
-                </label>
-                <button
-                  v-if="form.paragraphs.length > 1"
-                  type="button"
-                  @click="removeParagraph(index)"
-                  class="inline-flex items-center px-2 py-1 border border-red-300 text-xs font-medium rounded text-red-600 hover:bg-red-50"
+              <!-- Subtitle -->
+              <div v-if="form.subtitle.trim()" class="mb-4">
+                <h3
+                  :class="form.subtitle_bold ? 'font-bold' : 'font-normal'"
+                  class="text-lg text-foreground"
                 >
-                  <svg
-                    class="w-3 h-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
+                  {{ form.subtitle }}
+                </h3>
               </div>
-              <textarea
-                v-model="paragraph.content"
-                :placeholder="`문단 ${index + 1} 내용을 입력하세요...`"
-                class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                rows="4"
-              ></textarea>
-              <div class="mt-2 text-xs text-muted-foreground">
-                {{ paragraph.content.length }} 글자
-              </div>
-            </div>
 
-            <!-- 미리보기 -->
-            <div v-if="showPreview" class="mt-4">
-              <h3 class="text-sm font-medium text-foreground mb-2">미리보기</h3>
-              <div class="p-4 border border-input rounded-md bg-muted">
-                <!-- 본문 이미지가 있으면 제일 위에 표시 -->
-                <div v-if="form.body_image" class="mb-4">
-                  <img
-                    :src="form.body_image"
-                    alt="본문 이미지"
-                    class="w-full max-w-2xl mx-auto object-cover rounded-lg"
-                  />
-                </div>
-
-                <!-- Subtitle -->
-                <div v-if="form.subtitle.trim()" class="mb-4">
-                  <h3
-                    :class="form.subtitle_bold ? 'font-bold' : 'font-normal'"
-                    class="text-lg text-foreground"
-                  >
-                    {{ form.subtitle }}
-                  </h3>
-                </div>
-
-                <!-- 문단들 -->
-                <div
-                  v-for="(paragraph, index) in form.paragraphs"
-                  :key="`preview-${paragraph.id}`"
-                  class="mb-4 last:mb-0"
-                >
-                  <p
-                    v-if="paragraph.content.trim()"
-                    class="whitespace-pre-wrap"
-                  >
-                    {{ paragraph.content }}
-                  </p>
-                  <p v-else class="text-muted-foreground italic">
-                    문단 {{ index + 1 }} 내용이 비어있습니다.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex justify-between items-center">
-              <button
-                type="button"
-                @click="showPreview = !showPreview"
-                class="text-sm text-primary hover:text-primary/80"
+              <!-- 문단들 -->
+              <div
+                v-for="(paragraph, index) in form.paragraphs"
+                :key="`preview-${paragraph.id}`"
+                class="mb-4 last:mb-0"
               >
-                {{ showPreview ? '미리보기 숨기기' : '미리보기 보기' }}
-              </button>
-
-              <div class="text-sm text-muted-foreground">
-                {{ getTotalWordCount() }} 글자
+                <p v-if="paragraph.content.trim()" class="whitespace-pre-wrap">
+                  {{ paragraph.content }}
+                </p>
+                <p v-else class="text-muted-foreground italic">
+                  문단 {{ index + 1 }} 내용이 비어있습니다.
+                </p>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- 하단 액션 -->
-        <div class="flex justify-between items-center">
-          <NuxtLink
-            :to="
-              isEditing
-                ? `/admin/newsletters/${newsletterId}`
-                : '/admin/newsletters'
-            "
-            class="text-muted-foreground hover:text-foreground"
-          >
-            취소
-          </NuxtLink>
-
-          <div class="flex space-x-2">
-            <button
-              type="submit"
-              :disabled="saving"
-              class="inline-flex items-center px-4 py-2 border border-input text-sm font-medium rounded-md hover:bg-accent disabled:opacity-50"
-            >
-              {{ saving ? '저장 중...' : '임시저장' }}
-            </button>
-
+          <div class="flex justify-between items-center">
             <button
               type="button"
-              @click="saveAndPublish"
-              :disabled="saving || !form.title.trim() || !hasContent()"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 disabled:opacity-50"
+              @click="showPreview = !showPreview"
+              class="text-sm text-primary hover:text-primary/80"
             >
-              {{ saving ? '저장 중...' : '저장 및 발행' }}
+              {{ showPreview ? '미리보기 숨기기' : '미리보기 보기' }}
             </button>
+
+            <div class="text-sm text-muted-foreground">
+              {{ getTotalWordCount() }} 글자
+            </div>
           </div>
         </div>
-      </form>
-    </main>
+      </div>
+
+      <!-- 하단 액션 -->
+      <div class="flex justify-between items-center">
+        <NuxtLink
+          :to="
+            isEditing
+              ? `/admin/newsletters/${newsletterId}`
+              : '/admin/newsletters'
+          "
+          class="text-muted-foreground hover:text-foreground"
+        >
+          취소
+        </NuxtLink>
+
+        <div class="flex space-x-2">
+          <button
+            type="submit"
+            :disabled="saving"
+            class="inline-flex items-center px-4 py-2 border border-input text-sm font-medium rounded-md hover:bg-accent disabled:opacity-50"
+          >
+            {{ saving ? '저장 중...' : '임시저장' }}
+          </button>
+
+          <button
+            type="button"
+            @click="saveAndPublish"
+            :disabled="saving || !form.title.trim() || !hasContent()"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 disabled:opacity-50"
+          >
+            {{ saving ? '저장 중...' : '저장 및 발행' }}
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -445,6 +433,7 @@
 // 인증 확인을 위한 미들웨어 적용
 definePageMeta({
   middleware: 'auth',
+  layout: 'admin',
 })
 
 const route = useRoute()

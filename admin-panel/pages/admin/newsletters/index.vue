@@ -1,197 +1,17 @@
 <template>
-  <div class="min-h-screen bg-background">
-    <!-- 헤더 -->
-    <header class="bg-card border-b">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center space-x-4">
-            <NuxtLink
-              to="/dashboard"
-              class="text-muted-foreground hover:text-foreground"
-            >
-              ← 대시보드
-            </NuxtLink>
-            <h1 class="text-xl font-semibold text-foreground">뉴스레터 관리</h1>
-          </div>
-
-          <button
-            @click="createNewsletter"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
-          >
-            <svg
-              class="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            새 뉴스레터 작성
-          </button>
-        </div>
+  <div>
+    <!-- 페이지 헤더 -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-2xl font-semibold text-gray-900">뉴스레터 관리</h1>
+        <p class="text-sm text-gray-600 mt-1">뉴스레터를 작성하고 관리하세요</p>
       </div>
-    </header>
-
-    <!-- 메인 콘텐츠 -->
-    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <!-- 필터 및 검색 -->
-      <div class="bg-card rounded-lg shadow p-4 mb-6">
-        <div class="flex flex-col sm:flex-row gap-4">
-          <div class="flex-1">
-            <input
-              v-model="searchQuery"
-              type="text"
-              placeholder="제목 또는 내용으로 검색..."
-              class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background"
-              @input="debouncedSearch"
-            />
-          </div>
-          <div class="flex gap-2">
-            <select
-              v-model="statusFilter"
-              class="rounded-md border border-input px-3 py-2 text-sm bg-background"
-              @change="fetchNewsletters"
-            >
-              <option value="">모든 상태</option>
-              <option value="draft">초안</option>
-              <option value="published">발행됨</option>
-              <option value="archived">보관됨</option>
-            </select>
-            <button
-              @click="resetFilters"
-              class="px-3 py-2 text-sm border border-input rounded-md hover:bg-accent"
-            >
-              초기화
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 로딩 상태 -->
-      <div v-if="loading" class="text-center py-8">
-        <div
-          class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"
-        ></div>
-        <p class="text-muted-foreground mt-2">로딩 중...</p>
-      </div>
-
-      <!-- 뉴스레터 목록 -->
-      <div v-else-if="newsletters.length > 0" class="space-y-4">
-        <div
-          v-for="newsletter in newsletters"
-          :key="newsletter.id"
-          class="bg-card rounded-lg shadow p-6"
-        >
-          <div class="flex justify-between items-start">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <h3 class="text-lg font-medium text-foreground">
-                  {{ newsletter.title }}
-                </h3>
-                <span
-                  class="px-2 py-1 text-xs rounded-full"
-                  :class="getStatusBadgeClass(newsletter.status)"
-                >
-                  {{ getStatusText(newsletter.status) }}
-                </span>
-              </div>
-
-              <p
-                class="text-sm text-muted-foreground mb-2"
-                v-html="getExcerpt(newsletter.body_html)"
-              ></p>
-
-              <div
-                class="flex items-center text-xs text-muted-foreground space-x-4"
-              >
-                <span>작성자: {{ newsletter.admin_users?.email }}</span>
-                <span>생성: {{ formatDate(newsletter.created_at) }}</span>
-                <span v-if="newsletter.published_at"
-                  >발행: {{ formatDate(newsletter.published_at) }}</span
-                >
-              </div>
-            </div>
-
-            <div class="flex items-center space-x-2 ml-4">
-              <button
-                @click="viewNewsletter(newsletter)"
-                class="p-2 text-muted-foreground hover:text-foreground rounded-md hover:bg-accent"
-                title="보기"
-              >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
-                </svg>
-              </button>
-
-              <button
-                @click="editNewsletter(newsletter)"
-                class="p-2 text-muted-foreground hover:text-foreground rounded-md hover:bg-accent"
-                title="수정"
-              >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
-              </button>
-
-              <button
-                @click="deleteNewsletter(newsletter)"
-                class="p-2 text-destructive hover:text-destructive/80 rounded-md hover:bg-destructive/10"
-                title="삭제"
-              >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H7a1 1 0 00-1 1v3M4 7h16"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 빈 상태 -->
-      <div v-else class="text-center py-12">
+      <button
+        @click="createNewsletter"
+        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
+      >
         <svg
-          class="mx-auto h-12 w-12 text-muted-foreground"
+          class="w-4 h-4 mr-2"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -200,62 +20,227 @@
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            d="M12 4v16m8-8H4"
           />
         </svg>
-        <h3 class="mt-2 text-sm font-medium text-foreground">뉴스레터 없음</h3>
-        <p class="mt-1 text-sm text-muted-foreground">
-          첫 번째 뉴스레터를 작성해보세요.
-        </p>
-        <div class="mt-6">
-          <button
-            @click="createNewsletter"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90"
+        새 뉴스레터 작성
+      </button>
+    </div>
+    <!-- 필터 및 검색 -->
+    <div class="bg-card rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex-1">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="제목 또는 내용으로 검색..."
+            class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background"
+            @input="debouncedSearch"
+          />
+        </div>
+        <div class="flex gap-2">
+          <select
+            v-model="statusFilter"
+            class="rounded-md border border-input px-3 py-2 text-sm bg-background"
+            @change="fetchNewsletters"
           >
-            <svg
-              class="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <option value="">모든 상태</option>
+            <option value="draft">초안</option>
+            <option value="published">발행됨</option>
+            <option value="archived">보관됨</option>
+          </select>
+          <button
+            @click="resetFilters"
+            class="px-3 py-2 text-sm border border-input rounded-md hover:bg-accent"
+          >
+            초기화
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 로딩 상태 -->
+    <div v-if="loading" class="text-center py-8">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"
+      ></div>
+      <p class="text-muted-foreground mt-2">로딩 중...</p>
+    </div>
+
+    <!-- 뉴스레터 목록 -->
+    <div v-else-if="newsletters.length > 0" class="space-y-4">
+      <div
+        v-for="newsletter in newsletters"
+        :key="newsletter.id"
+        class="bg-card rounded-lg shadow p-6"
+      >
+        <div class="flex justify-between items-start">
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-medium text-foreground">
+                {{ newsletter.title }}
+              </h3>
+              <span
+                class="px-2 py-1 text-xs rounded-full"
+                :class="getStatusBadgeClass(newsletter.status)"
+              >
+                {{ getStatusText(newsletter.status) }}
+              </span>
+            </div>
+
+            <p
+              class="text-sm text-muted-foreground mb-2"
+              v-html="getExcerpt(newsletter.body_html)"
+            ></p>
+
+            <div
+              class="flex items-center text-xs text-muted-foreground space-x-4"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            새 뉴스레터 작성
-          </button>
+              <span>작성자: {{ newsletter.admin_users?.email }}</span>
+              <span>생성: {{ formatDate(newsletter.created_at) }}</span>
+              <span v-if="newsletter.published_at"
+                >발행: {{ formatDate(newsletter.published_at) }}</span
+              >
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 ml-4">
+            <button
+              @click="viewNewsletter(newsletter)"
+              class="p-2 text-muted-foreground hover:text-foreground rounded-md hover:bg-accent"
+              title="보기"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            </button>
+
+            <button
+              @click="editNewsletter(newsletter)"
+              class="p-2 text-muted-foreground hover:text-foreground rounded-md hover:bg-accent"
+              title="수정"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                />
+              </svg>
+            </button>
+
+            <button
+              @click="deleteNewsletter(newsletter)"
+              class="p-2 text-destructive hover:text-destructive/80 rounded-md hover:bg-destructive/10"
+              title="삭제"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H7a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- 페이지네이션 -->
-      <div v-if="pagination.pages > 1" class="mt-6 flex justify-center">
-        <div class="flex items-center space-x-2">
-          <button
-            @click="goToPage(pagination.page - 1)"
-            :disabled="pagination.page <= 1"
-            class="px-3 py-2 text-sm border border-input rounded-md disabled:opacity-50 hover:bg-accent"
+    <!-- 빈 상태 -->
+    <div v-else class="text-center py-12">
+      <svg
+        class="mx-auto h-12 w-12 text-muted-foreground"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+        />
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-foreground">뉴스레터 없음</h3>
+      <p class="mt-1 text-sm text-muted-foreground">
+        첫 번째 뉴스레터를 작성해보세요.
+      </p>
+      <div class="mt-6">
+        <button
+          @click="createNewsletter"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90"
+        >
+          <svg
+            class="w-4 h-4 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            이전
-          </button>
-
-          <span class="px-3 py-2 text-sm">
-            {{ pagination.page }} / {{ pagination.pages }}
-          </span>
-
-          <button
-            @click="goToPage(pagination.page + 1)"
-            :disabled="pagination.page >= pagination.pages"
-            class="px-3 py-2 text-sm border border-input rounded-md disabled:opacity-50 hover:bg-accent"
-          >
-            다음
-          </button>
-        </div>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          새 뉴스레터 작성
+        </button>
       </div>
-    </main>
+    </div>
 
+    <!-- 페이지네이션 -->
+    <div v-if="pagination.pages > 1" class="mt-6 flex justify-center">
+      <div class="flex items-center space-x-2">
+        <button
+          @click="goToPage(pagination.page - 1)"
+          :disabled="pagination.page <= 1"
+          class="px-3 py-2 text-sm border border-input rounded-md disabled:opacity-50 hover:bg-accent"
+        >
+          이전
+        </button>
+
+        <span class="px-3 py-2 text-sm">
+          {{ pagination.page }} / {{ pagination.pages }}
+        </span>
+
+        <button
+          @click="goToPage(pagination.page + 1)"
+          :disabled="pagination.page >= pagination.pages"
+          class="px-3 py-2 text-sm border border-input rounded-md disabled:opacity-50 hover:bg-accent"
+        >
+          다음
+        </button>
+      </div>
+    </div>
     <!-- 모달들은 여기에 추가 예정 -->
   </div>
 </template>
@@ -264,6 +249,7 @@
 // 인증 확인을 위한 미들웨어 적용
 definePageMeta({
   middleware: 'auth',
+  layout: 'admin',
 })
 
 const { user, getUserInfo } = useAuth()
