@@ -4,38 +4,47 @@
       <div class="gnb-title">
         <NuxtLink to="/delivery/">
           <div class="logo" v-html="concentrixLogoSvg"></div>
+          <div class="cix-logo" v-html="cixLogoSvg"></div>
         </NuxtLink>
       </div>
 
-      <div class="gnb-menu">
-        <NuxtLink to="/delivery/project-revenue/">
-          <div class="gnb-menu-item">
-            <span>Project Revenue</span>
-          </div>
-        </NuxtLink>
-        <NuxtLink to="/delivery/project-mm/">
-          <div class="gnb-menu-item">
-            <span>Project MM</span>
-          </div>
-        </NuxtLink>
-        <NuxtLink to="/delivery/sso/">
-          <div class="gnb-menu-item">
-            <span>SSO</span>
-          </div>
-        </NuxtLink>
-        <NuxtLink to="/delivery/staff-utility/">
-          <div class="gnb-menu-item">
-            <span>Staff (Utility)</span>
-          </div>
-        </NuxtLink>
-        <NuxtLink to="/delivery/project-list/">
-          <div class="gnb-menu-item">
-            <span>Project List</span>
-          </div>
-        </NuxtLink>
-      </div>
+      <!-- 로그인 페이지인 경우 메뉴 숨김 -->
+      <template v-if="!props.isLoginPage">
+        <div class="gnb-menu">
+          <NuxtLink to="/delivery/project-revenue/">
+            <div class="gnb-menu-item">
+              <span>Project Revenue</span>
+            </div>
+          </NuxtLink>
+          <NuxtLink to="/delivery/project-mm/">
+            <div class="gnb-menu-item">
+              <span>Project MM</span>
+            </div>
+          </NuxtLink>
+          <NuxtLink to="/delivery/sso/">
+            <div class="gnb-menu-item">
+              <span>SSO</span>
+            </div>
+          </NuxtLink>
+          <NuxtLink to="/delivery/staff-utility/">
+            <div class="gnb-menu-item">
+              <span>Staff (Utility)</span>
+            </div>
+          </NuxtLink>
+          <NuxtLink to="/delivery/project-list/">
+            <div class="gnb-menu-item">
+              <span>Project List</span>
+            </div>
+          </NuxtLink>
+        </div>
+      </template>
 
-      <button class="gnb-hamburger" @click="toggleMobileMenu" type="button">
+      <button
+        class="gnb-hamburger"
+        @click="toggleMobileMenu"
+        type="button"
+        v-if="!props.isLoginPage"
+      >
         <div
           class="gnb-hamburger-icon"
           :class="{ active: props.isMobileMenuOpen }"
@@ -51,10 +60,12 @@
 
 <script setup lang="ts">
 import concentrixLogoSvg from '~/components/assets/delivery/icons/concentrix-logo.svg?raw'
+import cixLogoSvg from '~/components/assets/delivery/icons/cix-logo.svg?raw'
 
 // Props 정의
 interface Props {
   isMobileMenuOpen: boolean
+  isLoginPage: boolean
 }
 
 const props = defineProps<Props>()
@@ -80,10 +91,10 @@ const toggleMobileMenu = () => {
   white-space: nowrap;
 
   &-container {
-    max-width: 1320px;
     width: 100%;
+    height: 56px;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -95,7 +106,14 @@ const toggleMobileMenu = () => {
 
   .gnb-title {
     display: flex;
+    align-items: center;
     gap: 12px;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
 
     svg {
       vertical-align: top;
@@ -103,7 +121,17 @@ const toggleMobileMenu = () => {
 
     .logo {
       width: auto;
+      height: 14px;
       vertical-align: top;
+    }
+    .cix-logo {
+      width: auto;
+      height: 14px;
+      vertical-align: top;
+      &:deep(svg) {
+        width: auto;
+        height: 100%;
+      }
     }
 
     &-text {
