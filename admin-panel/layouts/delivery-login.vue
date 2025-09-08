@@ -3,13 +3,10 @@
   <div class="delivery-layout">
     <!-- GNB (Global Navigation Bar) -->
     <Gnb
+      :is-login-page="true"
       :is-mobile-menu-open="isMobileMenuOpen"
-      :is-login-page="false"
       @toggle-mobile-menu="toggleMobileMenu"
     />
-
-    <!-- 툴바 레이어 -->
-    <Toolbar :is-mobile-menu-open="isMobileMenuOpen" />
 
     <!-- 메인 콘텐츠 -->
     <div class="page-container">
@@ -22,10 +19,9 @@
 import { ref } from 'vue'
 import Gnb from '~/components/delivery/Gnb.vue'
 import Loading from '~/components/ui/Loading.vue'
-import Toolbar from '~/components/delivery/Toolbar.vue'
 
 defineOptions({
-  name: 'delivery',
+  name: 'delivery-login',
 })
 
 // 모바일 메뉴 상태 관리

@@ -1,6 +1,7 @@
 <template>
   <button
     :class="buttonClasses"
+    :data-style="dataStyle"
     :disabled="disabled"
     :type="type"
     @click="$emit('click', $event)"
@@ -17,8 +18,6 @@ interface Props {
     | 'primary'
     | 'secondary'
     | 'outline'
-    | 'ghost'
-    | 'danger'
     | 'text'
     | 'white'
     | 'blue'
@@ -41,6 +40,21 @@ defineEmits<{
   click: [event: MouseEvent]
 }>()
 
+// data-style 속성값 매핑
+const dataStyleMap = {
+  primary: 'black',
+  secondary: 'gray',
+  outline: 'outlined',
+  ghost: 'text',
+  danger: 'black', // danger는 black과 동일하게 처리
+  text: 'text',
+  white: 'white',
+  blue: 'blue',
+  'toolbar-menu': 'toolbar-menu',
+}
+
+const dataStyle = computed(() => dataStyleMap[props.variant])
+
 const buttonClasses = computed(() => {
   const baseClasses = 'common-btn'
 
@@ -62,26 +76,12 @@ const buttonClasses = computed(() => {
     xl: 'padding-40',
   }
 
-  // 스타일 클래스 매핑 (button.scss의 data-style과 일치)
-  const variantClasses = {
-    primary: 'data-style="black"',
-    secondary: 'data-style="gray"',
-    outline: 'data-style="outlined"',
-    ghost: 'data-style="text"',
-    danger: 'data-style="black"', // danger는 black과 동일하게 처리
-    text: 'data-style="text"',
-    white: 'data-style="white"',
-    blue: 'data-style="blue"',
-    'toolbar-menu': 'data-style="toolbar-menu"',
-  }
-
   const widthClasses = props.fullWidth ? 'w-full' : ''
 
   return [
     baseClasses,
     sizeClasses[props.size],
     paddingClasses[props.size],
-    variantClasses[props.variant],
     widthClasses,
     props.disabled ? 'opacity-50 cursor-not-allowed' : '',
   ]

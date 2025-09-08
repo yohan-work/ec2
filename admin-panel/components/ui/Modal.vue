@@ -508,51 +508,6 @@ const handleBackdropClick = () => {
     }
   }
   // 비밀번호 입력 필드 스타일
-  .password-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-
-    .form-control {
-      padding-right: 40px;
-    }
-    .icon-btn {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      border-radius: 4px;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-      }
-
-      svg {
-        width: 16px;
-        height: 16px;
-        display: block;
-
-        &:last-child {
-          display: none;
-        }
-      }
-
-      &.show-password {
-        svg:first-child {
-          display: none;
-        }
-
-        svg:last-child {
-          display: block;
-        }
-      }
-    }
-  }
 }
 #seatAssignmentInfo {
   .assignment-info {

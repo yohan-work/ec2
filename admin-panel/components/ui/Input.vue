@@ -3,7 +3,7 @@
     <label v-if="label" :for="inputId" class="form-label">
       {{ label }}
     </label>
-    <div class="input-wrapper">
+    <div :class="inputWrapperClasses">
       <input
         :id="inputId"
         :type="inputType"
@@ -25,7 +25,6 @@
         @click="togglePasswordVisibility"
       >
         <svg
-          v-if="!showPassword"
           width="16"
           height="16"
           viewBox="0 0 16 16"
@@ -48,7 +47,6 @@
           />
         </svg>
         <svg
-          v-else
           width="16"
           height="16"
           viewBox="0 0 16 16"
@@ -120,9 +118,7 @@ defineEmits<{
 }>()
 
 const showPassword = ref(false)
-const inputId = computed(
-  () => `input-${Math.random().toString(36).substr(2, 9)}`
-)
+const inputId = ref(`input-${Math.random().toString(36).substr(2, 9)}`)
 
 const inputType = computed(() => {
   if (props.type === 'password') {
@@ -139,7 +135,158 @@ const inputClasses = computed(() => {
   return [baseClasses, errorClasses, disabledClasses].filter(Boolean).join(' ')
 })
 
+const inputWrapperClasses = computed(() => {
+  const baseClasses = ''
+  const passwordClasses =
+    props.type === 'password' ? 'password-input-wrapper' : 'input-wrapper'
+
+  return [baseClasses, passwordClasses].filter(Boolean).join(' ')
+})
+
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 </script>
+
+<style lang="scss" scoped>
+.form-group {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #333;
+  }
+  input,
+  select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    &[type='checkbox'],
+    &[type='radio'] {
+      width: 16px;
+      margin-right: 8px;
+      padding: 0;
+    }
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+  }
+}
+
+.form-label {
+  color: #000;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 8px;
+  font-family: Pretendard;
+  font-weight: 700;
+  span {
+    font-weight: 400;
+  }
+}
+.form-select,
+.form-control {
+  display: flex;
+  padding: 10px 12px;
+  align-items: center;
+  flex: 1 0 0;
+  border-radius: 4px;
+  border: 1px solid #cbcbcb;
+  background-color: #fafafa;
+  height: 40px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000;
+  &:placeholder {
+    color: #7a7a7a;
+  }
+  &[type='date'] {
+    display: block;
+    appearance: none;
+    &::-webkit-calendar-picker-indicator {
+      background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik04Ljg4ODY3IDQuMjIyMTdWNy4zMzMyOCIgc3Ryb2tlPSIjNEE0QTRBIiBzdHJva2Utd2lkdGg9IjEuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMTUuMTExMyA0LjIyMjE3VjcuMzMzMjgiIHN0cm9rZT0iIzRBNEE0QSIgc3Ryb2tlLXdpZHRoPSIxLjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTE3LjQ0NDQgNS43Nzc4M0g2LjU1NTU2QzUuNjk2NDUgNS43Nzc4MyA1IDYuNDc0MjggNSA3LjMzMzM5VjE4LjIyMjNDNSAxOS4wODE0IDUuNjk2NDUgMTkuNzc3OCA2LjU1NTU2IDE5Ljc3NzhIMTcuNDQ0NEMxOC4zMDM2IDE5Ljc3NzggMTkgMTkuMDgxNCAxOSAxOC4yMjIzVjcuMzMzMzlDMTkgNi40NzQyOCAxOC4zMDM2IDUuNzc3ODMgMTcuNDQ0NCA1Ljc3NzgzWiIgc3Ryb2tlPSIjNEE0QTRBIiBzdHJva2Utd2lkdGg9IjEuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNNSAxMC40NDQzSDE5IiBzdHJva2U9IiM0QTRBNEEiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICAgIDwvc3ZnPg==)
+        center/24px 24px no-repeat;
+      color: transparent;
+      opacity: 1;
+    }
+  }
+}
+
+.form-check {
+  font-size: 12px;
+  line-height: 16px;
+  color: #212529;
+  &-label {
+    padding: 3px 0 0 4px;
+  }
+  &-input {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid #cbcbcb;
+    background-color: #fafafa;
+    &:checked {
+      background-color: #3778f9;
+    }
+  }
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .form-control {
+    padding-right: 40px;
+  }
+  .icon-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    width: 24px;
+    height: 24px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+      &:last-child {
+        display: none;
+      }
+    }
+  }
+  .form-control[type='text'] + .icon-btn svg {
+    &:first-child {
+      display: none;
+    }
+    &:last-child {
+      display: block;
+    }
+  }
+}
+.error-message {
+  color: #cd2323;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  margin-top: 6px;
+  min-height: 16px;
+}
+</style>
