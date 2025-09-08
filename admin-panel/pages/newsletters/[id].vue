@@ -188,7 +188,11 @@
                 :key="item.id"
                 class="px-6 py-6 hover:bg-gray-50 transition-colors duration-200"
               >
-                <NuxtLink :to="`/newsletters/${item.id}`" class="block group">
+                <NuxtLink
+                  :to="`/newsletters/${item.id}`"
+                  @click="handleRelatedNewsletterClick(item.id)"
+                  class="block group"
+                >
                   <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                       <h3
@@ -299,6 +303,10 @@ const loading = ref(true)
 const error = ref(null)
 const relatedNewsletters = ref([])
 
+// 스크롤 위치 관리
+const scrollPosition = ref(0)
+const lastClickedNewsletterId = ref(null)
+
 // 뉴스레터 조회
 const fetchNewsletter = async () => {
   try {
@@ -351,6 +359,21 @@ const formatDate = dateString => {
     minute: '2-digit',
     timeZone: 'Asia/Seoul',
   })
+}
+
+// 관련 뉴스레터 클릭 핸들러
+const handleRelatedNewsletterClick = newsletterId => {
+  // 현재 스크롤 위치 저장
+  scrollPosition.value = window.scrollY
+  lastClickedNewsletterId.value = newsletterId
+
+  // 세션 스토리지에 저장 (목록 페이지로 돌아갔을 때 사용)
+  sessionStorage.setItem(
+    'newsletterScrollPosition',
+    scrollPosition.value.toString()
+  )
+  sessionStorage.setItem('lastClickedNewsletterId', newsletterId.toString())
+  sessionStorage.setItem('fromDetailPage', 'true')
 }
 
 // HTML에서 텍스트 추출하여 요약 생성

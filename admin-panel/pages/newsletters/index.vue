@@ -90,6 +90,7 @@
           <div
             v-for="newsletter in newsletters"
             :key="newsletter.id"
+            :id="`newsletter-${newsletter.id}`"
             class="bg-white shadow rounded-lg overflow-hidden hover:shadow-md transition-shadow"
           >
             <div class="p-6">
@@ -113,6 +114,7 @@
                 <div class="flex-1 min-w-0">
                   <NuxtLink
                     :to="`/newsletters/${newsletter.id}`"
+                    @click="handleNewsletterClick(newsletter.id)"
                     class="text-lg font-medium text-gray-900 hover:text-indigo-600"
                   >
                     {{ newsletter.title }}
@@ -139,6 +141,7 @@
                 <div class="flex-shrink-0">
                   <NuxtLink
                     :to="`/newsletters/${newsletter.id}`"
+                    @click="handleNewsletterClick(newsletter.id)"
                     class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-600 bg-indigo-50 hover:bg-indigo-100"
                   >
                     자세히 보기
@@ -264,6 +267,10 @@ const pagination = ref({
   pages: 0,
 })
 
+// 스크롤 위치 관리
+const scrollPosition = ref(0)
+const lastClickedNewsletterId = ref(null)
+
 // 뉴스레터 목록 조회
 const fetchNewsletters = async () => {
   try {
@@ -348,9 +355,62 @@ const formatDate = dateString => {
   })
 }
 
+// 게시글 클릭 핸들러
+const handleNewsletterClick = newsletterId => {
+  scrollPosition.value = window.scrollY
+  lastClickedNewsletterId.value = newsletterId
+
+  sessionStorage.setItem(
+    'newsletterScrollPosition',
+    scrollPosition.value.toString()
+  )
+  sessionStorage.setItem('lastClickedNewsletterId', newsletterId.toString())
+  sessionStorage.setItem('fromDetailPage', 'false')
+}
+
+// 스크롤 위치 복원
+const restoreScrollPosition = () => {
+  const savedPosition = sessionStorage.getItem('newsletterScrollPosition')
+  const savedNewsletterId = sessionStorage.getItem('lastClickedNewsletterId')
+  const fromDetailPage = sessionStorage.getItem('fromDetailPage')
+
+  if (savedPosition && savedNewsletterId) {
+    nextTick(() => {
+      setTimeout(() => {
+        const targetElement = document.getElementById(
+          `newsletter-${savedNewsletterId}`
+        )
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          })
+
+          // 하이라이트 효과(임시 처리)
+          targetElement.style.transition = 'box-shadow 0.3s ease'
+          targetElement.style.boxShadow = '0 0 0 3px rgba(99, 102, 241, 0.3)'
+
+          setTimeout(() => {
+            targetElement.style.boxShadow = ''
+          }, 2000)
+        } else {
+          window.scrollTo(0, parseInt(savedPosition))
+        }
+
+        sessionStorage.removeItem('newsletterScrollPosition')
+        sessionStorage.removeItem('lastClickedNewsletterId')
+        sessionStorage.removeItem('fromDetailPage')
+      }, 100)
+    })
+  }
+}
+
 // 컴포넌트 마운트 시 데이터 로드
 onMounted(() => {
   fetchNewsletters()
+
+  // 뒤로가기 시 스크롤 위치 복원
+  restoreScrollPosition()
 })
 
 // 메타 태그
