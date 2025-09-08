@@ -15,7 +15,16 @@ export default defineEventHandler(async event => {
       })
     }
 
-    const { title, body_html, thumbnail_image, status, author_id } = body
+    const {
+      title,
+      body_html,
+      thumbnail_image,
+      body_image,
+      subtitle,
+      subtitle_bold,
+      status,
+      author_id,
+    } = body
 
     // 기존 뉴스레터 확인
     const existingNewsletter = await prisma.newsletters.findUnique({
@@ -55,6 +64,21 @@ export default defineEventHandler(async event => {
     if (thumbnail_image !== undefined) {
       updateData.thumbnail_image = thumbnail_image
       changes.thumbnail_image = { changed: true }
+    }
+
+    if (body_image !== undefined) {
+      updateData.body_image = body_image
+      changes.body_image = { changed: true }
+    }
+
+    if (subtitle !== undefined) {
+      updateData.subtitle = subtitle
+      changes.subtitle = { changed: true }
+    }
+
+    if (subtitle_bold !== undefined) {
+      updateData.subtitle_bold = subtitle_bold
+      changes.subtitle_bold = { changed: true }
     }
 
     if (status !== undefined) {
