@@ -20,7 +20,7 @@
           />
           <Button
             type="submit"
-            size="md"
+            :size="36"
             variant="primary"
             class="mt-5"
             fullWidth
@@ -66,12 +66,14 @@ const password = ref('')
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 846px;
+  max-width: 697px;
   margin: 0 auto;
   background-color: #fff;
-  gap: 40px;
+  padding: 32px 24px;
+  border-radius: 16px;
   .cix-logo {
-    width: 198px;
+    width: 108px;
+    padding: 0 0 24px 0;
     &:deep(svg) {
       width: 100%;
       height: 100%;
@@ -83,17 +85,16 @@ const password = ref('')
       color: #000;
       text-align: center;
       font-family: Pretendard;
-      font-size: 48px;
+      font-size: 32px;
       font-weight: 700;
-      line-height: 60px; /* 125% */
+      line-height: 44px;
+      padding: 0 0 40px 0;
     }
     &-content {
-      width: 639px;
-      margin: 0 auto;
       display: flex;
-      gap: 38px;
       &-left {
         flex: 1;
+        padding: 24px;
         .form-group {
           .form-label {
             font-weight: 700 !important;
@@ -101,7 +102,8 @@ const password = ref('')
         }
       }
       &-right {
-        width: 160px;
+        width: (159px + 24px + 24px);
+        padding: 0 24px;
       }
     }
   }

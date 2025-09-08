@@ -21,22 +21,12 @@
 .page-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 75px); // 75px is gnb height
+  height: calc(100vh - 60px); // 75px is gnb height
   display: flex;
   flex-direction: column;
   overflow: visible;
   padding: 24px 40px 0;
   transition: padding 0.3s ease;
-}
-
-.main-container {
-  position: relative;
-  width: calc(100% - 40px - 40px);
-  height: calc(100vh - 75px - 24px);
-  bottom: 0;
-  border-radius: 20px 20px 0px 0px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: #fff;
 }
 
 /* 애니메이션 */

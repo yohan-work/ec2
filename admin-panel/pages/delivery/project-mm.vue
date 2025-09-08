@@ -15,7 +15,7 @@
     </template>
     <template #right>
       <div class="right-content">
-        <Button variant="primary" size="md"> 새 프로젝트 MM 추가 </Button>
+        <Button variant="primary" :size="36"> 새 프로젝트 MM 추가 </Button>
       </div>
     </template>
   </TitleArea>
@@ -32,23 +32,19 @@ import Button from '~/components/ui/Button.vue'
 import Card from '~/components/ui/Card.vue'
 import Table from '~/components/ui/Table.vue'
 import { useYear } from '~/composables/useYear'
+import { onMounted } from 'vue'
 
 definePageMeta({
   layout: 'delivery',
 })
 
 // 연도 관련 로직
-const { selectedYear, setSelectedYear } = useYear()
 
-// 사용 가능한 연도 목록 (최근 10년)
-const currentYear = new Date().getFullYear()
-const availableYears = Array.from({ length: 10 }, (_, i) => currentYear - i)
-
-// Select 컴포넌트용 옵션 형식으로 변환
-const yearOptions = availableYears.map(year => ({
-  value: year,
-  label: `${year}년`,
-}))
+// 페이지 로드 시 올해로 리셋
+onMounted(() => {
+  resetToCurrentYear()
+})
+const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } = useYear()
 
 // 연도 변경 핸들러
 const handleYearChange = year => {

@@ -22,7 +22,9 @@ interface Props {
     | 'white'
     | 'blue'
     | 'toolbar-menu'
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+    | 'tab'
+  size?: 20 | 24 | 28 | 36 | 38 | 40 | 48
+  padding?: 16 | 32 | 40
   disabled?: boolean
   fullWidth?: boolean
   type?: 'button' | 'submit' | 'reset'
@@ -30,7 +32,8 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'primary',
-  size: 'md',
+  size: 36,
+  padding: undefined,
   disabled: false,
   fullWidth: false,
   type: 'button',
@@ -45,12 +48,11 @@ const dataStyleMap = {
   primary: 'black',
   secondary: 'gray',
   outline: 'outlined',
-  ghost: 'text',
-  danger: 'black', // danger는 black과 동일하게 처리
   text: 'text',
   white: 'white',
   blue: 'blue',
   'toolbar-menu': 'toolbar-menu',
+  tab: 'text',
 }
 
 const dataStyle = computed(() => dataStyleMap[props.variant])
@@ -60,20 +62,20 @@ const buttonClasses = computed(() => {
 
   // 크기 클래스 매핑
   const sizeClasses = {
-    xs: 'height-20',
-    sm: 'height-24',
-    md: 'height-36',
-    lg: 'height-38',
-    xl: 'height-48',
+    20: 'height-20',
+    24: 'height-24',
+    28: 'height-28',
+    36: 'height-36',
+    38: 'height-38',
+    40: 'height-40',
+    48: 'height-48',
   }
 
   // 패딩 클래스 (필요한 경우)
   const paddingClasses = {
-    xs: '',
-    sm: '',
-    md: 'padding-40',
-    lg: 'padding-40',
-    xl: 'padding-40',
+    16: 'padding-16',
+    32: 'padding-32',
+    40: 'padding-40',
   }
 
   const widthClasses = props.fullWidth ? 'w-full' : ''
@@ -81,7 +83,7 @@ const buttonClasses = computed(() => {
   return [
     baseClasses,
     sizeClasses[props.size],
-    paddingClasses[props.size],
+    props.padding ? paddingClasses[props.padding] : '',
     widthClasses,
     props.disabled ? 'opacity-50 cursor-not-allowed' : '',
   ]
@@ -93,6 +95,7 @@ const buttonClasses = computed(() => {
 <style lang="scss" scoped>
 .common-btn {
   position: relative;
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 4px;
@@ -103,6 +106,7 @@ const buttonClasses = computed(() => {
   border: 0;
   transition: transform 0.2s ease;
   user-select: none;
+  white-space: nowrap;
   &.height-20 {
     // text button
     height: 20px;
@@ -138,6 +142,12 @@ const buttonClasses = computed(() => {
   &.height-38 {
     height: 38px;
     line-height: 38px;
+    padding: 0 12px;
+    border-radius: 8px;
+  }
+  &.height-40 {
+    height: 40px;
+    line-height: 40px;
     padding: 0 12px;
     border-radius: 8px;
   }
