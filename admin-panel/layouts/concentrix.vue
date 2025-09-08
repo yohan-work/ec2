@@ -36,8 +36,9 @@ defineOptions({
   container-type: inline-size;
   max-width: 1320px;
   margin: 0 auto;
+  padding: 0;
   .concentrix-logo {
-    @include desktop(width, 175px);
+    @include desktop(width, 199px);
     @include mobile(width, 210px);
     img {
       min-width: 100%;
@@ -45,8 +46,7 @@ defineOptions({
   }
 }
 header {
-  padding: 0 32px;
-  @include mobile(padding, 0 48px);
+  padding: 0;
 }
 main {
   flex: 1;
