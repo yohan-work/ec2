@@ -9,6 +9,7 @@
 // 인증 확인을 위한 미들웨어 적용
 definePageMeta({
   middleware: 'auth',
+  layout: 'admin',
 })
 
 onMounted(() => {

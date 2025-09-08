@@ -12,7 +12,16 @@ export default defineEventHandler(async event => {
     const body = await readBody(event)
     console.log('받은 요청 body:', JSON.stringify(body, null, 2))
 
-    const { title, body_html, thumbnail_image, status, cognito_user_id } = body
+    const {
+      title,
+      body_html,
+      thumbnail_image,
+      body_image,
+      subtitle,
+      subtitle_bold,
+      status,
+      cognito_user_id,
+    } = body
 
     // 필수 필드 검증
     if (!title || !body_html || !cognito_user_id) {
@@ -43,6 +52,9 @@ export default defineEventHandler(async event => {
         title,
         body_html,
         thumbnail_image: thumbnail_image || null,
+        body_image: body_image || null,
+        subtitle: subtitle || null,
+        subtitle_bold: subtitle_bold || false,
         status: status || 'draft',
         author_id: author.id,
         published_at: status === 'published' ? new Date() : null,

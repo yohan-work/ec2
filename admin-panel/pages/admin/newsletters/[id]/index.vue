@@ -1,82 +1,24 @@
 <template>
-  <div class="min-h-screen bg-background">
-    <!-- 헤더 -->
-    <header class="bg-card border-b">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center space-x-4">
-            <NuxtLink
-              to="/admin/newsletters"
-              class="text-muted-foreground hover:text-foreground"
-            >
-              ← 뉴스레터 목록
-            </NuxtLink>
-            <h1 class="text-xl font-semibold text-foreground">뉴스레터 보기</h1>
-          </div>
-
-          <div class="flex items-center space-x-2" v-if="newsletter">
-            <NuxtLink
-              :to="`/admin/newsletters/${newsletter.id}/edit`"
-              class="inline-flex items-center px-3 py-2 border border-input text-sm font-medium rounded-md hover:bg-accent"
-            >
-              <svg
-                class="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                />
-              </svg>
-              편집
-            </NuxtLink>
-
-            <button
-              v-if="newsletter.status !== 'published'"
-              @click="deleteNewsletter"
-              class="inline-flex items-center px-3 py-2 border border-destructive text-sm font-medium rounded-md text-destructive hover:bg-destructive/10"
-            >
-              <svg
-                class="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H7a1 1 0 00-1 1v3M4 7h16"
-                />
-              </svg>
-              삭제
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- 메인 콘텐츠 -->
-    <main class="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <!-- 로딩 상태 -->
-      <div v-if="loading" class="text-center py-8">
-        <div
-          class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"
-        ></div>
-        <p class="text-muted-foreground mt-2">로딩 중...</p>
+  <div>
+    <!-- 페이지 헤더 -->
+    <div class="flex justify-between items-center mb-6">
+      <div class="flex items-center space-x-4">
+        <NuxtLink
+          to="/admin/newsletters"
+          class="text-gray-600 hover:text-gray-900"
+        >
+          ← 뉴스레터 목록
+        </NuxtLink>
+        <h1 class="text-2xl font-semibold text-gray-900">뉴스레터 보기</h1>
       </div>
 
-      <!-- 에러 상태 -->
-      <div v-else-if="error" class="text-center py-8">
-        <div
-          class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4"
+      <div class="flex items-center space-x-2" v-if="newsletter">
+        <NuxtLink
+          :to="`/admin/newsletters/${newsletter.id}/edit`"
+          class="inline-flex items-center px-3 py-2 border border-input text-sm font-medium rounded-md hover:bg-accent"
         >
           <svg
-            class="w-6 h-6"
+            class="w-4 h-4 mr-2"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -85,93 +27,143 @@
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
             />
           </svg>
-        </div>
-        <h3 class="text-lg font-medium text-foreground">오류 발생</h3>
-        <p class="text-muted-foreground mt-1">{{ error }}</p>
+          편집
+        </NuxtLink>
+
+        <button
+          v-if="newsletter.status !== 'published'"
+          @click="deleteNewsletter"
+          class="inline-flex items-center px-3 py-2 border border-destructive text-sm font-medium rounded-md text-destructive hover:bg-destructive/10"
+        >
+          <svg
+            class="w-4 h-4 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H7a1 1 0 00-1 1v3M4 7h16"
+            />
+          </svg>
+          삭제
+        </button>
       </div>
+    </div>
+    <!-- 로딩 상태 -->
+    <div v-if="loading" class="text-center py-8">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"
+      ></div>
+      <p class="text-muted-foreground mt-2">로딩 중...</p>
+    </div>
 
-      <!-- 뉴스레터 내용 -->
-      <div v-else-if="newsletter" class="space-y-6">
-        <!-- 메타데이터 -->
-        <div class="bg-card rounded-lg shadow p-6">
-          <div class="flex justify-between items-start mb-4">
-            <div class="flex-1">
-              <h1 class="text-2xl font-bold text-foreground mb-2">
-                {{ newsletter.title }}
-              </h1>
-              <div
-                class="flex items-center space-x-4 text-sm text-muted-foreground"
+    <!-- 에러 상태 -->
+    <div v-else-if="error" class="text-center py-8">
+      <div
+        class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-foreground">오류 발생</h3>
+      <p class="text-muted-foreground mt-1">{{ error }}</p>
+    </div>
+
+    <!-- 뉴스레터 내용 -->
+    <div v-else-if="newsletter" class="space-y-6">
+      <!-- 메타데이터 -->
+      <div class="bg-card rounded-lg shadow p-6">
+        <div class="flex justify-between items-start mb-4">
+          <div class="flex-1">
+            <h1 class="text-2xl font-bold text-foreground mb-2">
+              {{ newsletter.title }}
+            </h1>
+            <div
+              class="flex items-center space-x-4 text-sm text-muted-foreground"
+            >
+              <span
+                class="px-2 py-1"
+                :class="getStatusBadgeClass(newsletter.status)"
               >
-                <span
-                  class="px-2 py-1"
-                  :class="getStatusBadgeClass(newsletter.status)"
-                >
-                  {{ getStatusText(newsletter.status) }}
-                </span>
-                <span>작성자: {{ newsletter.admin_users?.email }}</span>
-                <span>생성: {{ formatDate(newsletter.created_at) }}</span>
-                <span v-if="newsletter.published_at"
-                  >발행: {{ formatDate(newsletter.published_at) }}</span
-                >
-              </div>
-            </div>
-
-            <!-- 썸네일 이미지 -->
-            <div v-if="newsletter.thumbnail_image" class="flex-shrink-0 ml-6">
-              <img
-                :src="newsletter.thumbnail_image"
-                :alt="newsletter.title"
-                class="w-32 h-24 object-cover rounded-lg border border-input"
-              />
+                {{ getStatusText(newsletter.status) }}
+              </span>
+              <span>작성자: {{ newsletter.admin_users?.email }}</span>
+              <span>생성: {{ formatDate(newsletter.created_at) }}</span>
+              <span v-if="newsletter.published_at"
+                >발행: {{ formatDate(newsletter.published_at) }}</span
+              >
             </div>
           </div>
-        </div>
 
-        <!-- 본문 내용 -->
-        <div class="bg-card rounded-lg shadow p-6">
-          <h2 class="text-lg font-medium text-foreground mb-4">내용</h2>
-          <div
-            class="prose prose-sm max-w-none dark:prose-invert"
-            v-html="newsletter.body_html"
-          ></div>
+          <!-- 썸네일 이미지 -->
+          <div v-if="newsletter.thumbnail_image" class="flex-shrink-0 ml-6">
+            <img
+              :src="newsletter.thumbnail_image"
+              :alt="newsletter.title"
+              class="w-32 h-24 object-cover rounded-lg border border-input"
+            />
+          </div>
         </div>
+      </div>
 
-        <!-- 액션 버튼들 -->
-        <div class="flex justify-between items-center">
+      <!-- 본문 내용 -->
+      <div class="bg-card rounded-lg shadow p-6">
+        <h2 class="text-lg font-medium text-foreground mb-4">내용</h2>
+        <div
+          class="prose prose-sm max-w-none dark:prose-invert"
+          v-html="newsletter.body_html"
+        ></div>
+      </div>
+
+      <!-- 액션 버튼들 -->
+      <div class="flex justify-between items-center">
+        <NuxtLink
+          to="/admin/newsletters"
+          class="inline-flex items-center px-4 py-2 border border-input text-sm font-medium rounded-md hover:bg-accent"
+        >
+          ← 목록으로 돌아가기
+        </NuxtLink>
+
+        <div class="flex space-x-2">
           <NuxtLink
-            to="/admin/newsletters"
-            class="inline-flex items-center px-4 py-2 border border-input text-sm font-medium rounded-md hover:bg-accent"
+            :to="`/admin/newsletters/${newsletter.id}/edit`"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90"
           >
-            ← 목록으로 돌아가기
+            편집하기
           </NuxtLink>
 
-          <div class="flex space-x-2">
-            <NuxtLink
-              :to="`/admin/newsletters/${newsletter.id}/edit`"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90"
-            >
-              편집하기
-            </NuxtLink>
-
-            <button
-              v-if="newsletter.status === 'draft'"
-              @click="publishNewsletter"
-              :disabled="publishing"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
-            >
-              <div
-                v-if="publishing"
-                class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
-              ></div>
-              {{ publishing ? '발행 중...' : '발행하기' }}
-            </button>
-          </div>
+          <button
+            v-if="newsletter.status === 'draft'"
+            @click="publishNewsletter"
+            :disabled="publishing"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+          >
+            <div
+              v-if="publishing"
+              class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
+            ></div>
+            {{ publishing ? '발행 중...' : '발행하기' }}
+          </button>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </template>
 
@@ -179,6 +171,7 @@
 // 인증 확인을 위한 미들웨어 적용
 definePageMeta({
   middleware: 'auth',
+  layout: 'admin',
 })
 
 const route = useRoute()

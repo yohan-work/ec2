@@ -54,6 +54,9 @@ model newsletters {
   title            String             @db.VarChar(255)
   body_html        String             @db.MediumText
   thumbnail_image  String?            @db.VarChar(500)
+  body_image       String?            @db.VarChar(500)
+  subtitle         String?            @db.VarChar(500)
+  subtitle_bold    Boolean            @default(false)
   status           newsletters_status @default(draft)
   author_id        BigInt
   published_at     DateTime?          @db.DateTime(0)
