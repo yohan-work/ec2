@@ -1,49 +1,51 @@
 <template>
   <div class="gnb">
-    <div class="gnb-title">
-      <NuxtLink to="/delivery/">
-        <div class="logo" v-html="concentrixLogoSvg"></div>
-      </NuxtLink>
-    </div>
-
-    <div class="gnb-menu">
-      <NuxtLink to="/delivery/project-revenue/">
-        <div class="gnb-menu-item">
-          <span>Project Revenue</span>
-        </div>
-      </NuxtLink>
-      <NuxtLink to="/delivery/project-mm/">
-        <div class="gnb-menu-item">
-          <span>Project MM</span>
-        </div>
-      </NuxtLink>
-      <NuxtLink to="/delivery/sso/">
-        <div class="gnb-menu-item">
-          <span>SSO</span>
-        </div>
-      </NuxtLink>
-      <NuxtLink to="/delivery/staff-utility/">
-        <div class="gnb-menu-item">
-          <span>Staff (Utility)</span>
-        </div>
-      </NuxtLink>
-      <NuxtLink to="/delivery/project-list/">
-        <div class="gnb-menu-item">
-          <span>Project List</span>
-        </div>
-      </NuxtLink>
-    </div>
-
-    <button class="gnb-hamburger" @click="toggleMobileMenu" type="button">
-      <div
-        class="gnb-hamburger-icon"
-        :class="{ active: props.isMobileMenuOpen }"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="gnb-container">
+      <div class="gnb-title">
+        <NuxtLink to="/delivery/">
+          <div class="logo" v-html="concentrixLogoSvg"></div>
+        </NuxtLink>
       </div>
-    </button>
+
+      <div class="gnb-menu">
+        <NuxtLink to="/delivery/project-revenue/">
+          <div class="gnb-menu-item">
+            <span>Project Revenue</span>
+          </div>
+        </NuxtLink>
+        <NuxtLink to="/delivery/project-mm/">
+          <div class="gnb-menu-item">
+            <span>Project MM</span>
+          </div>
+        </NuxtLink>
+        <NuxtLink to="/delivery/sso/">
+          <div class="gnb-menu-item">
+            <span>SSO</span>
+          </div>
+        </NuxtLink>
+        <NuxtLink to="/delivery/staff-utility/">
+          <div class="gnb-menu-item">
+            <span>Staff (Utility)</span>
+          </div>
+        </NuxtLink>
+        <NuxtLink to="/delivery/project-list/">
+          <div class="gnb-menu-item">
+            <span>Project List</span>
+          </div>
+        </NuxtLink>
+      </div>
+
+      <button class="gnb-hamburger" @click="toggleMobileMenu" type="button">
+        <div
+          class="gnb-hamburger-icon"
+          :class="{ active: props.isMobileMenuOpen }"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -70,29 +72,40 @@ const toggleMobileMenu = () => {
 <style lang="scss" scoped>
 .gnb {
   position: relative;
-  display: flex;
   width: 100%;
-  padding: 16px 40px;
-  justify-content: space-between;
-  align-items: center;
+  padding: 9px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   background: #fff;
   z-index: 1001;
   white-space: nowrap;
+
+  &-container {
+    max-width: 1320px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   @media (max-width: 768px) {
     padding: 10px 20px;
   }
+
   .gnb-title {
     display: flex;
     gap: 12px;
+
     svg {
       vertical-align: top;
     }
+
     .logo {
-      height: 14px;
       width: auto;
       vertical-align: top;
     }
+
     &-text {
       display: inline-block;
       color: #000;
@@ -101,12 +114,14 @@ const toggleMobileMenu = () => {
       font-weight: 600;
       padding: 1px 24px 0 8px;
       margin: 0;
+
       @media (max-width: 768px) {
         font-size: 18px;
         line-height: 24px;
       }
     }
   }
+
   .gnb-menu {
     display: flex;
     align-items: center;
@@ -152,7 +167,6 @@ const toggleMobileMenu = () => {
         box-shadow: none;
       }
 
-      // 아이콘과 텍스트 간격
       svg {
         margin-right: 6px;
         width: 16px;
@@ -161,19 +175,20 @@ const toggleMobileMenu = () => {
     }
   }
 
-  // 햄버거 메뉴
   .gnb-hamburger {
     display: block;
     cursor: pointer;
-    padding: 8px;
+    width: 56px;
+    height: 56px;
+    padding: 21px 19px;
     background: none;
     border: none;
     appearance: none;
     outline: none;
 
     .gnb-hamburger-icon {
-      width: 24px;
-      height: 18px;
+      width: 18px;
+      height: 14px;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -182,7 +197,7 @@ const toggleMobileMenu = () => {
       span {
         display: block;
         height: 2px;
-        width: 100%;
+        width: 18px;
         background-color: #333;
         border-radius: 1px;
         transition: all 0.3s ease-in-out;
@@ -190,17 +205,20 @@ const toggleMobileMenu = () => {
       }
 
       &.active {
+        span {
+          width: 24px;
+        }
         span:nth-child(1) {
-          transform: rotate(45deg) translate(5px, 5px);
+          transform: rotate(45deg) translate(3px, 7px);
         }
 
         span:nth-child(2) {
           opacity: 0;
-          transform: translateX(20px);
+          transform: translateX(10px);
         }
 
         span:nth-child(3) {
-          transform: rotate(-45deg) translate(7px, -6px);
+          transform: rotate(-45deg) translate(1px, -6px);
         }
       }
     }
