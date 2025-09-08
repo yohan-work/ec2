@@ -15,8 +15,8 @@
           <Tab v-model="activeTab" :tabs="tabs" @change="onTabChange" />
         </div>
         <div class="edit-button">
-          <Button variant="blue" :size="36" :padding="16">
-            <div class="logo" v-html="editSvg"></div>
+          <Button variant="blue" :size="40" :padding="16">
+            <div v-html="editSvg"></div>
             Edit
           </Button>
         </div>

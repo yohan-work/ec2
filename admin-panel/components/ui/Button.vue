@@ -150,6 +150,8 @@ const buttonClasses = computed(() => {
     line-height: 40px;
     padding: 0 12px;
     border-radius: 8px;
+    font-size: 16px;
+    line-height: 22px;
   }
   &.height-48 {
     height: 48px;
