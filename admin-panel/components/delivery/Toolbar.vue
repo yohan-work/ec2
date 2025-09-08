@@ -20,14 +20,6 @@
             <span>고객사 관리</span>
           </NuxtLink>
           <NuxtLink
-            to="/delivery/projects"
-            class="btn"
-            data-style="toolbar-menu"
-          >
-            <div v-html="projectSvg"></div>
-            <span>프로젝트 관리</span>
-          </NuxtLink>
-          <NuxtLink
             to="/delivery/organizations"
             class="btn"
             data-style="toolbar-menu"
@@ -67,6 +59,14 @@
             <div v-html="historySvg"></div>
             <span>변경 히스토리</span>
           </NuxtLink>
+          <NuxtLink
+            to="/delivery/access-control"
+            class="btn"
+            data-style="toolbar-menu"
+          >
+            <div v-html="accessControlSvg"></div>
+            <span>접근 제어</span>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -92,12 +92,12 @@ import changePasswordSvg from '~/components/assets/delivery/icons/change-passwor
 import logoutSvg from '~/components/assets/delivery/icons/logout.svg?raw'
 import employeeSvg from '~/components/assets/delivery/icons/employee.svg?raw'
 import clientSvg from '~/components/assets/delivery/icons/client.svg?raw'
-import projectSvg from '~/components/assets/delivery/icons/project.svg?raw'
 import organizationSvg from '~/components/assets/delivery/icons/organization.svg?raw'
 import userSvg from '~/components/assets/delivery/icons/user.svg?raw'
 import permissionSvg from '~/components/assets/delivery/icons/permission.svg?raw'
 import positionSvg from '~/components/assets/delivery/icons/position.svg?raw'
 import historySvg from '~/components/assets/delivery/icons/history.svg?raw'
+import accessControlSvg from '~/components/assets/delivery/icons/access-control.svg?raw'
 
 // Props 정의
 interface Props {
@@ -123,10 +123,10 @@ const handleLogout = () => {
 /* Toolbar */
 .toolbar {
   position: fixed;
-  top: 75px;
+  top: 60px;
   right: -326px;
   width: 326px;
-  height: calc(100vh - 75px);
+  height: calc(100vh - 60px);
   background: #fff;
   box-shadow: -2px 0px 8px 0px rgba(0, 0, 0, 0.1);
   padding: 0;

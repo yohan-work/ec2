@@ -84,7 +84,7 @@ const toggleMobileMenu = () => {
 .gnb {
   position: relative;
   width: 100%;
-  padding: 9px 0;
+  padding: 1.5px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   background: #fff;
   z-index: 1001;
@@ -153,7 +153,6 @@ const toggleMobileMenu = () => {
   .gnb-menu {
     display: flex;
     align-items: center;
-    gap: 8px;
 
     a {
       display: block;
@@ -165,11 +164,11 @@ const toggleMobileMenu = () => {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 16px 8px;
+      padding: 10px 20px 8px;
       color: #666;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
-      line-height: 22px;
+      line-height: 20px;
       background: transparent;
       border: none;
       border-bottom: 2px solid transparent;
