@@ -1,18 +1,15 @@
 <template>
-  <DeliveryLayout>
-    <TitleArea title="Project Revenue" />
-    <ContentsArea>
-      <p>내용</p>
-    </ContentsArea>
-  </DeliveryLayout>
+  <TitleArea title="Project Revenue" />
+  <ContentsArea>
+    <p>내용</p>
+  </ContentsArea>
 </template>
 
 <script setup>
-import DeliveryLayout from '~/components/layouts/delivery.vue'
 import TitleArea from '~/components/delivery/TitleArea.vue'
 import ContentsArea from '~/components/delivery/ContentsArea.vue'
 definePageMeta({
-  layout: false,
+  layout: 'delivery',
 })
 </script>
 

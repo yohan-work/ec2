@@ -1,21 +1,18 @@
 <template>
-  <DeliveryLayout>
-    <TitleArea title="직원 관리">
-      <template #right>
-        <div class="right-content">
-          <Button variant="outline" size="md"> 필터 </Button>
-          <Button variant="primary" size="md"> 새 직원 추가 </Button>
-        </div>
-      </template>
-    </TitleArea>
-    <ContentsArea>
-      <p>내용</p>
-    </ContentsArea>
-  </DeliveryLayout>
+  <TitleArea title="직원 관리">
+    <template #right>
+      <div class="right-content">
+        <Button variant="outline" size="md"> 필터 </Button>
+        <Button variant="primary" size="md"> 새 직원 추가 </Button>
+      </div>
+    </template>
+  </TitleArea>
+  <ContentsArea>
+    <p>내용</p>
+  </ContentsArea>
 </template>
 
 <script setup>
-import DeliveryLayout from '~/components/layouts/delivery.vue'
 import TitleArea from '~/components/delivery/TitleArea.vue'
 import ContentsArea from '~/components/delivery/ContentsArea.vue'
 import Select from '~/components/ui/Select.vue'
@@ -25,7 +22,7 @@ import Table from '~/components/ui/Table.vue'
 import { useYear } from '~/composables/useYear'
 
 definePageMeta({
-  layout: false,
+  layout: 'delivery',
 })
 
 // 연도 관련 로직

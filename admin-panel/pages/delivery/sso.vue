@@ -1,33 +1,30 @@
 <template>
-  <DeliveryLayout>
-    <TitleArea title="SSO">
-      <template #left>
-        <Select
-          v-model="selectedYear"
-          :options="yearOptions"
-          placeholder="연도 선택"
-          @update:modelValue="handleYearChange"
-        />
-      </template>
-      <template #center>
-        <div class="center-content">
-          <span>SSO 설정 관리</span>
-        </div>
-      </template>
-      <template #right>
-        <div class="right-content">
-          <Button variant="primary" size="md"> SSO 설정 추가 </Button>
-        </div>
-      </template>
-    </TitleArea>
-    <ContentsArea>
-      <p>내용</p>
-    </ContentsArea>
-  </DeliveryLayout>
+  <TitleArea title="SSO">
+    <template #left>
+      <Select
+        v-model="selectedYear"
+        :options="yearOptions"
+        placeholder="연도 선택"
+        @update:modelValue="handleYearChange"
+      />
+    </template>
+    <template #center>
+      <div class="center-content">
+        <span>SSO 설정 관리</span>
+      </div>
+    </template>
+    <template #right>
+      <div class="right-content">
+        <Button variant="primary" size="md"> SSO 설정 추가 </Button>
+      </div>
+    </template>
+  </TitleArea>
+  <ContentsArea>
+    <p>내용</p>
+  </ContentsArea>
 </template>
 
 <script setup>
-import DeliveryLayout from '~/components/layouts/delivery.vue'
 import TitleArea from '~/components/delivery/TitleArea.vue'
 import ContentsArea from '~/components/delivery/ContentsArea.vue'
 import Select from '~/components/ui/Select.vue'
@@ -38,7 +35,7 @@ import Table from '~/components/ui/Table.vue'
 import { useYear } from '~/composables/useYear'
 
 definePageMeta({
-  layout: false,
+  layout: 'delivery',
 })
 
 // 연도 관련 로직

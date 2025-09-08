@@ -1,3 +1,73 @@
+<template>
+  <div class="gnb">
+    <div class="gnb-title">
+      <NuxtLink to="/delivery/">
+        <div class="logo" v-html="concentrixLogoSvg"></div>
+      </NuxtLink>
+    </div>
+
+    <div class="gnb-menu">
+      <NuxtLink to="/delivery/project-revenue/">
+        <div class="gnb-menu-item">
+          <span>Project Revenue</span>
+        </div>
+      </NuxtLink>
+      <NuxtLink to="/delivery/project-mm/">
+        <div class="gnb-menu-item">
+          <span>Project MM</span>
+        </div>
+      </NuxtLink>
+      <NuxtLink to="/delivery/sso/">
+        <div class="gnb-menu-item">
+          <span>SSO</span>
+        </div>
+      </NuxtLink>
+      <NuxtLink to="/delivery/staff-utility/">
+        <div class="gnb-menu-item">
+          <span>Staff (Utility)</span>
+        </div>
+      </NuxtLink>
+      <NuxtLink to="/delivery/project-list/">
+        <div class="gnb-menu-item">
+          <span>Project List</span>
+        </div>
+      </NuxtLink>
+    </div>
+
+    <button class="gnb-hamburger" @click="toggleMobileMenu" type="button">
+      <div
+        class="gnb-hamburger-icon"
+        :class="{ active: props.isMobileMenuOpen }"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+  </div>
+</template>
+
+<script setup lang="ts">
+import concentrixLogoSvg from '~/components/assets/delivery/icons/concentrix-logo.svg?raw'
+
+// Props 정의
+interface Props {
+  isMobileMenuOpen: boolean
+}
+
+const props = defineProps<Props>()
+
+// Emits 정의
+const emit = defineEmits<{
+  'toggle-mobile-menu': []
+}>()
+
+const toggleMobileMenu = () => {
+  emit('toggle-mobile-menu')
+}
+</script>
+
+<style lang="scss" scoped>
 .gnb {
   position: relative;
   display: flex;
@@ -136,3 +206,4 @@
     }
   }
 }
+</style>
