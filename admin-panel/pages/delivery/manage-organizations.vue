@@ -21,7 +21,7 @@
             <span class="org-icon"><div v-html="officeSvg"></div></span>
             <span class="org-name">CiX 본부</span>
           </div>
-          <div class="org-actions">
+          <!-- <div class="org-actions">
             <Button
               variant="text"
               :size="20"
@@ -38,8 +38,7 @@
               <div v-html="deleteSvg"></div>
               삭제
             </Button>
-          </div>
-          <div class="org-count">2개 그룹</div>
+          </div> -->
         </div>
         <div class="org-children">
           <div class="org-item" data-id="1" data-type="group">
@@ -66,7 +65,6 @@
                   삭제
                 </Button>
               </div>
-              <div class="org-count">3개 팀</div>
             </div>
             <div class="org-children">
               <div class="org-item" data-id="20" data-type="team">
@@ -182,7 +180,6 @@
                   삭제
                 </Button>
               </div>
-              <div class="org-count">5개 팀</div>
             </div>
             <div class="org-children">
               <div class="org-item" data-id="25" data-type="team">
