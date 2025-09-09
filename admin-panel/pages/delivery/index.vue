@@ -30,7 +30,6 @@ import TitleArea from '~/components/delivery/TitleArea.vue'
 import ContentsArea from '~/components/delivery/ContentsArea.vue'
 import Select from '~/components/ui/Select.vue'
 import Button from '~/components/ui/Button.vue'
-import Card from '~/components/ui/Card.vue'
 import { onMounted } from 'vue'
 import { useYear } from '~/composables/useYear'
 

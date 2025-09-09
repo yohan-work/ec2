@@ -53,7 +53,6 @@ import Button from '~/components/ui/Button.vue'
 
 definePageMeta({
   layout: 'delivery-login',
-  ssr: false,
 })
 
 // 메타 태그

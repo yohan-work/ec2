@@ -15,13 +15,15 @@
 .scroll-container {
   overflow-x: hidden;
   overflow-y: auto;
-  width: calc(100% + 20px);
-  margin-right: -20px;
-  padding-right: 20px;
+  width: calc(100% + 10px);
+  margin-right: -10px;
+  padding-right: 10px;
+  padding-bottom: 36px;
 
   /* Firefox 전용 */
   scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+  scrollbar-color: rgb(#c0c0c0, 0.5) transparent;
+  transition: scrollbar-color 0.3s;
 
   /* Chrome, Edge, Safari 전용 */
   &::-webkit-scrollbar {
@@ -36,7 +38,11 @@
   }
 
   &:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.5); /* hover 시 표시 */
+    background-color: #c0c0c0; /* hover 시 표시 */
+  }
+
+  &:hover {
+    scrollbar-color: #c0c0c0 transparent;
   }
 }
 </style>
