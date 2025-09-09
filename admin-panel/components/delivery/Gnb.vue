@@ -165,7 +165,7 @@ const toggleMobileMenu = () => {
       align-items: center;
       justify-content: center;
       padding: 10px 20px 8px;
-      color: #666;
+      color: #000;
       font-size: 14px;
       font-weight: 700;
       line-height: 20px;

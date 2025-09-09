@@ -28,6 +28,16 @@ defineOptions({
   name: 'delivery',
 })
 
+// Pretendard 폰트 CSS 링크
+useHead({
+  link: [
+    {
+      rel: 'stylesheet',
+      href: '/assets/fonts/pretendard.css',
+    },
+  ],
+})
+
 // 모바일 메뉴 상태 관리
 const isMobileMenuOpen = ref(false)
 
