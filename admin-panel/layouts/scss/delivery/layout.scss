@@ -7,10 +7,10 @@
 
 .delivery-layout {
   /* prettier-ignore */
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.5;
   color: #212529;
   background: #f0f0f0 !important;
+  font-family: Pretendard;
   &:has(.toolbar.show) {
     .page-container {
       padding: 24px 366px 0 40px;

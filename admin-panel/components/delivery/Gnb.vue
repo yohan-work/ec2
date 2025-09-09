@@ -172,7 +172,6 @@ const toggleMobileMenu = () => {
       background: transparent;
       border: none;
       border-bottom: 2px solid transparent;
-      font-family: Pretendard;
       cursor: pointer;
       transition: all 0.2s ease;
       white-space: nowrap;

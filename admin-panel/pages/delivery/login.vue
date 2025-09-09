@@ -84,7 +84,6 @@ const password = ref('')
     &-title {
       color: #000;
       text-align: center;
-      font-family: Pretendard;
       font-size: 32px;
       font-weight: 700;
       line-height: 44px;

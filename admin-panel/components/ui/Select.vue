@@ -78,7 +78,6 @@ const handleChange = (event: Event) => {
   font-size: 14px;
   line-height: 20px;
   color: #000;
-  font-family: Pretendard;
   font-weight: 400;
   &:placeholder {
     color: #7a7a7a;

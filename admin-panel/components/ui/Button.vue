@@ -100,7 +100,6 @@ const buttonClasses = computed(() => {
   align-items: center;
   gap: 4px;
   color: #fff;
-  font-family: Inter;
   font-size: 14px;
   font-weight: 600;
   border: 0;
@@ -217,7 +216,6 @@ const buttonClasses = computed(() => {
     line-height: 22px;
     background: #fff;
     border: 1px solid transparent;
-    font-family: Pretendard;
     &.active,
     &:hover,
     &:focus-visible {

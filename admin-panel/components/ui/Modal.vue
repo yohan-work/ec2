@@ -249,7 +249,6 @@ const handleBackdropClick = () => {
 #globalModal {
   .modal-body {
     color: #000;
-    font-family: Pretendard;
     font-size: 14px;
     line-height: 20px;
     text-align: left;
@@ -296,14 +295,12 @@ const handleBackdropClick = () => {
     .modal-header .modal-title {
       color: #000;
       text-align: center;
-      font-family: Pretendard;
       font-size: 24px;
       font-weight: 700;
       line-height: 36px;
     }
     .modal-body {
       color: #000;
-      font-family: Pretendard;
       font-size: 14px;
       line-height: 20px;
       text-align: left;
@@ -320,7 +317,6 @@ const handleBackdropClick = () => {
         gap: 6px;
         .time {
           color: #cd2323;
-          font-family: Pretendard;
           font-size: 20px;
           font-weight: 700;
           line-height: 28px;

@@ -184,7 +184,6 @@ const togglePasswordVisibility = () => {
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 8px;
-  font-family: Pretendard;
   font-weight: 700;
   span {
     font-weight: 400;

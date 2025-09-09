@@ -122,7 +122,6 @@ watch(
   border: none;
   background: transparent;
   color: rgba(153, 153, 153, 0.96);
-  font-family: Pretendard;
   font-size: 18px;
   font-weight: 400;
   cursor: pointer;

@@ -178,7 +178,6 @@ const handleLogout = () => {
     padding: 12px;
     border-radius: 8px;
     background: #fff;
-    font-family: Pretendard;
     font-size: 16px;
     font-weight: 400;
     line-height: 22px;
