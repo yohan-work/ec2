@@ -8,15 +8,15 @@ export const useYear = () => {
     selectedYear.value = year
   }
 
-  // 연도 옵션 생성 (2025년부터 내년까지)
+  // 연도 옵션 생성 (2025년부터 올해까지)
   const getYearOptions = () => {
     const currentYear = new Date().getFullYear()
     const nextYear = currentYear + 1
     const startYear = 2025
 
-    // 2025년부터 내년까지의 연도 배열 생성
+    // 2025년부터 올해까지의 연도 배열 생성
     const years = []
-    for (let year = startYear; year <= nextYear; year++) {
+    for (let year = startYear; year < nextYear; year++) {
       years.push(year)
     }
 
