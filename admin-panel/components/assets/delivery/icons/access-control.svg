@@ -1,12 +1,12 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g transform="translate(2, 2)">
     <!-- 동그라미 -->
-    <circle cx="10" cy="10" r="7" stroke="#4A4A4A" stroke-width="1.5" fill="none"/>
+    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
     
     <!-- IP 텍스트 (크게) -->
-    <text x="10" y="12" font-family="monospace" font-size="6" font-weight="bold" fill="#4A4A4A" text-anchor="middle">IP</text>
+    <text x="10" y="12" font-family="monospace" font-size="6" font-weight="bold" fill="currentColor" text-anchor="middle">IP</text>
     
     <!-- 사선 (접근 금지) -->
-    <line x1="4" y1="4" x2="16" y2="16" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round"/>
+    <line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
   </g>
 </svg>
