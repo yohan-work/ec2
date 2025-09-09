@@ -69,3 +69,10 @@ http://scripts.sil.org/OFL
 	font-display: swap;
 	src: local('Pretendard Thin'), url(./woff2/Pretendard-Thin.woff2) format('woff2'), url(./woff/Pretendard-Thin.woff) format('woff');
 }
+
+/* delivery-layout */
+html:has(.delivery-layout),
+body:has(.delivery-layout) {
+	font-family: 'Pretendard';
+	background-color: #f0f0f0;
+}

@@ -2,11 +2,11 @@
   <Loading :show="false" />
   <div class="delivery-layout">
     <!-- GNB (Global Navigation Bar) -->
-    <Gnb
+    <!-- <Gnb
       :is-login-page="true"
       :is-mobile-menu-open="isMobileMenuOpen"
       @toggle-mobile-menu="toggleMobileMenu"
-    />
+    /> -->
 
     <!-- 메인 콘텐츠 -->
     <div class="page-container">

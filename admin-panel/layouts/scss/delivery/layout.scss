@@ -9,8 +9,7 @@
   /* prettier-ignore */
   line-height: 1.5;
   color: #212529;
-  background: #f0f0f0 !important;
-  font-family: Pretendard;
+  background: #f0f0f0;
   &:has(.toolbar.show) {
     .page-container {
       padding: 24px 366px 0 40px;
@@ -21,12 +20,17 @@
 .page-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 60px); // 75px is gnb height
+  // height: calc(100vh - 60px); // 75px is gnb height
+  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: visible;
-  padding: 24px 40px 0;
+  padding: 24px 40px;
   transition: padding 0.3s ease;
+}
+.gnb ~ .page-container {
+  height: calc(100vh - 60px); // 75px is gnb height
+  padding: 24px 40px 0;
 }
 
 /* 애니메이션 */
