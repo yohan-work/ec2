@@ -74,7 +74,7 @@ const sliderStyle = computed(() => {
   const width = activeTabRect.width
 
   return {
-    width: `${width + 1}px`,
+    width: `${width}px`,
     left: `${left}px`,
   }
 })
@@ -95,9 +95,9 @@ watch(
   position: relative;
   display: flex;
   gap: 0;
-  border-radius: 4px;
+  border-radius: 999px;
   overflow: hidden;
-  background: #f2f2f2;
+  background: #ebebeb;
 }
 
 .tab-slider {
@@ -105,7 +105,7 @@ watch(
   top: 0;
   height: 100%;
   background: #fff;
-  border-radius: 4px;
+  border-radius: 999px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -121,19 +121,18 @@ watch(
   padding: 7px 32px;
   border: none;
   background: transparent;
-  color: rgba(153, 153, 153, 0.96);
+  color: #999;
   font-size: 18px;
-  font-weight: 400;
+  line-height: 26px;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
   flex: 1;
-  line-height: 26px;
   transition: color 0.2s ease;
   z-index: 2;
 
   &.active {
     color: #000;
-    font-weight: 700;
   }
 }
 </style>
