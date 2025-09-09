@@ -1,25 +1,5 @@
 <template>
-  <TitleArea title="조직 관리">
-    <template #left>
-      <Select
-        v-model="selectedYear"
-        :options="yearOptions"
-        placeholder="연도 선택"
-        @update:modelValue="handleYearChange"
-      />
-    </template>
-    <template #center>
-      <div class="center-content">
-        <span>조직 관리</span>
-      </div>
-    </template>
-    <template #right>
-      <div class="right-content">
-        <Button variant="outline" :size="36"> 필터 </Button>
-        <Button variant="primary" :size="36"> 새 조직 추가 </Button>
-      </div>
-    </template>
-  </TitleArea>
+  <TitleArea title="변경 히스토리"> </TitleArea>
   <ContentsArea>
     <p>내용</p>
   </ContentsArea>
@@ -45,7 +25,8 @@ definePageMeta({
 onMounted(() => {
   resetToCurrentYear()
 })
-const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } = useYear()
+const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } =
+  useYear()
 
 // 연도 변경 핸들러
 const handleYearChange = year => {
@@ -54,30 +35,30 @@ const handleYearChange = year => {
 
 // 테이블 데이터
 const tableHeaders = [
-  { key: 'department', label: '부서명' },
-  { key: 'manager', label: '부서장' },
-  { key: 'employeeCount', label: '직원 수' },
-  { key: 'budget', label: '예산' },
-  { key: 'status', label: '상태' },
-  { key: 'actions', label: '작업' },
+  { key: 'timestamp', label: '시간' },
+  { key: 'user', label: '사용자' },
+  { key: 'action', label: '작업' },
+  { key: 'target', label: '대상' },
+  { key: 'details', label: '상세' },
+  { key: 'ip', label: 'IP 주소' },
 ]
 
 const tableData = ref([
   {
-    department: '개발팀',
-    manager: '김철수',
-    employeeCount: 25,
-    budget: '₩500M',
-    status: '활성',
-    actions: '관리',
+    timestamp: '2024-01-15 14:30:25',
+    user: '김철수',
+    action: '수정',
+    target: '직원 정보',
+    details: '이메일 주소 변경',
+    ip: '192.168.1.100',
   },
   {
-    department: '마케팅팀',
-    manager: '이영희',
-    employeeCount: 12,
-    budget: '₩200M',
-    status: '활성',
-    actions: '관리',
+    timestamp: '2024-01-15 14:25:10',
+    user: '이영희',
+    action: '추가',
+    target: '프로젝트',
+    details: '새 프로젝트 생성',
+    ip: '192.168.1.101',
   },
 ])
 
@@ -85,7 +66,7 @@ const isLoading = ref(false)
 </script>
 
 <style lang="scss" scoped>
-.organizations-content {
+.history-content {
   padding: 24px;
 }
 

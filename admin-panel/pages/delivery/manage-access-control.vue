@@ -1,14 +1,11 @@
 <template>
-  <TitleArea title="고객사 관리">
-    <template #center>
-      <div class="center-content">
-        <span>고객사 관리</span>
-      </div>
-    </template>
+  <TitleArea title="프로젝트 관리">
     <template #right>
       <div class="right-content">
-        <Button variant="outline" :size="36"> 필터 </Button>
-        <Button variant="primary" :size="36"> 새 고객사 추가 </Button>
+        <Button variant="blue" :size="38">
+          <div v-html="addSvg"></div>
+          신규 접근 제어 추가
+        </Button>
       </div>
     </template>
   </TitleArea>
@@ -18,6 +15,7 @@
 </template>
 
 <script setup>
+import addSvg from '~/components/assets/delivery/icons/add.svg?raw'
 import TitleArea from '~/components/delivery/TitleArea.vue'
 import ContentsArea from '~/components/delivery/ContentsArea.vue'
 import Button from '~/components/ui/Button.vue'
@@ -26,52 +24,10 @@ import { onMounted } from 'vue'
 definePageMeta({
   layout: 'delivery',
 })
-
-// 메타 태그
-useHead({
-  title: 'CiX Delivery Management System',
-  meta: [{ name: 'description', content: 'CiX Delivery Management System' }],
-})
-
-// 페이지 로드 시 올해로 리셋
-onMounted(() => {
-  resetToCurrentYear()
-})
-
-// 테이블 데이터
-const tableHeaders = [
-  { key: 'companyName', label: '회사명' },
-  { key: 'contactPerson', label: '담당자' },
-  { key: 'email', label: '이메일' },
-  { key: 'phone', label: '전화번호' },
-  { key: 'status', label: '상태' },
-  { key: 'actions', label: '작업' },
-]
-
-const tableData = ref([
-  {
-    companyName: 'ABC Corp',
-    contactPerson: '김철수',
-    email: 'kim@abc.com',
-    phone: '02-1234-5678',
-    status: '활성',
-    actions: '관리',
-  },
-  {
-    companyName: 'XYZ Inc',
-    contactPerson: '이영희',
-    email: 'lee@xyz.com',
-    phone: '02-2345-6789',
-    status: '활성',
-    actions: '관리',
-  },
-])
-
-const isLoading = ref(false)
 </script>
 
 <style lang="scss" scoped>
-.clients-content {
+.projects-content {
   padding: 24px;
 }
 

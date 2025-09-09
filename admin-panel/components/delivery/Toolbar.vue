@@ -4,7 +4,7 @@
       <div class="toolbar-section">
         <div class="toolbar-menu-grid">
           <NuxtLink
-            to="/delivery/employees"
+            to="/delivery/manage-employees"
             class="btn"
             data-style="toolbar-menu"
           >
@@ -12,7 +12,7 @@
             <span>직원 관리</span>
           </NuxtLink>
           <NuxtLink
-            to="/delivery/clients"
+            to="/delivery/manage-clients"
             class="btn"
             data-style="toolbar-menu"
           >
@@ -20,7 +20,7 @@
             <span>고객사 관리</span>
           </NuxtLink>
           <NuxtLink
-            to="/delivery/organizations"
+            to="/delivery/manage-organizations"
             class="btn"
             data-style="toolbar-menu"
           >
@@ -31,28 +31,32 @@
       </div>
       <div class="toolbar-section">
         <div class="toolbar-menu-grid">
-          <NuxtLink to="/delivery/users" class="btn" data-style="toolbar-menu">
+          <NuxtLink
+            to="/delivery/manage-users"
+            class="btn"
+            data-style="toolbar-menu"
+          >
             <div v-html="userSvg"></div>
             <span>사용자 관리</span>
           </NuxtLink>
           <NuxtLink
-            to="/delivery/permissions"
+            to="/delivery/manage-permissions"
             class="btn"
             data-style="toolbar-menu"
           >
             <div v-html="permissionSvg"></div>
             <span>권한 관리</span>
           </NuxtLink>
-          <NuxtLink
-            to="/delivery/positions"
+          <!-- <NuxtLink
+            to="/delivery/manage-positions"
             class="btn"
             data-style="toolbar-menu"
           >
             <div v-html="positionSvg"></div>
             <span>직급 관리</span>
-          </NuxtLink>
+          </NuxtLink> -->
           <NuxtLink
-            to="/delivery/history"
+            to="/delivery/manage-history"
             class="btn"
             data-style="toolbar-menu"
           >
@@ -60,7 +64,7 @@
             <span>변경 히스토리</span>
           </NuxtLink>
           <NuxtLink
-            to="/delivery/access-control"
+            to="/delivery/manage-access-control"
             class="btn"
             data-style="toolbar-menu"
           >

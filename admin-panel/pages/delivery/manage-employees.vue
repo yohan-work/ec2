@@ -1,22 +1,11 @@
 <template>
-  <TitleArea title="권한 관리">
-    <template #left>
-      <Select
-        v-model="selectedYear"
-        :options="yearOptions"
-        placeholder="연도 선택"
-        @update:modelValue="handleYearChange"
-      />
-    </template>
-    <template #center>
-      <div class="center-content">
-        <span>권한 관리</span>
-      </div>
-    </template>
+  <TitleArea title="직원 관리">
     <template #right>
       <div class="right-content">
-        <Button variant="outline" :size="36"> 필터 </Button>
-        <Button variant="primary" :size="36"> 새 권한 추가 </Button>
+        <Button variant="blue" :size="38">
+          <div v-html="addSvg"></div>
+          신규 직원 추가
+        </Button>
       </div>
     </template>
   </TitleArea>
@@ -26,12 +15,10 @@
 </template>
 
 <script setup>
+import addSvg from '~/components/assets/delivery/icons/add.svg?raw'
 import TitleArea from '~/components/delivery/TitleArea.vue'
 import ContentsArea from '~/components/delivery/ContentsArea.vue'
-import Select from '~/components/ui/Select.vue'
 import Button from '~/components/ui/Button.vue'
-import Card from '~/components/ui/Card.vue'
-import Table from '~/components/ui/Table.vue'
 import { useYear } from '~/composables/useYear'
 import { onMounted } from 'vue'
 
@@ -45,7 +32,8 @@ definePageMeta({
 onMounted(() => {
   resetToCurrentYear()
 })
-const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } = useYear()
+const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } =
+  useYear()
 
 // 연도 변경 핸들러
 const handleYearChange = year => {
@@ -54,28 +42,31 @@ const handleYearChange = year => {
 
 // 테이블 데이터
 const tableHeaders = [
-  { key: 'permissionName', label: '권한명' },
-  { key: 'description', label: '설명' },
-  { key: 'category', label: '카테고리' },
-  { key: 'userCount', label: '사용자 수' },
+  { key: 'name', label: '이름' },
+  { key: 'employeeId', label: '사번' },
+  { key: 'department', label: '부서' },
+  { key: 'position', label: '직급' },
+  { key: 'email', label: '이메일' },
   { key: 'status', label: '상태' },
   { key: 'actions', label: '작업' },
 ]
 
 const tableData = ref([
   {
-    permissionName: '사용자 관리',
-    description: '사용자 정보 조회, 수정, 삭제',
-    category: '관리',
-    userCount: 5,
+    name: '김철수',
+    employeeId: 'EMP001',
+    department: '개발팀',
+    position: '팀장',
+    email: 'kim@company.com',
     status: '활성',
     actions: '관리',
   },
   {
-    permissionName: '프로젝트 조회',
-    description: '프로젝트 정보 조회',
-    category: '조회',
-    userCount: 25,
+    name: '이영희',
+    employeeId: 'EMP002',
+    department: '마케팅팀',
+    position: '대리',
+    email: 'lee@company.com',
     status: '활성',
     actions: '관리',
   },
@@ -85,7 +76,7 @@ const isLoading = ref(false)
 </script>
 
 <style lang="scss" scoped>
-.permissions-content {
+.employees-content {
   padding: 24px;
 }
 
