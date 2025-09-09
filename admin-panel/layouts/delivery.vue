@@ -32,8 +32,16 @@ defineOptions({
 useHead({
   link: [
     {
+      // Pretendard 폰트 CSS 링크
       rel: 'stylesheet',
       href: '/assets/fonts/pretendard.css',
+    },
+  ],
+  script: [
+    {
+      // warn 메시지 제거
+      innerHTML: 'console.warn = () => {}',
+      type: 'text/javascript',
     },
   ],
 })

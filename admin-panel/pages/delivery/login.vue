@@ -4,19 +4,22 @@
     <h1 class="login-form-title">Delivery Management System</h1>
     <div class="login-form">
       <div class="login-form-content">
-        <form class="login-form-content-left">
+        <form class="login-form-content-left" @submit.prevent="handleSubmit">
           <Input
             v-model="email"
             label="Concentrix Email Address"
-            type="text"
+            type="email"
             placeholder="Email Address"
-            error="Please enter your email address"
+            :error="errors.email"
+            @blur="validateEmail"
           />
           <Input
             v-model="password"
             label="System Password"
             type="password"
             placeholder="Password"
+            :error="errors.password"
+            @blur="validatePassword"
           />
           <Button
             type="submit"
@@ -24,9 +27,13 @@
             variant="primary"
             class="mt-5"
             fullWidth
+            :disabled="isSubmitting"
           >
-            Log in
+            {{ isSubmitting ? 'Logging in...' : 'Log in' }}
           </Button>
+          <div v-if="errors.general" class="error-message general-error">
+            {{ errors.general }}
+          </div>
         </form>
         <div class="login-form-content-right">
           <img
@@ -46,6 +53,7 @@ import Button from '~/components/ui/Button.vue'
 
 definePageMeta({
   layout: 'delivery-login',
+  ssr: false,
 })
 
 // 메타 태그
@@ -57,6 +65,88 @@ useHead({
 // 폼 데이터
 const email = ref('')
 const password = ref('')
+const isSubmitting = ref(false)
+
+// 에러 상태
+const errors = ref({
+  email: '',
+  password: '',
+  general: '',
+})
+
+// 이메일 validation
+const validateEmail = () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!email.value.trim()) {
+    errors.value.email = 'Email 주소를 입력해주세요.'
+    return false
+  }
+  if (
+    !emailRegex.test(email.value) ||
+    !email.value.endsWith('@concentrix.com')
+  ) {
+    errors.value.email =
+      '올바른 Email 주소를 입력해주세요. (예:user@concentrix.com)'
+    return false
+  }
+  errors.value.email = ''
+  return true
+}
+
+// 비밀번호 validation
+const validatePassword = () => {
+  if (!password.value.trim()) {
+    errors.value.password = 'Password를 입력해주세요.'
+    return false
+  }
+  errors.value.password = ''
+  return true
+}
+
+// 전체 폼 validation
+const validateForm = () => {
+  const isEmailValid = validateEmail()
+  const isPasswordValid = validatePassword()
+  return isEmailValid && isPasswordValid
+}
+
+// 폼 제출 처리
+const handleSubmit = async () => {
+  // 에러 초기화
+  errors.value.general = ''
+
+  // validation 체크
+  if (!validateForm()) {
+    return
+  }
+
+  isSubmitting.value = true
+
+  try {
+    // TODO: 실제 로그인 API 호출
+    console.log('로그인 시도:', {
+      email: email.value,
+      password: password.value,
+    })
+
+    // 임시 로딩 시뮬레이션
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    if (true) {
+      // 틀린 경우 로그인 실패 메시지 표시
+      errors.value.general = 'Email 주소나 Password가 맞지 않습니다.'
+      return
+    }
+
+    // 로그인 성공 시 리다이렉트
+    await navigateTo('/delivery')
+  } catch (error) {
+    // console.error('로그인 오류:', error)
+    errors.value.general = 'Email 주소나 Password가 맞지 않습니다.'
+  } finally {
+    isSubmitting.value = false
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -71,6 +161,7 @@ const password = ref('')
   background-color: #fff;
   padding: 32px 24px;
   border-radius: 16px;
+  margin: auto;
   .cix-logo {
     width: 108px;
     padding: 0 0 24px 0;
@@ -92,8 +183,10 @@ const password = ref('')
     &-content {
       display: flex;
       &-left {
+        display: flex;
+        flex-direction: column;
         flex: 1;
-        padding: 24px;
+        padding: 24px 24px 54px;
         .form-group {
           .form-label {
             font-weight: 700 !important;
@@ -101,10 +194,24 @@ const password = ref('')
         }
       }
       &-right {
-        width: (159px + 24px + 24px);
+        width: 159px + 24px + 24px;
         padding: 0 24px;
       }
     }
+  }
+}
+
+// 에러 메시지 스타일
+.error-message {
+  color: #cd2323;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  min-height: 16px;
+  margin-top: 6px;
+
+  &.general-error {
+    text-align: left;
   }
 }
 </style>
