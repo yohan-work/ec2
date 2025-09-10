@@ -20,7 +20,262 @@
     </template>
   </TitleArea>
   <ContentsArea>
-    <p>내용</p>
+    <div class="main-container">
+      <Table line>
+        <thead>
+          <tr>
+            <th rowspan="3">사업부/팀</th>
+            <th rowspan="3">영문 계약 명</th>
+            <th rowspan="3">MSA</th>
+            <th rowspan="3">Type</th>
+            <th colspan="2" rowspan="2">Project 기간</th>
+            <th colspan="2" rowspan="2">계약금액</th>
+            <th rowspan="3">단위</th>
+            <th rowspan="3">계약 여부</th>
+            <th rowspan="3">상태</th>
+            <th rowspan="3">Remark</th>
+            <th colspan="12">Total</th>
+            <th colspan="13">1월 MM</th>
+            <th colspan="13">2월 MM</th>
+            <th colspan="13">3월 MM</th>
+            <th colspan="13">4월 MM</th>
+            <th colspan="13">5월 MM</th>
+            <th colspan="13">6월 MM</th>
+            <th colspan="13">7월 MM</th>
+            <th colspan="13">8월 MM</th>
+            <th colspan="13">9월 MM</th>
+            <th colspan="13">10월 MM</th>
+            <th colspan="13">11월 MM</th>
+            <th colspan="13">12월 MM</th>
+          </tr>
+          <tr>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+            <th colspan="6">CPT MM</th>
+            <th colspan="6">실투입 MM</th>
+            <th rowspan="2">Labor Cost</th>
+          </tr>
+          <tr>
+            <th>from</th>
+            <th>to</th>
+            <th>Total ECR</th>
+            <th>CiX Rev</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+            <th>CL6</th>
+            <th>CL7</th>
+            <th>CL8B</th>
+            <th>CL8A</th>
+            <th>CL9B</th>
+            <th>CL9A</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Alpha</td>
+            <td>본부1</td>
+            <td>AccountA</td>
+            <td>Project Apollo</td>
+            <td>Apollo Contract</td>
+            <td>Y</td>
+            <td>Type1</td>
+            <td>2024-01-01</td>
+            <td>2024-12-31</td>
+            <td>1,000,000</td>
+            <td>800,000</td>
+            <td>USD</td>
+            <td>Yes</td>
+            <td>10</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+          </tr>
+        </tbody>
+      </Table>
+    </div>
   </ContentsArea>
 </template>
 
@@ -29,7 +284,6 @@ import TitleArea from '~/components/delivery/TitleArea.vue'
 import ContentsArea from '~/components/delivery/ContentsArea.vue'
 import Select from '~/components/ui/Select.vue'
 import Button from '~/components/ui/Button.vue'
-import Card from '~/components/ui/Card.vue'
 import Table from '~/components/ui/Table.vue'
 import { useYear } from '~/composables/useYear'
 import { onMounted } from 'vue'
@@ -44,128 +298,72 @@ definePageMeta({
 onMounted(() => {
   resetToCurrentYear()
 })
-const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } = useYear()
+const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } =
+  useYear()
 
 // 연도 변경 핸들러
 const handleYearChange = year => {
   setSelectedYear(year)
 }
-
-// 테이블 데이터
-const tableHeaders = [
-  { key: 'projectName', label: '프로젝트명' },
-  { key: 'client', label: '고객사' },
-  { key: 'totalMM', label: '총 MM' },
-  { key: 'usedMM', label: '사용 MM' },
-  { key: 'remainingMM', label: '잔여 MM' },
-  { key: 'status', label: '상태' },
-  { key: 'actions', label: '작업' },
-]
-
-const tableData = ref([
-  {
-    projectName: 'Project Alpha',
-    client: 'ABC Corp',
-    totalMM: 12.5,
-    usedMM: 8.2,
-    remainingMM: 4.3,
-    status: '진행중',
-    actions: '수정',
-  },
-  {
-    projectName: 'Project Beta',
-    client: 'XYZ Inc',
-    totalMM: 24.0,
-    usedMM: 24.0,
-    remainingMM: 0.0,
-    status: '완료',
-    actions: '보기',
-  },
-  {
-    projectName: 'Project Gamma',
-    client: 'DEF Ltd',
-    totalMM: 18.5,
-    usedMM: 5.1,
-    remainingMM: 13.4,
-    status: '진행중',
-    actions: '수정',
-  },
-])
-
-const isLoading = ref(false)
 </script>
 
 <style lang="scss" scoped>
-.project-mm-content {
-  padding: 24px;
-}
-
-.content-header {
-  margin-bottom: 24px;
-
-  h3 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 8px;
+/* 스타일이 필요한 경우 여기에 추가 */
+.main-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  border-radius: 20px 20px 0px 0px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  padding: 24px 32px 0;
+  thead tr {
+    &:nth-child(1) th {
+      &:nth-child(1),
+      &:nth-child(2),
+      &:nth-child(10) {
+        text-align: left;
+        min-width: 200px;
+      }
+      &:nth-child(1) {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+      }
+      &:nth-child(2) {
+        position: sticky;
+        left: 200px;
+        z-index: 2;
+      }
+    }
   }
-
-  p {
-    color: #6b7280;
-    font-size: 14px;
-  }
-}
-
-.content-body {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.stat-card {
-  padding: 20px;
-
-  .stat-content {
+  tbody td {
     text-align: center;
-
-    h4 {
-      font-size: 14px;
-      color: #6b7280;
-      margin-bottom: 8px;
-      font-weight: 500;
+    white-space: nowrap;
+    background: #fff;
+    z-index: 1;
+    &:nth-child(7),
+    &:nth-child(8) {
+      text-align: right;
+      white-space: nowrap;
     }
-
-    .stat-number {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1f2937;
+    &:nth-child(1),
+    &:nth-child(2),
+    &:nth-child(12) {
+      text-align: left;
+    }
+    &:nth-child(1) {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: #fff;
+    }
+    &:nth-child(2) {
+      position: sticky;
+      left: 200px;
+      z-index: 2;
     }
   }
-}
-
-.table-section {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.center-content {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  color: #374151;
-}
-
-.right-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 </style>

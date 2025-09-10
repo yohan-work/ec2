@@ -1,5 +1,5 @@
 <template>
-  <div class="table-wrapper">
+  <div class="table-wrapper" :class="{ line: props.line }">
     <table :class="tableClasses">
       <slot />
     </table>
@@ -20,7 +20,12 @@ interface Props {
     }>
   }>
   data?: Array<Record<string, any>>
+  line?: boolean
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  line: false,
+})
 
 const tableClasses = computed(() => {
   const baseClasses = 'table'
@@ -57,14 +62,35 @@ const tableClasses = computed(() => {
     border: 0;
   }
 
+  // line prop이 true일 때 적용되는 스타일
+  &.line :deep(thead) {
+    th {
+      vertical-align: middle;
+      &:after {
+        display: none;
+      }
+      &:before {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        width: calc(100% + 1px);
+        height: calc(100% + 1px);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        z-index: 0;
+      }
+    }
+  }
+
   :deep(thead) {
     position: sticky;
     top: 0;
     width: 100%;
     background: #fff;
-    z-index: 1;
+    z-index: 3;
     // tbody 상단 여백 추가
     border-bottom: 20px solid #fff;
+
     th {
       position: relative;
       color: #000;
@@ -86,6 +112,7 @@ const tableClasses = computed(() => {
         width: 100%;
         height: 1px;
         background: rgba(0, 0, 0, 0.3);
+        z-index: 0;
       }
       &:first-child:after {
         right: 0;
@@ -99,6 +126,7 @@ const tableClasses = computed(() => {
   }
 
   :deep(tbody) {
+    z-index: 1;
     // tbody 하단 여백 추가
     border-bottom: 20px solid #fff;
     tr {

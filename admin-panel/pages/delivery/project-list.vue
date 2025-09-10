@@ -21,7 +21,34 @@
     </template>
   </TitleArea>
   <ContentsArea>
-    <p>내용</p>
+    <div class="main-container">
+      <Table>
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th>Deal Name KR</th>
+            <th>Deal Name</th>
+            <th>MSA</th>
+            <th>Term</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>사용여부</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Samsung</td>
+            <td>삼성 반도체 브랜드데스크</td>
+            <td>Renewal_FY24: Semi-conductor brand desk operation</td>
+            <td>DOPDGNSEC</td>
+            <td>12</td>
+            <td>2024-01-01</td>
+            <td>2024-12-31</td>
+            <td>사용</td>
+          </tr>
+        </tbody>
+      </Table>
+    </div>
   </ContentsArea>
 </template>
 
@@ -30,8 +57,6 @@ import TitleArea from '~/components/delivery/TitleArea.vue'
 import ContentsArea from '~/components/delivery/ContentsArea.vue'
 import Select from '~/components/ui/Select.vue'
 import Button from '~/components/ui/Button.vue'
-import Card from '~/components/ui/Card.vue'
-import Input from '~/components/ui/Input.vue'
 import Table from '~/components/ui/Table.vue'
 import { useYear } from '~/composables/useYear'
 import { onMounted } from 'vue'
@@ -47,7 +72,8 @@ definePageMeta({
 onMounted(() => {
   resetToCurrentYear()
 })
-const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } = useYear()
+const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } =
+  useYear()
 
 // 연도 변경 핸들러
 const handleYearChange = year => {
@@ -265,5 +291,36 @@ const isLoading = ref(false)
   display: flex;
   align-items: center;
   gap: 12px;
+}
+</style>
+
+<style lang="scss" scoped>
+/* 스타일이 필요한 경우 여기에 추가 */
+.main-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  border-radius: 20px 20px 0px 0px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  padding: 24px 32px 0;
+  thead tr {
+    &:first-child th {
+      &:nth-child(2),
+      &:nth-child(10) {
+        text-align: left;
+        min-width: 200px;
+      }
+    }
+  }
+  tbody td {
+    text-align: center;
+    white-space: nowrap;
+    &:nth-child(2),
+    &:nth-child(10) {
+      text-align: left;
+    }
+  }
 }
 </style>
