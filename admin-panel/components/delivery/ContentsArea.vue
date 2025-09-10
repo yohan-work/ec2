@@ -19,6 +19,9 @@
   margin-right: -10px;
   padding-right: 10px;
   padding-bottom: 36px;
+  &:has(.main-container) {
+    padding-bottom: 0;
+  }
 
   /* Firefox 전용 */
   scrollbar-width: thin;

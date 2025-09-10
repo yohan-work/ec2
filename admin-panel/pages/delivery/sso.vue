@@ -10,17 +10,180 @@
     </template>
     <template #center>
       <div class="center-content">
-        <span>SSO 설정 관리</span>
+        <!-- <span>SSO 설정 관리</span> -->
       </div>
     </template>
     <template #right>
       <div class="right-content">
-        <Button variant="primary" :size="36"> SSO 설정 추가 </Button>
+        <!-- <Button variant="primary" :size="36"> SSO 설정 추가 </Button> -->
       </div>
     </template>
   </TitleArea>
   <ContentsArea>
-    <p>내용</p>
+    <div class="main-container">
+      <Table>
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th>Project Name</th>
+            <th>MSA</th>
+            <th>MSA Code</th>
+            <th>MSA Description</th>
+            <th>Competency</th>
+            <th>Roadmap</th>
+            <th>Vendor</th>
+            <th>Service Month</th>
+            <th>담당별 확인 필요</th>
+            <th>사용여부</th>
+            <th>Total</th>
+            <th>1월</th>
+            <th>2월</th>
+            <th>3월</th>
+            <th>4월</th>
+            <th>5월</th>
+            <th>6월</th>
+            <th>7월</th>
+            <th>8월</th>
+            <th>9월</th>
+            <th>10월</th>
+            <th>11월</th>
+            <th>12월</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AccountA</td>
+            <td>Project Apollo</td>
+            <td>Y</td>
+            <td>MSA001</td>
+            <td>MSA 계약 설명</td>
+            <td>Competency1</td>
+            <td>2024 Roadmap</td>
+            <td>VendorA</td>
+            <td>12</td>
+            <td>확인 필요</td>
+            <td>사용</td>
+            <td>120</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>AccountA</td>
+            <td>Project Apollo</td>
+            <td>Y</td>
+            <td>MSA001</td>
+            <td>MSA 계약 설명</td>
+            <td>Competency1</td>
+            <td>2024 Roadmap</td>
+            <td>VendorA</td>
+            <td>12</td>
+            <td>확인 필요</td>
+            <td>사용</td>
+            <td>120</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>AccountA</td>
+            <td>Project Apollo</td>
+            <td>Y</td>
+            <td>MSA001</td>
+            <td>MSA 계약 설명</td>
+            <td>Competency1</td>
+            <td>2024 Roadmap</td>
+            <td>VendorA</td>
+            <td>12</td>
+            <td>확인 필요</td>
+            <td>사용</td>
+            <td>120</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>AccountA</td>
+            <td>Project Apollo</td>
+            <td>Y</td>
+            <td>MSA001</td>
+            <td>MSA 계약 설명</td>
+            <td>Competency1</td>
+            <td>2024 Roadmap</td>
+            <td>VendorA</td>
+            <td>12</td>
+            <td>확인 필요</td>
+            <td>사용</td>
+            <td>120</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>AccountA</td>
+            <td>Project Apollo</td>
+            <td>Y</td>
+            <td>MSA001</td>
+            <td>MSA 계약 설명</td>
+            <td>Competency1</td>
+            <td>2024 Roadmap</td>
+            <td>VendorA</td>
+            <td>12</td>
+            <td>확인 필요</td>
+            <td>사용</td>
+            <td>120</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+            <td>10</td>
+          </tr>
+        </tbody>
+      </Table>
+    </div>
   </ContentsArea>
 </template>
 
@@ -29,8 +192,6 @@ import TitleArea from '~/components/delivery/TitleArea.vue'
 import ContentsArea from '~/components/delivery/ContentsArea.vue'
 import Select from '~/components/ui/Select.vue'
 import Button from '~/components/ui/Button.vue'
-import Card from '~/components/ui/Card.vue'
-import Badge from '~/components/ui/Badge.vue'
 import Table from '~/components/ui/Table.vue'
 import { useYear } from '~/composables/useYear'
 import { onMounted } from 'vue'
@@ -45,142 +206,42 @@ definePageMeta({
 onMounted(() => {
   resetToCurrentYear()
 })
-const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } = useYear()
+const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } =
+  useYear()
 
 // 연도 변경 핸들러
 const handleYearChange = year => {
   setSelectedYear(year)
 }
-
-// 테이블 데이터
-const tableHeaders = [
-  { key: 'name', label: '설정명' },
-  { key: 'type', label: '타입' },
-  { key: 'status', label: '상태' },
-  { key: 'lastSync', label: '마지막 동기화' },
-  { key: 'users', label: '연동 사용자 수' },
-  { key: 'actions', label: '작업' },
-]
-
-const tableData = ref([
-  {
-    name: 'AD Primary',
-    type: 'Active Directory',
-    status: '활성',
-    lastSync: '2024-01-15 14:30',
-    users: 156,
-    actions: '관리',
-  },
-  {
-    name: 'Google Workspace',
-    type: 'OAuth 2.0',
-    status: '활성',
-    lastSync: '2024-01-15 14:25',
-    users: 89,
-    actions: '관리',
-  },
-  {
-    name: 'SAML Provider',
-    type: 'SAML 2.0',
-    status: '비활성',
-    lastSync: '2024-01-10 09:15',
-    users: 0,
-    actions: '관리',
-  },
-])
-
-const isLoading = ref(false)
 </script>
 
 <style lang="scss" scoped>
-.sso-content {
-  padding: 24px;
-}
-
-.content-header {
-  margin-bottom: 24px;
-
-  h3 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 8px;
-  }
-
-  p {
-    color: #6b7280;
-    font-size: 14px;
-  }
-}
-
-.content-body {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.sso-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.sso-card {
-  padding: 20px;
-  border: 1px solid #e5e7eb;
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-
-    h4 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1f2937;
-      margin: 0;
+/* 스타일이 필요한 경우 여기에 추가 */
+.main-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  border-radius: 20px 20px 0px 0px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  padding: 24px 32px 0;
+  thead tr {
+    &:first-child th {
+      &:nth-child(2),
+      &:nth-child(10) {
+        text-align: left;
+        min-width: 200px;
+      }
     }
   }
-
-  .card-content {
-    p {
-      color: #6b7280;
-      font-size: 14px;
-      margin-bottom: 16px;
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 8px;
+  tbody td {
+    text-align: center;
+    white-space: nowrap;
+    &:nth-child(2),
+    &:nth-child(10) {
+      text-align: left;
     }
   }
-}
-
-.settings-section {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-
-  h4 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 16px;
-  }
-}
-
-.center-content {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  color: #374151;
-}
-
-.right-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 </style>
