@@ -21,7 +21,7 @@
   </TitleArea>
   <ContentsArea>
     <div class="main-container">
-      <Table line>
+      <Table>
         <thead>
           <tr>
             <th rowspan="3">사업부/팀</th>
@@ -290,6 +290,7 @@ import { onMounted } from 'vue'
 
 definePageMeta({
   layout: 'delivery',
+  ssr: false,
 })
 
 // 연도 관련 로직

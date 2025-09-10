@@ -22,7 +22,7 @@ export const useYear = () => {
 
     return years.map(year => ({
       value: year,
-      label: `${year}년`,
+      label: `${year}`,
       // 올해인 경우 기본 선택되도록 표시
       isCurrentYear: year === currentYear,
     }))

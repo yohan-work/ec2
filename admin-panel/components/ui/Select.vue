@@ -64,7 +64,7 @@ const handleChange = (event: Event) => {
   width: 100%;
   appearance: none;
   display: flex;
-  padding: 10px 36px 10px 12px;
+  padding: 10px 44px 10px 12px;
   align-items: center;
   flex: 1 0 0;
   border-radius: 4px;

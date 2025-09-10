@@ -171,6 +171,7 @@ import Table from '~/components/ui/Table.vue'
 
 definePageMeta({
   layout: 'delivery',
+  ssr: false,
 })
 </script>
 

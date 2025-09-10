@@ -35,6 +35,7 @@ import { useYear } from '~/composables/useYear'
 
 definePageMeta({
   layout: 'delivery',
+  ssr: false,
 })
 
 // 메타 태그

@@ -24,6 +24,7 @@ import { onMounted } from 'vue'
 
 definePageMeta({
   layout: 'delivery',
+  ssr: false,
 })
 
 // 연도 관련 로직

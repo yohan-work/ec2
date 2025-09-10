@@ -210,7 +210,6 @@ const toggleMobileMenu = () => {
     background: none;
     border: none;
     appearance: none;
-    outline: none;
 
     .gnb-hamburger-icon {
       width: 18px;

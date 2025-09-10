@@ -130,6 +130,8 @@ watch(
   flex: 1;
   transition: color 0.2s ease;
   z-index: 2;
+  border-radius: 999px;
+  outline-offset: -2px;
 
   &.active {
     color: #000;

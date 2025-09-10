@@ -1,5 +1,12 @@
 <template>
-  <div class="table-wrapper" :class="{ line: props.line }">
+  <div
+    class="table-wrapper"
+    :class="{
+      line: props.line,
+      'auto-width': props.autoWidth,
+      simple: props.simple,
+    }"
+  >
     <table :class="tableClasses">
       <slot />
     </table>
@@ -10,26 +17,19 @@
 import { computed } from 'vue'
 
 interface Props {
-  headers?: Array<{
-    label: string
-    rowspan?: number
-    colspan?: number
-    subHeaders?: Array<{
-      label: string
-      colspan?: number
-    }>
-  }>
-  data?: Array<Record<string, any>>
   line?: boolean
+  autoWidth?: boolean
+  simple?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   line: false,
+  autoWidth: false,
+  simple: false,
 })
 
 const tableClasses = computed(() => {
-  const baseClasses = 'table'
-  return [baseClasses].filter(Boolean).join(' ')
+  return 'table'
 })
 </script>
 
@@ -41,6 +41,55 @@ const tableClasses = computed(() => {
   overflow-x: auto;
   margin-right: -10px;
   padding-right: 10px;
+
+  &.auto-width {
+    width: auto;
+    table {
+      width: auto;
+    }
+  }
+
+  &.simple {
+    overflow: visible;
+    margin-right: 0;
+    padding-right: 0;
+    border-radius: 8px;
+    border: 1px solid #b3b3b3;
+    overflow: hidden;
+    table {
+      border: 0;
+      border-collapse: collapse;
+    }
+    :deep(thead) {
+      border-bottom: 0;
+      th {
+        border-bottom: 1px solid #b3b3b3;
+        border-right: 1px solid #b3b3b3;
+        &:last-child {
+          border-right: 0;
+        }
+      }
+      th:after {
+        display: none;
+      }
+    }
+    :deep(tbody) {
+      border-bottom: 0;
+      td {
+        position: relative;
+        text-align: center;
+        white-space: nowrap;
+        padding: 16px;
+      }
+      th,
+      td {
+        border-right: 1px solid #b3b3b3;
+        &:last-child {
+          border-right: 0;
+        }
+      }
+    }
+  }
   // 스크롤바 디자인
   &::-webkit-scrollbar {
     width: 6px;
@@ -64,19 +113,23 @@ const tableClasses = computed(() => {
 
   // line prop이 true일 때 적용되는 스타일
   &.line :deep(thead) {
-    th {
+    th,
+    td {
+      position: relative;
       vertical-align: middle;
+      text-align: center;
       &:after {
         display: none;
       }
       &:before {
+        display: block;
         content: '';
         position: absolute;
         bottom: -1px;
         right: -1px;
         width: calc(100% + 1px);
         height: calc(100% + 1px);
-        border: 1px solid rgba(0, 0, 0, 0.3);
+        border: 1px solid #b3b3b3;
         z-index: 0;
       }
     }
@@ -91,13 +144,13 @@ const tableClasses = computed(() => {
     // tbody 상단 여백 추가
     border-bottom: 20px solid #fff;
 
-    th {
+    th,
+    td {
       position: relative;
       color: #000;
       background: #fff;
       font-size: 16px;
       font-style: normal;
-      font-weight: 700;
       line-height: 22px; /* 137.5% */
       padding: 16px;
       text-align: center;
@@ -111,7 +164,7 @@ const tableClasses = computed(() => {
         left: 0;
         width: 100%;
         height: 1px;
-        background: rgba(0, 0, 0, 0.3);
+        background: #b3b3b3;
         z-index: 0;
       }
       &:first-child:after {
@@ -122,6 +175,9 @@ const tableClasses = computed(() => {
       &:last-child:after {
         width: 100%;
       }
+    }
+    th {
+      font-weight: 700;
     }
   }
 

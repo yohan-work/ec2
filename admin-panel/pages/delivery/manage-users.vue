@@ -23,6 +23,7 @@ import { onMounted } from 'vue'
 
 definePageMeta({
   layout: 'delivery',
+  ssr: false,
 })
 </script>
 
