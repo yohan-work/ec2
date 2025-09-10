@@ -269,19 +269,59 @@
               </select>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium mb-1"
-                >Cognito ID (선택)</label
-              >
-              <input
-                v-model="newAdmin.cognito_id"
-                type="text"
-                class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background"
-                placeholder="AWS Cognito User ID"
-              />
-              <p class="text-xs text-muted-foreground mt-1">
-                AWS Cognito와 연결하려면 입력하세요
-              </p>
+            <!-- Cognito 설정 섹션 -->
+            <div class="border-t pt-4">
+              <h3 class="text-sm font-medium mb-3">AWS Cognito 설정</h3>
+
+              <div class="space-y-3">
+                <!-- Cognito 자동 생성 옵션 -->
+                <div class="flex items-center space-x-2">
+                  <input
+                    v-model="newAdmin.create_cognito_user"
+                    type="checkbox"
+                    id="create_cognito_user"
+                    class="rounded border-input"
+                  />
+                  <label for="create_cognito_user" class="text-sm">
+                    Cognito 사용자 자동 생성
+                  </label>
+                </div>
+
+                <!-- 수동 Cognito ID 입력 (자동 생성이 비활성화된 경우) -->
+                <div v-if="!newAdmin.create_cognito_user">
+                  <label class="block text-sm font-medium mb-1">
+                    Cognito ID (선택)
+                  </label>
+                  <input
+                    v-model="newAdmin.cognito_id"
+                    type="text"
+                    class="w-full rounded-md border border-input px-3 py-2 text-sm bg-background"
+                    placeholder="AWS Cognito User ID"
+                  />
+                  <p class="text-xs text-muted-foreground mt-1">
+                    기존 Cognito 사용자 ID를 입력하세요
+                  </p>
+                </div>
+
+                <!-- 웰컴 이메일 발송 옵션 (자동 생성이 활성화된 경우) -->
+                <div v-if="newAdmin.create_cognito_user" class="space-y-2">
+                  <div class="flex items-center space-x-2">
+                    <input
+                      v-model="newAdmin.send_welcome_email"
+                      type="checkbox"
+                      id="send_welcome_email"
+                      class="rounded border-input"
+                    />
+                    <label for="send_welcome_email" class="text-sm">
+                      웰컴 이메일 발송
+                    </label>
+                  </div>
+                  <p class="text-xs text-muted-foreground">
+                    체크하면 사용자에게 로그인 정보가 이메일로 발송됩니다.
+                    체크하지 않으면 임시 비밀번호를 직접 전달해야 합니다.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div class="flex items-center">
@@ -351,6 +391,8 @@ const newAdmin = ref({
   role_id: '',
   cognito_id: '',
   is_active: true,
+  create_cognito_user: false, // Cognito 자동 생성 옵션
+  send_welcome_email: false, // 웰컴 이메일 발송 옵션
 })
 
 // 관리자 목록 조회
@@ -450,7 +492,7 @@ const createAdmin = async () => {
   try {
     createLoading.value = true
 
-    await $fetch('/api/admin/mngr', {
+    const response = await $fetch('/api/admin/mngr', {
       method: 'POST',
       body: newAdmin.value,
     })
@@ -459,7 +501,15 @@ const createAdmin = async () => {
     showCreateModal.value = false
     resetNewAdminForm()
     await fetchAdmins()
-    alert('새 관리자가 성공적으로 생성되었습니다.')
+
+    // 임시 비밀번호가 있는 경우 사용자에게 알림
+    if (response.data?.temporaryPassword) {
+      alert(
+        `새 관리자가 성공적으로 생성되었습니다.\n\n임시 비밀번호: ${response.data.temporaryPassword}\n\n이 비밀번호를 안전하게 사용자에게 전달해주세요.`
+      )
+    } else {
+      alert(response.message || '새 관리자가 성공적으로 생성되었습니다.')
+    }
   } catch (error) {
     console.error('관리자 생성 실패:', error)
     alert(error.data?.message || '관리자 생성에 실패했습니다.')
@@ -482,6 +532,8 @@ const resetNewAdminForm = () => {
     role_id: '',
     cognito_id: '',
     is_active: true,
+    create_cognito_user: false,
+    send_welcome_email: false,
   }
 }
 
