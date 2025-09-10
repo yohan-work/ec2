@@ -1,5 +1,6 @@
 import { prisma } from '../../../../lib/prisma'
 import { getAdminUserByCognitoId } from '../../../utils/auth'
+import { createCognitoUser } from '../../../utils/cognito'
 
 /**
  * 새로운 관리자 생성 API
@@ -8,12 +9,12 @@ import { getAdminUserByCognitoId } from '../../../utils/auth'
 export default defineEventHandler(async event => {
   try {
     // 최소한의 보안 검증: 헤더에서 cognito_id나 이메일을 확인
-    const cognitoUserId = getHeader(event, 'x-cognito-user-id')
+    const headerCognitoUserId = getHeader(event, 'x-cognito-user-id')
     const userEmail = getHeader(event, 'x-user-email')
 
     // 개발 모드가 아닌 경우 인증 필수
     if (process.env.NODE_ENV !== 'development') {
-      if (!cognitoUserId && !userEmail) {
+      if (!headerCognitoUserId && !userEmail) {
         throw createError({
           statusCode: 401,
           statusMessage: 'Unauthorized',
@@ -22,8 +23,8 @@ export default defineEventHandler(async event => {
       }
 
       // 관리자 존재 여부 확인
-      if (cognitoUserId) {
-        await getAdminUserByCognitoId(cognitoUserId)
+      if (headerCognitoUserId) {
+        await getAdminUserByCognitoId(headerCognitoUserId)
       } else if (userEmail) {
         const admin = await prisma.admin_users.findUnique({
           where: { email: userEmail, is_active: true },
@@ -115,6 +116,42 @@ export default defineEventHandler(async event => {
       })
     }
 
+    let newCognitoUserId = body.cognito_id || null
+    let temporaryPassword = null
+
+    // Cognito 자동 생성 옵션이 활성화된 경우
+    if (body.create_cognito_user === true && !newCognitoUserId) {
+      try {
+        console.log('Cognito 사용자 자동 생성 시작:', body.email)
+
+        const cognitoResult = await createCognitoUser({
+          email: body.email.toLowerCase().trim(),
+          sendWelcomeEmail: body.send_welcome_email || false,
+          userAttributes: {
+            name: body.name || body.email.split('@')[0], // 이름이 없으면 이메일 앞부분 사용
+          },
+        })
+
+        newCognitoUserId = cognitoResult.userId
+        temporaryPassword = cognitoResult.temporaryPassword
+
+        console.log('Cognito 사용자 생성 성공:', {
+          userId: newCognitoUserId,
+          email: body.email,
+          hasTemporaryPassword: !!temporaryPassword,
+        })
+      } catch (cognitoError: any) {
+        console.error('Cognito 사용자 생성 실패:', cognitoError)
+
+        // Cognito 생성 실패 시 에러 반환 (MySQL 생성하지 않음)
+        throw createError({
+          statusCode: 500,
+          statusMessage: 'Cognito User Creation Failed',
+          message: `Cognito 사용자 생성 실패: ${cognitoError.message}`,
+        })
+      }
+    }
+
     // 새로운 관리자 생성 (departments, roles 테이블 없이)
     const newAdmin = await prisma.admin_users.create({
       data: {
@@ -123,7 +160,7 @@ export default defineEventHandler(async event => {
         role_id: BigInt(body.role_id),
         is_active:
           body.is_active !== undefined ? Boolean(body.is_active) : true,
-        cognito_id: body.cognito_id || null, // Cognito ID가 있으면 설정
+        cognito_id: newCognitoUserId, // 자동 생성된 Cognito ID 또는 수동 입력된 ID
       },
       select: {
         id: true,
@@ -147,8 +184,13 @@ export default defineEventHandler(async event => {
 
     return {
       success: true,
-      data: serializedAdmin,
-      message: '새로운 관리자가 성공적으로 생성되었습니다.',
+      data: {
+        ...serializedAdmin,
+        temporaryPassword, // 임시 비밀번호 포함 (웰컴 이메일을 보내지 않은 경우)
+      },
+      message: newCognitoUserId
+        ? '새로운 관리자와 Cognito 사용자가 성공적으로 생성되었습니다.'
+        : '새로운 관리자가 성공적으로 생성되었습니다.',
     }
   } catch (error: any) {
     console.error('관리자 생성 오류:', error)
