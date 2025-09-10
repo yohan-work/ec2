@@ -1,21 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <!-- 헤더 -->
-    <div class="bg-white shadow">
-      <div class="px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-6">
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900">활동 로그</h1>
-            <p class="mt-2 text-sm text-gray-700">
-              시스템 활동 기록을 조회할 수 있습니다.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  <div>
     <!-- 메인 컨텐츠 -->
-    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div class="space-y-6">
       <!-- 필터 영역 -->
       <div class="bg-white shadow rounded-lg mb-6">
         <div class="px-6 py-4">
@@ -296,7 +282,7 @@
           </div>
         </div>
       </div>
-    </main>
+    </div>
 
     <!-- 로그 상세보기 모달 -->
     <Transition name="modal" appear>
@@ -423,6 +409,7 @@
 // 인증 확인을 위한 미들웨어 적용
 definePageMeta({
   middleware: 'auth',
+  layout: 'admin',
 })
 
 // 상태 관리
@@ -613,6 +600,17 @@ onUnmounted(() => {
 useHead({
   title: '활동 로그 - 관리자',
 })
+
+// 페이지 정보 설정 (admin 레이아웃에서 사용)
+const pageTitle = '활동 로그'
+const breadcrumbs = [
+  { label: '대시보드', to: '/dashboard' },
+  { label: '활동 로그', to: '/admin/logs' },
+]
+
+// 페이지 정보를 전역으로 제공
+provide('pageTitle', pageTitle)
+provide('breadcrumbs', breadcrumbs)
 </script>
 
 <style scoped>

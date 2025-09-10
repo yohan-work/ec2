@@ -1,44 +1,30 @@
 <template>
-  <div class="min-h-screen bg-background">
-    <!-- 헤더 -->
-    <header class="bg-card border-b">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center space-x-4">
-            <NuxtLink
-              to="/dashboard"
-              class="text-muted-foreground hover:text-foreground"
-            >
-              ← 대시보드
-            </NuxtLink>
-            <h1 class="text-xl font-semibold text-foreground">관리자 관리</h1>
-          </div>
-
-          <button
-            @click="showCreateModal = true"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
-          >
-            <svg
-              class="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            새 관리자 추가
-          </button>
-        </div>
-      </div>
-    </header>
-
+  <div>
     <!-- 메인 콘텐츠 -->
-    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div class="space-y-6">
+      <!-- 상단 액션 버튼 -->
+      <div class="flex justify-end mb-6">
+        <button
+          @click="showCreateModal = true"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
+        >
+          <svg
+            class="w-4 h-4 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          새 관리자 추가
+        </button>
+      </div>
+
       <!-- 필터 및 검색 -->
       <div class="bg-card rounded-lg shadow p-4 mb-6">
         <div class="flex flex-col sm:flex-row gap-4">
@@ -228,7 +214,7 @@
           </button>
         </div>
       </div>
-    </main>
+    </div>
 
     <!-- 관리자 생성 모달 -->
     <div
@@ -335,6 +321,7 @@
 // 인증 확인을 위한 미들웨어 적용
 definePageMeta({
   middleware: 'auth',
+  layout: 'admin',
 })
 
 const { user, getUserInfo } = useAuth()
@@ -509,4 +496,13 @@ useHead({
   title: '관리자 관리 - 관리자 대시보드',
   meta: [{ name: 'description', content: '시스템 관리자 관리' }],
 })
+
+const pageTitle = '관리자 관리'
+const breadcrumbs = [
+  { label: '대시보드', to: '/dashboard' },
+  { label: '관리자 관리', to: '/admin/mngr' },
+]
+
+provide('pageTitle', pageTitle)
+provide('breadcrumbs', breadcrumbs)
 </script>

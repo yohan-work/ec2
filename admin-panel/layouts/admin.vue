@@ -17,7 +17,9 @@
       <!-- 로고 영역 -->
       <div class="flex items-center px-6 py-4 border-b border-gray-200">
         <div class="flex items-center">
-          <img src="~/public/assets/concentrix-logo.svg" alt="" />
+          <a href="/dashboard">
+            <img src="~/public/assets/concentrix-logo.svg" alt="" />
+          </a>
         </div>
       </div>
 
