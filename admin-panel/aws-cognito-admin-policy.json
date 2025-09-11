@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:AdminCreateUser",
+        "cognito-idp:AdminSetUserPassword",
+        "cognito-idp:AdminAddUserToGroup",
+        "cognito-idp:AdminRemoveUserFromGroup",
+        "cognito-idp:AdminGetUser",
+        "cognito-idp:AdminUpdateUserAttributes",
+        "cognito-idp:AdminDeleteUser",
+        "cognito-idp:ListUsers",
+        "cognito-idp:AdminListGroupsForUser"
+      ],
+      "Resource": [
+        "arn:aws:cognito-idp:ap-northeast-2:145485527987:userpool/ap-northeast-2_SBoj7KV0k"
+      ]
+    }
+  ]
+}
