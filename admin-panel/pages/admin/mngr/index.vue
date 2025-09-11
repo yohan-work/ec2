@@ -312,14 +312,26 @@
                       id="send_welcome_email"
                       class="rounded border-input"
                     />
-                    <label for="send_welcome_email" class="text-sm">
-                      웰컴 이메일 발송
+                    <label for="send_welcome_email" class="text-sm font-medium">
+                      웰컴 이메일 자동 발송
                     </label>
                   </div>
-                  <p class="text-xs text-muted-foreground">
-                    체크하면 사용자에게 로그인 정보가 이메일로 발송됩니다.
-                    체크하지 않으면 임시 비밀번호를 직접 전달해야 합니다.
-                  </p>
+                  <div class="text-xs text-muted-foreground space-y-1">
+                    <p class="flex items-center">
+                      <span
+                        class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"
+                      ></span>
+                      <strong>체크 시:</strong> 사용자에게 로그인 정보가 포함된
+                      웰컴 이메일이 자동 발송됩니다.
+                    </p>
+                    <p class="flex items-center">
+                      <span
+                        class="inline-block w-2 h-2 bg-orange-500 rounded-full mr-2"
+                      ></span>
+                      <strong>체크 해제 시:</strong> 임시 비밀번호를 직접
+                      전달해야 합니다.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -392,7 +404,7 @@ const newAdmin = ref({
   cognito_id: '',
   is_active: true,
   create_cognito_user: false, // Cognito 자동 생성 옵션
-  send_welcome_email: false, // 웰컴 이메일 발송 옵션
+  send_welcome_email: true, // 웰컴 이메일 발송 옵션 (기본값: true)
 })
 
 // 관리자 목록 조회
@@ -502,8 +514,12 @@ const createAdmin = async () => {
     resetNewAdminForm()
     await fetchAdmins()
 
-    // 임시 비밀번호가 있는 경우 사용자에게 알림
-    if (response.data?.temporaryPassword) {
+    // 웰컴 이메일 발송 여부에 따른 알림 표시
+    if (response.data?.welcomeEmailSent) {
+      alert(
+        `${response.message}\n\n사용자는 이메일로 받은 임시 비밀번호로 로그인할 수 있습니다.`
+      )
+    } else if (response.data?.temporaryPassword) {
       alert(
         `새 관리자가 성공적으로 생성되었습니다.\n\n임시 비밀번호: ${response.data.temporaryPassword}\n\n이 비밀번호를 안전하게 사용자에게 전달해주세요.`
       )
@@ -533,7 +549,7 @@ const resetNewAdminForm = () => {
     cognito_id: '',
     is_active: true,
     create_cognito_user: false,
-    send_welcome_email: false,
+    send_welcome_email: true, // 기본값: true
   }
 }
 

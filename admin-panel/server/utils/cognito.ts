@@ -96,7 +96,11 @@ export async function createCognitoUser(
       Username: options.email, // 이메일을 사용자명으로 사용
       UserAttributes: userAttributes,
       TemporaryPassword: temporaryPassword,
-      MessageAction: MessageActionType.SUPPRESS, // 항상 웰컴 이메일 억제
+      // 웰컴 이메일 발송 여부에 따라 MessageAction 설정
+      // RESEND는 기존 사용자에게만 사용되므로, 새 사용자에게는 undefined로 설정하여 기본 웰컴 이메일 발송
+      ...(options.sendWelcomeEmail
+        ? {} // MessageAction을 설정하지 않으면 기본적으로 웰컴 이메일이 발송됨
+        : { MessageAction: MessageActionType.SUPPRESS }), // 웰컴 이메일 억제
       DesiredDeliveryMediums: [DeliveryMediumType.EMAIL],
     })
 
@@ -112,14 +116,24 @@ export async function createCognitoUser(
       email: options.email,
     })
 
-    // 임시 비밀번호로 사용자 생성 완료
-    // 사용자는 첫 로그인 시 비밀번호를 변경해야 함
-    console.log('사용자 생성 완료 - 임시 비밀번호 사용')
-
-    return {
-      userId,
-      email: options.email,
-      temporaryPassword: temporaryPassword, // 항상 임시 비밀번호 반환
+    // 웰컴 이메일 발송 여부에 따른 처리
+    if (options.sendWelcomeEmail) {
+      console.log(
+        '사용자 생성 완료 - 웰컴 이메일 발송됨 (임시 비밀번호는 이메일로 전달)'
+      )
+      return {
+        userId,
+        email: options.email,
+        // 웰컴 이메일을 보낸 경우 임시 비밀번호를 반환하지 않음 (보안상 이유)
+        temporaryPassword: undefined,
+      }
+    } else {
+      console.log('사용자 생성 완료 - 임시 비밀번호 직접 전달 필요')
+      return {
+        userId,
+        email: options.email,
+        temporaryPassword: temporaryPassword, // 웰컴 이메일을 보내지 않은 경우만 임시 비밀번호 반환
+      }
     }
   } catch (error: any) {
     console.error('=== Cognito 사용자 생성 실패 상세 정보 ===')
@@ -215,5 +229,35 @@ export async function addUserToGroup(
   } catch (error: any) {
     console.error('그룹 추가 실패:', error)
     throw new Error(`그룹 추가 실패: ${error.message}`)
+  }
+}
+
+/**
+ * Cognito 설정 검증
+ */
+export function validateCognitoConfiguration(): {
+  isValid: boolean
+  missingConfigs: string[]
+} {
+  const requiredConfigs = [
+    {
+      key: 'NUXT_PUBLIC_COGNITO_USER_POOL_ID',
+      value: process.env.NUXT_PUBLIC_COGNITO_USER_POOL_ID,
+    },
+    { key: 'AWS_ACCESS_KEY_ID', value: process.env.AWS_ACCESS_KEY_ID },
+    { key: 'AWS_SECRET_ACCESS_KEY', value: process.env.AWS_SECRET_ACCESS_KEY },
+    {
+      key: 'NUXT_PUBLIC_COGNITO_REGION',
+      value: process.env.NUXT_PUBLIC_COGNITO_REGION,
+    },
+  ]
+
+  const missingConfigs = requiredConfigs
+    .filter(config => !config.value)
+    .map(config => config.key)
+
+  return {
+    isValid: missingConfigs.length === 0,
+    missingConfigs,
   }
 }

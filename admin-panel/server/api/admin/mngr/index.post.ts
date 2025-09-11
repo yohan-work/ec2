@@ -1,6 +1,9 @@
 import { prisma } from '../../../../lib/prisma'
 import { getAdminUserByCognitoId } from '../../../utils/auth'
-import { createCognitoUser } from '../../../utils/cognito'
+import {
+  createCognitoUser,
+  validateCognitoConfiguration,
+} from '../../../utils/cognito'
 
 /**
  * 새로운 관리자 생성 API
@@ -121,6 +124,16 @@ export default defineEventHandler(async event => {
 
     // Cognito 자동 생성 옵션이 활성화된 경우
     if (body.create_cognito_user === true && !newCognitoUserId) {
+      // Cognito 설정 검증
+      const cognitoValidation = validateCognitoConfiguration()
+      if (!cognitoValidation.isValid) {
+        throw createError({
+          statusCode: 500,
+          statusMessage: 'Cognito Configuration Error',
+          message: `Cognito 설정이 누락되었습니다: ${cognitoValidation.missingConfigs.join(', ')}`,
+        })
+      }
+
       try {
         console.log('Cognito 사용자 자동 생성 시작:', body.email)
 
@@ -182,15 +195,27 @@ export default defineEventHandler(async event => {
       role_id: newAdmin.role_id.toString(),
     }
 
+    // 성공 메시지 생성
+    let successMessage = '새로운 관리자가 성공적으로 생성되었습니다.'
+
+    if (newCognitoUserId) {
+      if (body.send_welcome_email) {
+        successMessage =
+          '새로운 관리자와 Cognito 사용자가 성공적으로 생성되었습니다. 웰컴 이메일이 발송되었습니다.'
+      } else {
+        successMessage =
+          '새로운 관리자와 Cognito 사용자가 성공적으로 생성되었습니다. 임시 비밀번호를 안전하게 전달해주세요.'
+      }
+    }
+
     return {
       success: true,
       data: {
         ...serializedAdmin,
-        temporaryPassword, // 임시 비밀번호 포함 (웰컴 이메일을 보내지 않은 경우)
+        temporaryPassword, // 임시 비밀번호 포함 (웰컴 이메일을 보내지 않은 경우만)
+        welcomeEmailSent: body.send_welcome_email || false, // 웰컴 이메일 발송 여부
       },
-      message: newCognitoUserId
-        ? '새로운 관리자와 Cognito 사용자가 성공적으로 생성되었습니다.'
-        : '새로운 관리자가 성공적으로 생성되었습니다.',
+      message: successMessage,
     }
   } catch (error: any) {
     console.error('관리자 생성 오류:', error)
