@@ -31,14 +31,23 @@ export default defineEventHandler(async (event) => {
     // 전체 개수 조회
     const total = await prisma.newsletters.count({ where })
 
+    // 정렬 조건 설정
+    let orderBy: any = { created_at: 'desc' }
+    
+    // 발행된 뉴스레터의 경우 display_order로 정렬, 그 외는 생성일 역순
+    if (status === 'published') {
+      orderBy = [
+        { display_order: 'asc' },
+        { created_at: 'desc' }
+      ] as any
+    }
+
     // 뉴스레터 목록 조회 (작성자 정보 포함)
     const newsletters = await prisma.newsletters.findMany({
       where,
       skip,
       take: limit,
-      orderBy: {
-        created_at: 'desc'
-      },
+      orderBy,
       include: {
         admin_users: {
           select: {
