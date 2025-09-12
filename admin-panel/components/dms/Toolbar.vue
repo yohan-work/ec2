@@ -4,27 +4,27 @@
       <div class="toolbar-section">
         <div class="toolbar-menu-grid">
           <NuxtLink
-            to="/delivery/manage-employees"
+            to="/dms/manage-employees"
             class="btn"
-            :class="{ active: isActiveRoute('/delivery/manage-employees') }"
+            :class="{ active: isActiveRoute('/dms/manage-employees') }"
             data-style="toolbar-menu"
           >
             <div v-html="employeeSvg"></div>
             <span>직원 관리</span>
           </NuxtLink>
           <NuxtLink
-            to="/delivery/manage-clients"
+            to="/dms/manage-clients"
             class="btn"
-            :class="{ active: isActiveRoute('/delivery/manage-clients') }"
+            :class="{ active: isActiveRoute('/dms/manage-clients') }"
             data-style="toolbar-menu"
           >
             <div v-html="clientSvg"></div>
             <span>고객사 관리</span>
           </NuxtLink>
           <NuxtLink
-            to="/delivery/manage-organizations"
+            to="/dms/manage-organizations"
             class="btn"
-            :class="{ active: isActiveRoute('/delivery/manage-organizations') }"
+            :class="{ active: isActiveRoute('/dms/manage-organizations') }"
             data-style="toolbar-menu"
           >
             <div v-html="organizationSvg"></div>
@@ -35,25 +35,25 @@
       <div class="toolbar-section">
         <div class="toolbar-menu-grid">
           <NuxtLink
-            to="/delivery/manage-users"
+            to="/dms/manage-users"
             class="btn"
-            :class="{ active: isActiveRoute('/delivery/manage-users') }"
+            :class="{ active: isActiveRoute('/dms/manage-users') }"
             data-style="toolbar-menu"
           >
             <div v-html="userSvg"></div>
             <span>사용자 관리</span>
           </NuxtLink>
           <NuxtLink
-            to="/delivery/manage-permissions"
+            to="/dms/manage-permissions"
             class="btn"
-            :class="{ active: isActiveRoute('/delivery/manage-permissions') }"
+            :class="{ active: isActiveRoute('/dms/manage-permissions') }"
             data-style="toolbar-menu"
           >
             <div v-html="permissionSvg"></div>
             <span>권한 관리</span>
           </NuxtLink>
           <!-- <NuxtLink
-            to="/delivery/manage-positions"
+            to="/dms/manage-positions"
             class="btn"
             data-style="toolbar-menu"
           >
@@ -61,18 +61,18 @@
             <span>직급 관리</span>
           </NuxtLink> -->
           <NuxtLink
-            to="/delivery/manage-history"
+            to="/dms/manage-history"
             class="btn"
-            :class="{ active: isActiveRoute('/delivery/manage-history') }"
+            :class="{ active: isActiveRoute('/dms/manage-history') }"
             data-style="toolbar-menu"
           >
             <div v-html="historySvg"></div>
             <span>변경 히스토리</span>
           </NuxtLink>
           <NuxtLink
-            to="/delivery/manage-access-control"
+            to="/dms/manage-access-control"
             class="btn"
-            :class="{ active: isActiveRoute('/delivery/manage-access-control') }"
+            :class="{ active: isActiveRoute('/dms/manage-access-control') }"
             data-style="toolbar-menu"
           >
             <div v-html="accessControlSvg"></div>
@@ -99,16 +99,16 @@
 </template>
 
 <script setup lang="ts">
-import changePasswordSvg from '~/components/assets/delivery/icons/change-password.svg?raw'
-import logoutSvg from '~/components/assets/delivery/icons/logout.svg?raw'
-import employeeSvg from '~/components/assets/delivery/icons/employee.svg?raw'
-import clientSvg from '~/components/assets/delivery/icons/client.svg?raw'
-import organizationSvg from '~/components/assets/delivery/icons/organization.svg?raw'
-import userSvg from '~/components/assets/delivery/icons/user.svg?raw'
-import permissionSvg from '~/components/assets/delivery/icons/permission.svg?raw'
-import positionSvg from '~/components/assets/delivery/icons/position.svg?raw'
-import historySvg from '~/components/assets/delivery/icons/history.svg?raw'
-import accessControlSvg from '~/components/assets/delivery/icons/access-control.svg?raw'
+import changePasswordSvg from '~/components/assets/dms/icons/change-password.svg?raw'
+import logoutSvg from '~/components/assets/dms/icons/logout.svg?raw'
+import employeeSvg from '~/components/assets/dms/icons/employee.svg?raw'
+import clientSvg from '~/components/assets/dms/icons/client.svg?raw'
+import organizationSvg from '~/components/assets/dms/icons/organization.svg?raw'
+import userSvg from '~/components/assets/dms/icons/user.svg?raw'
+import permissionSvg from '~/components/assets/dms/icons/permission.svg?raw'
+import positionSvg from '~/components/assets/dms/icons/position.svg?raw'
+import historySvg from '~/components/assets/dms/icons/history.svg?raw'
+import accessControlSvg from '~/components/assets/dms/icons/access-control.svg?raw'
 
 // Props 정의
 interface Props {

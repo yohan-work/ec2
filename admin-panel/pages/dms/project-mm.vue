@@ -280,8 +280,8 @@
 </template>
 
 <script setup>
-import TitleArea from '~/components/delivery/TitleArea.vue'
-import ContentsArea from '~/components/delivery/ContentsArea.vue'
+import TitleArea from '~/components/dms/TitleArea.vue'
+import ContentsArea from '~/components/dms/ContentsArea.vue'
 import Select from '~/components/ui/Select.vue'
 import Button from '~/components/ui/Button.vue'
 import Table from '~/components/ui/Table.vue'
@@ -289,7 +289,7 @@ import { useYear } from '~/composables/useYear'
 import { onMounted } from 'vue'
 
 definePageMeta({
-  layout: 'delivery',
+  layout: 'dms',
   ssr: false,
 })
 

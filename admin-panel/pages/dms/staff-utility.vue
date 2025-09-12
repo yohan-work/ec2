@@ -136,9 +136,9 @@
 </template>
 
 <script setup>
-import editSvg from '~/components/assets/delivery/icons/edit.svg?raw'
-import TitleArea from '~/components/delivery/TitleArea.vue'
-import ContentsArea from '~/components/delivery/ContentsArea.vue'
+import editSvg from '~/components/assets/dms/icons/edit.svg?raw'
+import TitleArea from '~/components/dms/TitleArea.vue'
+import ContentsArea from '~/components/dms/ContentsArea.vue'
 import Select from '~/components/ui/Select.vue'
 import Button from '~/components/ui/Button.vue'
 import Table from '~/components/ui/Table.vue'
@@ -147,7 +147,7 @@ import { onMounted } from 'vue'
 import { useYear } from '~/composables/useYear'
 
 definePageMeta({
-  layout: 'delivery',
+  layout: 'dms',
   ssr: false,
 })
 

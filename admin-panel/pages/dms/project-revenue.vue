@@ -165,12 +165,12 @@
 </template>
 
 <script setup>
-import TitleArea from '~/components/delivery/TitleArea.vue'
-import ContentsArea from '~/components/delivery/ContentsArea.vue'
+import TitleArea from '~/components/dms/TitleArea.vue'
+import ContentsArea from '~/components/dms/ContentsArea.vue'
 import Table from '~/components/ui/Table.vue'
 
 definePageMeta({
-  layout: 'delivery',
+  layout: 'dms',
   ssr: false,
 })
 </script>

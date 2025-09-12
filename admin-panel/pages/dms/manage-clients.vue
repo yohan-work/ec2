@@ -15,14 +15,14 @@
 </template>
 
 <script setup>
-import addSvg from '~/components/assets/delivery/icons/add.svg?raw'
-import TitleArea from '~/components/delivery/TitleArea.vue'
-import ContentsArea from '~/components/delivery/ContentsArea.vue'
+import addSvg from '~/components/assets/dms/icons/add.svg?raw'
+import TitleArea from '~/components/dms/TitleArea.vue'
+import ContentsArea from '~/components/dms/ContentsArea.vue'
 import Button from '~/components/ui/Button.vue'
 import { onMounted } from 'vue'
 
 definePageMeta({
-  layout: 'delivery',
+  layout: 'dms',
   ssr: false,
 })
 

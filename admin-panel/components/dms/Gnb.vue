@@ -2,7 +2,7 @@
   <div class="gnb">
     <div class="gnb-container">
       <div class="gnb-title">
-        <NuxtLink to="/delivery/">
+        <NuxtLink to="/dms/">
           <div class="logo" v-html="concentrixLogoSvg"></div>
           <div class="cix-logo" v-html="cixLogoSvg"></div>
         </NuxtLink>
@@ -11,28 +11,28 @@
       <!-- 로그인 페이지인 경우 메뉴 숨김 -->
       <template v-if="!props.isLoginPage">
         <div class="gnb-menu">
-          <NuxtLink to="/delivery/project-revenue/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/project-revenue/') }">
+          <NuxtLink to="/dms/project-revenue/">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/project-revenue/') }">
               <span>Project Revenue</span>
             </div>
           </NuxtLink>
-          <NuxtLink to="/delivery/project-mm/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/project-mm/') }">
+          <NuxtLink to="/dms/project-mm/">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/project-mm/') }">
               <span>Project MM</span>
             </div>
           </NuxtLink>
-          <NuxtLink to="/delivery/sso/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/sso/') }">
+          <NuxtLink to="/dms/sso/">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/sso/') }">
               <span>SSO</span>
             </div>
           </NuxtLink>
-          <NuxtLink to="/delivery/staff-utility/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/staff-utility/') }">
+          <NuxtLink to="/dms/staff-utility/">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/staff-utility/') }">
               <span>Staff (Utility)</span>
             </div>
           </NuxtLink>
-          <NuxtLink to="/delivery/project-list/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/project-list/') }">
+          <NuxtLink to="/dms/project-list/">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/project-list/') }">
               <span>Project List</span>
             </div>
           </NuxtLink>
@@ -59,8 +59,8 @@
 </template>
 
 <script setup lang="ts">
-import concentrixLogoSvg from '~/components/assets/delivery/icons/concentrix-logo.svg?raw'
-import cixLogoSvg from '~/components/assets/delivery/icons/cix-logo.svg?raw'
+import concentrixLogoSvg from '~/components/assets/dms/icons/concentrix-logo.svg?raw'
+import cixLogoSvg from '~/components/assets/dms/icons/cix-logo.svg?raw'
 
 // Props 정의
 interface Props {

@@ -37,7 +37,7 @@
         </form>
         <div class="login-form-content-right">
           <img
-            src="~/public/assets/delivery/ux1team.svg"
+            src="~/public/assets/dms/ux1team.svg"
             alt="Concentrix CiX UX/UI 1 Team"
           />
         </div>
@@ -47,12 +47,12 @@
 </template>
 
 <script setup lang="ts">
-import cixLogoSvg from '~/components/assets/delivery/icons/cix-logo.svg?raw'
+import cixLogoSvg from '~/components/assets/dms/icons/cix-logo.svg?raw'
 import Input from '~/components/ui/Input.vue'
 import Button from '~/components/ui/Button.vue'
 
 definePageMeta({
-  layout: 'delivery-login',
+  layout: 'dms-login',
 })
 
 // 메타 태그
@@ -138,7 +138,7 @@ const handleSubmit = async () => {
     }
 
     // 로그인 성공 시 리다이렉트
-    await navigateTo('/delivery')
+    await navigateTo('/dms')
   } catch (error) {
     // console.error('로그인 오류:', error)
     errors.value.general = 'Email 주소나 Password가 맞지 않습니다.'

@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import modifySvg from '~/components/assets/delivery/icons/modify.svg?raw'
+import modifySvg from '~/components/assets/dms/icons/modify.svg?raw'
 import Button from '~/components/ui/Button.vue'
 
 interface Props {

@@ -108,17 +108,17 @@
 </template>
 
 <script setup lang="ts">
-import officeSvg from '~/components/assets/delivery/icons/office.svg?raw'
-import modifySvg from '~/components/assets/delivery/icons/modify.svg?raw'
-import deleteSvg from '~/components/assets/delivery/icons/delete.svg?raw'
-import addSvg from '~/components/assets/delivery/icons/add.svg?raw'
-import TitleArea from '~/components/delivery/TitleArea.vue'
-import ContentsArea from '~/components/delivery/ContentsArea.vue'
+import officeSvg from '~/components/assets/dms/icons/office.svg?raw'
+import modifySvg from '~/components/assets/dms/icons/modify.svg?raw'
+import deleteSvg from '~/components/assets/dms/icons/delete.svg?raw'
+import addSvg from '~/components/assets/dms/icons/add.svg?raw'
+import TitleArea from '~/components/dms/TitleArea.vue'
+import ContentsArea from '~/components/dms/ContentsArea.vue'
 import Button from '~/components/ui/Button.vue'
-import PermissionCard from '~/components/delivery/permissionCard.vue'
+import PermissionCard from '~/components/dms/permissionCard.vue'
 
 definePageMeta({
-  layout: 'delivery',
+  layout: 'dms',
   ssr: false,
 })
 

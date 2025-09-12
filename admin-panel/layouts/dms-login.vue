@@ -1,6 +1,6 @@
 <template>
   <Loading :show="false" />
-  <div class="delivery-layout">
+  <div class="dms-layout">
     <!-- GNB (Global Navigation Bar) -->
     <!-- <Gnb
       :is-login-page="true"
@@ -17,11 +17,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import Gnb from '~/components/delivery/Gnb.vue'
+import Gnb from '~/components/dms/Gnb.vue'
 import Loading from '~/components/ui/Loading.vue'
 
 defineOptions({
-  name: 'delivery-login',
+  name: 'dms-login',
 })
 
 // Pretendard 폰트 CSS 링크
@@ -51,5 +51,5 @@ const toggleMobileMenu = () => {
 </script>
 
 <style lang="scss" scoped>
-@use './scss/delivery.scss';
+@use './scss/dms.scss';
 </style>

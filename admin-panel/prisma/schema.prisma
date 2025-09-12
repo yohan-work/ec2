@@ -121,3 +121,7 @@ enum recruits_status {
   closed
   archived
 }
+
+
+// DMS 용 model은 아래쪽에 등록 예정입니다. 
+

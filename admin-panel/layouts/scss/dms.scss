@@ -1,0 +1,8 @@
+// dms 레이아웃 전용 스타일
+// 이 파일은 dms.vue에서 자동으로 import됩니다
+
+@use './dms/layout.scss';
+@use './dms/side-panel.scss';
+@use './dms/form.scss';
+@use './dms/audit-logs.scss';
+@use './dms/admin-management.scss';
