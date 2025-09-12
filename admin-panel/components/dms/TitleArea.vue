@@ -34,13 +34,13 @@ const props = defineProps({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   min-height: 40px;
 
   .title-area-left {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 16px;
 
     h1 {
       color: #333;

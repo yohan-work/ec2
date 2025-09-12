@@ -1,5 +1,15 @@
 <template>
   <TitleArea title="Staff(Utility)">
+    <template #left>
+      <div class="left-content">
+        <Select
+          v-model="selectedYear"
+          :options="yearOptions"
+          placeholder="Year"
+          @update:modelValue="handleYearChange"
+        />
+      </div>
+    </template>
     <template #center>
       <div class="center-content">
         <div class="filter-buttons">
@@ -9,12 +19,6 @@
     </template>
     <template #right>
       <div class="right-content">
-        <Select
-          v-model="selectedYear"
-          :options="yearOptions"
-          placeholder="Year"
-          @update:modelValue="handleYearChange"
-        />
         <Button variant="blue" :size="40" :padding="16">
           <div v-html="editSvg"></div>
           Edit
@@ -27,107 +31,555 @@
       <Table>
         <thead>
           <tr>
-            <th rowspan="2" colspan="7"></th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
-            <th>Total</th>
-            <th>Total HC</th>
-            <th>Utilization(%)</th>
+            <th colspan="7" class="border-sticky-right">MSA & Billable Utilization</th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">1월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">2월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">3월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">4월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">5월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">6월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">7월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">8월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">9월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">10월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">11월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
+            <th colspan="3">
+              <div class="month-cell">
+                <div class="month-cell-title">12월</div>
+                <div class="month-cell-box">
+                  <strong>10</strong>
+                  <span>Total Util</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>50</strong>
+                  <span>Total HC</span>
+                </div>
+                <div class="month-cell-box">
+                  <strong>80%</strong>
+                  <span>Utilization(%)</span>
+                </div>
+              </div>
+            </th>
           </tr>
           <tr>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-            <td>40</td>
-            <td>50</td>
-            <td>80%</td>
-          </tr>
-          <tr>
-            <th rowspan="2">그룹</th>
-            <th rowspan="2">매니저</th>
-            <th rowspan="2">이름</th>
-            <th rowspan="2">직급</th>
-            <th rowspan="2">직무</th>
-            <th rowspan="2">CL</th>
-            <th rowspan="2">변동사항</th>
-            <th colspan="3">1월</th>
-            <th colspan="3">2월</th>
-            <th colspan="3">3월</th>
-            <th colspan="3">4월</th>
-            <th colspan="3">5월</th>
-            <th colspan="3">6월</th>
-            <th colspan="3">7월</th>
-            <th colspan="3">8월</th>
-            <th colspan="3">9월</th>
-            <th colspan="3">10월</th>
-            <th colspan="3">11월</th>
-            <th colspan="3">12월</th>
+            <th>그룹</th>
+            <th>매니저</th>
+            <th>이름</th>
+            <th>직급</th>
+            <th>직무</th>
+            <th>CL</th>
+            <th class="border-sticky-right">변동사항</th>
+            <!-- 1월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 2월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 3월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 4월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 5월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 6월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 7월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 8월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 9월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 10월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 11월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
+            <!-- 12월 -->
+            <th>Util</th>
+            <th>Project (영문)</th>
+            <th class="border-right">MSA</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td></td>
+            <td>UX/UI</td>
+            <td>홍길동</td>
+            <td>홍길동</td>
+            <td>대리</td>
+            <td>디자인</td>
+            <td>CL7</td>
+            <td class="border-sticky-right">-</td>
+            <!-- 1월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 2월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 3월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 4월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 5월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 6월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 7월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 8월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 9월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 10월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 11월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 12월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+          </tr>
+          <tr>
+            <td>컨텐츠</td>
+            <td>홍길동</td>
+            <td>홍길동</td>
+            <td>대리</td>
+            <td>디자인</td>
+            <td>CL7</td>
+            <td class="border-sticky-right">-</td>
+            <!-- 1월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 2월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 3월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 4월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 5월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+           <td class="border-right">DOPDGNAMORE</td>
+            <!-- 6월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+           <td class="border-right">DOPDGNAMORE</td>
+            <!-- 7월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 8월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 9월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 10월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 11월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 12월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+          </tr>
+          <tr>
+            <td>UX/UI</td>
+            <td>홍길동</td>
+            <td>홍길동</td>
+            <td>대리</td>
+            <td>디자인</td>
+            <td>CL7</td>
+            <td class="border-sticky-right">-</td>
+            <!-- 1월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 2월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 3월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 4월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 5월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+           <td class="border-right">DOPDGNAMORE</td>
+            <!-- 6월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+           <td class="border-right">DOPDGNAMORE</td>
+            <!-- 7월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 8월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 9월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 10월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 11월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 12월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+          </tr>
+          <tr>
+            <td>UX/UI</td>
+            <td>홍길동</td>
+            <td>홍길동</td>
+            <td>대리</td>
+            <td>디자인</td>
+            <td>CL7</td>
+            <td class="border-sticky-right">-</td>
+            <!-- 1월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 2월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 3월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 4월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 5월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+           <td class="border-right">DOPDGNAMORE</td>
+            <!-- 6월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+           <td class="border-right">DOPDGNAMORE</td>
+            <!-- 7월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 8월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 9월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 10월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 11월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 12월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+          </tr>
+          <tr>
+            <td>UX/UI</td>
+            <td>홍길동</td>
+            <td>홍길동</td>
+            <td>대리</td>
+            <td>디자인</td>
+            <td>CL7</td>
+            <td class="border-sticky-right">-</td>
+            <!-- 1월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 2월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 3월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 4월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 5월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+           <td class="border-right">DOPDGNAMORE</td>
+            <!-- 6월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+           <td class="border-right">DOPDGNAMORE</td>
+            <!-- 7월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 8월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 9월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 10월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 11월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
+            <!-- 12월 -->
+            <td class="center">1</td>
+            <td>semi-conductor integrated web operation_DOPDGNSE</td>
+            <td class="border-right">DOPDGNAMORE</td>
           </tr>
         </tbody>
       </Table>
@@ -143,7 +595,7 @@ import Select from '~/components/ui/Select.vue'
 import Button from '~/components/ui/Button.vue'
 import Table from '~/components/ui/Table.vue'
 import Tab from '~/components/ui/TabButton.vue'
-import { onMounted } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useYear } from '~/composables/useYear'
 
 definePageMeta({
@@ -198,15 +650,183 @@ const onTabChange = (value, tab, index) => {
   width: 100%;
   height: 100%;
   bottom: 0;
+  overflow: hidden;
   border-radius: 20px 20px 0px 0px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
   background: #fff;
-  padding: 24px 32px 0;
-  thead tr:first-child th {
-    &:first-child {
-      &:before {
-        opacity: 0;
+  padding: 0 15px 0 0;
+
+  // 테이블 셀 너비 정의
+  $width-sticky1: 80px + 16px;
+  $width-sticky2: 60px + 16px;
+  $width-sticky3: 60px + 16px;
+  $width-sticky4: 60px + 16px;
+  $width-sticky5: 84px + 16px;
+  $width-sticky6: 59px + 16px;
+  $width-sticky7: 200px + 16px;
+
+  // 월별 셀 너비
+  $width-month1: 40px + 16px;
+  $width-month2: 220px + 16px;
+  $width-month3: 152px + 16px;
+
+  thead {
+    tr {
+      &:nth-child(1) th {
+        padding: 16px 24px;
+        &:nth-child(1) {
+          position: sticky;
+          left: 0;
+          min-width: $width-sticky1;
+          z-index: 2;
+          font-size: 20px;
+          line-height: 28px;
+        }
       }
+      &:nth-child(2) th {
+        /* sticky 되는 셀 */
+        &:nth-child(1) {
+          position: sticky;
+          left: 0;
+          min-width: $width-sticky1;
+          z-index: 2;
+        }
+        &:nth-child(2) {
+          position: sticky;
+          left: $width-sticky1;
+          min-width: $width-sticky2;
+          z-index: 2;
+        }
+        &:nth-child(3) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2;
+          min-width: $width-sticky3;
+          z-index: 2;
+        }
+        &:nth-child(4) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3;
+          min-width: $width-sticky4;
+          z-index: 2;
+        }
+        &:nth-child(5) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4;
+          min-width: $width-sticky5;
+          z-index: 2;
+        }
+        &:nth-child(6) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4 + $width-sticky5;
+          min-width: $width-sticky6;
+          z-index: 2;
+        }
+        &:nth-child(7) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4 + $width-sticky5 + $width-sticky6;
+          min-width: $width-sticky7;
+          z-index: 2;
+        }
+
+        /* 월별 너비 (Util, Project, MSA) */
+        &:nth-child(3n + 8) {
+          min-width: $width-month1;
+        }
+        &:nth-child(3n + 9) {
+          min-width: $width-month2;
+        }
+        &:nth-child(3n + 10) {
+          min-width: $width-month3;
+        }
+      }
+      // 월별 스타일
+      th:has(.month-cell) {
+        background: #e1e7fe;
+      }
+      .month-cell {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        &-title {
+          width: 132px - 8px;
+          font-size: 32px;
+          line-height: 44px;
+        }
+        &-box {
+          display: flex;
+          width: 88px;
+          flex-direction: column;
+          border-radius: 8px;
+          border: 1px solid #ccc;
+          background: #c1cdfd;
+          padding: 7px;
+          strong {
+            display: block;
+            width: 100%;
+            color: #000;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 28px;
+          }
+          span {
+            display: block;
+            width: 100%;
+            color: #3C3C3C;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 16px;
+          }
+        }
+
+      }
+    }
+  }
+  tbody {
+    td {
+        /* sticky 되는 셀 */
+        &:nth-child(1) {
+          position: sticky;
+          left: 0;
+          min-width: $width-sticky1;
+          z-index: 2;
+        }
+        &:nth-child(2) {
+          position: sticky;
+          left: $width-sticky1;
+          min-width: $width-sticky2;
+          z-index: 2;
+        }
+        &:nth-child(3) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2;
+          min-width: $width-sticky3;
+          z-index: 2;
+        }
+        &:nth-child(4) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3;
+          min-width: $width-sticky4;
+          z-index: 2;
+        }
+        &:nth-child(5) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4;
+          min-width: $width-sticky5;
+          z-index: 2;
+        }
+        &:nth-child(6) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4 + $width-sticky5;
+          min-width: $width-sticky6;
+          z-index: 2;
+        }
+        &:nth-child(7) {
+          position: sticky;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4 + $width-sticky5 + $width-sticky6;
+          min-width: $width-sticky7;
+          z-index: 2;
+        }
     }
   }
 }

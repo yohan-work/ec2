@@ -15,9 +15,9 @@
 .scroll-container {
   overflow-x: hidden;
   overflow-y: auto;
-  width: calc(100% + 10px);
-  margin-right: -10px;
-  padding-right: 10px;
+  width: calc(100% + 15px);
+  margin-right: -15px;
+  padding-right: 15px;
   padding-bottom: 36px;
   &:has(.main-container) {
     padding-bottom: 0;

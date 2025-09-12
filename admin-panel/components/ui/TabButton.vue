@@ -97,7 +97,17 @@ watch(
   gap: 0;
   border-radius: 999px;
   overflow: hidden;
-  background: #ebebeb;
+  background: #e2e4eb;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #e2e4eb;
+    border: 1px solid #ddd;
+  }
 }
 
 .tab-slider {
@@ -106,8 +116,7 @@ watch(
   height: 100%;
   background: #fff;
   border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #cbcbcb;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
 }
@@ -121,7 +130,7 @@ watch(
   padding: 7px 32px;
   border: none;
   background: transparent;
-  color: #999;
+  color: #666;
   font-size: 18px;
   line-height: 26px;
   font-weight: 700;
