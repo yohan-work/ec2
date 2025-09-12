@@ -1,28 +1,29 @@
 <template>
-  <Loading :show="false" />
-  <div class="dms-layout">
-    <!-- GNB (Global Navigation Bar) -->
-    <Gnb
-      :is-mobile-menu-open="isMobileMenuOpen"
-      :is-login-page="false"
-      @toggle-mobile-menu="toggleMobileMenu"
-    />
+  <IpAccessGuard>
+    <div class="dms-layout">
+      <!-- GNB (Global Navigation Bar) -->
+      <Gnb
+        :is-mobile-menu-open="isMobileMenuOpen"
+        :is-login-page="false"
+        @toggle-mobile-menu="toggleMobileMenu"
+      />
 
-    <!-- 툴바 레이어 -->
-    <Toolbar :is-mobile-menu-open="isMobileMenuOpen" />
+      <!-- 툴바 레이어 -->
+      <Toolbar :is-mobile-menu-open="isMobileMenuOpen" />
 
-    <!-- 메인 콘텐츠 -->
-    <div class="page-container">
-      <slot />
+      <!-- 메인 콘텐츠 -->
+      <div class="page-container">
+        <slot />
+      </div>
     </div>
-  </div>
+  </IpAccessGuard>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import Gnb from '~/components/dms/Gnb.vue'
-import Loading from '~/components/ui/Loading.vue'
 import Toolbar from '~/components/dms/Toolbar.vue'
+import IpAccessGuard from '~/components/dms/IpAccessGuard.vue'
 
 defineOptions({
   name: 'dms',
