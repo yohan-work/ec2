@@ -6,25 +6,51 @@
         <h1 class="text-2xl font-semibold text-gray-900">뉴스레터 관리</h1>
         <p class="text-sm text-gray-600 mt-1">뉴스레터를 작성하고 관리하세요</p>
       </div>
-      <button
-        @click="createNewsletter"
-        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
-      >
-        <svg
-          class="w-4 h-4 mr-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <div class="flex gap-2">
+        <button
+          @click="toggleOrderMode"
+          :class="[
+            'inline-flex items-center px-4 py-2 border text-sm font-medium rounded-md transition-colors',
+            orderMode
+              ? 'border-orange-500 text-orange-700 bg-orange-50 hover:bg-orange-100'
+              : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50',
+          ]"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
-        새 뉴스레터 작성
-      </button>
+          <svg
+            class="w-4 h-4 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+            />
+          </svg>
+          {{ orderMode ? '순서 편집 완료' : '순서 편집' }}
+        </button>
+        <button
+          @click="createNewsletter"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
+        >
+          <svg
+            class="w-4 h-4 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          새 뉴스레터 작성
+        </button>
+      </div>
     </div>
     <!-- 필터 및 검색 -->
     <div class="bg-card rounded-lg shadow p-4 mb-6">
@@ -67,14 +93,84 @@
       <p class="text-muted-foreground mt-2">로딩 중...</p>
     </div>
 
+    <!-- 순서 편집 -->
+    <div
+      v-if="orderMode"
+      class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6"
+    >
+      <div class="flex">
+        <svg
+          class="w-5 h-5 text-orange-400 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <div>
+          <h3 class="text-sm font-medium text-orange-800">순서 편집 모드</h3>
+          <p class="text-sm text-orange-700 mt-1">
+            발행된 뉴스레터의 순서를 변경할 수 있습니다. 드래그하여 순서를
+            변경하거나 순서 번호를 직접 입력하세요.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- 뉴스레터 목록 -->
-    <div v-else-if="newsletters.length > 0" class="space-y-4">
+    <div v-if="!loading && newsletters.length > 0" class="space-y-4">
       <div
-        v-for="newsletter in newsletters"
+        v-for="(newsletter, index) in newsletters"
         :key="newsletter.id"
-        class="bg-card rounded-lg shadow p-6"
+        :class="[
+          'bg-card rounded-lg shadow p-6 transition-all duration-200',
+          orderMode && newsletter.status === 'published'
+            ? 'cursor-move border-2 border-dashed border-orange-300'
+            : '',
+          dragging === newsletter.id ? 'opacity-50 scale-95' : '',
+        ]"
+        :draggable="orderMode && newsletter.status === 'published'"
+        @dragstart="handleDragStart(newsletter, index, $event)"
+        @dragend="handleDragEnd"
+        @dragover="handleDragOver($event)"
+        @drop="handleDrop(newsletter, index, $event)"
       >
         <div class="flex justify-between items-start">
+          <!-- 순서 편집 모드일 때 순서 번호 표시 -->
+          <div
+            v-if="orderMode && newsletter.status === 'published'"
+            class="flex items-center mr-4"
+          >
+            <div class="flex flex-col items-center">
+              <svg
+                class="w-6 h-6 text-gray-400 mb-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+                />
+              </svg>
+              <input
+                v-model.number="newsletter.display_order"
+                @change="updateNewsletterOrder(newsletter)"
+                type="number"
+                min="1"
+                class="w-16 text-center text-sm border border-gray-300 rounded px-2 py-1"
+                :title="`현재 순서: ${newsletter.display_order || 0}`"
+              />
+            </div>
+          </div>
+
           <div class="flex-1">
             <div class="flex items-center gap-2 mb-2">
               <h3 class="text-lg font-medium text-foreground">
@@ -85,6 +181,17 @@
                 :class="getStatusBadgeClass(newsletter.status)"
               >
                 {{ getStatusText(newsletter.status) }}
+              </span>
+              <!-- 순서 표시 (일반 모드) -->
+              <span
+                v-if="
+                  !orderMode &&
+                  newsletter.status === 'published' &&
+                  newsletter.display_order
+                "
+                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800"
+              >
+                순서: {{ newsletter.display_order }}
               </span>
             </div>
 
@@ -104,7 +211,8 @@
             </div>
           </div>
 
-          <div class="flex items-center space-x-2 ml-4">
+          <!-- 액션 버튼들 (순서 편집 모드가 아닐 때만 표시) -->
+          <div v-if="!orderMode" class="flex items-center space-x-2 ml-4">
             <button
               @click="viewNewsletter(newsletter)"
               class="p-2 text-muted-foreground hover:text-foreground rounded-md hover:bg-accent"
@@ -260,6 +368,11 @@ const loading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('')
 
+// 순서 편집 모드 상태
+const orderMode = ref(false)
+const dragging = ref(null)
+const draggedItem = ref(null)
+
 // 페이지네이션
 const pagination = ref({
   page: 1,
@@ -410,6 +523,95 @@ const deleteNewsletter = async newsletter => {
     alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.')
   } finally {
     loading.value = false
+  }
+}
+
+// 순서 편집 모드 토글
+const toggleOrderMode = () => {
+  orderMode.value = !orderMode.value
+  if (orderMode.value) {
+    // 순서 편집 모드 진입 시 발행된 뉴스레터만 표시하도록 필터 설정
+    statusFilter.value = 'published'
+    fetchNewsletters()
+  } else {
+    // 순서 편집 모드 종료 시 필터 초기화
+    statusFilter.value = ''
+    fetchNewsletters()
+  }
+}
+
+// 드래그 앤 드롭 핸들러
+const handleDragStart = (newsletter, index, event) => {
+  dragging.value = newsletter.id
+  draggedItem.value = { newsletter, index }
+  event.dataTransfer.effectAllowed = 'move'
+}
+
+const handleDragEnd = () => {
+  dragging.value = null
+  draggedItem.value = null
+}
+
+const handleDragOver = event => {
+  event.preventDefault()
+  event.dataTransfer.dropEffect = 'move'
+}
+
+const handleDrop = async (targetNewsletter, targetIndex, event) => {
+  event.preventDefault()
+
+  if (
+    !draggedItem.value ||
+    draggedItem.value.newsletter.id === targetNewsletter.id
+  ) {
+    return
+  }
+
+  const sourceIndex = draggedItem.value.index
+  const sourceNewsletter = draggedItem.value.newsletter
+
+  // 로컬 상태 업데이트 (즉시 UI 반영)
+  const newNewsletters = [...newsletters.value]
+  newNewsletters.splice(sourceIndex, 1)
+  newNewsletters.splice(targetIndex, 0, sourceNewsletter)
+
+  // 순서 번호 재계산
+  newNewsletters.forEach((newsletter, index) => {
+    if (newsletter.status === 'published') {
+      newsletter.display_order = index + 1
+    }
+  })
+
+  newsletters.value = newNewsletters
+
+  // 서버에 순서 변경 요청
+  try {
+    await updateNewsletterOrder(sourceNewsletter)
+    await updateNewsletterOrder(targetNewsletter)
+
+    // 전체 목록 새로고침으로 정확한 순서 확인
+    await fetchNewsletters()
+  } catch (error) {
+    console.error('순서 변경 실패:', error)
+    alert('순서 변경에 실패했습니다. 페이지를 새로고침해주세요.')
+    await fetchNewsletters()
+  }
+}
+
+// 개별 뉴스레터 순서 업데이트
+const updateNewsletterOrder = async newsletter => {
+  try {
+    const userInfo = getUserInfo()
+    await $fetch(`/api/admin/newsletters/${newsletter.id}/order`, {
+      method: 'PUT',
+      body: {
+        display_order: newsletter.display_order,
+        cognito_user_id: userInfo.userId,
+      },
+    })
+  } catch (error) {
+    console.error('뉴스레터 순서 업데이트 실패:', error)
+    throw error
   }
 }
 
