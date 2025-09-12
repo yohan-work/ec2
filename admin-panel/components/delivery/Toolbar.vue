@@ -6,6 +6,7 @@
           <NuxtLink
             to="/delivery/manage-employees"
             class="btn"
+            :class="{ active: isActiveRoute('/delivery/manage-employees') }"
             data-style="toolbar-menu"
           >
             <div v-html="employeeSvg"></div>
@@ -14,6 +15,7 @@
           <NuxtLink
             to="/delivery/manage-clients"
             class="btn"
+            :class="{ active: isActiveRoute('/delivery/manage-clients') }"
             data-style="toolbar-menu"
           >
             <div v-html="clientSvg"></div>
@@ -22,6 +24,7 @@
           <NuxtLink
             to="/delivery/manage-organizations"
             class="btn"
+            :class="{ active: isActiveRoute('/delivery/manage-organizations') }"
             data-style="toolbar-menu"
           >
             <div v-html="organizationSvg"></div>
@@ -34,6 +37,7 @@
           <NuxtLink
             to="/delivery/manage-users"
             class="btn"
+            :class="{ active: isActiveRoute('/delivery/manage-users') }"
             data-style="toolbar-menu"
           >
             <div v-html="userSvg"></div>
@@ -42,6 +46,7 @@
           <NuxtLink
             to="/delivery/manage-permissions"
             class="btn"
+            :class="{ active: isActiveRoute('/delivery/manage-permissions') }"
             data-style="toolbar-menu"
           >
             <div v-html="permissionSvg"></div>
@@ -58,6 +63,7 @@
           <NuxtLink
             to="/delivery/manage-history"
             class="btn"
+            :class="{ active: isActiveRoute('/delivery/manage-history') }"
             data-style="toolbar-menu"
           >
             <div v-html="historySvg"></div>
@@ -66,6 +72,7 @@
           <NuxtLink
             to="/delivery/manage-access-control"
             class="btn"
+            :class="{ active: isActiveRoute('/delivery/manage-access-control') }"
             data-style="toolbar-menu"
           >
             <div v-html="accessControlSvg"></div>
@@ -109,6 +116,13 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const route = useRoute()
+
+// 현재 라우트와 일치하는지 확인하는 함수
+const isActiveRoute = (path: string) => {
+  return route.path === path
+}
 
 const handlePasswordChange = () => {
   // 비밀번호 변경 로직

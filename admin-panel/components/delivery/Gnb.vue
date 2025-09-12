@@ -12,27 +12,27 @@
       <template v-if="!props.isLoginPage">
         <div class="gnb-menu">
           <NuxtLink to="/delivery/project-revenue/">
-            <div class="gnb-menu-item">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/project-revenue/') }">
               <span>Project Revenue</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/delivery/project-mm/">
-            <div class="gnb-menu-item">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/project-mm/') }">
               <span>Project MM</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/delivery/sso/">
-            <div class="gnb-menu-item">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/sso/') }">
               <span>SSO</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/delivery/staff-utility/">
-            <div class="gnb-menu-item">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/staff-utility/') }">
               <span>Staff (Utility)</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/delivery/project-list/">
-            <div class="gnb-menu-item">
+            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/delivery/project-list/') }">
               <span>Project List</span>
             </div>
           </NuxtLink>
@@ -75,8 +75,15 @@ const emit = defineEmits<{
   'toggle-mobile-menu': []
 }>()
 
+const route = useRoute()
+
 const toggleMobileMenu = () => {
   emit('toggle-mobile-menu')
+}
+
+// 현재 라우트와 일치하는지 확인하는 함수
+const isActiveRoute = (path: string) => {
+  return route.path === path
 }
 </script>
 
