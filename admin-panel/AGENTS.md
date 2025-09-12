@@ -64,22 +64,12 @@ admin-panel/
 ├── middleware/           # Nuxt 미들웨어 (인증 등)
 ├── pages/               # 페이지 라우팅 (3개 사이트별)
 │   ├── index.vue        # Concentrix 사이트 홈페이지
-│   ├── newsletters/     # Concentrix 사이트 뉴스레터
-│   ├── recruits/        # Concentrix 사이트 채용공고
 │   ├── admin/           # Concentrix 어드민 페이지
-│   │   ├── newsletters/ # 어드민 뉴스레터 관리
-│   │   ├── recruits/    # 어드민 채용공고 관리
-│   │   ├── mngr/        # 관리자 관리
-│   │   └── logs/        # 시스템 로그
 │   ├── dms/             # DMS 페이지
-│   │   ├── login.vue    # DMS 로그인
-│   │   ├── index.vue    # DMS 대시보드
-│   │   ├── manage-*.vue # DMS 관리 페이지들
-│   │   ├── sso.vue       # 외부 등 비용 관리 페이지
-│   │   └── project-*.vue # DMS 프로젝트 관련
-│   ├── login.vue        # 일반 로그인
-│   ├── logout.vue       # 로그아웃
-│   └── callback.vue     # OAuth 콜백
+│   ├── 그 외 폴더         # Concentrix 사이트의 메뉴들
+│   ├── login.vue        # 일반 로그인 (admin용)
+│   ├── logout.vue       # 로그아웃 (admin용)
+│   └── callback.vue     # OAuth 콜백 (admin용)
 ├── plugins/             # Nuxt 플러그인
 ├── prisma/              # 데이터베이스 스키마
 ├── public/              # 정적 파일
@@ -115,6 +105,7 @@ admin-panel/
 - **접근 제어 관리**: 사용자별 권한 설정
 - **권한 관리**: 세부 권한 설정
 - **사용자 관리**: 시스템 사용자 관리
+- **IP 접근 제어**: 등록된 IP에서만 접근 허용
 - **SSO**: 외주 등 비용 관리
 - **독립적인 UI/UX**: DMS 전용 디자인 시스템
 
@@ -141,7 +132,7 @@ admin-panel/
 - `GET /api/public/recruits/{id}` - 채용공고 상세 조회
 
 ### DMS API (Delivery Management System 전용)
-- `GET /api/dms/*` - DMS 관련 API 엔드포인트들 (예정)
+- `GET /api/dms/check-ip-access` - IP 접근 제어 확인
 
 ### 시스템 API
 - `GET /api/system/metrics` - 시스템 메트릭 조회
@@ -152,12 +143,18 @@ admin-panel/
 ## 데이터베이스 스키마
 
 ### 주요 테이블
+
+**Concentrix 시스템**
 - **admin_users**: 관리자 사용자 정보
 - **departments**: 부서 정보
 - **roles**: 역할 정보
 - **audit_logs**: 감사 로그
 - **newsletters**: 뉴스레터 데이터
 - **recruits**: 채용공고 데이터
+
+**DMS 시스템**
+- **dms_admin_users**: DMS 관리자 사용자 정보
+- **dms_ip_access_control**: DMS IP 접근 제어 규칙
 
 ## 환경 설정
 
@@ -166,7 +163,7 @@ admin-panel/
 # 데이터베이스
 DATABASE_URL="mysql://username:password@localhost:3306/database_name"
 
-# AWS Cognito
+# AWS Cognito (Concentrix 시스템)
 NUXT_PUBLIC_COGNITO_USER_POOL_ID="your_user_pool_id"
 NUXT_PUBLIC_COGNITO_APP_CLIENT_ID="your_app_client_id"
 NUXT_PUBLIC_COGNITO_REGION="your_region"
@@ -278,7 +275,13 @@ npx prisma generate
    - 사이트별 API 엔드포인트 분리
    - 인증이 필요한 API와 공개 API 분리
 
-5. **데이터 보호**: 
+5. **IP 접근 제어**: 
+   - DMS 시스템은 등록된 IP에서만 접근 가능
+   - CIDR 표기법을 통한 IP 대역 허용
+   - localhost 자동 허용으로 개발 환경 지원
+   - 실시간 IP 체크 및 접근 차단
+
+6. **데이터 보호**: 
    - 민감한 정보 암호화 및 안전한 저장
    - 사이트별 데이터 격리
 
@@ -317,4 +320,4 @@ npx prisma generate
 ---
 
 **최종 업데이트**: 2025년 9월 12일
-**문서 버전**: 0.0.1
+**문서 버전**: 0.0.2
