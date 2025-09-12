@@ -1,25 +1,18 @@
 <template>
-  <IpAccessGuard>
+  <AccessGuard>
     <div class="dms-layout">
-      <!-- GNB (Global Navigation Bar) -->
-      <!-- <Gnb
-        :is-login-page="true"
-        :is-mobile-menu-open="isMobileMenuOpen"
-        @toggle-mobile-menu="toggleMobileMenu"
-      /> -->
-
       <!-- 메인 콘텐츠 -->
       <div class="page-container">
         <slot />
       </div>
     </div>
-  </IpAccessGuard>
+  </AccessGuard>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import Gnb from '~/components/dms/Gnb.vue'
-import IpAccessGuard from '~/components/dms/IpAccessGuard.vue'
+import AccessGuard from '~/components/dms/AccessGuard.vue'
 
 defineOptions({
   name: 'dms-login',

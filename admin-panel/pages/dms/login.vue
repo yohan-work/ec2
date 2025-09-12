@@ -122,26 +122,30 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    // TODO: 실제 로그인 API 호출
-    console.log('로그인 시도:', {
-      email: email.value,
-      password: password.value,
+    // DMS 로그인 API 호출
+    const response = await $fetch('/api/dms/login', {
+      method: 'POST',
+      body: {
+        email: email.value,
+        password: password.value,
+      }
     })
 
-    // 임시 로딩 시뮬레이션
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    if (true) {
-      // 틀린 경우 로그인 실패 메시지 표시
-      errors.value.general = 'Email 주소나 Password가 맞지 않습니다.'
-      return
+    if (response.success) {
+      // 로그인 성공 시 DMS 메인 페이지로 리다이렉트
+      await navigateTo('/dms')
+    } else {
+      errors.value.general = response.message || 'Email 주소나 Password가 맞지 않습니다.'
     }
-
-    // 로그인 성공 시 리다이렉트
-    await navigateTo('/dms')
-  } catch (error) {
-    // console.error('로그인 오류:', error)
-    errors.value.general = 'Email 주소나 Password가 맞지 않습니다.'
+  } catch (error: any) {
+    console.error('DMS 로그인 오류:', error)
+    
+    // API 에러 메시지 표시
+    if (error.data?.statusMessage) {
+      errors.value.general = error.data.statusMessage
+    } else {
+      errors.value.general = 'Email 주소나 Password가 맞지 않습니다.'
+    }
   } finally {
     isSubmitting.value = false
   }

@@ -129,10 +129,20 @@ const handlePasswordChange = () => {
   console.log('비밀번호 변경')
 }
 
-const handleLogout = () => {
+const handleLogout = async () => {
   if (confirm('로그아웃 하시겠습니까?')) {
-    // 로그아웛 로직
-    console.log('로그아웃')
+    try {
+      await $fetch('/api/dms/logout', {
+        method: 'POST'
+      })
+      
+      // 로그인 페이지로 리다이렉트
+      await navigateTo('/dms/login')
+    } catch (error) {
+      console.error('로그아웃 오류:', error)
+      // 에러가 발생해도 로그인 페이지로 리다이렉트
+      await navigateTo('/dms/login')
+    }
   }
 }
 </script>

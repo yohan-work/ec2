@@ -142,11 +142,16 @@ model dms_ip_access_control {
 }
 
 model dms_admin_users {
-  id            Int      @id @default(autoincrement())
-  password_hash String   @db.VarChar(255)
-  employee_id   Int?
-  created_at    DateTime @default(now()) @db.DateTime(0)
-  updated_at    DateTime @default(now()) @db.DateTime(0) @updatedAt
+  id             Int       @id @default(autoincrement())
+  email          String    @unique @db.VarChar(255) // Concentrix 이메일 주소
+  password_hash  String    @db.VarChar(255)
+  employee_id    Int?
+  is_active      Boolean   @default(true) // 계정 활성화 상태
+  last_login_at  DateTime? @db.DateTime(0) // 마지막 로그인 시간
+  created_at     DateTime  @default(now()) @db.DateTime(0)
+  updated_at     DateTime  @default(now()) @db.DateTime(0) @updatedAt
 
+  @@index([email], map: "idx_dms_admin_email")
   @@index([employee_id], map: "idx_dms_admin_employee")
+  @@index([is_active], map: "idx_dms_admin_active")
 }

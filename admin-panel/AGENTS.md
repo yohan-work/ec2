@@ -21,6 +21,7 @@
    - 프로젝트 및 수익 관리
    - 클라이언트, 직원, 조직 관리
    - 접근 제어 관리
+   - 독립적인 로그인 시스템 (Concentrix 이메일 기반)
 
 ## 기술 스택
 
@@ -105,9 +106,9 @@ admin-panel/
 - **접근 제어 관리**: 사용자별 권한 설정
 - **권한 관리**: 세부 권한 설정
 - **사용자 관리**: 시스템 사용자 관리
-- **IP 접근 제어**: 등록된 IP에서만 접근 허용
 - **SSO**: 외주 등 비용 관리
-- **독립적인 UI/UX**: DMS 전용 디자인 시스템
+- **IP 접근 제어**: 등록된 IP에서만 접근 허용
+- **DMS 전용 로그인**: 독립적인 인증 시스템
 
 ## API 엔드포인트
 
@@ -132,6 +133,9 @@ admin-panel/
 - `GET /api/public/recruits/{id}` - 채용공고 상세 조회
 
 ### DMS API (Delivery Management System 전용)
+- `POST /api/dms/login` - DMS 로그인
+- `POST /api/dms/logout` - DMS 로그아웃
+- `GET /api/dms/session` - DMS 세션 확인
 - `GET /api/dms/check-ip-access` - IP 접근 제어 확인
 
 ### 시스템 API
@@ -260,7 +264,7 @@ npx prisma generate
 
 1. **멀티 사이트 인증**: 
    - Concentrix 어드민: AWS Cognito 기반 인증
-   - DMS: 독립적인 인증 시스템
+   - DMS: 독립적인 로그인 시스템 (Concentrix 이메일 + bcrypt)
    - Concentrix 사이트: 공개 접근 (인증 불필요)
 
 2. **권한 관리**: 
@@ -320,4 +324,4 @@ npx prisma generate
 ---
 
 **최종 업데이트**: 2025년 9월 12일
-**문서 버전**: 0.0.2
+**문서 버전**: 0.0.3
