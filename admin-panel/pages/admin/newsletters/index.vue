@@ -584,10 +584,12 @@ const handleDrop = async (targetNewsletter, targetIndex, event) => {
 
   newsletters.value = newNewsletters
 
-  // 서버에 순서 변경 요청
+  // 서버에 순서 변경 요청 (일괄 업데이트)
   try {
-    await updateNewsletterOrder(sourceNewsletter)
-    await updateNewsletterOrder(targetNewsletter)
+    const publishedNewsletters = newNewsletters.filter(
+      n => n.status === 'published'
+    )
+    await updateAllNewsletterOrders(publishedNewsletters)
 
     // 전체 목록 새로고침으로 정확한 순서 확인
     await fetchNewsletters()
@@ -598,20 +600,72 @@ const handleDrop = async (targetNewsletter, targetIndex, event) => {
   }
 }
 
-// 개별 뉴스레터 순서 업데이트
-const updateNewsletterOrder = async newsletter => {
+// 전체 뉴스레터 순서 일괄 업데이트
+const updateAllNewsletterOrders = async publishedNewsletters => {
   try {
     const userInfo = getUserInfo()
-    await $fetch(`/api/admin/newsletters/${newsletter.id}/order`, {
+    await $fetch('/api/admin/newsletters/reorder', {
       method: 'PUT',
       body: {
-        display_order: newsletter.display_order,
+        newsletters: publishedNewsletters.map(newsletter => ({
+          id: newsletter.id,
+          display_order: newsletter.display_order,
+        })),
         cognito_user_id: userInfo.userId,
       },
     })
   } catch (error) {
-    console.error('뉴스레터 순서 업데이트 실패:', error)
+    console.error('뉴스레터 순서 일괄 업데이트 실패:', error)
     throw error
+  }
+}
+
+// 개별 뉴스레터 순서 업데이트 (순서 편집 모드에서 직접 입력할 때 사용)
+const updateNewsletterOrder = async newsletter => {
+  try {
+    // 입력된 순서가 유효한지 확인
+    const newOrder = parseInt(newsletter.display_order)
+    if (isNaN(newOrder) || newOrder < 1) {
+      alert('올바른 순서 번호를 입력해주세요. (1 이상의 숫자)')
+      await fetchNewsletters() // 원래 값으로 되돌리기
+      return
+    }
+
+    // 전체 발행된 뉴스레터 목록을 가져와서 순서 재정렬
+    const publishedNewsletters = newsletters.value.filter(
+      n => n.status === 'published'
+    )
+
+    // 현재 뉴스레터를 새로운 위치로 이동
+    const currentNewsletter = publishedNewsletters.find(
+      n => n.id === newsletter.id
+    )
+    const otherNewsletters = publishedNewsletters.filter(
+      n => n.id !== newsletter.id
+    )
+
+    // 새로운 순서에 맞게 배열 재구성
+    const reorderedNewsletters = []
+    for (let i = 1; i <= publishedNewsletters.length; i++) {
+      if (i === newOrder) {
+        reorderedNewsletters.push({ ...currentNewsletter, display_order: i })
+      } else {
+        const nextNewsletter = otherNewsletters.shift()
+        if (nextNewsletter) {
+          reorderedNewsletters.push({ ...nextNewsletter, display_order: i })
+        }
+      }
+    }
+
+    // 서버에 일괄 업데이트 요청
+    await updateAllNewsletterOrders(reorderedNewsletters)
+
+    // 목록 새로고침
+    await fetchNewsletters()
+  } catch (error) {
+    console.error('뉴스레터 순서 업데이트 실패:', error)
+    alert('순서 변경에 실패했습니다. 다시 시도해주세요.')
+    await fetchNewsletters()
   }
 }
 
