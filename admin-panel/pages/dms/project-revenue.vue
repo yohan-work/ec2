@@ -1,5 +1,14 @@
 <template>
-  <TitleArea title="Project Revenue" />
+  <TitleArea title="Project Revenue">
+    <template #left>
+      <Select
+        v-model="selectedYear"
+        :options="yearOptions"
+        placeholder="연도 선택"
+        @update:modelValue="handleYearChange"
+      />
+    </template>
+  </TitleArea>
   <ContentsArea>
     <MainContainer>
       <Table>
@@ -168,12 +177,28 @@
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
 import MainContainer from '~/components/dms/MainContainer.vue'
+import Select from '~/components/ui/Select.vue'
 import Table from '~/components/ui/Table.vue'
+import { useYear } from '~/composables/useYear'
+import { onMounted } from 'vue'
 
 definePageMeta({
   layout: 'dms',
   ssr: false,
 })
+
+// 연도 관련 로직
+// 페이지 로드 시 올해로 리셋
+onMounted(() => {
+  resetToCurrentYear()
+})
+const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } =
+  useYear()
+
+// 연도 변경 핸들러
+const handleYearChange = year => {
+  setSelectedYear(year)
+}
 </script>
 
 <style lang="scss" scoped>

@@ -295,7 +295,6 @@ definePageMeta({
 })
 
 // 연도 관련 로직
-
 // 페이지 로드 시 올해로 리셋
 onMounted(() => {
   resetToCurrentYear()
