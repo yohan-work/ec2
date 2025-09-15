@@ -124,7 +124,7 @@ definePageMeta({
 
 // 권한 편집 함수
 const editOrganization = (type: string, id: string | number) => {
-  console.log(`편집: ${type} - ${id}`)
+  // 편집 기능 구현 필요
   // 여기에 편집 로직 추가
 }
 </script>

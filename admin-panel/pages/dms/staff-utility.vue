@@ -31,7 +31,9 @@
       <Table>
         <thead>
           <tr>
-            <th colspan="7" class="border-sticky-right">MSA & Billable Utilization</th>
+            <th colspan="7" class="border-sticky-right">
+              MSA & Billable Utilization
+            </th>
             <th colspan="3">
               <div class="month-cell">
                 <div class="month-cell-title">1월</div>
@@ -380,11 +382,11 @@
             <!-- 5월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
-           <td class="border-right">DOPDGNAMORE</td>
+            <td class="border-right">DOPDGNAMORE</td>
             <!-- 6월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
-           <td class="border-right">DOPDGNAMORE</td>
+            <td class="border-right">DOPDGNAMORE</td>
             <!-- 7월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
@@ -437,11 +439,11 @@
             <!-- 5월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
-           <td class="border-right">DOPDGNAMORE</td>
+            <td class="border-right">DOPDGNAMORE</td>
             <!-- 6월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
-           <td class="border-right">DOPDGNAMORE</td>
+            <td class="border-right">DOPDGNAMORE</td>
             <!-- 7월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
@@ -494,11 +496,11 @@
             <!-- 5월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
-           <td class="border-right">DOPDGNAMORE</td>
+            <td class="border-right">DOPDGNAMORE</td>
             <!-- 6월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
-           <td class="border-right">DOPDGNAMORE</td>
+            <td class="border-right">DOPDGNAMORE</td>
             <!-- 7월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
@@ -551,11 +553,11 @@
             <!-- 5월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
-           <td class="border-right">DOPDGNAMORE</td>
+            <td class="border-right">DOPDGNAMORE</td>
             <!-- 6월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
-           <td class="border-right">DOPDGNAMORE</td>
+            <td class="border-right">DOPDGNAMORE</td>
             <!-- 7월 -->
             <td class="center">1</td>
             <td>semi-conductor integrated web operation_DOPDGNSE</td>
@@ -625,7 +627,7 @@ const handleYearChange = year => {
 
 // 탭 변경 핸들러
 const onTabChange = (value, tab, index) => {
-  console.log('탭 변경:', { value, tab, index })
+  // 탭 변경 처리
   // 탭 변경 로직을 여기에 추가할 수 있습니다
 }
 </script>
@@ -656,7 +658,7 @@ const onTabChange = (value, tab, index) => {
   background: #fff;
   padding: 0 15px 0 0;
 
-  // 테이블 셀 너비 정의
+  /* 테이블 셀 너비 정의 */
   $width-sticky1: 80px + 16px;
   $width-sticky2: 60px + 16px;
   $width-sticky3: 60px + 16px;
@@ -665,7 +667,7 @@ const onTabChange = (value, tab, index) => {
   $width-sticky6: 59px + 16px;
   $width-sticky7: 200px + 16px;
 
-  // 월별 셀 너비
+  /* 월별 셀 너비 */
   $width-month1: 40px + 16px;
   $width-month2: 220px + 16px;
   $width-month3: 152px + 16px;
@@ -684,6 +686,7 @@ const onTabChange = (value, tab, index) => {
         }
       }
       &:nth-child(2) th {
+        /* sticky 되는 셀 */
         /* sticky 되는 셀 */
         &:nth-child(1) {
           position: sticky;
@@ -711,19 +714,22 @@ const onTabChange = (value, tab, index) => {
         }
         &:nth-child(5) {
           position: sticky;
-          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3 +
+            $width-sticky4;
           min-width: $width-sticky5;
           z-index: 2;
         }
         &:nth-child(6) {
           position: sticky;
-          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4 + $width-sticky5;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3 +
+            $width-sticky4 + $width-sticky5;
           min-width: $width-sticky6;
           z-index: 2;
         }
         &:nth-child(7) {
           position: sticky;
-          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4 + $width-sticky5 + $width-sticky6;
+          left: $width-sticky1 + $width-sticky2 + $width-sticky3 +
+            $width-sticky4 + $width-sticky5 + $width-sticky6;
           min-width: $width-sticky7;
           z-index: 2;
         }
@@ -739,7 +745,7 @@ const onTabChange = (value, tab, index) => {
           min-width: $width-month3;
         }
       }
-      // 월별 스타일
+      /* 월별 스타일 */
       th:has(.month-cell) {
         background: #e1e7fe;
       }
@@ -772,61 +778,62 @@ const onTabChange = (value, tab, index) => {
           span {
             display: block;
             width: 100%;
-            color: #3C3C3C;
+            color: #3c3c3c;
             font-size: 12px;
             font-weight: 400;
             line-height: 16px;
           }
         }
-
       }
     }
   }
   tbody {
     td {
-        /* sticky 되는 셀 */
-        &:nth-child(1) {
-          position: sticky;
-          left: 0;
-          min-width: $width-sticky1;
-          z-index: 2;
-        }
-        &:nth-child(2) {
-          position: sticky;
-          left: $width-sticky1;
-          min-width: $width-sticky2;
-          z-index: 2;
-        }
-        &:nth-child(3) {
-          position: sticky;
-          left: $width-sticky1 + $width-sticky2;
-          min-width: $width-sticky3;
-          z-index: 2;
-        }
-        &:nth-child(4) {
-          position: sticky;
-          left: $width-sticky1 + $width-sticky2 + $width-sticky3;
-          min-width: $width-sticky4;
-          z-index: 2;
-        }
-        &:nth-child(5) {
-          position: sticky;
-          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4;
-          min-width: $width-sticky5;
-          z-index: 2;
-        }
-        &:nth-child(6) {
-          position: sticky;
-          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4 + $width-sticky5;
-          min-width: $width-sticky6;
-          z-index: 2;
-        }
-        &:nth-child(7) {
-          position: sticky;
-          left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4 + $width-sticky5 + $width-sticky6;
-          min-width: $width-sticky7;
-          z-index: 2;
-        }
+      /* sticky 되는 셀 */
+      &:nth-child(1) {
+        position: sticky;
+        left: 0;
+        min-width: $width-sticky1;
+        z-index: 2;
+      }
+      &:nth-child(2) {
+        position: sticky;
+        left: $width-sticky1;
+        min-width: $width-sticky2;
+        z-index: 2;
+      }
+      &:nth-child(3) {
+        position: sticky;
+        left: $width-sticky1 + $width-sticky2;
+        min-width: $width-sticky3;
+        z-index: 2;
+      }
+      &:nth-child(4) {
+        position: sticky;
+        left: $width-sticky1 + $width-sticky2 + $width-sticky3;
+        min-width: $width-sticky4;
+        z-index: 2;
+      }
+      &:nth-child(5) {
+        position: sticky;
+        left: $width-sticky1 + $width-sticky2 + $width-sticky3 + $width-sticky4;
+        min-width: $width-sticky5;
+        z-index: 2;
+      }
+      &:nth-child(6) {
+        position: sticky;
+        left: $width-sticky1 + $width-sticky2 + $width-sticky3 +
+          $width-sticky4 + $width-sticky5;
+        min-width: $width-sticky6;
+        z-index: 2;
+      }
+      &:nth-child(7) {
+        position: sticky;
+        left: $width-sticky1 + $width-sticky2 + $width-sticky3 +
+          $width-sticky4 + $width-sticky5 + $width-sticky6;
+        min-width: $width-sticky7;
+        z-index: 2;
+      }
     }
   }
 }

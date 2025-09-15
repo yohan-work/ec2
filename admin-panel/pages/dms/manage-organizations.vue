@@ -398,12 +398,12 @@ const isLoading = ref(false)
 
 // 조직 관리 함수들
 const editOrganization = (type, id) => {
-  console.log(`편집: ${type} ID ${id}`)
+  // 편집 기능 구현 필요
   // TODO: 편집 모달 또는 페이지로 이동
 }
 
 const deleteOrganization = (type, id) => {
-  console.log(`삭제: ${type} ID ${id}`)
+  // 삭제 기능 구현 필요
   // TODO: 삭제 확인 모달 표시
 }
 </script>
