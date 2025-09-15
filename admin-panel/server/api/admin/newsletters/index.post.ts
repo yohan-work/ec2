@@ -45,8 +45,38 @@ export default defineEventHandler(async event => {
     const author = await getAdminUserByCognitoId(cognito_user_id)
     console.log('조회된 사용자:', { id: author.id, email: author.email })
 
+    // display_order 계산 (발행된 뉴스레터의 경우에만)
+    let displayOrder = 0
+    if (status === 'published') {
+      console.log('발행된 뉴스레터의 display_order 계산 중...')
+
+      // 기존 발행된 뉴스레터들의 순서를 모두 1씩 증가시킴
+      await prisma.newsletters.updateMany({
+        where: {
+          status: 'published',
+          display_order: {
+            gt: 0,
+          },
+        },
+        data: {
+          display_order: {
+            increment: 1,
+          },
+        },
+      })
+
+      // 새 뉴스레터는 1번 순서로 설정
+      displayOrder = 1
+      console.log('새 뉴스레터 display_order: 1, 기존 뉴스레터들 순서 +1 증가')
+    }
+
     // 뉴스레터 생성
-    console.log('뉴스레터 생성 시도:', { title, status, author_id: author.id })
+    console.log('뉴스레터 생성 시도:', {
+      title,
+      status,
+      author_id: author.id,
+      display_order: displayOrder,
+    })
     const newsletter = await prisma.newsletters.create({
       data: {
         title,
@@ -58,6 +88,7 @@ export default defineEventHandler(async event => {
         status: status || 'draft',
         author_id: author.id,
         published_at: status === 'published' ? new Date() : null,
+        display_order: displayOrder,
       },
       include: {
         admin_users: {
