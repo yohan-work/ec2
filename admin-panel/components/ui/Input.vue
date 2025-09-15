@@ -150,8 +150,6 @@ const togglePasswordVisibility = () => {
 
 <style lang="scss" scoped>
 .form-group {
-  margin-bottom: 20px;
-
   label {
     display: block;
     margin-bottom: 8px;

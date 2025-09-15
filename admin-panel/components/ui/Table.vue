@@ -34,6 +34,10 @@ const tableClasses = computed(() => {
   overflow-y: auto;
   overflow-x: auto;
 
+  .filter-container + & {
+    border-top: 1px solid #ddd;
+  }
+
   &.auto-width {
     width: auto;
     table {

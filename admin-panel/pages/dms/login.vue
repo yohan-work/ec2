@@ -128,18 +128,19 @@ const handleSubmit = async () => {
       body: {
         email: email.value,
         password: password.value,
-      }
+      },
     })
 
     if (response.success) {
       // 로그인 성공 시 DMS 메인 페이지로 리다이렉트
       await navigateTo('/dms')
     } else {
-      errors.value.general = response.message || 'Email 주소나 Password가 맞지 않습니다.'
+      errors.value.general =
+        response.message || 'Email 주소나 Password가 맞지 않습니다.'
     }
   } catch (error: any) {
     console.error('DMS 로그인 오류:', error)
-    
+
     // API 에러 메시지 표시
     if (error.data?.statusMessage) {
       errors.value.general = error.data.statusMessage
@@ -191,6 +192,7 @@ const handleSubmit = async () => {
         flex: 1;
         padding: 24px 24px 54px;
         .form-group {
+          margin-bottom: 20px;
           .form-label {
             font-weight: 700 !important;
           }

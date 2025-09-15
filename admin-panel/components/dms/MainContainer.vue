@@ -17,5 +17,8 @@
   border: 1px solid #ddd;
   background: #fff;
   padding: 0 15px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 </style>

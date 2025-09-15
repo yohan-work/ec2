@@ -11,12 +11,61 @@
   </TitleArea>
   <ContentsArea>
     <MainContainer>
+      <div class="filter-container">
+        <Input type="text" placeholder="이름/이메일 검색" />
+        <Select
+          v-model="selectedGroup"
+          :options="groupOptions"
+          placeholder="전체 그룹"
+        />
+        <Select
+          v-model="selectedTeam"
+          :options="teamOptions"
+          placeholder="전체 팀"
+        />
+        <Select
+          v-model="selectedJob"
+          :options="jobOptions"
+          placeholder="전체 직무"
+        />
+        <Select
+          v-model="selectedCl"
+          :options="clOptions"
+          placeholder="전체 직급"
+        />
+        <Select
+          v-model="selectedStatus"
+          :options="statusOptions"
+          placeholder="전체 상태"
+        />
+      </div>
       <Table>
         <thead>
           <tr>
             <th>이름</th>
+            <th>그룹</th>
+            <th>팀</th>
+            <th>매니저</th>
+            <th>직무</th>
+            <th>직급(CL)</th>
+            <th>이메일</th>
+            <th>상태</th>
+            <th>관리</th>
           </tr>
         </thead>
+        <tbody>
+          <tr>
+            <td>김철수</td>
+            <td>개발팀</td>
+            <td>팀장</td>
+            <td>매니저</td>
+            <td>직무</td>
+            <td>직급(CL)</td>
+            <td>이메일</td>
+            <td>상태</td>
+            <td>관리</td>
+          </tr>
+        </tbody>
       </Table>
     </MainContainer>
   </ContentsArea>
@@ -28,61 +77,23 @@ import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
 import MainContainer from '~/components/dms/MainContainer.vue'
 import Button from '~/components/ui/Button.vue'
-import { useYear } from '~/composables/useYear'
+import Input from '~/components/ui/Input.vue'
+import Select from '~/components/ui/Select.vue'
+import Table from '~/components/ui/Table.vue'
 import { onMounted } from 'vue'
 
 definePageMeta({
   layout: 'dms',
   ssr: false,
 })
-
-// 연도 관련 로직
-
-// 페이지 로드 시 올해로 리셋
-onMounted(() => {
-  resetToCurrentYear()
-})
-const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } =
-  useYear()
-
-// 연도 변경 핸들러
-const handleYearChange = year => {
-  setSelectedYear(year)
-}
-
-// 테이블 데이터
-const tableHeaders = [
-  { key: 'name', label: '이름' },
-  { key: 'employeeId', label: '사번' },
-  { key: 'department', label: '부서' },
-  { key: 'position', label: '직급' },
-  { key: 'email', label: '이메일' },
-  { key: 'status', label: '상태' },
-  { key: 'actions', label: '작업' },
-]
-
-const tableData = ref([
-  {
-    name: '김철수',
-    employeeId: 'EMP001',
-    department: '개발팀',
-    position: '팀장',
-    email: 'kim@company.com',
-    status: '활성',
-    actions: '관리',
-  },
-  {
-    name: '이영희',
-    employeeId: 'EMP002',
-    department: '마케팅팀',
-    position: '대리',
-    email: 'lee@company.com',
-    status: '활성',
-    actions: '관리',
-  },
-])
-
-const isLoading = ref(false)
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.filter-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  width: calc(100% + 15px);
+}
+</style>
