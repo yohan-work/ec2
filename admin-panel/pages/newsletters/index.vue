@@ -115,7 +115,7 @@
                   <NuxtLink
                     :to="`/newsletters/${newsletter.id}`"
                     @click="handleNewsletterClick(newsletter.id)"
-                    class="text-lg font-medium text-gray-900 hover:text-indigo-600"
+                    class="text-lg font-medium text-gray-900 hover:text-indigo-600 line-clamp-2"
                   >
                     {{ newsletter.title }}
                   </NuxtLink>
