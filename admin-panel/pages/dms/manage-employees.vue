@@ -10,7 +10,15 @@
     </template>
   </TitleArea>
   <ContentsArea>
-    <p>내용</p>
+    <MainContainer>
+      <Table>
+        <thead>
+          <tr>
+            <th>이름</th>
+          </tr>
+        </thead>
+      </Table>
+    </MainContainer>
   </ContentsArea>
 </template>
 
@@ -18,6 +26,7 @@
 import addSvg from '~/components/assets/dms/icons/add.svg?raw'
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
+import MainContainer from '~/components/dms/MainContainer.vue'
 import Button from '~/components/ui/Button.vue'
 import { useYear } from '~/composables/useYear'
 import { onMounted } from 'vue'
@@ -76,77 +85,4 @@ const tableData = ref([
 const isLoading = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.employees-content {
-  padding: 24px;
-}
-
-.content-header {
-  margin-bottom: 24px;
-
-  h3 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 8px;
-  }
-
-  p {
-    color: #6b7280;
-    font-size: 14px;
-  }
-}
-
-.content-body {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.stat-card {
-  padding: 20px;
-
-  .stat-content {
-    text-align: center;
-
-    h4 {
-      font-size: 14px;
-      color: #6b7280;
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-
-    .stat-number {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1f2937;
-    }
-  }
-}
-
-.table-section {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.center-content {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  color: #374151;
-}
-
-.right-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-</style>
+<style lang="scss" scoped></style>

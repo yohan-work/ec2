@@ -10,6 +10,7 @@
   line-height: 1.5;
   color: #212529;
   background: #f0f0f0;
+  min-width: 1024px;
   &:has(.toolbar.show) {
     .page-container {
       padding: 24px 366px 0 40px;

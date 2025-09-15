@@ -54,5 +54,18 @@ const props = defineProps({
     display: flex;
     align-items: center;
   }
+
+  &:deep(.center-content) {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  &:deep(.right-content) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 }
 </style>

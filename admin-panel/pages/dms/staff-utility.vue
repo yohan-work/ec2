@@ -27,7 +27,7 @@
     </template>
   </TitleArea>
   <ContentsArea>
-    <div class="main-container">
+    <MainContainer>
       <Table>
         <thead>
           <tr>
@@ -585,7 +585,7 @@
           </tr>
         </tbody>
       </Table>
-    </div>
+    </MainContainer>
   </ContentsArea>
 </template>
 
@@ -593,6 +593,7 @@
 import editSvg from '~/components/assets/dms/icons/edit.svg?raw'
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
+import MainContainer from '~/components/dms/MainContainer.vue'
 import Select from '~/components/ui/Select.vue'
 import Button from '~/components/ui/Button.vue'
 import Table from '~/components/ui/Table.vue'
@@ -634,30 +635,8 @@ const onTabChange = (value, tab, index) => {
 
 <style lang="scss" scoped>
 /* 스타일이 필요한 경우 여기에 추가 */
-.center-content {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  color: #374151;
-}
-
-.right-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
 
 .main-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  bottom: 0;
-  overflow: hidden;
-  border-radius: 20px 20px 0px 0px;
-  border: 1px solid #ddd;
-  background: #fff;
-  padding: 0 15px 0 0;
-
   /* 테이블 셀 너비 정의 */
   $width-sticky1: 80px + 16px;
   $width-sticky2: 60px + 16px;
@@ -686,7 +665,6 @@ const onTabChange = (value, tab, index) => {
         }
       }
       &:nth-child(2) th {
-        /* sticky 되는 셀 */
         /* sticky 되는 셀 */
         &:nth-child(1) {
           position: sticky;
@@ -733,7 +711,6 @@ const onTabChange = (value, tab, index) => {
           min-width: $width-sticky7;
           z-index: 2;
         }
-
         /* 월별 너비 (Util, Project, MSA) */
         &:nth-child(3n + 8) {
           min-width: $width-month1;

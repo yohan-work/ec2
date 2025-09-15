@@ -11,7 +11,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import Gnb from '~/components/dms/Gnb.vue'
 import AccessGuard from '~/components/dms/AccessGuard.vue'
 
 defineOptions({

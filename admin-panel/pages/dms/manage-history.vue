@@ -1,16 +1,22 @@
 <template>
   <TitleArea title="변경 히스토리"> </TitleArea>
   <ContentsArea>
-    <p>내용</p>
+    <MainContainer>
+      <Table>
+        <thead>
+          <tr>
+            <th>시간</th>
+          </tr>
+        </thead>
+      </Table>
+    </MainContainer>
   </ContentsArea>
 </template>
 
 <script setup>
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
-import Select from '~/components/ui/Select.vue'
-import Button from '~/components/ui/Button.vue'
-import Card from '~/components/ui/Card.vue'
+import MainContainer from '~/components/dms/MainContainer.vue'
 import Table from '~/components/ui/Table.vue'
 import { useYear } from '~/composables/useYear'
 import { onMounted } from 'vue'

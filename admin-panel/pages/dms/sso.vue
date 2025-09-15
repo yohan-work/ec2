@@ -20,7 +20,7 @@
     </template>
   </TitleArea>
   <ContentsArea>
-    <div class="main-container">
+    <MainContainer>
       <Table>
         <thead>
           <tr>
@@ -183,15 +183,15 @@
           </tr>
         </tbody>
       </Table>
-    </div>
+    </MainContainer>
   </ContentsArea>
 </template>
 
 <script setup>
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
+import MainContainer from '~/components/dms/MainContainer.vue'
 import Select from '~/components/ui/Select.vue'
-import Button from '~/components/ui/Button.vue'
 import Table from '~/components/ui/Table.vue'
 import { useYear } from '~/composables/useYear'
 import { onMounted } from 'vue'
@@ -219,14 +219,6 @@ const handleYearChange = year => {
 <style lang="scss" scoped>
 /* 스타일이 필요한 경우 여기에 추가 */
 .main-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  bottom: 0;
-  border-radius: 20px 20px 0px 0px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: #fff;
-  padding: 24px 32px 0;
   thead tr {
     &:first-child th {
       &:nth-child(2),
