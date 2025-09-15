@@ -195,69 +195,17 @@
                 >
                   <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
-                      <h3
-                        class="text-lg font-medium text-gray-900 group-hover:text-indigo-600 transition-colors duration-200"
-                      >
-                        {{ item.title }}
-                      </h3>
-
-                      <!-- 메타 정보 -->
-                      <div
-                        class="mt-2 flex items-center text-sm text-gray-500 space-x-4"
-                      >
-                        <div class="flex items-center">
-                          <svg
-                            class="mr-1.5 h-4 w-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                            />
-                          </svg>
-                          {{
-                            item.admin_users?.departments?.name || '알 수 없음'
-                          }}
-                        </div>
-
-                        <div class="flex items-center">
-                          <svg
-                            class="mr-1.5 h-4 w-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
-                          {{ formatDate(item.published_at) }}
-                        </div>
+                      <div class="flex items-center justify-between">
+                        <h3
+                          class="text-lg font-medium text-gray-900 group-hover:text-indigo-600 transition-colors duration-200"
+                        >
+                          {{ item.title }}
+                        </h3>
+                        <span
+                          class="text-sm text-gray-500 ml-4 flex-shrink-0"
+                          >{{ formatDate(item.published_at) }}</span
+                        >
                       </div>
-                    </div>
-
-                    <!-- 화살표 -->
-                    <div class="flex-shrink-0">
-                      <svg
-                        class="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors duration-200"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
                     </div>
                   </div>
                 </NuxtLink>
@@ -272,20 +220,7 @@
             to="/newsletters"
             class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
           >
-            <svg
-              class="mr-2 h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-            다른 뉴스레터 보기
+            목록 보기
           </NuxtLink>
         </div>
       </div>
