@@ -175,8 +175,23 @@
           </p>
         </div>
 
+        <!-- 더보기 -->
+        <div v-if="shouldShowLoadMore && !loading" class="mt-8 text-center">
+          <button
+            @click="loadMoreNewsletters"
+            :disabled="loadingMore"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span
+              v-if="loadingMore"
+              class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
+            ></span>
+            {{ loadingMore ? '로딩 중...' : '더보기' }}
+          </button>
+        </div>
+
         <!-- 페이지네이션 -->
-        <div
+        <!-- <div
           v-if="pagination.pages > 1"
           class="mt-8 flex items-center justify-between"
         >
@@ -249,7 +264,7 @@
               </nav>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </main>
   </div>
@@ -259,13 +274,15 @@
 // 상태 관리
 const newsletters = ref([])
 const loading = ref(true)
+const loadingMore = ref(false)
 const searchQuery = ref('')
 const pagination = ref({
   page: 1,
-  limit: 10,
+  limit: 5,
   total: 0,
   pages: 0,
 })
+const displayedCount = ref(0)
 
 // 스크롤 위치 관리
 const scrollPosition = ref(0)
@@ -277,7 +294,8 @@ const fetchNewsletters = async () => {
     loading.value = true
 
     const query = {
-      page: pagination.value.page,
+      // pagination.value.page,
+      page: 1,
       limit: pagination.value.limit,
     }
 
@@ -289,6 +307,7 @@ const fetchNewsletters = async () => {
 
     newsletters.value = response.data
     pagination.value = response.pagination
+    displayedCount.value = response.data.length
   } catch (error) {
     console.error('뉴스레터 목록 조회 실패:', error)
   } finally {
@@ -296,12 +315,55 @@ const fetchNewsletters = async () => {
   }
 }
 
+// 더보기
+const loadMoreNewsletters = async () => {
+  try {
+    loadingMore.value = true
+    const nextPage =
+      Math.floor(displayedCount.value / pagination.value.limit) + 1
+
+    const query = {
+      page: nextPage,
+      limit: pagination.value.limit,
+    }
+
+    if (searchQuery.value) {
+      query.search = searchQuery.value
+    }
+
+    const response = await $fetch('/api/public/newsletters', { query })
+
+    // 기존 뉴스레터에 새로운 뉴스레터 추가
+    newsletters.value = [...newsletters.value, ...response.data]
+    displayedCount.value += response.data.length
+
+    // pagination 정보 업데이트
+    pagination.value = response.pagination
+  } catch (error) {
+    console.error('추가 뉴스레터 로드 실패:', error)
+  } finally {
+    loadingMore.value = false
+  }
+}
+
+// 더보기 버튼 표시 여부 계산
+const shouldShowLoadMore = computed(() => {
+  // 총 뉴스레터가 5개 미만이면 더보기 버튼 미노출
+  if (pagination.value.total < 5) {
+    return false
+  }
+
+  // 현재 표시된 개수가 총 개수보다 적으면 더보기 버튼 노출
+  return displayedCount.value < pagination.value.total
+})
+
 // 검색 디바운스
 let searchTimeout
 const debouncedSearch = () => {
   clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
     pagination.value.page = 1
+    displayedCount.value = 0
     fetchNewsletters()
   }, 500)
 }

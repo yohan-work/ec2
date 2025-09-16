@@ -91,7 +91,10 @@ export default defineEventHandler(async event => {
         changes.published_at = { set: true }
 
         // display_order가 0이거나 null인 경우에만 새로운 순서 할당
-        if (!existingNewsletter.display_order || existingNewsletter.display_order === 0) {
+        if (
+          !existingNewsletter.display_order ||
+          existingNewsletter.display_order === 0
+        ) {
           // 기존 발행된 뉴스레터들의 순서를 모두 1씩 증가시킴
           await prisma.newsletters.updateMany({
             where: {
@@ -106,18 +109,24 @@ export default defineEventHandler(async event => {
               },
             },
           })
-          
+
           // 새로 발행되는 뉴스레터는 1번 순서로 설정
           const newDisplayOrder = 1
           updateData.display_order = newDisplayOrder
-          changes.display_order = { from: existingNewsletter.display_order, to: newDisplayOrder }
+          changes.display_order = {
+            from: existingNewsletter.display_order,
+            to: newDisplayOrder,
+          }
         }
       }
 
       // published가 아닌 상태로 변경 시 display_order를 0으로 설정
       if (status !== 'published' && existingNewsletter.status === 'published') {
         updateData.display_order = 0
-        changes.display_order = { from: existingNewsletter.display_order, to: 0 }
+        changes.display_order = {
+          from: existingNewsletter.display_order,
+          to: 0,
+        }
       }
     }
 
