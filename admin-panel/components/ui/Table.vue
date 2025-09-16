@@ -73,6 +73,49 @@ const tableClasses = computed(() => {
     background: #f3f4f8;
     z-index: 3;
 
+    tr {
+      /* 월별 스타일 */
+      th:has(.month-cell) {
+        background: #e1e7fe;
+      }
+      .month-cell {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        &-title {
+          width: 132px - 8px;
+          font-size: 32px;
+          line-height: 44px;
+        }
+        &-box {
+          display: flex;
+          width: 88px;
+          flex-direction: column;
+          border-radius: 8px;
+          border: 1px solid #ccc;
+          background: #c1cdfd;
+          padding: 7px;
+          strong {
+            display: block;
+            width: 100%;
+            color: #000;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 28px;
+          }
+          span {
+            display: block;
+            width: 100%;
+            color: #3c3c3c;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 16px;
+          }
+        }
+      }
+    }
+
     th,
     td {
       position: relative;

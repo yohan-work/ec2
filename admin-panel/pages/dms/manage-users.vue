@@ -10,7 +10,81 @@
     </template>
   </TitleArea>
   <ContentsArea>
-    <p>내용</p>
+    <div class="management-card-container">
+      <ManagementCard
+        item-name="정석안 상무"
+        :item-info="'본부장'"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      >
+        <template #info-items>
+          <div class="info-item">
+            <span class="info-value">
+              <span>suckan.jeong</span>
+            </span>
+          </div>
+        </template>
+      </ManagementCard>
+      <ManagementCard
+        item-name="정은재 이사"
+        :item-info="'그룹장'"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      >
+        <template #info-items>
+          <div class="info-item">
+            <span class="info-value">
+              <span>jay.jung</span>
+            </span>
+          </div>
+        </template>
+      </ManagementCard>
+      <ManagementCard
+        item-name="이상헌 이사"
+        :item-info="'팀장'"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      >
+        <template #info-items>
+          <div class="info-item">
+            <span class="info-value">
+              <span>sanghun.lee</span>
+            </span>
+          </div>
+        </template>
+      </ManagementCard>
+      <ManagementCard
+        item-name="정지원 부장"
+        :item-info="'팀장'"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      >
+        <template #info-items>
+          <div class="info-item">
+            <span class="info-value">
+              <span>jiwon.jung</span>
+            </span>
+          </div>
+        </template>
+      </ManagementCard>
+      <ManagementCard
+        item-name="박선희 부장"
+        :item-info="'팀장'"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      >
+        <template #info-items>
+          <div class="info-item">
+            <span class="info-value"> <span>sunhee.park</span> </span>
+          </div>
+        </template>
+      </ManagementCard>
+    </div>
   </ContentsArea>
 </template>
 
@@ -19,6 +93,7 @@ import addSvg from '~/components/assets/dms/icons/add.svg?raw'
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
 import Button from '~/components/ui/Button.vue'
+import ManagementCard from '~/components/dms/ManagementCard.vue'
 import { onMounted } from 'vue'
 
 definePageMeta({
@@ -28,15 +103,25 @@ definePageMeta({
 </script>
 
 <style lang="scss" scoped>
-.center-content {
+.management-card-container {
   display: flex;
-  align-items: center;
-  font-weight: 500;
-  color: #374151;
-}
-.right-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: calc(100% + 15px);
+  height: 100%;
+  padding: 0 15px 23px 0;
+  margin-right: 15px;
+  overflow: auto;
+  justify-content: flex-start;
+  align-content: flex-start;
+  > div {
+    width: calc(25% - 60px / 4);
+    @media (max-width: 1920px) {
+      width: calc(33.3333% - 40px / 3);
+    }
+    @media (max-width: 1355px) {
+      width: calc(50% - 10px);
+    }
+  }
 }
 </style>

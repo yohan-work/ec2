@@ -25,253 +25,466 @@
         <thead>
           <tr>
             <th rowspan="3">사업부/팀</th>
-            <th rowspan="3">영문 계약 명</th>
+            <th rowspan="3" class="border-sticky-right">영문 계약 명</th>
             <th rowspan="3">MSA</th>
-            <th rowspan="3">Type</th>
-            <th colspan="2" rowspan="2">Project 기간</th>
-            <th colspan="2" rowspan="2">계약금액</th>
+            <th rowspan="3" class="border-right">Type</th>
+            <th colspan="2" rowspan="2" class="border-right">Project 기간</th>
+            <th colspan="2" rowspan="2" class="border-right">계약금액</th>
             <th rowspan="3">단위</th>
             <th rowspan="3">계약 여부</th>
             <th rowspan="3">상태</th>
-            <th rowspan="3">Remark</th>
-            <th colspan="12">Total</th>
-            <th colspan="13">1월 MM</th>
-            <th colspan="13">2월 MM</th>
-            <th colspan="13">3월 MM</th>
-            <th colspan="13">4월 MM</th>
-            <th colspan="13">5월 MM</th>
-            <th colspan="13">6월 MM</th>
-            <th colspan="13">7월 MM</th>
-            <th colspan="13">8월 MM</th>
-            <th colspan="13">9월 MM</th>
-            <th colspan="13">10월 MM</th>
-            <th colspan="13">11월 MM</th>
-            <th colspan="13">12월 MM</th>
+            <th rowspan="3" class="border-right">Remark</th>
+            <th colspan="12">
+              <div class="month-cell">
+                <div class="month-cell-title">Total</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">1월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">2월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">3월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">4월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">5월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">6월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">7월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">8월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">9월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">10월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">11월</div>
+              </div>
+            </th>
+            <th colspan="13">
+              <div class="month-cell">
+                <div class="month-cell-title">12월</div>
+              </div>
+            </th>
           </tr>
           <tr>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
-            <th colspan="6">CPT MM</th>
-            <th colspan="6">실투입 MM</th>
-            <th rowspan="2">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
+            <th colspan="6" class="border-right">CPT MM</th>
+            <th colspan="6" class="border-right">실투입 MM</th>
+            <th rowspan="2" class="border-right">Labor Cost</th>
           </tr>
           <tr>
             <th>from</th>
-            <th>to</th>
+            <th class="border-right">to</th>
             <th>Total ECR</th>
-            <th>CiX Rev</th>
+            <th class="border-right">CiX Rev</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
             <th>CL6</th>
             <th>CL7</th>
             <th>CL8B</th>
             <th>CL8A</th>
             <th>CL9B</th>
-            <th>CL9A</th>
+            <th class="border-right">CL9A</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Alpha</td>
             <td>본부1</td>
-            <td>AccountA</td>
-            <td>Project Apollo</td>
-            <td>Apollo Contract</td>
+            <td class="border-sticky-right">Project Apollo</td>
             <td>Y</td>
-            <td>Type1</td>
+            <td class="border-right">Type1</td>
             <td>2024-01-01</td>
-            <td>2024-12-31</td>
+            <td class="border-right">2024-12-31</td>
             <td>1,000,000</td>
-            <td>800,000</td>
+            <td class="border-right">800,000</td>
             <td>USD</td>
             <td>Yes</td>
-            <td>10</td>
+            <td>-</td>
+            <td class="border-right">-</td>
             <td>12</td>
             <td>8</td>
             <td>7</td>
             <td>5</td>
             <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td>12</td>
+            <td>8</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+            <td class="border-right">3</td>
+            <td class="border-right">-</td>
           </tr>
         </tbody>
       </Table>

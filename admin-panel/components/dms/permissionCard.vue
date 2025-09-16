@@ -59,18 +59,6 @@ defineEmits<{
 </script>
 
 <style lang="scss" scoped>
-.center-content {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  color: #374151;
-}
-.right-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 // 조직도 트리 스타일
 .permission-item {
   overflow: hidden;
@@ -117,6 +105,7 @@ defineEmits<{
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    height: 100%;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
@@ -146,6 +135,7 @@ defineEmits<{
     .permission-access {
       display: flex;
       min-width: 100%;
+      height: calc(100% - 40px);
       justify-content: center;
       align-items: stretch;
       color: #222;
@@ -153,6 +143,7 @@ defineEmits<{
       font-weight: 400;
       line-height: 22px;
       gap: 16px;
+      flex: 1;
 
       .permission-list {
         flex: 1;

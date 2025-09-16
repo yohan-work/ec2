@@ -26,25 +26,29 @@
         <thead>
           <tr>
             <th>Account</th>
+            <th>Owner 본부</th>
             <th>Deal Name KR</th>
             <th>Deal Name</th>
             <th>MSA</th>
             <th>Term</th>
             <th>Start</th>
             <th>End</th>
+            <th>계약여부</th>
             <th>사용여부</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Samsung</td>
+            <td>Cix</td>
             <td>삼성 반도체 브랜드데스크</td>
             <td>Renewal_FY24: Semi-conductor brand desk operation</td>
             <td>DOPDGNSEC</td>
             <td>12</td>
             <td>2024-01-01</td>
             <td>2024-12-31</td>
-            <td>사용</td>
+            <td>Y</td>
+            <td>Y</td>
           </tr>
         </tbody>
       </Table>
@@ -204,8 +208,10 @@ const isLoading = ref(false)
 .main-container {
   thead tr {
     &:first-child th {
-      &:nth-child(2),
-      &:nth-child(10) {
+      text-align: center;
+      &:nth-child(3),
+      &:nth-child(4),
+      &:nth-child(11) {
         text-align: left;
         min-width: 200px;
       }
@@ -214,8 +220,9 @@ const isLoading = ref(false)
   tbody td {
     text-align: center;
     white-space: nowrap;
-    &:nth-child(2),
-    &:nth-child(10) {
+    &:nth-child(3),
+    &:nth-child(4),
+    &:nth-child(11) {
       text-align: left;
     }
   }

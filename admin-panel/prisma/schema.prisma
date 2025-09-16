@@ -129,7 +129,7 @@ enum recruits_status {
 
 model dms_ip_access_control {
   id          Int                       @id @default(autoincrement())
-  ip_address  String                    @db.VarChar(45) // IPv4 또는 IPv6 주소 (예: "192.168.1.0/24", "10.0.0.1")
+  ip_address  String                    @db.VarChar(45) // IPv4 또는 IPv6 주소 (예: "123.456.1.0/24", "123.456.7.890")
   subnet_mask Int?                      // 서브넷 마스크 (예: 24, 16, 8) - CIDR 표기법에서 / 뒤의 숫자
   is_active   Boolean                   @default(true) // 활성화/비활성화 상태
   description String?                   @db.VarChar(100) // IP 설명 (예: "본사 네트워크", "개발팀 IP")

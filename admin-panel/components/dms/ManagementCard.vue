@@ -1,8 +1,9 @@
 <template>
   <div class="management-card">
     <div class="card-header">
-      <div class="card-title" :data-item-name="itemName">
+      <div class="card-title">
         {{ itemName }}
+        <span class="card-title-info" v-if="itemInfo">{{ itemInfo }}</span>
       </div>
       <div class="card-actions">
         <button class="common-btn height-20" @click="handleEdit">
@@ -17,12 +18,18 @@
     </div>
     <div class="card-body">
       <div class="card-info">
-        <div class="info-item" v-for="(info, index) in infoItems" :key="index">
-          <span class="info-value">
-            <span>{{ info.label }}</span> <strong>{{ info.value }}</strong
-            >{{ info.unit }}
-          </span>
-        </div>
+        <slot name="info-items">
+          <div
+            class="info-item"
+            v-for="(info, index) in infoItems"
+            :key="index"
+          >
+            <span class="info-value">
+              <span>{{ info.label }}</span> <strong>{{ info.value }}</strong
+              >{{ info.unit }}
+            </span>
+          </div>
+        </slot>
       </div>
     </div>
   </div>
@@ -31,12 +38,21 @@
 <script setup>
 import modifySvg from '~/components/assets/dms/icons/modify.svg?raw'
 import deleteSvg from '~/components/assets/dms/icons/delete.svg?raw'
+import { computed } from 'vue'
 
 // Props 정의
 const props = defineProps({
   itemName: {
     type: String,
     required: true,
+  },
+  itemInfo: {
+    type: String,
+    default: '',
+  },
+  'item-info': {
+    type: String,
+    default: '',
   },
   infoItems: {
     type: Array,
@@ -59,6 +75,11 @@ const props = defineProps({
 
 // Emits 정의
 const emit = defineEmits(['edit', 'delete'])
+
+// Computed property for itemInfo
+const itemInfoValue = computed(() => {
+  return props.itemInfo || props['item-info'] || ''
+})
 
 // 이벤트 핸들러
 const handleEdit = () => {

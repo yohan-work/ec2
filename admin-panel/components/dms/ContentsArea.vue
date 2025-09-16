@@ -15,12 +15,14 @@
 .scroll-container {
   overflow-x: hidden;
   overflow-y: auto;
-  width: calc(100% + 15px);
-  margin-right: -15px;
-  padding-right: 15px;
-  padding-bottom: 36px;
+  width: calc(100% + 7px);
+  margin-right: -7px;
+  padding-right: 7px;
+
   &:has(.main-container) {
-    padding-bottom: 0;
+    width: calc(100% + 15px);
+    margin-right: -15px;
+    padding-right: 15px;
   }
 
   /* Firefox 전용 */

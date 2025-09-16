@@ -12,27 +12,42 @@
       <template v-if="!props.isLoginPage">
         <div class="gnb-menu">
           <NuxtLink to="/dms/project-revenue/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/project-revenue/') }">
+            <div
+              class="gnb-menu-item"
+              :class="{ active: isActiveRoute('/dms/project-revenue/') }"
+            >
               <span>Project Revenue</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/dms/project-mm/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/project-mm/') }">
+            <div
+              class="gnb-menu-item"
+              :class="{ active: isActiveRoute('/dms/project-mm/') }"
+            >
               <span>Project MM</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/dms/sso/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/sso/') }">
+            <div
+              class="gnb-menu-item"
+              :class="{ active: isActiveRoute('/dms/sso/') }"
+            >
               <span>SSO</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/dms/staff-utility/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/staff-utility/') }">
+            <div
+              class="gnb-menu-item"
+              :class="{ active: isActiveRoute('/dms/staff-utility/') }"
+            >
               <span>Staff (Utility)</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/dms/project-list/">
-            <div class="gnb-menu-item" :class="{ active: isActiveRoute('/dms/project-list/') }">
+            <div
+              class="gnb-menu-item"
+              :class="{ active: isActiveRoute('/dms/project-list/') }"
+            >
               <span>Project List</span>
             </div>
           </NuxtLink>
@@ -178,7 +193,8 @@ const isActiveRoute = (path: string) => {
       line-height: 20px;
       background: transparent;
       border: none;
-      border-bottom: 2px solid transparent;
+      border: 2px solid transparent;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
       white-space: nowrap;
@@ -192,7 +208,7 @@ const isActiveRoute = (path: string) => {
       &.active,
       &.router-link-active {
         color: #3778f9;
-        border-bottom-color: #3778f9;
+        border: 2px solid #3778f9;
       }
 
       &:active {

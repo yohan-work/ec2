@@ -18,6 +18,48 @@
         @edit="editClient"
         @delete="deleteClient"
       />
+      <ManagementCard
+        item-name="LG디스플레이"
+        :info-items="[{ label: '총', value: 2, unit: '개 프로젝트' }]"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      />
+      <ManagementCard
+        item-name="LG디스플레이"
+        :info-items="[{ label: '총', value: 2, unit: '개 프로젝트' }]"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      />
+      <ManagementCard
+        item-name="LG디스플레이"
+        :info-items="[{ label: '총', value: 2, unit: '개 프로젝트' }]"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      />
+      <ManagementCard
+        item-name="LG디스플레이"
+        :info-items="[{ label: '총', value: 2, unit: '개 프로젝트' }]"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      />
+      <ManagementCard
+        item-name="LG디스플레이"
+        :info-items="[{ label: '총', value: 2, unit: '개 프로젝트' }]"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      />
+      <ManagementCard
+        item-name="LG디스플레이"
+        :info-items="[{ label: '총', value: 2, unit: '개 프로젝트' }]"
+        :item-id="9"
+        @edit="editClient"
+        @delete="deleteClient"
+      />
     </div>
   </ContentsArea>
 </template>
@@ -58,14 +100,17 @@ const deleteClient = clientId => {
   flex-wrap: wrap;
   gap: 20px;
   width: calc(100% + 15px);
-  height: calc(100% - 38px - 16px);
+  height: 100%;
   padding: 0 15px 23px 0;
   margin-right: 15px;
   overflow: auto;
   justify-content: flex-start;
   align-content: flex-start;
   > div {
-    width: calc(33.3333% - 40px / 3);
+    width: calc(25% - 60px / 4);
+    @media (max-width: 1920px) {
+      width: calc(33.3333% - 40px / 3);
+    }
     @media (max-width: 1355px) {
       width: calc(50% - 10px);
     }
