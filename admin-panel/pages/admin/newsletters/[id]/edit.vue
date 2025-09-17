@@ -341,11 +341,15 @@
         </div>
 
         <!-- 내용 -->
-        <div
-          class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
-        >
+        <div class="space-y-0" ref="contentSection">
           <div
-            class="px-6 py-4 border-b border-gray-100 flex justify-between items-center"
+            ref="stickyHeader"
+            class="px-6 py-4 bg-white border border-gray-200 rounded-t-xl flex justify-between items-center transition-all duration-200"
+            :class="{
+              'fixed top-0 left-0 w-full z-30 shadow-lg border-b':
+                isHeaderSticky,
+            }"
+            :style="isHeaderSticky ? { borderRadius: '0' } : {}"
           >
             <h2 class="text-lg font-semibold text-gray-900">내용</h2>
             <button
@@ -369,55 +373,147 @@
               문단 추가
             </button>
           </div>
-          <div class="p-6">
-            <div class="space-y-6">
-              <!-- Subtitle -->
-              <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
-                <div class="flex justify-between items-center mb-3">
-                  <label class="text-sm font-medium text-gray-700">
-                    부제목 (선택사항)
-                  </label>
-                  <div class="flex items-center space-x-2">
-                    <input
-                      id="subtitle-bold"
-                      v-model="form.subtitle_bold"
-                      type="checkbox"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                    />
-                    <label for="subtitle-bold" class="text-sm text-gray-600">
-                      굵게
+
+          <!-- <div v-if="isHeaderSticky" class="h-20"></div> -->
+
+          <!-- 내용 컨테이너 -->
+          <div
+            class="bg-white rounded-b-xl shadow-sm border-l border-r border-b border-gray-200"
+          >
+            <div class="p-6">
+              <div class="space-y-6">
+                <!-- Subtitle -->
+                <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
+                  <div class="flex justify-between items-center mb-3">
+                    <label class="text-sm font-medium text-gray-700">
+                      부제목 (선택사항)
                     </label>
+                    <div class="flex items-center space-x-2">
+                      <input
+                        id="subtitle-bold"
+                        v-model="form.subtitle_bold"
+                        type="checkbox"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                      />
+                      <label for="subtitle-bold" class="text-sm text-gray-600">
+                        굵게
+                      </label>
+                    </div>
+                  </div>
+                  <input
+                    v-model="form.subtitle"
+                    type="text"
+                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="부제목을 입력하세요 (선택사항)"
+                  />
+                  <div class="mt-2 text-xs text-gray-500">
+                    {{ form.subtitle.length }} 글자
                   </div>
                 </div>
-                <input
-                  v-model="form.subtitle"
-                  type="text"
-                  class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  placeholder="부제목을 입력하세요 (선택사항)"
-                />
-                <div class="mt-2 text-xs text-gray-500">
-                  {{ form.subtitle.length }} 글자
-                </div>
-              </div>
 
-              <!-- 문단들 -->
-              <div
-                v-for="(paragraph, index) in form.paragraphs"
-                :key="paragraph.id"
-                class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm"
-              >
-                <div class="flex justify-between items-center mb-3">
-                  <label class="text-sm font-medium text-gray-700">
-                    문단 {{ index + 1 }}
-                  </label>
+                <!-- 문단들 -->
+                <div
+                  v-for="(paragraph, index) in form.paragraphs"
+                  :key="paragraph.id"
+                  class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm"
+                >
+                  <div class="flex justify-between items-center mb-3">
+                    <label class="text-sm font-medium text-gray-700">
+                      문단 {{ index + 1 }}
+                    </label>
+                    <button
+                      v-if="form.paragraphs.length > 1"
+                      type="button"
+                      @click="removeParagraph(index)"
+                      class="inline-flex items-center p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <textarea
+                    v-model="paragraph.content"
+                    :placeholder="`문단 ${index + 1} 내용을 입력하세요...`"
+                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all"
+                    rows="5"
+                  ></textarea>
+                  <div class="mt-2 text-xs text-gray-500">
+                    {{ paragraph.content.length }} 글자
+                  </div>
+                </div>
+
+                <!-- 미리보기 -->
+                <div
+                  v-if="showPreview"
+                  class="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden"
+                >
+                  <div class="px-4 py-3 bg-gray-100 border-b border-gray-200">
+                    <h3 class="text-sm font-medium text-gray-700">미리보기</h3>
+                  </div>
+                  <div class="p-6 bg-white">
+                    <!-- 본문 이미지가 있으면 제일 위에 표시 -->
+                    <div v-if="form.body_image" class="mb-6">
+                      <img
+                        :src="form.body_image"
+                        alt="본문 이미지"
+                        class="w-full max-w-2xl mx-auto object-cover rounded-lg shadow-sm"
+                      />
+                    </div>
+
+                    <!-- Subtitle -->
+                    <div v-if="form.subtitle.trim()" class="mb-6">
+                      <h3
+                        :class="
+                          form.subtitle_bold ? 'font-bold' : 'font-normal'
+                        "
+                        class="text-lg text-gray-900"
+                      >
+                        {{ form.subtitle }}
+                      </h3>
+                    </div>
+
+                    <!-- 문단들 -->
+                    <div
+                      v-for="(paragraph, index) in form.paragraphs"
+                      :key="`preview-${paragraph.id}`"
+                      class="mb-4 last:mb-0"
+                    >
+                      <p
+                        v-if="paragraph.content.trim()"
+                        class="text-gray-800 leading-relaxed whitespace-pre-wrap"
+                      >
+                        {{ paragraph.content }}
+                      </p>
+                      <p v-else class="text-gray-400 italic">
+                        문단 {{ index + 1 }} 내용이 비어있습니다.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 하단 컨트롤 -->
+                <div
+                  class="flex justify-between items-center pt-4 border-t border-gray-100"
+                >
                   <button
-                    v-if="form.paragraphs.length > 1"
                     type="button"
-                    @click="removeParagraph(index)"
-                    class="inline-flex items-center p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    @click="showPreview = !showPreview"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
                   >
                     <svg
-                      class="w-4 h-4"
+                      v-if="!showPreview"
+                      class="w-4 h-4 mr-2"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -426,119 +522,37 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="2"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                       />
                     </svg>
+                    <svg
+                      v-else
+                      class="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                      />
+                    </svg>
+                    {{ showPreview ? '미리보기 숨기기' : '미리보기 보기' }}
                   </button>
-                </div>
-                <textarea
-                  v-model="paragraph.content"
-                  :placeholder="`문단 ${index + 1} 내용을 입력하세요...`"
-                  class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all"
-                  rows="5"
-                ></textarea>
-                <div class="mt-2 text-xs text-gray-500">
-                  {{ paragraph.content.length }} 글자
-                </div>
-              </div>
 
-              <!-- 미리보기 -->
-              <div
-                v-if="showPreview"
-                class="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden"
-              >
-                <div class="px-4 py-3 bg-gray-100 border-b border-gray-200">
-                  <h3 class="text-sm font-medium text-gray-700">미리보기</h3>
-                </div>
-                <div class="p-6 bg-white">
-                  <!-- 본문 이미지가 있으면 제일 위에 표시 -->
-                  <div v-if="form.body_image" class="mb-6">
-                    <img
-                      :src="form.body_image"
-                      alt="본문 이미지"
-                      class="w-full max-w-2xl mx-auto object-cover rounded-lg shadow-sm"
-                    />
-                  </div>
-
-                  <!-- Subtitle -->
-                  <div v-if="form.subtitle.trim()" class="mb-6">
-                    <h3
-                      :class="form.subtitle_bold ? 'font-bold' : 'font-normal'"
-                      class="text-lg text-gray-900"
-                    >
-                      {{ form.subtitle }}
-                    </h3>
-                  </div>
-
-                  <!-- 문단들 -->
                   <div
-                    v-for="(paragraph, index) in form.paragraphs"
-                    :key="`preview-${paragraph.id}`"
-                    class="mb-4 last:mb-0"
+                    class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
                   >
-                    <p
-                      v-if="paragraph.content.trim()"
-                      class="text-gray-800 leading-relaxed whitespace-pre-wrap"
-                    >
-                      {{ paragraph.content }}
-                    </p>
-                    <p v-else class="text-gray-400 italic">
-                      문단 {{ index + 1 }} 내용이 비어있습니다.
-                    </p>
+                    총 {{ getTotalWordCount() }} 글자
                   </div>
-                </div>
-              </div>
-
-              <!-- 하단 컨트롤 -->
-              <div
-                class="flex justify-between items-center pt-4 border-t border-gray-100"
-              >
-                <button
-                  type="button"
-                  @click="showPreview = !showPreview"
-                  class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-                >
-                  <svg
-                    v-if="!showPreview"
-                    class="w-4 h-4 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                  <svg
-                    v-else
-                    class="w-4 h-4 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
-                    />
-                  </svg>
-                  {{ showPreview ? '미리보기 숨기기' : '미리보기 보기' }}
-                </button>
-
-                <div
-                  class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
-                >
-                  총 {{ getTotalWordCount() }} 글자
                 </div>
               </div>
             </div>
@@ -625,6 +639,12 @@ const loading = ref(true)
 const error = ref(null)
 const saving = ref(false)
 const showPreview = ref(false)
+
+// Sticky 헤더 관련
+const isHeaderSticky = ref(false)
+const stickyHeader = ref(null)
+const contentSection = ref(null)
+const originalHeaderTop = ref(0)
 
 // 폼 데이터
 const form = reactive({
@@ -727,6 +747,9 @@ const fetchNewsletter = async () => {
     error.value = err.data?.message || '뉴스레터를 불러올 수 없습니다.'
   } finally {
     loading.value = false
+    nextTick(() => {
+      saveOriginalHeaderPosition()
+    })
   }
 }
 
@@ -957,9 +980,37 @@ const saveNewsletter = async status => {
   }
 }
 
-// 컴포넌트 마운트 시 데이터 로드
+// 스크롤 이벤트 처리
+const handleScroll = () => {
+  if (!stickyHeader.value || originalHeaderTop.value === 0) return
+
+  const currentScrollY = window.scrollY
+  const triggerPoint = originalHeaderTop.value
+
+  isHeaderSticky.value = currentScrollY >= triggerPoint
+}
+
+// 기존 헤더 위치
+const saveOriginalHeaderPosition = () => {
+  if (stickyHeader.value && originalHeaderTop.value === 0) {
+    const rect = stickyHeader.value.getBoundingClientRect()
+    originalHeaderTop.value = rect.top + window.scrollY
+  }
+}
+
+// 컴포넌트 마운트 시 데이터 로드 및 이벤트 리스너 등록
 onMounted(() => {
   fetchNewsletter()
+
+  // 헤더 위치 저장
+  nextTick(() => {
+    saveOriginalHeaderPosition()
+    window.addEventListener('scroll', handleScroll)
+  })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
 })
 
 // 메타 태그
