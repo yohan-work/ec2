@@ -199,8 +199,12 @@ const handleSubmit = async () => {
         }
       }
       &-right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 159px + 24px + 24px;
         padding: 0 24px;
+        min-height: 354px;
       }
     }
   }

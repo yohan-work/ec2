@@ -10,7 +10,7 @@ export default defineEventHandler(async event => {
     if (!email || !password) {
       throw createError({
         statusCode: 400,
-        statusMessage: 'Email과 Password를 입력해주세요.',
+        statusMessage: 'Email 주소와 Password를 입력해주세요.',
       })
     }
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async event => {
     if (!emailRegex.test(email) || !email.endsWith('@concentrix.com')) {
       throw createError({
         statusCode: 400,
-        statusMessage: '올바른 Concentrix 이메일 주소를 입력해주세요.',
+        statusMessage: '올바른 Email 주소를 입력해주세요. (예:user@concentrix.com)',
       })
     }
 
@@ -33,7 +33,7 @@ export default defineEventHandler(async event => {
     if (!user) {
       throw createError({
         statusCode: 401,
-        statusMessage: '이메일 주소나 비밀번호가 올바르지 않습니다.',
+        statusMessage: 'Email 주소나 Password가 맞지 않습니다.',
       })
     }
 
@@ -50,7 +50,7 @@ export default defineEventHandler(async event => {
     if (!isPasswordValid) {
       throw createError({
         statusCode: 401,
-        statusMessage: '이메일 주소나 비밀번호가 올바르지 않습니다.',
+        statusMessage: 'Email 주소나 Password가 맞지 않습니다.',
       })
     }
 

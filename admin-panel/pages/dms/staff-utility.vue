@@ -19,6 +19,10 @@
     </template>
     <template #right>
       <div class="right-content">
+        <Button variant="outline" :size="40" :padding="12">
+          <div v-html="excelSvg"></div>
+          Download
+        </Button>
         <Button variant="blue" :size="40" :padding="16">
           <div v-html="editSvg"></div>
           Edit
@@ -591,6 +595,7 @@
 
 <script setup>
 import editSvg from '~/components/assets/dms/icons/edit.svg?raw'
+import excelSvg from '~/components/assets/dms/icons/excel.svg?raw'
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
 import MainContainer from '~/components/dms/MainContainer.vue'
@@ -662,6 +667,7 @@ const onTabChange = (value, tab, index) => {
           z-index: 2;
           font-size: 20px;
           line-height: 28px;
+          background: #f3f4f8;
         }
       }
       &:nth-child(2) th {
@@ -671,23 +677,27 @@ const onTabChange = (value, tab, index) => {
           left: 0;
           min-width: $width-sticky1;
           z-index: 2;
+          background: #f3f4f8;
         }
         &:nth-child(2) {
           position: sticky;
           left: $width-sticky1;
           min-width: $width-sticky2;
           z-index: 2;
+          background: #f3f4f8;
         }
         &:nth-child(3) {
           position: sticky;
           left: $width-sticky1 + $width-sticky2;
           min-width: $width-sticky3;
           z-index: 2;
+          background: #f3f4f8;
         }
         &:nth-child(4) {
           position: sticky;
           left: $width-sticky1 + $width-sticky2 + $width-sticky3;
           min-width: $width-sticky4;
+          background: #f3f4f8;
           z-index: 2;
         }
         &:nth-child(5) {
@@ -696,6 +706,7 @@ const onTabChange = (value, tab, index) => {
             $width-sticky4;
           min-width: $width-sticky5;
           z-index: 2;
+          background: #f3f4f8;
         }
         &:nth-child(6) {
           position: sticky;
@@ -703,6 +714,7 @@ const onTabChange = (value, tab, index) => {
             $width-sticky4 + $width-sticky5;
           min-width: $width-sticky6;
           z-index: 2;
+          background: #f3f4f8;
         }
         &:nth-child(7) {
           position: sticky;
@@ -710,6 +722,7 @@ const onTabChange = (value, tab, index) => {
             $width-sticky4 + $width-sticky5 + $width-sticky6;
           min-width: $width-sticky7;
           z-index: 2;
+          background: #f3f4f8;
         }
         /* 월별 너비 (Util, Project, MSA) */
         &:nth-child(3n + 8) {
@@ -725,6 +738,46 @@ const onTabChange = (value, tab, index) => {
     }
   }
   tbody {
+    tr {
+      &:nth-child(odd) {
+        td {
+          &:nth-child(1),
+          &:nth-child(2),
+          &:nth-child(3),
+          &:nth-child(4),
+          &:nth-child(5),
+          &:nth-child(6),
+          &:nth-child(7) {
+            background: #fff;
+          }
+        }
+      }
+      &:nth-child(even) {
+        td {
+          &:nth-child(1),
+          &:nth-child(2),
+          &:nth-child(3),
+          &:nth-child(4),
+          &:nth-child(5),
+          &:nth-child(6),
+          &:nth-child(7) {
+            background: #fafafa;
+          }
+        }
+      }
+      &:hover {
+        &:nth-child(odd) {
+          td {
+            background: #f3f4f8;
+          }
+        }
+        &:nth-child(even) {
+          td {
+            background: #f3f4f8;
+          }
+        }
+      }
+    }
     td {
       /* sticky 되는 셀 */
       &:nth-child(1) {

@@ -29,21 +29,11 @@ const tableClasses = computed(() => {
 
 <style lang="scss" scoped>
 .table-wrapper {
-  width: calc(100% + 15px);
+  width: calc(100% + 16px);
   height: calc(100%);
   overflow-y: auto;
   overflow-x: auto;
-
-  .filter-container + & {
-    border-top: 1px solid #ddd;
-  }
-
-  &.auto-width {
-    width: auto;
-    table {
-      width: auto;
-    }
-  }
+  background: #fafafa;
 
   /* 스크롤바 디자인 */
   &::-webkit-scrollbar {
@@ -56,6 +46,25 @@ const tableClasses = computed(() => {
   }
   &::-webkit-scrollbar-track {
     background: transparent;
+  }
+
+  .filter-container + & {
+    border-top: 1px solid #ddd;
+  }
+
+  // .main-container & {
+  //   overflow-y: scroll;
+  //   width: calc(100% + 31px);
+  //   &:focus-visible {
+  //     width: calc(100% + 16px);
+  //   }
+  // }
+
+  &.auto-width {
+    width: auto;
+    table {
+      width: auto;
+    }
   }
 
   table {
@@ -93,7 +102,7 @@ const tableClasses = computed(() => {
           width: 88px;
           flex-direction: column;
           border-radius: 8px;
-          border: 1px solid #ccc;
+          border: 1px solid #fafafa;
           background: #c1cdfd;
           padding: 7px;
           strong {
@@ -120,7 +129,8 @@ const tableClasses = computed(() => {
     td {
       position: relative;
       color: #000;
-      background: #f3f4f8;
+      // background: #f3f4f8;
+      background: #ffffff;
       font-size: 16px;
       font-style: normal;
       line-height: 22px;
@@ -160,16 +170,19 @@ const tableClasses = computed(() => {
     z-index: 1;
     tr {
       transition: background 0.3s ease;
-      &:nth-child(odd) {
-        background: #fff;
-      }
-      &:nth-child(even) {
+      background: #fafafa;
+      &:hover {
         background: #f3f4f8;
       }
+      &:nth-child(odd) {
+        background: #fafafa;
+      }
+      &:nth-child(even) {
+        background: #fafafa;
+      }
       &:hover {
-        background: rgba(0, 0, 0, 0.05);
         &:nth-child(odd) {
-          background: #fff;
+          background: #f3f4f8;
         }
         &:nth-child(even) {
           background: #f3f4f8;

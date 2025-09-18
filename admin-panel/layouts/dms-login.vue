@@ -45,4 +45,8 @@ const toggleMobileMenu = () => {
 
 <style lang="scss" scoped>
 @use './scss/dms.scss';
+
+.dms-layout {
+  background: #f2f2f2;
+}
 </style>

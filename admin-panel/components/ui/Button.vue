@@ -24,7 +24,7 @@ interface Props {
     | 'toolbar-menu'
     | 'tab'
   size?: 20 | 24 | 28 | 36 | 38 | 40 | 48
-  padding?: 16 | 32 | 40
+  padding?: 12 | 16 | 32 | 40
   disabled?: boolean
   fullWidth?: boolean
   type?: 'button' | 'submit' | 'reset'
@@ -73,6 +73,7 @@ const buttonClasses = computed(() => {
 
   // 패딩 클래스 (필요한 경우)
   const paddingClasses = {
+    12: 'padding-12',
     16: 'padding-16',
     32: 'padding-32',
     40: 'padding-40',
@@ -158,6 +159,12 @@ const buttonClasses = computed(() => {
     padding: 0 12px;
     border-radius: 8px;
   }
+  &.padding-12 {
+    padding: 0 12px !important;
+  }
+  &.padding-16 {
+    padding: 0 16px !important;
+  }
   &.padding-32 {
     padding: 0 32px !important;
   }
@@ -196,14 +203,15 @@ const buttonClasses = computed(() => {
     border: 0;
   }
   &[data-style='blue'] {
-    background: #3778f9;
+    background: #375ef9;
     color: #fff;
     border: 0;
   }
   &[data-style='outlined'] {
     background: transparent;
     color: #3c3c3c;
-    border: 1px solid #000;
+    // border: 1px solid #000;
+    border: 1px solid rgba(0, 0, 0, 0.2);
   }
   &[data-style='toolbar-menu'] {
     display: flex;

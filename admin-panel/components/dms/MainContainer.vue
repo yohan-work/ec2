@@ -13,7 +13,7 @@
   height: 100%;
   bottom: 0;
   overflow: hidden;
-  border-radius: 20px 20px 0px 0px;
+  // border-radius: 20px 20px 0px 0px;
   border: 1px solid #ddd;
   background: #fff;
   padding: 0 15px 0 0;
