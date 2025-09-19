@@ -214,6 +214,25 @@ const handleLogout = async () => {
     }
   }
 }
+
+// ESC 키로 툴바 닫기
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape' && props.isMobileMenuOpen) {
+    emit('closeMenu')
+  }
+}
+
+onMounted(() => {
+  if (process.client) {
+    document.addEventListener('keydown', handleKeyDown)
+  }
+})
+
+onUnmounted(() => {
+  if (process.client) {
+    document.removeEventListener('keydown', handleKeyDown)
+  }
+})
 </script>
 
 <style lang="scss" scoped>
