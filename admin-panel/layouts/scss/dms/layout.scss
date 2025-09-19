@@ -11,15 +11,13 @@
   color: #212529;
   background: #fafafa;
   min-width: 1024px;
+  @media (max-width: 1023px) {
+    min-width: 100%;
+  }
   &:has(.toolbar.show) {
     .page-container {
       padding: 24px 366px 0 40px;
-    }
-  }
-  @media (max-width: 767px) {
-    min-width: 100%;
-    &:has(.toolbar.show) {
-      .page-container {
+      @media (max-width: 1023px) {
         padding: 24px 20px 0 20px;
       }
     }
@@ -29,20 +27,25 @@
 .page-container {
   position: relative;
   width: 100%;
-  // height: calc(100vh - 60px); // 75px is gnb height
-  height: 100vh;
+  // height: calc(100dvh - 60px); // 75px is gnb height
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: visible;
   padding: 24px 40px;
   transition: padding 0.3s ease;
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     padding: 24px 20px;
+    height: 100dvh; /* 모바일에서 동적 뷰포트 높이 사용 */
   }
 }
 .gnb ~ .page-container {
-  height: calc(100vh - 60px); // 75px is gnb height
+  height: calc(100dvh - 60px); // 75px is gnb height
   padding: 24px 40px 0;
+  @media (max-width: 1023px) {
+    padding: 24px 20px 0;
+    height: calc(100dvh - 60px); /* 모바일에서 동적 뷰포트 높이 사용 */
+  }
 }
 
 /* 애니메이션 */

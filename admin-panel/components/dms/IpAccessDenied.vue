@@ -44,7 +44,7 @@ defineProps<Props>()
       padding: 24px 366px 0 40px;
     }
   }
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     min-width: 100%;
     &:has(.toolbar.show) {
       .page-container {
@@ -56,14 +56,14 @@ defineProps<Props>()
 .page-container {
   position: relative;
   width: 100%;
-  // height: calc(100vh - 60px); // 75px is gnb height
-  height: 100vh;
+  // height: calc(100dvh - 60px); // 75px is gnb height
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: visible;
   padding: 24px 40px;
   transition: padding 0.3s ease;
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     padding: 24px 20px;
   }
 }
@@ -79,13 +79,13 @@ defineProps<Props>()
   padding: 32px 24px;
   border-radius: 16px;
   margin: auto;
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     padding: 32px 20px;
   }
   .cix-logo {
     width: 108px;
     padding: 0 0 24px 0;
-    @media (max-width: 767px) {
+    @media (max-width: 1023px) {
       width: 80px;
     }
     &:deep(svg) {
@@ -100,7 +100,7 @@ defineProps<Props>()
     font-weight: 700;
     line-height: 44px;
     padding: 0 0 40px 0;
-    @media (max-width: 767px) {
+    @media (max-width: 1023px) {
       font-size: 24px;
       line-height: 32px;
     }
@@ -116,7 +116,7 @@ defineProps<Props>()
     border: 1px solid #cd2323;
     background: #fff4f4;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
-    @media (max-width: 767px) {
+    @media (max-width: 1023px) {
       width: 100%;
     }
   }

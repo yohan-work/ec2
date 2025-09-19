@@ -1,6 +1,57 @@
 <template>
   <div class="toolbar" :class="{ show: props.isMobileMenuOpen }">
     <div class="toolbar-top">
+      <!-- GNB 메뉴들 (모바일에서만 표시) -->
+      <div class="toolbar-section mobile-only">
+        <div class="toolbar-menu-grid">
+          <NuxtLink
+            to="/dms/project-revenue/"
+            class="btn"
+            :class="{ active: isActiveRoute('/dms/project-revenue/') }"
+            data-style="toolbar-menu"
+            @click="handleMenuClick"
+          >
+            <span>Project Revenue</span>
+          </NuxtLink>
+          <NuxtLink
+            to="/dms/project-mm/"
+            class="btn"
+            :class="{ active: isActiveRoute('/dms/project-mm/') }"
+            data-style="toolbar-menu"
+            @click="handleMenuClick"
+          >
+            <span>Project MM</span>
+          </NuxtLink>
+          <NuxtLink
+            to="/dms/sso/"
+            class="btn"
+            :class="{ active: isActiveRoute('/dms/sso/') }"
+            data-style="toolbar-menu"
+            @click="handleMenuClick"
+          >
+            <span>SSO</span>
+          </NuxtLink>
+          <NuxtLink
+            to="/dms/staff-utility/"
+            class="btn"
+            :class="{ active: isActiveRoute('/dms/staff-utility/') }"
+            data-style="toolbar-menu"
+            @click="handleMenuClick"
+          >
+            <span>Staff (Utility)</span>
+          </NuxtLink>
+          <NuxtLink
+            to="/dms/project-list/"
+            class="btn"
+            :class="{ active: isActiveRoute('/dms/project-list/') }"
+            data-style="toolbar-menu"
+            @click="handleMenuClick"
+          >
+            <span>Project List</span>
+          </NuxtLink>
+        </div>
+      </div>
+
       <div class="toolbar-section">
         <div class="toolbar-menu-grid">
           <NuxtLink
@@ -8,6 +59,7 @@
             class="btn"
             :class="{ active: isActiveRoute('/dms/manage-employees') }"
             data-style="toolbar-menu"
+            @click="handleMenuClick"
           >
             <div v-html="employeeSvg"></div>
             <span>직원 관리</span>
@@ -17,6 +69,7 @@
             class="btn"
             :class="{ active: isActiveRoute('/dms/manage-clients') }"
             data-style="toolbar-menu"
+            @click="handleMenuClick"
           >
             <div v-html="clientSvg"></div>
             <span>고객사 관리</span>
@@ -26,6 +79,7 @@
             class="btn"
             :class="{ active: isActiveRoute('/dms/manage-organizations') }"
             data-style="toolbar-menu"
+            @click="handleMenuClick"
           >
             <div v-html="organizationSvg"></div>
             <span>조직 관리</span>
@@ -39,6 +93,7 @@
             class="btn"
             :class="{ active: isActiveRoute('/dms/manage-users') }"
             data-style="toolbar-menu"
+            @click="handleMenuClick"
           >
             <div v-html="userSvg"></div>
             <span>사용자 관리</span>
@@ -48,6 +103,7 @@
             class="btn"
             :class="{ active: isActiveRoute('/dms/manage-permissions') }"
             data-style="toolbar-menu"
+            @click="handleMenuClick"
           >
             <div v-html="permissionSvg"></div>
             <span>권한 관리</span>
@@ -65,6 +121,7 @@
             class="btn"
             :class="{ active: isActiveRoute('/dms/manage-history') }"
             data-style="toolbar-menu"
+            @click="handleMenuClick"
           >
             <div v-html="historySvg"></div>
             <span>변경 히스토리</span>
@@ -74,6 +131,7 @@
             class="btn"
             :class="{ active: isActiveRoute('/dms/manage-access-control') }"
             data-style="toolbar-menu"
+            @click="handleMenuClick"
           >
             <div v-html="accessControlSvg"></div>
             <span>접근 제어</span>
@@ -117,11 +175,23 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits<{
+  closeMenu: []
+}>()
+
 const route = useRoute()
 
 // 현재 라우트와 일치하는지 확인하는 함수
 const isActiveRoute = (path: string) => {
   return route.path === path
+}
+
+// 메뉴 클릭 시 툴바 닫기 (모바일에서만)
+const handleMenuClick = () => {
+  // 브라우저 너비가 1023px 이하일 때만 툴바 닫기
+  if (window.innerWidth <= 1023) {
+    emit('closeMenu')
+  }
 }
 
 const handlePasswordChange = () => {
@@ -153,7 +223,7 @@ const handleLogout = async () => {
   top: 60px;
   right: -326px;
   width: 326px;
-  height: calc(100vh - 60px);
+  height: calc(100dvh - 60px);
   background: #fff;
   box-shadow: -2px 0px 8px 0px rgba(0, 0, 0, 0.1);
   padding: 0;
@@ -163,6 +233,14 @@ const handleLogout = async () => {
   flex-direction: column;
   transition: right 0.3s ease;
 
+  @media (max-width: 1023px) {
+    height: 100%;
+    max-height: calc(100dvh - 60px);
+    overflow-y: auto;
+    justify-content: flex-start;
+    overscroll-behavior: contain;
+  }
+
   &.show {
     right: 0;
     transition: right 0.3s ease;
@@ -171,7 +249,6 @@ const handleLogout = async () => {
   &-top {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
     padding: 24px 40px 24px 24px;
     .toolbar-section {
@@ -221,6 +298,19 @@ const handleLogout = async () => {
       width: 24px;
       height: 24px;
     }
+  }
+}
+
+/* 반응형 클래스 */
+.desktop-only {
+  @media (max-width: 1023px) {
+    display: none !important;
+  }
+}
+
+.mobile-only {
+  @media (min-width: 1024px) {
+    display: none !important;
   }
 }
 </style>

@@ -9,7 +9,10 @@
       />
 
       <!-- 툴바 레이어 -->
-      <Toolbar :is-mobile-menu-open="isMobileMenuOpen" />
+      <Toolbar
+        :is-mobile-menu-open="isMobileMenuOpen"
+        @close-menu="closeMobileMenu"
+      />
 
       <!-- 메인 콘텐츠 -->
       <div class="page-container">
@@ -52,6 +55,10 @@ const isMobileMenuOpen = ref(false)
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false
 }
 
 // 브라우저 종료 시 세션 만료 처리

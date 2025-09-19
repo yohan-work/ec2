@@ -10,7 +10,7 @@
 
       <!-- 로그인 페이지인 경우 메뉴 숨김 -->
       <template v-if="!props.isLoginPage">
-        <div class="gnb-menu">
+        <div class="gnb-menu desktop-only">
           <NuxtLink to="/dms/project-revenue/">
             <div
               class="gnb-menu-item"
@@ -120,10 +120,10 @@ const isActiveRoute = (path: string) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
 
-  @media (max-width: 767px) {
-    padding: 10px 20px;
+    @media (max-width: 1023px) {
+      padding: 0 20px;
+    }
   }
 
   .gnb-title {
@@ -165,7 +165,7 @@ const isActiveRoute = (path: string) => {
       padding: 1px 24px 0 8px;
       margin: 0;
 
-      @media (max-width: 767px) {
+      @media (max-width: 1023px) {
         font-size: 18px;
         line-height: 24px;
       }
@@ -270,6 +270,19 @@ const isActiveRoute = (path: string) => {
         }
       }
     }
+  }
+}
+
+/* 반응형 클래스 */
+.desktop-only {
+  @media (max-width: 1023px) {
+    display: none !important;
+  }
+}
+
+.mobile-only {
+  @media (min-width: 1024px) {
+    display: none !important;
   }
 }
 </style>

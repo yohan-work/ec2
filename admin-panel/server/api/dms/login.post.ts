@@ -19,7 +19,8 @@ export default defineEventHandler(async event => {
     if (!emailRegex.test(email) || !email.endsWith('@concentrix.com')) {
       throw createError({
         statusCode: 400,
-        statusMessage: '올바른 Email 주소를 입력해주세요. (예:user@concentrix.com)',
+        statusMessage:
+          '올바른 Email 주소를 입력해주세요. (예:user@concentrix.com)',
       })
     }
 
