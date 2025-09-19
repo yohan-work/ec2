@@ -21,6 +21,7 @@
    - 프로젝트 및 수익 관리
    - 클라이언트, 직원, 조직 관리
    - 접근 제어 관리
+   - 변경 히스토리 관리 (모든 CRUD 작업 추적)
    - 독립적인 로그인 시스템 (Concentrix 이메일 기반)
 
 ## 기술 스택
@@ -112,6 +113,7 @@ admin-panel/
 - **접근 제어 관리**: 사용자별 권한 설정
 - **권한 관리**: 세부 권한 설정
 - **사용자 관리**: 시스템 사용자 관리
+- **변경 히스토리 관리**: 모든 CRUD 작업 추적 및 감사
 - **SSO**: 외주 등 비용 관리
 - **IP 접근 제어**: 등록된 IP에서만 접근 허용
 - **DMS 전용 로그인**: 독립적인 인증 시스템
@@ -146,13 +148,12 @@ admin-panel/
 - `POST /api/dms/logout` - DMS 로그아웃
 - `GET /api/dms/session` - DMS 세션 확인
 - `GET /api/dms/check-ip-access` - IP 접근 제어 확인
-
-#### DMS 클라이언트 관리 API
-
 - `GET /api/dms/clients` - 고객사 목록 조회
 - `POST /api/dms/clients` - 고객사 생성
 - `PUT /api/dms/clients/{id}` - 고객사 수정
 - `DELETE /api/dms/clients/{id}` - 고객사 삭제
+- `GET /api/dms/history` - 변경 히스토리 조회 (필터링, 페이지네이션 지원)
+- `POST /api/dms/history` - 변경 히스토리 생성 (시스템 내부 사용)
 
 ### 시스템 API
 
@@ -179,6 +180,7 @@ admin-panel/
 - **dms_admin_users**: DMS 관리자 사용자 정보
 - **dms_ip_access_control**: DMS IP 접근 제어 규칙
 - **dms_clients**: DMS 고객사 정보 (고객사명, 생성일, 수정일)
+- **dms_change_history**: DMS 변경 히스토리 (작업자, 메뉴명, 작업내용, 세부내용, IP, 작업일시)
 
 ## 환경 설정
 
@@ -302,6 +304,7 @@ npx prisma generate
 3. **감사 로그**:
    - 모든 관리자 활동 추적
    - 사이트별 로그 분리
+   - DMS 변경 히스토리: 모든 CRUD 작업 자동 기록 (Insert/Update/Delete)
 
 4. **API 보안**:
    - 사이트별 API 엔드포인트 분리
@@ -323,6 +326,7 @@ npx prisma generate
   - Concentrix 사이트: 공개 접근 로그
   - Concentrix 어드민: 관리자 활동 로그
   - DMS: Delivery Management System 사용자 활동 로그
+  - DMS 변경 히스토리: 모든 데이터 변경 작업 자동 기록 및 추적
 
 - **시스템 메트릭**:
   - 사이트별 성능 모니터링
