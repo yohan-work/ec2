@@ -15,10 +15,11 @@ export default defineEventHandler(async event => {
       status: 'published',
     }
 
-    if (search) {
+    // search 값 검증 (문자열이고 비어있지 않은 경우만)
+    if (typeof search === 'string' && search.trim()) {
       where.OR = [
-        { title: { contains: search } },
-        { body_html: { contains: search } },
+        { title: { contains: search.trim() } },
+        { body_html: { contains: search.trim() } },
       ]
     }
 
