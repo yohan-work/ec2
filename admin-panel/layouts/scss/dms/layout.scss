@@ -16,6 +16,14 @@
       padding: 24px 366px 0 40px;
     }
   }
+  @media (max-width: 767px) {
+    min-width: 100%;
+    &:has(.toolbar.show) {
+      .page-container {
+        padding: 24px 20px 0 20px;
+      }
+    }
+  }
 }
 
 .page-container {
@@ -28,6 +36,9 @@
   overflow: visible;
   padding: 24px 40px;
   transition: padding 0.3s ease;
+  @media (max-width: 767px) {
+    padding: 24px 20px;
+  }
 }
 .gnb ~ .page-container {
   height: calc(100vh - 60px); // 75px is gnb height

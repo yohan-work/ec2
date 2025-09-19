@@ -117,7 +117,7 @@ const handleBackdropClick = () => {
   max-width: 442px;
   pointer-events: none;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     max-width: 100%;
     margin: 0.5rem;
   }
@@ -137,7 +137,7 @@ const handleBackdropClick = () => {
   align-items: center;
   min-height: calc(100% - 3.5rem);
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     min-height: calc(100% - 1rem);
   }
 }
@@ -589,7 +589,7 @@ const handleBackdropClick = () => {
   font-size: 16px;
   line-height: 22px;
   gap: 8px;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     left: 20px;
     right: 20px;
     bottom: 20px;

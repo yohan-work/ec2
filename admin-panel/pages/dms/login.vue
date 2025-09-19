@@ -166,9 +166,15 @@ const handleSubmit = async () => {
   padding: 32px 24px;
   border-radius: 16px;
   margin: auto;
+  @media (max-width: 767px) {
+    padding: 32px 20px;
+  }
   .cix-logo {
     width: 108px;
     padding: 0 0 24px 0;
+    @media (max-width: 767px) {
+      width: 80px;
+    }
     &:deep(svg) {
       width: 100%;
       height: 100%;
@@ -183,6 +189,10 @@ const handleSubmit = async () => {
       font-weight: 700;
       line-height: 44px;
       padding: 0 0 40px 0;
+      @media (max-width: 767px) {
+        font-size: 24px;
+        line-height: 32px;
+      }
     }
     &-content {
       display: flex;
@@ -197,6 +207,9 @@ const handleSubmit = async () => {
             font-weight: 700 !important;
           }
         }
+        @media (max-width: 767px) {
+          padding: 0;
+        }
       }
       &-right {
         display: flex;
@@ -205,6 +218,9 @@ const handleSubmit = async () => {
         width: 159px + 24px + 24px;
         padding: 0 24px;
         min-height: 354px;
+        @media (max-width: 767px) {
+          display: none;
+        }
       }
     }
   }

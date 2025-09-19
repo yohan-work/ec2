@@ -44,6 +44,14 @@ defineProps<Props>()
       padding: 24px 366px 0 40px;
     }
   }
+  @media (max-width: 767px) {
+    min-width: 100%;
+    &:has(.toolbar.show) {
+      .page-container {
+        padding: 24px 20px 0 20px;
+      }
+    }
+  }
 }
 .page-container {
   position: relative;
@@ -55,6 +63,9 @@ defineProps<Props>()
   overflow: visible;
   padding: 24px 40px;
   transition: padding 0.3s ease;
+  @media (max-width: 767px) {
+    padding: 24px 20px;
+  }
 }
 .ip-access-denied {
   display: flex;
@@ -68,9 +79,15 @@ defineProps<Props>()
   padding: 32px 24px;
   border-radius: 16px;
   margin: auto;
+  @media (max-width: 767px) {
+    padding: 32px 20px;
+  }
   .cix-logo {
     width: 108px;
     padding: 0 0 24px 0;
+    @media (max-width: 767px) {
+      width: 80px;
+    }
     &:deep(svg) {
       width: 100%;
       height: 100%;
@@ -83,6 +100,10 @@ defineProps<Props>()
     font-weight: 700;
     line-height: 44px;
     padding: 0 0 40px 0;
+    @media (max-width: 767px) {
+      font-size: 24px;
+      line-height: 32px;
+    }
   }
   &-warning {
     width: 410px;
@@ -95,6 +116,9 @@ defineProps<Props>()
     border: 1px solid #cd2323;
     background: #fff4f4;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
+    @media (max-width: 767px) {
+      width: 100%;
+    }
   }
   &-message {
     width: 100%;

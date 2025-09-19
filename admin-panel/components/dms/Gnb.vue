@@ -122,7 +122,7 @@ const isActiveRoute = (path: string) => {
     align-items: center;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     padding: 10px 20px;
   }
 
@@ -165,7 +165,7 @@ const isActiveRoute = (path: string) => {
       padding: 1px 24px 0 8px;
       margin: 0;
 
-      @media (max-width: 768px) {
+      @media (max-width: 767px) {
         font-size: 18px;
         line-height: 24px;
       }
