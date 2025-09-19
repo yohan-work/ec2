@@ -18,6 +18,7 @@ interface Props {
     | 'primary'
     | 'secondary'
     | 'outline'
+    | 'outline-dark'
     | 'text'
     | 'white'
     | 'blue'
@@ -48,6 +49,7 @@ const dataStyleMap = {
   primary: 'black',
   secondary: 'gray',
   outline: 'outlined',
+  'outline-dark': 'outlined-dark',
   text: 'text',
   white: 'white',
   blue: 'blue',
@@ -210,8 +212,13 @@ const buttonClasses = computed(() => {
   &[data-style='outlined'] {
     background: transparent;
     color: #3c3c3c;
-    // border: 1px solid #000;
     border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  &[data-style='outlined-dark'] {
+    background: transparent;
+    color: #000;
+    border: 1px solid #000;
   }
   &[data-style='toolbar-menu'] {
     display: flex;

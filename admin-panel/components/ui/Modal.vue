@@ -98,21 +98,16 @@ const handleBackdropClick = () => {
   &.show {
     display: block !important;
   }
-
-  .modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1040;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
 }
 
 .modal-backdrop {
-  width: 100% !important;
-  height: 100% !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1040;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-dialog {
@@ -156,7 +151,7 @@ const handleBackdropClick = () => {
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 16px;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+  // box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
   outline: 0;
   padding: 24px 24px 32px 24px;
 
@@ -233,18 +228,17 @@ const handleBackdropClick = () => {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-end;
-    padding: 0.75rem;
-    border-top: 1px solid #dee2e6;
-    border-bottom-right-radius: calc(0.3rem - 1px);
-    border-bottom-left-radius: calc(0.3rem - 1px);
-    gap: 0.5rem;
+    padding: 32px 0 0 0;
 
-    .btn {
-      margin: 0.125rem;
+    :deep(.modal-actions) {
+      width: 100%;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
     }
   }
 }
+
 // 기본 alert, confirm 모달
 #globalModal {
   .modal-body {

@@ -11,9 +11,7 @@
         :placeholder="placeholder"
         :disabled="disabled"
         :class="inputClasses"
-        @input="
-          $emit('update:modelValue', ($event.target as HTMLInputElement).value)
-        "
+        @input="handleInput"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"
       />
@@ -111,8 +109,9 @@ const props = withDefaults(defineProps<Props>(), {
   error: '',
 })
 
-defineEmits<{
+const emit = defineEmits<{
   'update:modelValue': [value: string]
+  input: [value: string]
   focus: [event: FocusEvent]
   blur: [event: FocusEvent]
 }>()
@@ -146,10 +145,19 @@ const inputWrapperClasses = computed(() => {
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
+
+const handleInput = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  emit('update:modelValue', target.value)
+  emit('input', target.value)
+}
 </script>
 
 <style lang="scss" scoped>
 .form-group {
+  + .form-group {
+    margin-top: 24px;
+  }
   label {
     display: block;
     margin-bottom: 8px;
