@@ -155,9 +155,6 @@ const handleInput = (event: Event) => {
 
 <style lang="scss" scoped>
 .form-group {
-  + .form-group {
-    margin-top: 24px;
-  }
   label {
     display: block;
     margin-bottom: 8px;

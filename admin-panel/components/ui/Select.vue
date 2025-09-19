@@ -1,22 +1,34 @@
 <template>
-  <select
-    :id="selectId"
-    :value="modelValue"
-    :disabled="disabled"
-    :class="selectClasses"
-    @change="handleChange"
-  >
-    <option v-if="placeholder" value="" disabled>
-      {{ placeholder }}
-    </option>
-    <option v-for="option in options" :key="option.value" :value="option.value">
-      {{ option.label }}
-    </option>
-  </select>
+  <div class="form-group">
+    <label v-if="label" :for="selectId" class="form-label">
+      {{ label }}
+    </label>
+    <select
+      :id="selectId"
+      :value="modelValue"
+      :disabled="disabled"
+      :class="selectClasses"
+      @change="handleChange"
+    >
+      <option v-if="placeholder" value="" disabled>
+        {{ placeholder }}
+      </option>
+      <option
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+      >
+        {{ option.label }}
+      </option>
+    </select>
+    <div v-if="error" class="error-message">
+      {{ error }}
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 interface Option {
   value: string | number
@@ -27,26 +39,32 @@ interface Props {
   modelValue?: string | number
   options: Option[]
   placeholder?: string
+  label?: string
   disabled?: boolean
+  error?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
   options: () => [],
   placeholder: '',
+  label: '',
   disabled: false,
+  error: '',
 })
 
 const emit = defineEmits<{
   'update:modelValue': [value: string | number]
 }>()
 
-const selectId = computed(
-  () => `select-${Math.random().toString(36).substr(2, 9)}`
-)
+const selectId = ref(`select-${Math.random().toString(36).substr(2, 9)}`)
 
 const selectClasses = computed(() => {
-  return 'form-select'
+  const baseClasses = 'form-select'
+  const errorClasses = props.error ? 'is-invalid' : ''
+  const disabledClasses = props.disabled ? 'disabled' : ''
+
+  return [baseClasses, errorClasses, disabledClasses].filter(Boolean).join(' ')
 })
 
 const handleChange = (event: Event) => {
@@ -60,6 +78,26 @@ const handleChange = (event: Event) => {
 </script>
 
 <style lang="scss" scoped>
+.form-group {
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #333;
+  }
+}
+
+.form-label {
+  color: #000;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 8px;
+  font-weight: 700;
+  span {
+    font-weight: 400;
+  }
+}
+
 .form-select {
   width: 100%;
   appearance: none;
@@ -86,9 +124,26 @@ const handleChange = (event: Event) => {
   &:has(option[value]:not([value='']):checked) {
     color: #000;
   }
+  &.is-invalid {
+    border-color: #cd2323;
+  }
+  &.disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+  }
   + .form-check {
     margin: 6px 0 0 0;
     min-height: 16px;
   }
+}
+
+.error-message {
+  color: #cd2323;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  margin-top: 6px;
+  min-height: 16px;
 }
 </style>
