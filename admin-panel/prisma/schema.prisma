@@ -162,3 +162,20 @@ model dms_admin_users {
   @@index([employee_id], map: "idx_dms_admin_employee")
   @@index([is_active], map: "idx_dms_admin_active")
 }
+
+model dms_change_history {
+  id              Int       @id @default(autoincrement())
+  admin_name      String    @db.VarChar(100) // 작업자 이름 (admin_users 테이블의 이름)
+  employee_id     Int?      // 직원 ID (나중에 employee 테이블과 연동)
+  menu_name       String    @db.VarChar(100) // 작업 항목 (메뉴명)
+  action_type     String    @db.VarChar(20) // 작업 내용 (추가/수정/삭제)
+  details         String    @db.Text // 세부 작업 내용
+  ip_address      String    @db.VarChar(45) // 접속 IP
+  created_at      DateTime  @default(now()) @db.DateTime(0) // 작업일시
+
+  @@index([admin_name], map: "idx_dms_history_admin")
+  @@index([employee_id], map: "idx_dms_history_employee")
+  @@index([menu_name], map: "idx_dms_history_menu")
+  @@index([action_type], map: "idx_dms_history_action")
+  @@index([created_at], map: "idx_dms_history_created")
+}

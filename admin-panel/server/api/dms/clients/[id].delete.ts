@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '~/lib/prisma'
+import { logDmsHistory, getClientIP } from '~/server/api/dms/history/utils'
 
 export default defineEventHandler(async event => {
   try {
@@ -29,6 +28,15 @@ export default defineEventHandler(async event => {
       where: { id: Number(clientId) },
     })
 
+    // 히스토리 로깅
+    await logDmsHistory({
+      admin_name: 'DMS 관리자', // TODO: 실제 관리자 이름으로 변경 필요
+      menu_name: '고객사 관리',
+      action_type: 'Delete',
+      details: `고객사 "${existingClient.name}" 삭제`,
+      ip_address: getClientIP(event),
+    })
+
     return {
       success: true,
       message: 'Client deleted successfully',
@@ -44,7 +52,5 @@ export default defineEventHandler(async event => {
       statusCode: 500,
       statusMessage: 'Failed to delete client',
     })
-  } finally {
-    await prisma.$disconnect()
   }
 })
