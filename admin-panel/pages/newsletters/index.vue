@@ -271,6 +271,16 @@
 </template>
 
 <script setup>
+/**
+ * 뉴스레터 목록 페이지
+ *
+ * === dummy data ===
+ * for seungjoo Park
+ * 실제 DB 연결 로직은 주석처리되어 있으며, 별도로 백업해두었습니다.
+ * /public/data/newsletters-dummy.json 파일을 사용합니다.
+ *
+ */
+
 // 상태 관리
 const newsletters = ref([])
 const loading = ref(true)
@@ -293,21 +303,50 @@ const fetchNewsletters = async () => {
   try {
     loading.value = true
 
-    const query = {
-      // pagination.value.page,
+    // === DB 연결 로직 (주석처리) ===
+    // const query = {
+    //   // pagination.value.page,
+    //   page: 1,
+    //   limit: pagination.value.limit,
+    // }
+
+    // if (searchQuery.value) {
+    //   query.search = searchQuery.value
+    // }
+
+    // const response = await $fetch('/api/public/newsletters', { query })
+
+    // newsletters.value = response.data
+    // pagination.value = response.pagination
+    // displayedCount.value = response.data.length
+
+    // === 더미 데이터 로직 ===
+    const response = await $fetch('/data/newsletters-dummy.json')
+
+    // 검색 필터링
+    let filteredData = response.data
+    if (searchQuery.value) {
+      const searchTerm = searchQuery.value.toLowerCase()
+      filteredData = response.data.filter(
+        newsletter =>
+          newsletter.title.toLowerCase().includes(searchTerm) ||
+          newsletter.body_html.toLowerCase().includes(searchTerm)
+      )
+    }
+
+    // 페이지네이션 처리
+    const startIndex = 0
+    const endIndex = pagination.value.limit
+    const paginatedData = filteredData.slice(startIndex, endIndex)
+
+    newsletters.value = paginatedData
+    pagination.value = {
       page: 1,
       limit: pagination.value.limit,
+      total: filteredData.length,
+      pages: Math.ceil(filteredData.length / pagination.value.limit),
     }
-
-    if (searchQuery.value) {
-      query.search = searchQuery.value
-    }
-
-    const response = await $fetch('/api/public/newsletters', { query })
-
-    newsletters.value = response.data
-    pagination.value = response.pagination
-    displayedCount.value = response.data.length
+    displayedCount.value = paginatedData.length
   } catch (error) {
     console.error('뉴스레터 목록 조회 실패:', error)
   } finally {
@@ -319,26 +358,59 @@ const fetchNewsletters = async () => {
 const loadMoreNewsletters = async () => {
   try {
     loadingMore.value = true
-    const nextPage =
-      Math.floor(displayedCount.value / pagination.value.limit) + 1
 
-    const query = {
-      page: nextPage,
-      limit: pagination.value.limit,
-    }
+    // === DB 연결 로직 (주석처리) ===
+    // const nextPage =
+    //   Math.floor(displayedCount.value / pagination.value.limit) + 1
 
+    // const query = {
+    //   page: nextPage,
+    //   limit: pagination.value.limit,
+    // }
+
+    // if (searchQuery.value) {
+    //   query.search = searchQuery.value
+    // }
+
+    // const response = await $fetch('/api/public/newsletters', { query })
+
+    // // 기존 뉴스레터에 새로운 뉴스레터 추가
+    // newsletters.value = [...newsletters.value, ...response.data]
+    // displayedCount.value += response.data.length
+
+    // // pagination 정보 업데이트
+    // pagination.value = response.pagination
+
+    // === 더미 데이터 로직 ===
+    const response = await $fetch('/data/newsletters-dummy.json')
+
+    // 검색 필터링
+    let filteredData = response.data
     if (searchQuery.value) {
-      query.search = searchQuery.value
+      const searchTerm = searchQuery.value.toLowerCase()
+      filteredData = response.data.filter(
+        newsletter =>
+          newsletter.title.toLowerCase().includes(searchTerm) ||
+          newsletter.body_html.toLowerCase().includes(searchTerm)
+      )
     }
 
-    const response = await $fetch('/api/public/newsletters', { query })
+    // 다음 페이지 데이터 계산
+    const nextStartIndex = displayedCount.value
+    const nextEndIndex = nextStartIndex + pagination.value.limit
+    const nextPageData = filteredData.slice(nextStartIndex, nextEndIndex)
 
     // 기존 뉴스레터에 새로운 뉴스레터 추가
-    newsletters.value = [...newsletters.value, ...response.data]
-    displayedCount.value += response.data.length
+    newsletters.value = [...newsletters.value, ...nextPageData]
+    displayedCount.value += nextPageData.length
 
     // pagination 정보 업데이트
-    pagination.value = response.pagination
+    pagination.value = {
+      page: Math.floor(displayedCount.value / pagination.value.limit),
+      limit: pagination.value.limit,
+      total: filteredData.length,
+      pages: Math.ceil(filteredData.length / pagination.value.limit),
+    }
   } catch (error) {
     console.error('추가 뉴스레터 로드 실패:', error)
   } finally {

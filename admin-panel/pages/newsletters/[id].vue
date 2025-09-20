@@ -229,6 +229,16 @@
 </template>
 
 <script setup>
+/**
+ * 뉴스레터 상세 페이지
+ *
+ * === dummy data ===
+ * for seungjoo Park
+ * 실제 DB 연결 로직은 주석처리되어 있으며, 별도로 백업해두었습니다.
+ * /public/data/newsletters-dummy.json 파일을 사용합니다.
+ *
+ */
+
 const route = useRoute()
 const newsletterId = route.params.id
 
@@ -248,8 +258,28 @@ const fetchNewsletter = async () => {
     loading.value = true
     error.value = null
 
-    const response = await $fetch(`/api/public/newsletters/${newsletterId}`)
-    newsletter.value = response.data
+    // === DB 연결 로직 (주석처리) ===
+    // const response = await $fetch(`/api/public/newsletters/${newsletterId}`)
+    // newsletter.value = response.data
+
+    // === 더미 데이터 로직 ===
+    const response = await $fetch('/data/newsletters-dummy.json')
+    const foundNewsletter = response.data.find(item => item.id == newsletterId)
+
+    if (!foundNewsletter) {
+      error.value = '뉴스레터를 찾을 수 없습니다.'
+      return
+    }
+
+    // 더미 데이터에 추가 필드 보완
+    newsletter.value = {
+      ...foundNewsletter,
+      created_at: foundNewsletter.published_at,
+      updated_at:
+        foundNewsletter.id === 25
+          ? '2025-09-19T19:35:00+09:00'
+          : foundNewsletter.published_at,
+    }
 
     // 뉴스레터 조회 성공 시 관련 뉴스레터도 가져오기
     await fetchRelatedNewsletters()
@@ -268,14 +298,25 @@ const fetchNewsletter = async () => {
 // 관련 뉴스레터 조회 (현재 뉴스레터 제외하고 최근 3개)
 const fetchRelatedNewsletters = async () => {
   try {
-    const response = await $fetch('/api/public/newsletters/related', {
-      query: {
-        id: newsletterId,
-        limit: 3,
-      },
-    })
+    // === DB 연결 로직 (주석처리) ===
+    // const response = await $fetch('/api/public/newsletters/related', {
+    //   query: {
+    //     id: newsletterId,
+    //     limit: 3,
+    //   },
+    // })
+    // relatedNewsletters.value = response.data
 
-    relatedNewsletters.value = response.data
+    // === 더미 데이터 로직 ===
+    const response = await $fetch('/data/newsletters-dummy.json')
+
+    // 현재 뉴스레터를 제외하고 최근 3개 가져오기
+    const filteredNewsletters = response.data
+      .filter(item => item.id != newsletterId) // 현재 뉴스레터 제외
+      .sort((a, b) => new Date(b.published_at) - new Date(a.published_at)) // 최신순 정렬
+      .slice(0, 3) // 최대 3개만
+
+    relatedNewsletters.value = filteredNewsletters
   } catch (err) {
     console.error('관련 뉴스레터 조회 실패:', err)
     // 관련 뉴스레터는 실패해도 메인 콘텐츠에 영향 없도록 빈 배열 유지
