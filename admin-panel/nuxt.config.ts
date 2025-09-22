@@ -49,23 +49,44 @@ export default defineNuxtConfig({
   // hook path
   hooks: {
     'pages:extend'(pages) {
-      pages.push({
-        name: 'styleguide',
-        path: '/styleguide',
-        file: '~/pages/cnx/styleguide/index.vue',
-      })
+      const fs = require('fs')
+      const path = require('path')
 
-      pages.push({
-        name: 'newsletters',
-        path: '/newsletters',
-        file: '~/pages/cnx/newsletters/index.vue',
-      })
+      const cnxPagesDir = path.join(__dirname, 'pages/cnx')
 
-      pages.push({
-        name: 'newsletters-detail',
-        path: '/newsletters/:id',
-        file: '~/pages/cnx/newsletters/[id].vue',
-      })
+      function scanDirectory(dir: string, basePath: string = '') {
+        if (!fs.existsSync(dir)) return
+
+        const items = fs.readdirSync(dir, { withFileTypes: true })
+
+        items.forEach((item: any) => {
+          if (item.isDirectory()) {
+            scanDirectory(path.join(dir, item.name), `${basePath}/${item.name}`)
+          } else if (item.name.endsWith('.vue')) {
+            const fileName = item.name.replace('.vue', '')
+
+            let routePath = basePath
+            if (fileName !== 'index') {
+              routePath += `/${fileName}`
+            }
+            if (!routePath) routePath = '/'
+
+            routePath = routePath.replace(/\[([^\]]+)\]/g, ':$1')
+
+            const routeName = `cnx${basePath.replace(/\//g, '-')}-${fileName}`
+              .replace(/^cnx-/, 'cnx-')
+              .replace(/^cnx$/, 'cnx-index')
+
+            pages.push({
+              name: routeName,
+              path: routePath,
+              file: `~/pages/cnx${basePath}/${item.name}`,
+            })
+          }
+        })
+      }
+
+      scanDirectory(cnxPagesDir)
     },
   },
 
