@@ -28,6 +28,7 @@ defineOptions({
   flex-direction: column;
   min-height: 100dvh;
   background: #ffffff;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 main {

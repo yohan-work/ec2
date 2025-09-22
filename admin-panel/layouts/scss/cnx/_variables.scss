@@ -1,0 +1,98 @@
+/* Concentrix Variables */
+
+/* Colors */
+/* Default colors */
+$d-white: #fff;
+$d-black: #000;
+
+/* Primary Colors */
+$p-blue: #003d5b;
+$p-green: #007380;
+
+/* Secondary colors */
+$s-teal: #25e2cc;
+
+/* Accent colors */
+$a-pink: #cc3262;
+$a-orange: #ff8a00;
+$a-yellow: #fbca18;
+
+/* Neutral colors */
+$n-gray: #f2f2f2;
+$n-dark-gray: #2a2b2c;
+
+/* Typography */
+/* Font Sizes - Desktop */
+$font-size-h1-desktop: 88px;
+$font-size-h2-desktop: 64px;
+$font-size-sh1-desktop: 40px;
+$font-size-sh2-desktop: 34px;
+$font-size-body1-desktop: 24px;
+$font-size-body2-desktop: 16px;
+$font-size-body3-desktop: 16px;
+$font-size-footer-desktop: 28px;
+
+/* Font Sizes - Tablet */
+$font-size-h1-tablet: 70px;
+$font-size-h2-tablet: 54px;
+$font-size-sh1-tablet: 32px;
+$font-size-sh2-tablet: 28px;
+$font-size-body1-tablet: 18px;
+$font-size-body2-tablet: 16px;
+$font-size-body3-tablet: 14px;
+$font-size-footer-tablet: 24px;
+
+/* Font Sizes - Mobile */
+$font-size-h1-mobile: 48px;
+$font-size-h2-mobile: 32px;
+$font-size-sh1-mobile: 24px;
+$font-size-sh2-mobile: 20px;
+$font-size-body1-mobile: 16px;
+$font-size-body2-mobile: 14px;
+$font-size-body3-mobile: 12px;
+$font-size-footer-mobile: 18px;
+
+/* Font Weights */
+$font-weight-bold: 700;
+$font-weight-regular: 400;
+
+/* Line Heights */
+$line-height-tight: 110%;
+$line-height-normal: 120%;
+$line-height-relaxed: 140%;
+$line-height-loose: 150%;
+
+/* Bounding Box Heights - Desktop */
+$bbox-h1-desktop: 102px;
+$bbox-h2-desktop: 74px;
+$bbox-sh1-desktop: 52px;
+$bbox-sh2-desktop: 44px;
+$bbox-body1-desktop: 32px;
+$bbox-body2-desktop: 24px;
+$bbox-body3-desktop: 24px;
+$bbox-footer-desktop: 38px;
+
+/* Bounding Box Heights - Tablet */
+$bbox-h1-tablet: 80px;
+$bbox-h2-tablet: 60px;
+$bbox-sh1-tablet: 38px;
+$bbox-sh2-tablet: 34px;
+$bbox-body1-tablet: 22px;
+$bbox-body2-tablet: 20px;
+$bbox-body3-tablet: 20px;
+$bbox-footer-tablet: 28px;
+
+/* Bounding Box Heights - Mobile */
+$bbox-h1-mobile: 56px;
+$bbox-h2-mobile: 38px;
+$bbox-sh1-mobile: 30px;
+$bbox-sh2-mobile: 24px;
+$bbox-body1-mobile: 20px;
+$bbox-body2-mobile: 18px;
+$bbox-body3-mobile: 18px;
+$bbox-footer-mobile: 22px;
+
+/* Breakpoints */
+$pc: 1920px;
+$tab: 1024px;
+$mobile: 768px;

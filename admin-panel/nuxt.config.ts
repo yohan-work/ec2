@@ -50,6 +50,12 @@ export default defineNuxtConfig({
   hooks: {
     'pages:extend'(pages) {
       pages.push({
+        name: 'styleguide',
+        path: '/styleguide',
+        file: '~/pages/cnx/styleguide/index.vue',
+      })
+
+      pages.push({
         name: 'newsletters',
         path: '/newsletters',
         file: '~/pages/cnx/newsletters/index.vue',
