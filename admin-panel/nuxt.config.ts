@@ -46,23 +46,6 @@ export default defineNuxtConfig({
   // SSR 설정
   ssr: true,
 
-  // hook path
-  hooks: {
-    'pages:extend'(pages) {
-      pages.push({
-        name: 'newsletters',
-        path: '/newsletters',
-        file: '~/pages/cnx/newsletters/index.vue',
-      })
-
-      pages.push({
-        name: 'newsletters-detail',
-        path: '/newsletters/:id',
-        file: '~/pages/cnx/newsletters/[id].vue',
-      })
-    },
-  },
-
   // Vite 설정
   vite: {
     assetsInclude: ['**/*.svg'],
