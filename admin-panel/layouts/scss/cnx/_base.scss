@@ -1,0 +1,45 @@
+@use './_functions' as *;
+@use './_variables' as *;
+@use './_mixins' as *;
+
+* {
+  box-sizing: border-box;
+}
+
+.inner {
+  width: 100%;
+  max-width:rem(1320);
+}
+
+// Typography Classes
+.headline-01 {
+  @include headline-01;
+}
+
+.headline-02 {
+  @include headline-02;
+}
+
+.sub-headline-01 {
+  @include sub-headline-01;
+}
+
+.sub-headline-02 {
+  @include sub-headline-02;
+}
+
+.body-01 {
+  @include body-01;
+}
+
+.body-02 {
+  @include body-02;
+}
+
+.body-03 {
+  @include body-03;
+}
+
+.footer-nav {
+  @include footer-nav;
+}

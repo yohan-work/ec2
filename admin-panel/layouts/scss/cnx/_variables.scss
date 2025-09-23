@@ -1,9 +1,12 @@
 /* Concentrix Variables */
 
+@use './_functions' as *;
+
 /* Colors */
 /* Default colors */
 $d-white: #fff;
 $d-black: #000;
+$d-gray: #ccc;
 
 /* Primary Colors */
 $p-blue: #003d5b;
@@ -23,34 +26,34 @@ $n-dark-gray: #2a2b2c;
 
 /* Typography */
 /* Font Sizes - Desktop */
-$font-size-h1-desktop: 88px;
-$font-size-h2-desktop: 64px;
-$font-size-sh1-desktop: 40px;
-$font-size-sh2-desktop: 34px;
-$font-size-body1-desktop: 24px;
-$font-size-body2-desktop: 16px;
-$font-size-body3-desktop: 16px;
-$font-size-footer-desktop: 28px;
+$font-size-h1-desktop: rem(90);
+$font-size-h2-desktop: rem(64);
+$font-size-sh1-desktop: rem(42);
+$font-size-sh2-desktop: rem(34);
+$font-size-body1-desktop: rem(21);
+$font-size-body2-desktop: rem(18);
+$font-size-body3-desktop: rem(16);
+$font-size-footer-desktop: rem(28);
 
 /* Font Sizes - Tablet */
-$font-size-h1-tablet: 70px;
-$font-size-h2-tablet: 54px;
-$font-size-sh1-tablet: 32px;
-$font-size-sh2-tablet: 28px;
-$font-size-body1-tablet: 18px;
-$font-size-body2-tablet: 16px;
-$font-size-body3-tablet: 14px;
-$font-size-footer-tablet: 24px;
+$font-size-h1-tablet: rem(70);
+$font-size-h2-tablet: rem(56);
+$font-size-sh1-tablet: rem(32);
+$font-size-sh2-tablet: rem(28);
+$font-size-body1-tablet: rem(19);
+$font-size-body2-tablet: rem(13);
+$font-size-body3-tablet: rem(11);
+$font-size-footer-tablet: rem(24);
 
 /* Font Sizes - Mobile */
-$font-size-h1-mobile: 48px;
-$font-size-h2-mobile: 32px;
-$font-size-sh1-mobile: 24px;
-$font-size-sh2-mobile: 20px;
-$font-size-body1-mobile: 16px;
-$font-size-body2-mobile: 14px;
-$font-size-body3-mobile: 12px;
-$font-size-footer-mobile: 18px;
+$font-size-h1-mobile: rem(46);
+$font-size-h2-mobile: rem(32);
+$font-size-sh1-mobile: rem(24);
+$font-size-sh2-mobile: rem(20);
+$font-size-body1-mobile: rem(16);
+$font-size-body2-mobile: rem(14);
+$font-size-body3-mobile: rem(12);
+$font-size-footer-mobile: rem(18);
 
 /* Font Weights */
 $font-weight-bold: 700;
@@ -61,36 +64,6 @@ $line-height-tight: 110%;
 $line-height-normal: 120%;
 $line-height-relaxed: 140%;
 $line-height-loose: 150%;
-
-/* Bounding Box Heights - Desktop */
-$bbox-h1-desktop: 102px;
-$bbox-h2-desktop: 74px;
-$bbox-sh1-desktop: 52px;
-$bbox-sh2-desktop: 44px;
-$bbox-body1-desktop: 32px;
-$bbox-body2-desktop: 24px;
-$bbox-body3-desktop: 24px;
-$bbox-footer-desktop: 38px;
-
-/* Bounding Box Heights - Tablet */
-$bbox-h1-tablet: 80px;
-$bbox-h2-tablet: 60px;
-$bbox-sh1-tablet: 38px;
-$bbox-sh2-tablet: 34px;
-$bbox-body1-tablet: 22px;
-$bbox-body2-tablet: 20px;
-$bbox-body3-tablet: 20px;
-$bbox-footer-tablet: 28px;
-
-/* Bounding Box Heights - Mobile */
-$bbox-h1-mobile: 56px;
-$bbox-h2-mobile: 38px;
-$bbox-sh1-mobile: 30px;
-$bbox-sh2-mobile: 24px;
-$bbox-body1-mobile: 20px;
-$bbox-body2-mobile: 18px;
-$bbox-body3-mobile: 18px;
-$bbox-footer-mobile: 22px;
 
 /* Breakpoints */
 $pc: 1920px;

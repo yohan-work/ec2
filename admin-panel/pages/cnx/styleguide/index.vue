@@ -41,12 +41,14 @@ definePageMeta({
 import Colors from './colors.vue'
 import Typography from './typography.vue'
 import Buttons from './buttons.vue'
+import Tabs from './tabs.vue'
 
 // 탭 섹션 정의
 const sections = [
   { id: 'colors', title: 'Colors' },
   { id: 'typography', title: 'Typography' },
-  { id: 'buttons', title: 'Buttons' }
+  { id: 'buttons', title: 'Buttons' },
+  { id: 'tabs', title: 'Tabs' }
 ]
 
 // 활성 탭을 추적
@@ -62,7 +64,8 @@ const getComponent = (sectionId) => {
   const componentMap = {
     colors: Colors,
     typography: Typography,
-    buttons: Buttons
+    buttons: Buttons,
+    tabs: Tabs
   }
   return componentMap[sectionId] || null
 }
@@ -76,7 +79,6 @@ const getComponent = (sectionId) => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
-  background: $d-white;
 }
 
 .styleguide-header {

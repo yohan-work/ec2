@@ -1,0 +1,12 @@
+/* Concentrix Functions */
+
+/* rem */
+@function rem($px) {
+  @return calc($px / 16 * 1rem);
+}
+
+/* vw - pc 기준 */
+@function vw($px) {
+  @return calc(($px * 100) / 1920 * 1vw);
+}
+

@@ -4,259 +4,235 @@
       <div class="typography-showcase">
         <!-- Typography Examples -->
         <div class="typography-examples">
-        <div class="text-example headline-01">
+        <div class="text-example">
           <h3 class="text-title">
             Headline 01
-            <button class="copy-button" @click="copyMixin('headline-01')" title="클릭하여 복사: @include headline-01">
+            <button class="copy-button" @click="copyMixin('headline-01')" title="클릭하여 복사: headline-01">
               Copy
             </button>
           </h3>
-          <div class="text-content">Title headline three lines and set black</div>
+          <div class="text-content headline-01">Title headline three lines and set black</div>
           <div class="text-specs">
             <div class="spec-group">
               <div class="spec-title">Desktop</div>
-              <div class="spec-item">Size: 88px</div>
+              <div class="spec-item">Size: 90px (5.625rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 110%</div>
-              <div class="spec-item">Bounding box: 102px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 70px</div>
+              <div class="spec-item">Size: 70px (4.375rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 110%</div>
-              <div class="spec-item">Bounding box: 80px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 48px</div>
+              <div class="spec-item">Size: 46px (2.875rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 110%</div>
-              <div class="spec-item">Bounding box: 56px</div>
             </div>
           </div>
         </div>
-        <div class="text-example headline-02">
+        <div class="text-example">
           <h3 class="text-title">
             Headline 02
-            <button class="copy-button" @click="copyMixin('headline-02')" title="클릭하여 복사: @include headline-02">
+            <button class="copy-button" @click="copyMixin('headline-02')" title="클릭하여 복사: headline-02">
               Copy
             </button>
           </h3>
-          <div class="text-content">Title headline three lines and set black</div>
+          <div class="text-content headline-02">Title headline three lines and set black</div>
           <div class="text-specs">
             <div class="spec-group">
               <div class="spec-title">Desktop</div>
-              <div class="spec-item">Size: 64px</div>
+              <div class="spec-item">Size: 64px (4rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 110%</div>
-              <div class="spec-item">Bounding box: 74px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 54px</div>
+              <div class="spec-item">Size: 56px (3.5rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 110%</div>
-              <div class="spec-item">Bounding box: 60px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 32px</div>
+              <div class="spec-item">Size: 32px (2rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 110%</div>
-              <div class="spec-item">Bounding box: 38px</div>
             </div>
           </div>
         </div>
-        <div class="text-example sub-headline-01">
+        <div class="text-example">
           <h3 class="text-title">
             Sub Headline 01
-            <button class="copy-button" @click="copyMixin('sub-headline-01')" title="클릭하여 복사: @include sub-headline-01">
+            <button class="copy-button" @click="copyMixin('sub-headline-01')" title="클릭하여 복사: sub-headline-01">
               Copy
             </button>
           </h3>
-          <div class="text-content">Sub headline size point size headline</div>
+          <div class="text-content sub-headline-01">Sub headline size point size headline</div>
           <div class="text-specs">
             <div class="spec-group">
               <div class="spec-title">Desktop</div>
-              <div class="spec-item">Size: 40px</div>
+              <div class="spec-item">Size: 42px (2.625rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
-              <div class="spec-item">Bounding box: 52px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 32px</div>
+              <div class="spec-item">Size: 32px (2rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
-              <div class="spec-item">Bounding box: 38px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 24px</div>
+              <div class="spec-item">Size: 24px (1.5rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
-              <div class="spec-item">Bounding box: 30px</div>
             </div>
           </div>
         </div>
-        <div class="text-example sub-headline-02">
+        <div class="text-example">
           <h3 class="text-title">
             Sub Headline 02
-            <button class="copy-button" @click="copyMixin('sub-headline-02')" title="클릭하여 복사: @include sub-headline-02">
+            <button class="copy-button" @click="copyMixin('sub-headline-02')" title="클릭하여 복사: sub-headline-02">
               Copy
             </button>
           </h3>
-          <div class="text-content">Default Sub Title basic sub headline</div>
+          <div class="text-content sub-headline-02">Default Sub Title basic sub headline</div>
           <div class="text-specs">
             <div class="spec-group">
               <div class="spec-title">Desktop</div>
-              <div class="spec-item">Size: 34px</div>
+              <div class="spec-item">Size: 34px (2.125rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
-              <div class="spec-item">Bounding box: 44px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 28px</div>
+              <div class="spec-item">Size: 28px (1.75rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
-              <div class="spec-item">Bounding box: 34px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 20px</div>
+              <div class="spec-item">Size: 20px (1.25rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
-              <div class="spec-item">Bounding box: 24px</div>
             </div>
           </div>
         </div>
-        <div class="text-example body-01">
+        <div class="text-example">
           <h3 class="text-title">
             Body 01
-            <button class="copy-button" @click="copyMixin('body-01')" title="클릭하여 복사: @include body-01">
+            <button class="copy-button" @click="copyMixin('body-01')" title="클릭하여 복사: body-01">
               Copy
             </button>
           </h3>
-          <div class="text-content">Used as a body copy when using title headlines.</div>
+          <div class="text-content body-01">Used as a body copy when using title headlines.</div>
           <div class="text-specs">
             <div class="spec-group">
               <div class="spec-title">Desktop</div>
-              <div class="spec-item">Size: 24px</div>
+              <div class="spec-item">Size: 21px (1.3125rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 140%</div>
-              <div class="spec-item">Bounding box: 32px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 18px</div>
+              <div class="spec-item">Size: 19px (1.1875rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 140%</div>
-              <div class="spec-item">Bounding box: 22px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 16px</div>
+              <div class="spec-item">Size: 16px (1rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 140%</div>
-              <div class="spec-item">Bounding box: 20px</div>
             </div>
           </div>
         </div>
-        <div class="text-example body-02">
+        <div class="text-example">
           <h3 class="text-title">
             Body 02
-            <button class="copy-button" @click="copyMixin('body-02')" title="클릭하여 복사: @include body-02">
+            <button class="copy-button" @click="copyMixin('body-02')" title="클릭하여 복사: body-02">
               Copy
             </button>
           </h3>
-          <div class="text-content">Used as a body copy when using title headlines.</div>
+          <div class="text-content body-02">Used as a body copy when using title headlines.</div>
           <div class="text-specs">
             <div class="spec-group">
               <div class="spec-title">Desktop</div>
-              <div class="spec-item">Size: 16px</div>
+              <div class="spec-item">Size: 18px (1.125rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 140%</div>
-              <div class="spec-item">Bounding box: 24px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 16px</div>
+              <div class="spec-item">Size: 13px (0.8125rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 140%</div>
-              <div class="spec-item">Bounding box: 20px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 14px</div>
+              <div class="spec-item">Size: 14px (0.875rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 140%</div>
-              <div class="spec-item">Bounding box: 18px</div>
             </div>
           </div>
         </div>
-        <div class="text-example body-03">
+        <div class="text-example">
           <h3 class="text-title">
             Body 03
-            <button class="copy-button" @click="copyMixin('body-03')" title="클릭하여 복사: @include body-03">
+            <button class="copy-button" @click="copyMixin('body-03')" title="클릭하여 복사: body-03">
               Copy
             </button>
           </h3>
-          <div class="text-content">This is the default body size. lineheight is font size + 10px. lineheight and bounding box height are the same.</div>
+          <div class="text-content body-03">This is the default body size. lineheight is font size + 10px. lineheight and bounding box height are the same.</div>
           <div class="text-specs">
             <div class="spec-group">
               <div class="spec-title">Desktop</div>
-              <div class="spec-item">Size: 16px</div>
+              <div class="spec-item">Size: 16px (1rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 150%</div>
-              <div class="spec-item">Bounding box: 24px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 14px</div>
+              <div class="spec-item">Size: 11px (0.6875rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 150%</div>
-              <div class="spec-item">Bounding box: 20px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 12px</div>
+              <div class="spec-item">Size: 12px (0.75rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 150%</div>
-              <div class="spec-item">Bounding box: 18px</div>
             </div>
           </div>
         </div>
-        <div class="text-example footer-nav">
+        <div class="text-example">
           <h3 class="text-title">
             Footer Nav
-            <button class="copy-button" @click="copyMixin('footer-nav')" title="클릭하여 복사: @include footer-nav">
+            <button class="copy-button" @click="copyMixin('footer-nav')" title="클릭하여 복사: footer-nav">
               Copy
             </button>
           </h3>
-          <div class="text-content">Footer navigation title 28</div>
+          <div class="text-content footer-nav">Footer navigation title 28</div>
           <div class="text-specs">
             <div class="spec-group">
               <div class="spec-title">Desktop</div>
-              <div class="spec-item">Size: 28px</div>
+              <div class="spec-item">Size: 28px (1.75rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
-              <div class="spec-item">Bounding box: 38px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 24px</div>
+              <div class="spec-item">Size: 24px (1.5rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
-              <div class="spec-item">Bounding box: 28px</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 18px</div>
+              <div class="spec-item">Size: 18px (1.125rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
-              <div class="spec-item">Bounding box: 22px</div>
             </div>
           </div>
         </div>
@@ -291,22 +267,21 @@ const showToastMessage = (message) => {
   showToast.value = true
 }
 
-// mixin 복사 기능
-const copyMixin = async (mixinName) => {
-  const mixinCode = `@include ${mixinName}`
+// 클래스 복사 기능
+const copyMixin = async (className) => {
   try {
-    await navigator.clipboard.writeText(mixinCode)
-    showToastMessage(`${mixinCode} 복사됨!`)
+    await navigator.clipboard.writeText(className)
+    showToastMessage(`${className} 복사됨!`)
   } catch (err) {
     console.error('복사 실패:', err)
     // 폴백: 텍스트 선택
     const textArea = document.createElement('textarea')
-    textArea.value = mixinCode
+    textArea.value = className
     document.body.appendChild(textArea)
     textArea.select()
     document.execCommand('copy')
     document.body.removeChild(textArea)
-    showToastMessage(`${mixinCode} 복사됨!`)
+    showToastMessage(`${className} 복사됨!`)
   }
 }
 </script>
@@ -403,10 +378,10 @@ const copyMixin = async (mixinName) => {
             font-weight: $font-weight-bold;
             color: $p-blue;
             margin-bottom: 8px;
-            padding: 4px 8px;
+            padding: 10px 8px;
             background: $n-gray;
             border-radius: 4px;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
@@ -425,47 +400,7 @@ const copyMixin = async (mixinName) => {
         }
       }
 
-      // Typography mixins 적용
-      &.headline-01 .text-content { 
-        @include headline-01;
-        height: auto; // 고정 높이 해제
-        min-height: 40px;
-      }
-      &.headline-02 .text-content { 
-        @include headline-02;
-        height: auto;
-        min-height: 35px;
-      }
-      &.sub-headline-01 .text-content { 
-        @include sub-headline-01;
-        height: auto;
-        min-height: 30px;
-      }
-      &.sub-headline-02 .text-content { 
-        @include sub-headline-02;
-        height: auto;
-        min-height: 25px;
-      }
-      &.body-01 .text-content { 
-        @include body-01;
-        height: auto;
-        min-height: 20px;
-      }
-      &.body-02 .text-content { 
-        @include body-02;
-        height: auto;
-        min-height: 18px;
-      }
-      &.body-03 .text-content { 
-        @include body-03;
-        height: auto;
-        min-height: 16px;
-      }
-      &.footer-nav .text-content { 
-        @include footer-nav;
-        height: auto;
-        min-height: 20px;
-      }
+      // 타이포그래피 클래스가 HTML에 직접 적용되므로 별도 스타일 지정 불필요
     }
   }
 

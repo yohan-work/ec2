@@ -329,7 +329,32 @@ const copyVariable = async (variable) => {
 
 @media (max-width: 768px) {
   .color-palette .color-category .color-items {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  
+  .color-item {
+    padding: 12px;
+    
+    .color-swatch {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 12px;
+    }
+    
+    .color-info {
+      gap: 6px;
+      
+      .color-name {
+        font-size: 12px;
+      }
+      
+      .color-code,
+      .color-variable {
+        font-size: 10px;
+        padding: 4px 6px;
+      }
+    }
   }
 }
 

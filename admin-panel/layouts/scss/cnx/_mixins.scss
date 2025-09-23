@@ -2,16 +2,6 @@
 
 @use './_variables' as *;
 
-/* rem */
-@function rem($px) {
-  @return calc($px / 16 * 1rem);
-}
-
-/* vw - pc 기준 */
-@function vw($px) {
-  @return calc(($px * 100) / 1920 * 1vw);
-}
-
 /* media Query */
 @mixin tablet {
   @media all and (min-width: #{$tab}){
@@ -30,16 +20,13 @@
   font-size: $font-size-h1-mobile;
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
-  height: $bbox-h1-mobile;
   
   @include tablet {
     font-size: $font-size-h1-tablet;
-    height: $bbox-h1-tablet;
   }
   
   @include desktop {
     font-size: $font-size-h1-desktop;
-    height: $bbox-h1-desktop;
   }
 }
 
@@ -47,16 +34,13 @@
   font-size: $font-size-h2-mobile;
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
-  height: $bbox-h2-mobile;
   
   @include tablet {
     font-size: $font-size-h2-tablet;
-    height: $bbox-h2-tablet;
   }
   
   @include desktop {
     font-size: $font-size-h2-desktop;
-    height: $bbox-h2-desktop;
   }
 }
 
@@ -64,16 +48,13 @@
   font-size: $font-size-sh1-mobile;
   font-weight: $font-weight-bold;
   line-height: $line-height-normal;
-  height: $bbox-sh1-mobile;
   
   @include tablet {
     font-size: $font-size-sh1-tablet;
-    height: $bbox-sh1-tablet;
   }
   
   @include desktop {
     font-size: $font-size-sh1-desktop;
-    height: $bbox-sh1-desktop;
   }
 }
 
@@ -81,16 +62,13 @@
   font-size: $font-size-sh2-mobile;
   font-weight: $font-weight-bold;
   line-height: $line-height-normal;
-  height: $bbox-sh2-mobile;
   
   @include tablet {
     font-size: $font-size-sh2-tablet;
-    height: $bbox-sh2-tablet;
   }
   
   @include desktop {
     font-size: $font-size-sh2-desktop;
-    height: $bbox-sh2-desktop;
   }
 }
 
@@ -98,16 +76,13 @@
   font-size: $font-size-body1-mobile;
   font-weight: $font-weight-bold;
   line-height: $line-height-relaxed;
-  height: $bbox-body1-mobile;
   
   @include tablet {
     font-size: $font-size-body1-tablet;
-    height: $bbox-body1-tablet;
   }
   
   @include desktop {
     font-size: $font-size-body1-desktop;
-    height: $bbox-body1-desktop;
   }
 }
 
@@ -115,16 +90,13 @@
   font-size: $font-size-body2-mobile;
   font-weight: $font-weight-regular;
   line-height: $line-height-relaxed;
-  height: $bbox-body2-mobile;
   
   @include tablet {
     font-size: $font-size-body2-tablet;
-    height: $bbox-body2-tablet;
   }
   
   @include desktop {
     font-size: $font-size-body2-desktop;
-    height: $bbox-body2-desktop;
   }
 }
 
@@ -132,16 +104,13 @@
   font-size: $font-size-body3-mobile;
   font-weight: $font-weight-regular;
   line-height: $line-height-loose;
-  height: $bbox-body3-mobile;
   
   @include tablet {
     font-size: $font-size-body3-tablet;
-    height: $bbox-body3-tablet;
   }
   
   @include desktop {
     font-size: $font-size-body3-desktop;
-    height: $bbox-body3-desktop;
   }
 }
 
@@ -149,15 +118,12 @@
   font-size: $font-size-footer-mobile;
   font-weight: $font-weight-bold;
   line-height: $line-height-normal;
-  height: $bbox-footer-mobile;
   
   @include tablet {
     font-size: $font-size-footer-tablet;
-    height: $bbox-footer-tablet;
   }
   
   @include desktop {
     font-size: $font-size-footer-desktop;
-    height: $bbox-footer-desktop;
   }
 }
