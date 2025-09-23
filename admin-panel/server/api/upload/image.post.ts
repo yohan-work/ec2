@@ -45,7 +45,9 @@ export default defineEventHandler(async event => {
     }
 
     // 업로드 디렉토리 생성
-    const uploadDir = join(process.cwd(), 'public', 'uploads', 'images')
+    // const uploadDir = join(process.cwd(), 'public', 'uploads', 'images')
+    const uploadDir = join(process.cwd(), 'uploads', 'images')
+
     await mkdir(uploadDir, { recursive: true })
 
     // 파일명 생성 (타임스탬프 + 원본명)
