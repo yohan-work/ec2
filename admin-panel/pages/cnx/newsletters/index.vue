@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div>
     <!-- 헤더 -->
     <header class="bg-white shadow">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,23 +33,19 @@
     </header>
 
     <!-- 메인 콘텐츠 -->
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-      <div class="px-4 py-6 sm:px-0">
-        <!-- 제목 및 검색 -->
+    <main>
+      <div class="newsletter">
+        <!-- 제목 및 검색 
         <div class="md:flex md:items-center md:justify-between mb-8">
           <div class="flex-1 min-w-0">
-            <h2
-              class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate"
-            >
-              뉴스레터
-            </h2>
+            
             <p class="mt-1 text-sm text-gray-500">
               총 {{ pagination.total }}개의 뉴스레터
-            </p>
-          </div>
+            </p> 
+          </div>-->
 
           <!-- 검색 -->
-          <div class="mt-4 flex md:mt-0 md:ml-4">
+          <!-- <div class="mt-4 flex md:mt-0 md:ml-4">
             <div class="relative rounded-md shadow-sm">
               <input
                 v-model="searchQuery"
@@ -74,120 +70,42 @@
                 </svg>
               </div>
             </div>
-          </div>
-        </div>
+          </div> 
+        </div> -->
 
-        <!-- 로딩 상태 -->
-        <div v-if="loading" class="text-center py-12">
-          <div
-            class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"
-          ></div>
-          <p class="mt-2 text-sm text-gray-500">뉴스레터를 불러오는 중...</p>
-        </div>
-
+        <AppTitle>
+          Newsroom
+        </AppTitle>
         <!-- 뉴스레터 목록 -->
-        <div v-else-if="newsletters.length > 0" class="space-y-6">
-          <div
-            v-for="newsletter in newsletters"
-            :key="newsletter.id"
-            :id="`newsletter-${newsletter.id}`"
-            class="bg-white shadow rounded-lg overflow-hidden hover:shadow-md transition-shadow"
-          >
-            <div class="p-6">
-              <div class="flex items-start space-x-6">
-                <!-- 썸네일 이미지 (왼쪽) -->
-                <div class="flex-shrink-0">
-                  <div class="w-80 h-56 bg-gray-200 rounded-lg overflow-hidden">
-                    <img
-                      :src="
-                        newsletter.thumbnail_image ||
-                        '/images/default-newsletter-thumbnail.png'
-                      "
-                      :alt="newsletter.title"
-                      class="w-full h-full object-cover"
-                      @error="handleImageError"
-                    />
-                  </div>
-                </div>
-
-                <!-- 텍스트 내용 (오른쪽) -->
-                <div class="flex-1 min-w-0">
-                  <NuxtLink
-                    :to="`/newsletters/${newsletter.id}`"
-                    @click="handleNewsletterClick(newsletter.id)"
-                    class="text-lg font-medium text-gray-900 hover:text-indigo-600 line-clamp-2"
-                  >
-                    {{ newsletter.title }}
-                  </NuxtLink>
-                  <p class="mt-1 text-sm text-gray-500">
-                    {{ getExcerpt(newsletter.body_html) }}
-                  </p>
-
-                  <div class="mt-4 flex items-center text-sm text-gray-500">
-                    <span>
-                      {{
-                        newsletter.admin_users?.departments?.name ||
-                        '알 수 없음'
-                      }}
-                    </span>
-                    <span class="mx-2">•</span>
-                    <span>
-                      {{ formatDate(newsletter.published_at) }}
-                    </span>
-                  </div>
-                </div>
-
-                <!-- 액션 버튼 -->
-                <div class="flex-shrink-0">
-                  <NuxtLink
-                    :to="`/newsletters/${newsletter.id}`"
-                    @click="handleNewsletterClick(newsletter.id)"
-                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-600 bg-indigo-50 hover:bg-indigo-100"
-                  >
-                    자세히 보기
-                  </NuxtLink>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 빈 상태 -->
-        <div v-else class="text-center py-12">
-          <svg
-            class="mx-auto h-12 w-12 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-            />
-          </svg>
-          <h3 class="mt-2 text-sm font-medium text-gray-900">
-            뉴스레터가 없습니다
-          </h3>
-          <p class="mt-1 text-sm text-gray-500">
-            아직 발행된 뉴스레터가 없습니다.
-          </p>
-        </div>
+        <NewsletterList
+          :newsletters="newsletters"
+          :loading="loading"
+          @newsletter-click="handleNewsletterClick"
+        />
 
         <!-- 더보기 -->
-        <div v-if="shouldShowLoadMore && !loading" class="mt-8 text-center">
-          <button
+        <div v-if="shouldShowLoadMore && !loading" class="newsletter-load-more">
+          <!-- <button
             @click="loadMoreNewsletters"
             :disabled="loadingMore"
-            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span
               v-if="loadingMore"
-              class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
             ></span>
             {{ loadingMore ? '로딩 중...' : '더보기' }}
-          </button>
+          </button> -->
+          <AppButton 
+            color="green"
+            effect="left"
+            @click="loadMoreNewsletters"
+            :disabled="loadingMore"
+          >
+          <!-- <span
+              v-if="loadingMore"
+              class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
+            ></span> -->
+          {{ loadingMore ? '로딩 중...' : '더보기' }}
+          </AppButton>
         </div>
 
         <!-- 페이지네이션 -->
@@ -271,6 +189,10 @@
 </template>
 
 <script setup>
+import AppButton from '~/components/cnx/AppButton.vue'
+import AppTitle from '~/components/cnx/AppTitle.vue'
+import NewsletterList from './NewsletterList.vue'
+
 /**
  * 뉴스레터 목록 페이지
  *
@@ -464,31 +386,6 @@ const getPageNumbers = () => {
   return range
 }
 
-// HTML 내용 요약
-const getExcerpt = html => {
-  const text = html.replace(/<[^>]*>/g, '')
-  return text.length > 200 ? text.substring(0, 200) + '...' : text
-}
-
-// 이미지 로딩 실패 시 기본 이미지 표시
-const handleImageError = event => {
-  // 기본 PNG 이미지로 대체
-  event.target.src = '/images/default-newsletter-thumbnail.png'
-}
-
-// 날짜 포맷 (한국 시간대로 표시)
-const formatDate = dateString => {
-  if (!dateString) return ''
-  return new Date(dateString).toLocaleString('ko-KR', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: 'Asia/Seoul',
-  })
-}
-
 // 게시글 클릭 핸들러
 const handleNewsletterClick = newsletterId => {
   scrollPosition.value = window.scrollY
@@ -553,3 +450,25 @@ useHead({
   meta: [{ name: 'description', content: '최신 뉴스레터 목록을 확인하세요' }],
 })
 </script>
+
+<style lang="scss" scoped>
+@use '~/layouts/scss/cnx.scss' as *;
+@use '~/layouts/scss/cnx/_variables' as *;
+@use '~/layouts/scss/cnx/_mixins' as *;
+@use '~/layouts/scss/cnx/_functions' as *;
+
+.newsletter {
+  width: min(calc(100% - rem(48)), rem(1320));
+  margin: 0 auto rem(200);
+  .newsletter-load-more {
+    text-align: center;
+    margin: rem(60) 0 rem(100);
+    @include tablet {
+      margin: rem(80) 0 rem(160);
+    }
+    @include desktop {
+      margin: rem(120) 0 rem(200);
+    }
+  }
+}
+</style>
