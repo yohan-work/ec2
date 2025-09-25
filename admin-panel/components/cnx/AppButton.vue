@@ -37,7 +37,6 @@ const props = defineProps<{
   variant?: 'primary' | 'arrow' | 'circle'
   color?: 'default' | 'green' | 'teal'
   effect?: 'left' | 'right'
-  hoverDuration?: number // hover 애니메이션 지속시간 (ms)
   disabled?: boolean
   href?: string
   target?: '_blank' | '_self' | '_parent' | '_top'
@@ -103,6 +102,7 @@ $button-colors: (
 
 // 공통 버튼 스타일 mixin
 @mixin button-base {
+  display: inline-block;
   min-width: rem(145);
   padding: rem(9.5) rem(24);
   border: rem(2) solid $d-black;
@@ -110,18 +110,18 @@ $button-colors: (
   position: relative;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.75s;
+  transition: all 0.35s;
 }
 
 // 공통 내부 요소 스타일 mixin
 @mixin button-content {
   position: relative;
   z-index: 1;
-  transition: all 0.75s;
+  transition: all 0.35s;
 }
 
 // 변수들
-$skew-angle: 30deg;
+$skew-angle: -30deg;
 $element-width: 120%; // ::before width
 $skew-offset: 10%; // skew에 따른 기하학적 오프셋
 
@@ -160,7 +160,7 @@ a {
     width: 120%;
     height: 120%;
     background: $d-black;
-    transition: all 0.75s;
+    transition: all 0.35s;
   }
 
   // 방향별 초기 위치 설정 (수학적 계산)
@@ -184,7 +184,7 @@ a {
   // 버튼 내부 텍스트 (일반 버튼용)
   .button-text {
     @include button-content;
-    display: inline-block;
+    display: block;
     font-weight: 700;
     font-size: 14px;
     color: $d-black;
@@ -219,9 +219,9 @@ a {
         width: rem(8);
         height: rem(8);
         background-color: currentColor;
-        -webkit-mask: url('~/components/assets/concentrix/link-arrow.svg') no-repeat center;
+        -webkit-mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
         -webkit-mask-size: contain;
-        mask: url('~/components/assets/concentrix/link-arrow.svg') no-repeat center;
+        mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
         mask-size: contain;
         transition: all 0.4s;
         @include tablet {
