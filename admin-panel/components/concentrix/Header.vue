@@ -45,7 +45,7 @@ header {
   }
   .gnb-container {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     width: 100%;
     @include desktop(padding, 21px 0 26px);

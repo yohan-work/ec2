@@ -24,15 +24,7 @@ defineOptions({
 @use './scss/mixins.scss' as *;
 
 .concentrix-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
-  background: #ffffff;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-main {
-  flex: 1;
 }
 footer {
   width: 100%;
