@@ -179,8 +179,12 @@
     @close="closeDeleteModal"
     @confirm="confirmDelete"
     title="직원 삭제"
-    message="정말로 이 직원을 삭제하시겠습니까?"
-    warning="삭제된 데이터는 복구할 수 없습니다."
+    :message="
+      deletingEmployee
+        ? `${deletingEmployee.name}님의 직원 정보를 삭제하시겠습니까?`
+        : '직원 정보를 삭제하시겠습니까?'
+    "
+    warning="삭제한 데이터는 복구할 수 없습니다."
     confirm-text="삭제"
     :loading="deleting"
     loading-text="삭제 중..."
@@ -230,6 +234,7 @@ const selectedEmployee = ref(null)
 // 삭제 확인 모달
 const showDeleteModal = ref(false)
 const deletingEmployeeId = ref(null)
+const deletingEmployee = ref(null) // 삭제할 직원 정보
 const deleting = ref(false)
 
 // 검색 및 필터링
@@ -403,6 +408,7 @@ const handleEmployeeSubmit = async formData => {
 // 직원 삭제 (모달 열기)
 const deleteEmployee = employee => {
   deletingEmployeeId.value = employee.id
+  deletingEmployee.value = employee
   showDeleteModal.value = true
 }
 
@@ -410,6 +416,7 @@ const deleteEmployee = employee => {
 const closeDeleteModal = () => {
   showDeleteModal.value = false
   deletingEmployeeId.value = null
+  deletingEmployee.value = null
 }
 
 // 삭제 확인
