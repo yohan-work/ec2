@@ -22,7 +22,7 @@
       <!-- 썸네일 이미지 -->
       <figure class="newsletter-thumbnail">
         <img
-          :src="newsletter.thumbnail_image || '/images/default_newsletter_thumbnail.jpg'"
+          :src="newsletter.thumbnail_image || '/images/default-newsletter-thumbnail.jpg'"
           :alt="newsletter.title"
           @error="handleImageError"
         />
@@ -46,7 +46,7 @@ const emit = defineEmits(['newsletter-click'])
 
 // 이미지 로딩 실패 시 기본 이미지 표시됩니다.
 const handleImageError = (event) => {
-  event.target.src = '/images/default_newsletter_thumbnail.jpg'
+  event.target.src = '/images/default-newsletter-thumbnail.jpg'
 }
 
 // 날짜 포맷 (YYYY.MM.DD 형태로 출력합니다.)
@@ -57,14 +57,6 @@ const formatDate = (dateString) => {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}.${month}.${day}`;
-  // return new Date(dateString).toLocaleString('ko-KR', {
-  //   year: 'numeric',
-  //   month: 'short',
-  //   day: 'numeric',
-  //   hour: '2-digit',
-  //   minute: '2-digit',
-  //   timeZone: 'Asia/Seoul',
-  // })
 }
 
 // 게시글 클릭 핸들러
