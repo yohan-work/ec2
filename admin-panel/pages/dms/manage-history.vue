@@ -2,10 +2,44 @@
   <TitleArea title="변경 히스토리"> </TitleArea>
 
   <ContentsArea>
-    <MainContainer>
-      <div class="filter-container">
+    <MainContainer :round="true">
+      <FilterContainer>
         <!-- 왼쪽: 날짜 관련 필터들 -->
-        <div class="filter-left">
+        <div class="filter-group">
+          <!-- 빠른 날짜 선택 버튼들 -->
+          <div class="quick-date-buttons">
+            <Button
+              variant="outline"
+              :size="38"
+              :padding="16"
+              @click="setToday"
+              :class="{ active: isTodaySelected }"
+            >
+              오늘
+            </Button>
+            <Button
+              variant="outline"
+              :size="38"
+              :padding="16"
+              @click="setThisWeek"
+              :class="{ active: isThisWeekSelected }"
+            >
+              이번주
+            </Button>
+            <Button
+              variant="outline"
+              :size="38"
+              :padding="16"
+              @click="setThisMonth"
+              :class="{ active: isThisMonthSelected }"
+            >
+              이번달
+            </Button>
+          </div>
+        </div>
+
+        <!-- 오른쪽: 나머지 필터들 -->
+        <div class="filter-group">
           <!-- 시작날짜 -->
           <Input
             v-model="startDate"
@@ -15,6 +49,8 @@
             @change="handleDateChange"
           />
 
+          <span class="filter-separator">~</span>
+
           <!-- 끝날짜 -->
           <Input
             v-model="endDate"
@@ -23,38 +59,8 @@
             class="date-input"
             @change="handleDateChange"
           />
-
-          <!-- 빠른 날짜 선택 버튼들 -->
-          <div class="quick-date-buttons">
-            <Button
-              @click="setToday"
-              variant="outline"
-              size="sm"
-              :class="{ active: isTodaySelected }"
-            >
-              오늘
-            </Button>
-            <Button
-              @click="setThisWeek"
-              variant="outline"
-              size="sm"
-              :class="{ active: isThisWeekSelected }"
-            >
-              이번주
-            </Button>
-            <Button
-              @click="setThisMonth"
-              variant="outline"
-              size="sm"
-              :class="{ active: isThisMonthSelected }"
-            >
-              이번달
-            </Button>
-          </div>
         </div>
-
-        <!-- 오른쪽: 나머지 필터들 -->
-        <div class="filter-right">
+        <div class="filter-group">
           <!-- 작업내용 선택 -->
           <Select
             v-model="selectedAction"
@@ -62,7 +68,8 @@
             placeholder="작업내용"
             class="action-select"
           />
-
+        </div>
+        <div class="filter-group">
           <!-- 작업자 이름 입력 -->
           <Input
             v-model="adminName"
@@ -70,42 +77,49 @@
             class="admin-input"
             @input="handleAdminNameChange"
           />
-
+        </div>
+        <div class="filter-group">
           <!-- 검색 버튼 -->
           <Button
+            variant="primary"
+            :size="38"
+            :padding="32"
             @click="searchHistories"
             :disabled="isLoading"
-            variant="default"
-            size="sm"
-            class="search-btn"
           >
             검색
           </Button>
-
-          <!-- 초기화 버튼 -->
+        </div>
+        <div class="filter-info" v-if="allHistories > 0">
+          <div>
+            총 {{ allHistories }}건 중 <strong>{{ histories.length }}</strong
+            >건 표시
+          </div>
           <Button
-            @click="resetFilters"
+            v-if="isSearchExecuted"
             variant="outline"
-            size="sm"
-            class="reset-btn"
+            :size="24"
+            @click="resetFilters"
           >
-            초기화
+            필터 해제
+            <div v-html="resetSvg"></div>
           </Button>
         </div>
-      </div>
+      </FilterContainer>
 
       <!-- 히스토리 테이블 -->
       <div class="table-section">
-        <div class="table-header">
-          <div class="pagination-info">
-            총 {{ pagination.total }}건 ({{ pagination.page }}/{{
-              pagination.totalPages
-            }}
-            페이지)
-          </div>
+        <div class="table-header"></div>
+
+        <div v-if="isLoading" class="loading-container">
+          <Loading />
         </div>
 
-        <Table>
+        <div v-else-if="histories.length === 0" class="empty-container">
+          <p>등록된 히스토리가 없습니다.</p>
+        </div>
+
+        <Table v-else>
           <thead>
             <tr>
               <th>작업자</th>
@@ -197,6 +211,7 @@
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
 import MainContainer from '~/components/dms/MainContainer.vue'
+import FilterContainer from '~/components/dms/FilterContainer.vue'
 import Table from '~/components/ui/Table.vue'
 import Button from '~/components/ui/Button.vue'
 import Select from '~/components/ui/Select.vue'
@@ -204,7 +219,7 @@ import Input from '~/components/ui/Input.vue'
 import Badge from '~/components/ui/Badge.vue'
 import Loading from '~/components/ui/Loading.vue'
 import { useYear } from '~/composables/useYear'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 
 definePageMeta({
   layout: 'dms',
@@ -224,12 +239,18 @@ const isThisMonthSelected = ref(false)
 
 // 페이지 로드 시 초기화
 onMounted(async () => {
-  await Promise.all([loadHistories(), loadStatistics()])
+  await Promise.all([
+    loadAllHistoriesCount(),
+    loadHistories(),
+    loadStatistics(),
+  ])
 })
 
 // 데이터 상태
 const histories = ref([])
+const allHistories = ref(0) // 전체 히스토리 갯수 (필터링 전)
 const isLoading = ref(false)
+const isSearchExecuted = ref(false) // 검색이 실행되었는지 확인
 const totalCount = ref(0)
 const todayCount = ref(0)
 const weekCount = ref(0)
@@ -259,6 +280,18 @@ const handleDateChange = () => {
 const handleAdminNameChange = () => {
   // 실시간 검색을 원한다면 여기에 debounce 로직 추가 가능
 }
+
+// 필터 해제 아이콘
+const resetSvg = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12.6874 6.125C12.6863 7.05295 12.3173 7.9426 11.6611 8.59876C11.005 9.25491 10.1153 9.62399 9.18736 9.625H2.80587L4.68439 11.503C4.76648 11.5851 4.8126 11.6964 4.8126 11.8125C4.8126 11.9286 4.76648 12.0399 4.68439 12.122C4.60229 12.2041 4.49095 12.2502 4.37486 12.2502C4.25876 12.2502 4.14742 12.2041 4.06532 12.122L1.44032 9.49703C1.39965 9.4564 1.36738 9.40815 1.34536 9.35504C1.32334 9.30193 1.31201 9.24499 1.31201 9.1875C1.31201 9.13001 1.32334 9.07308 1.34536 9.01996C1.36738 8.96685 1.39965 8.9186 1.44032 8.87797L4.06532 6.25297C4.14742 6.17088 4.25876 6.12476 4.37486 6.12476C4.49095 6.12476 4.60229 6.17088 4.68439 6.25297C4.76648 6.33506 4.8126 6.4464 4.8126 6.5625C4.8126 6.6786 4.76648 6.78994 4.68439 6.87203L2.80587 8.75H9.18736C9.88355 8.75 10.5512 8.47344 11.0435 7.98116C11.5358 7.48887 11.8124 6.82119 11.8124 6.125C11.8124 5.42881 11.5358 4.76113 11.0435 4.26884C10.5512 3.77656 9.88355 3.5 9.18736 3.5H4.37486C4.25882 3.5 4.14754 3.45391 4.0655 3.37186C3.98345 3.28981 3.93736 3.17853 3.93736 3.0625C3.93736 2.94647 3.98345 2.83519 4.0655 2.75314C4.14754 2.67109 4.25882 2.625 4.37486 2.625H9.18736C10.1153 2.62601 11.005 2.99509 11.6611 3.65125C12.3173 4.3074 12.6863 5.19705 12.6874 6.125Z" fill="#3C3C3C"></path>
+</svg>`
+
+// 필터가 적용되었는지 확인
+const isFilterApplied = computed(() => {
+  return (
+    startDate.value || endDate.value || selectedAction.value || adminName.value
+  )
+})
 
 // 빠른 날짜 선택 함수들
 const setToday = () => {
@@ -305,6 +338,7 @@ const setThisMonth = () => {
 
 // 검색 함수
 const searchHistories = () => {
+  isSearchExecuted.value = true
   pagination.value.page = 1
   loadHistories()
 }
@@ -318,11 +352,24 @@ const resetFilters = () => {
   isTodaySelected.value = false
   isThisWeekSelected.value = false
   isThisMonthSelected.value = false
+  isSearchExecuted.value = false
   pagination.value.page = 1
   loadHistories()
 }
 
 // 히스토리 데이터 로드
+// 전체 히스토리 갯수 가져오기 (필터링 전)
+const loadAllHistoriesCount = async () => {
+  try {
+    const { data } = await $fetch('/api/dms/history?page=1&limit=1')
+    if (data) {
+      allHistories.value = data.pagination.total
+    }
+  } catch (error) {
+    console.error('전체 히스토리 갯수 조회 오류:', error)
+  }
+}
+
 const loadHistories = async () => {
   try {
     isLoading.value = true
@@ -477,84 +524,6 @@ const formatDateTime = dateString => {
 </script>
 
 <style lang="scss" scoped>
-.filter-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px;
-  width: calc(100% + 15px);
-  background: #f8f9fa;
-  border-radius: 8px;
-  margin-bottom: 24px;
-
-  .filter-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    .date-input {
-      width: 160px;
-    }
-
-    .quick-date-buttons {
-      display: flex;
-      gap: 8px;
-      margin-left: 8px;
-
-      .active {
-        background-color: #e3f2fd;
-        border-color: #2196f3;
-        color: #1976d2;
-      }
-    }
-  }
-
-  .filter-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    .action-select {
-      width: 120px;
-    }
-
-    .admin-input {
-      width: 140px;
-    }
-
-    .search-btn {
-      background-color: #1976d2;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: #1565c0;
-      }
-
-      &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-      }
-    }
-
-    .reset-btn {
-      background-color: white;
-      color: #666;
-      border: 1px solid #ddd;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: #f5f5f5;
-      }
-    }
-  }
-}
-
 .table-section {
   .table-header {
     display: flex;

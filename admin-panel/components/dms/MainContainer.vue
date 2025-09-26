@@ -1,10 +1,17 @@
 <template>
-  <div class="main-container">
+  <div class="main-container" :class="{ 'main-container--round': round }">
     <slot />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+defineProps({
+  round: {
+    type: Boolean,
+    default: false,
+  },
+})
+</script>
 
 <style lang="scss" scoped>
 .main-container {
@@ -20,5 +27,10 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+
+  &--round {
+    border-radius: 20px 20px 0px 0px;
+    border-color: rgba(0, 0, 0, 0.1);
+  }
 }
 </style>

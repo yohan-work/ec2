@@ -77,40 +77,18 @@
   </Modal>
 
   <!-- 삭제 확인 모달 -->
-  <Modal
+  <ConfirmModal
     :show="showDeleteModal"
     @close="closeDeleteModal"
-    class="delete-modal"
-    :title="'고객사 삭제'"
-  >
-    <div class="delete-content">
-      <p class="delete-message">정말로 이 고객사를 삭제하시겠습니까?</p>
-      <p class="delete-warning">삭제된 데이터는 복구할 수 없습니다.</p>
-    </div>
-
-    <template #footer>
-      <div class="modal-actions">
-        <Button
-          variant="outline-dark"
-          :size="36"
-          :padding="40"
-          @click="closeDeleteModal"
-          :disabled="deleting"
-        >
-          취소
-        </Button>
-        <Button
-          variant="primary"
-          :size="36"
-          :padding="40"
-          @click="confirmDelete"
-          :disabled="deleting"
-        >
-          {{ deleting ? '삭제 중...' : '삭제' }}
-        </Button>
-      </div>
-    </template>
-  </Modal>
+    @confirm="confirmDelete"
+    title="고객사 삭제"
+    message="정말로 이 고객사를 삭제하시겠습니까?"
+    warning="삭제된 데이터는 복구할 수 없습니다."
+    confirm-text="삭제"
+    :loading="deleting"
+    loading-text="삭제 중..."
+    modal-class="delete-modal"
+  />
 </template>
 
 <script setup>
@@ -122,6 +100,7 @@ import ManagementCard from '~/components/dms/ManagementCard.vue'
 import Modal from '~/components/ui/Modal.vue'
 import Input from '~/components/ui/Input.vue'
 import Loading from '~/components/ui/Loading.vue'
+import ConfirmModal from '~/components/ui/ConfirmModal.vue'
 import { ref, onMounted } from 'vue'
 
 definePageMeta({
@@ -406,59 +385,6 @@ onMounted(() => {
     font-weight: 700;
     color: #000;
     margin-bottom: 8px;
-  }
-
-  .modal-actions {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-  }
-}
-
-// 삭제 모달 커스텀 스타일
-:deep(.delete-modal) {
-  .modal-content {
-    border-radius: 8px;
-    border: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  .modal-header {
-    border-bottom: 1px solid #e9ecef;
-    padding: 20px 24px 16px;
-  }
-
-  .modal-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-    margin: 0;
-  }
-
-  .modal-body {
-    padding: 24px;
-  }
-
-  .modal-footer {
-    border-top: 1px solid #e9ecef;
-    padding: 16px 24px 20px;
-  }
-
-  .delete-content {
-    text-align: center;
-  }
-
-  .delete-message {
-    font-size: 16px;
-    color: #333;
-    margin: 0 0 8px 0;
-    font-weight: 500;
-  }
-
-  .delete-warning {
-    font-size: 14px;
-    color: #666;
-    margin: 0;
   }
 
   .modal-actions {

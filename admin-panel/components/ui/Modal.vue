@@ -128,10 +128,6 @@ const handleBackdropClick = () => {
     height: 100%;
   }
 
-  #employeeModal & {
-    max-width: 876px;
-  }
-
   // 중앙 정렬 (기본값으로 설정)
   display: flex;
   align-items: center;
@@ -214,13 +210,20 @@ const handleBackdropClick = () => {
       margin-top: 40px;
     }
 
-    // login form
-    .username-input {
-      margin-bottom: 24px;
+    :deep(.form-group + .form-group) {
+      margin-top: 20px;
     }
-
-    .password-input {
-      margin-bottom: 36px;
+    :deep(.checkbox-group + .form-group) {
+      margin-top: 20px;
+    }
+    :deep(.radio-group + .form-group) {
+      margin-top: 20px;
+    }
+    :deep(.form-group + .radio-group:has(.radio-label)) {
+      margin-top: 20px;
+    }
+    :deep(.form-group + .checkbox-group:has(.checkbox-label)) {
+      margin-top: 20px;
     }
   }
 
@@ -240,333 +243,333 @@ const handleBackdropClick = () => {
 }
 
 // 기본 alert, confirm 모달
-#globalModal {
-  .modal-body {
-    color: #000;
-    font-size: 14px;
-    line-height: 20px;
-    text-align: left;
-    .d-flex {
-      padding: 0;
-      border: 0 !important;
-      margin-top: 32px;
-    }
-  }
-}
-// 로그인 모달
-#loginModal {
-  // 편집 불가 메시지
-  .login-edit-blocked {
-    background: #fff3cd;
-    border: 1px solid #ffc107;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    .blocked-icon {
-      color: #856404;
-      font-size: 1.2em;
-      margin-right: 10px;
-    }
-    .blocked-text {
-      color: #856404;
-      font-weight: 500;
-    }
-    .blocked-admin {
-      font-weight: bold;
-      color: #495057;
-    }
-    .blocked-time {
-      font-size: 0.9em;
-      color: #6c757d;
-      margin-top: 5px;
-    }
-  }
-}
-// 시간 만료 경고 모달
-#timeoutWarningModal {
-  .modal-content {
-    padding-top: 32px;
-    .modal-header .modal-title {
-      color: #000;
-      text-align: center;
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 36px;
-    }
-    .modal-body {
-      color: #000;
-      font-size: 14px;
-      line-height: 20px;
-      text-align: left;
-      .d-flex {
-        padding: 0;
-        border: 0 !important;
-        margin-top: 32px;
-      }
-      .timer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        .time {
-          color: #cd2323;
-          font-size: 20px;
-          font-weight: 700;
-          line-height: 28px;
-        }
-      }
-    }
-  }
-}
-#employeeModal {
-  .photo-input {
-    position: relative;
-    padding: 2rem;
-    background: #f8f9fa;
-    border: 1.5px dashed #dee2e6;
-    border-radius: 12px;
-    text-align: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    &:hover {
-      border-color: #007bff;
-      background: #f0f8ff;
-    }
-    &.dragover {
-      border-color: #007bff;
-      background: #e3f2fd;
-      transform: scale(1.02);
-    }
-    input[type='file'] {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
-    }
-    &-content {
-      pointer-events: none;
-    }
-    &-text {
-      font-size: 16px;
-      line-height: 22px;
-      font-weight: 700;
-      color: #3c3c3c;
-      margin-bottom: 4px;
-    }
-    &-hint {
-      font-size: 12px;
-      line-height: 16px;
-      color: #666;
-      margin-bottom: 16px;
-    }
-  }
+// #globalModal {
+//   .modal-body {
+//     color: #000;
+//     font-size: 14px;
+//     line-height: 20px;
+//     text-align: left;
+//     .d-flex {
+//       padding: 0;
+//       border: 0 !important;
+//       margin-top: 32px;
+//     }
+//   }
+// }
+// // 로그인 모달
+// #loginModal {
+//   // 편집 불가 메시지
+//   .login-edit-blocked {
+//     background: #fff3cd;
+//     border: 1px solid #ffc107;
+//     border-radius: 5px;
+//     padding: 15px;
+//     margin-bottom: 20px;
+//     .blocked-icon {
+//       color: #856404;
+//       font-size: 1.2em;
+//       margin-right: 10px;
+//     }
+//     .blocked-text {
+//       color: #856404;
+//       font-weight: 500;
+//     }
+//     .blocked-admin {
+//       font-weight: bold;
+//       color: #495057;
+//     }
+//     .blocked-time {
+//       font-size: 0.9em;
+//       color: #6c757d;
+//       margin-top: 5px;
+//     }
+//   }
+// }
+// // 시간 만료 경고 모달
+// #timeoutWarningModal {
+//   .modal-content {
+//     padding-top: 32px;
+//     .modal-header .modal-title {
+//       color: #000;
+//       text-align: center;
+//       font-size: 24px;
+//       font-weight: 700;
+//       line-height: 36px;
+//     }
+//     .modal-body {
+//       color: #000;
+//       font-size: 14px;
+//       line-height: 20px;
+//       text-align: left;
+//       .d-flex {
+//         padding: 0;
+//         border: 0 !important;
+//         margin-top: 32px;
+//       }
+//       .timer {
+//         display: flex;
+//         flex-direction: column;
+//         align-items: center;
+//         justify-content: center;
+//         gap: 6px;
+//         .time {
+//           color: #cd2323;
+//           font-size: 20px;
+//           font-weight: 700;
+//           line-height: 28px;
+//         }
+//       }
+//     }
+//   }
+// }
+// #employeeModal {
+//   .photo-input {
+//     position: relative;
+//     padding: 2rem;
+//     background: #f8f9fa;
+//     border: 1.5px dashed #dee2e6;
+//     border-radius: 12px;
+//     text-align: center;
+//     transition: all 0.3s ease;
+//     cursor: pointer;
+//     &:hover {
+//       border-color: #007bff;
+//       background: #f0f8ff;
+//     }
+//     &.dragover {
+//       border-color: #007bff;
+//       background: #e3f2fd;
+//       transform: scale(1.02);
+//     }
+//     input[type='file'] {
+//       position: absolute;
+//       top: 0;
+//       left: 0;
+//       width: 100%;
+//       height: 100%;
+//       opacity: 0;
+//       cursor: pointer;
+//     }
+//     &-content {
+//       pointer-events: none;
+//     }
+//     &-text {
+//       font-size: 16px;
+//       line-height: 22px;
+//       font-weight: 700;
+//       color: #3c3c3c;
+//       margin-bottom: 4px;
+//     }
+//     &-hint {
+//       font-size: 12px;
+//       line-height: 16px;
+//       color: #666;
+//       margin-bottom: 16px;
+//     }
+//   }
 
-  .photo-preview {
-    position: relative;
-    display: flex;
-    gap: 16px;
-    text-align: center;
-    padding: 16px 10px 16px 12px;
-    border-radius: 4px;
-    border: 1px solid #cbcbcb;
-    background: #fafafa;
-    transition: all 0.3s ease;
-    &:hover {
-      border-color: #007bff;
-      background: #f0f8ff;
-    }
-    &-img {
-      display: flex;
-      width: 100px;
-      height: 120px;
-      padding: 0;
-      align-items: center;
-      border-radius: 8.333px;
-      overflow: hidden;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-    &-txt {
-      flex: 1;
-      text-align: left;
-      position: relative;
-      &-eyebrow {
-        color: #3c3c3c;
-        font-size: 14px;
-        line-height: 20px;
-        font-weight: 400;
-        text-align: left;
-      }
-      &-desc {
-        color: #666;
-        font-size: 12px;
-        line-height: 16px;
-        font-weight: 400;
-        padding-top: 4px;
-        text-align: left;
-      }
-      &-button {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-      }
-    }
-    .remove-photo-btn {
-      position: absolute;
-      top: 16px;
-      right: 10px;
-      border: 0;
-      background: transparent;
-      padding: 0;
-      cursor: pointer;
-      width: 17px;
-      height: 17px;
-      line-height: 0;
-      svg {
-        width: 100%;
-        height: 100%;
-      }
-    }
-  }
-}
-#jobRoleModal {
-  .color-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 12px;
-    .color-option {
-      width: 36px;
-      height: 36px;
-      position: relative;
-      border: 2px solid transparent;
-      border-radius: 6px;
-      input[type='radio'] {
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0.5;
-        z-index: -1;
-      }
-      &:has(input[type='radio']:checked) {
-        border: 2px solid #000;
-      }
-      &:has(input[type='radio']:disabled) {
-        &::after {
-          content: '';
-          position: absolute;
-          top: calc(50% - 1px);
-          right: calc(50% - 1px);
-          width: 141.421356%;
-          height: 2px;
-          background: #fff;
-          transform: rotate(-45deg) translate(15px, 15px);
-        }
-      }
-      .color-chip {
-        width: 32px;
-        height: 32px;
-        border-radius: 4px;
-        border: 2px solid #000;
-        background: #999;
-        color: #000;
-      }
-    }
-  }
-}
-#changePasswordModal {
-  // 오류 메시지 스타일
-  .error-message {
-    color: #cd2323;
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 400;
-    margin-top: 6px;
-    min-height: 16px;
-    display: none;
+//   .photo-preview {
+//     position: relative;
+//     display: flex;
+//     gap: 16px;
+//     text-align: center;
+//     padding: 16px 10px 16px 12px;
+//     border-radius: 4px;
+//     border: 1px solid #cbcbcb;
+//     background: #fafafa;
+//     transition: all 0.3s ease;
+//     &:hover {
+//       border-color: #007bff;
+//       background: #f0f8ff;
+//     }
+//     &-img {
+//       display: flex;
+//       width: 100px;
+//       height: 120px;
+//       padding: 0;
+//       align-items: center;
+//       border-radius: 8.333px;
+//       overflow: hidden;
+//       img {
+//         width: 100%;
+//         height: 100%;
+//         object-fit: cover;
+//       }
+//     }
+//     &-txt {
+//       flex: 1;
+//       text-align: left;
+//       position: relative;
+//       &-eyebrow {
+//         color: #3c3c3c;
+//         font-size: 14px;
+//         line-height: 20px;
+//         font-weight: 400;
+//         text-align: left;
+//       }
+//       &-desc {
+//         color: #666;
+//         font-size: 12px;
+//         line-height: 16px;
+//         font-weight: 400;
+//         padding-top: 4px;
+//         text-align: left;
+//       }
+//       &-button {
+//         position: absolute;
+//         bottom: 0;
+//         left: 0;
+//       }
+//     }
+//     .remove-photo-btn {
+//       position: absolute;
+//       top: 16px;
+//       right: 10px;
+//       border: 0;
+//       background: transparent;
+//       padding: 0;
+//       cursor: pointer;
+//       width: 17px;
+//       height: 17px;
+//       line-height: 0;
+//       svg {
+//         width: 100%;
+//         height: 100%;
+//       }
+//     }
+//   }
+// }
+// #jobRoleModal {
+//   .color-options {
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 8px 12px;
+//     .color-option {
+//       width: 36px;
+//       height: 36px;
+//       position: relative;
+//       border: 2px solid transparent;
+//       border-radius: 6px;
+//       input[type='radio'] {
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         opacity: 0.5;
+//         z-index: -1;
+//       }
+//       &:has(input[type='radio']:checked) {
+//         border: 2px solid #000;
+//       }
+//       &:has(input[type='radio']:disabled) {
+//         &::after {
+//           content: '';
+//           position: absolute;
+//           top: calc(50% - 1px);
+//           right: calc(50% - 1px);
+//           width: 141.421356%;
+//           height: 2px;
+//           background: #fff;
+//           transform: rotate(-45deg) translate(15px, 15px);
+//         }
+//       }
+//       .color-chip {
+//         width: 32px;
+//         height: 32px;
+//         border-radius: 4px;
+//         border: 2px solid #000;
+//         background: #999;
+//         color: #000;
+//       }
+//     }
+//   }
+// }
+// #changePasswordModal {
+//   // 오류 메시지 스타일
+//   .error-message {
+//     color: #cd2323;
+//     font-size: 12px;
+//     line-height: 16px;
+//     font-weight: 400;
+//     margin-top: 6px;
+//     min-height: 16px;
+//     display: none;
 
-    &.show {
-      display: block;
-    }
-  }
-  // 비밀번호 입력 필드 스타일
-}
-#seatAssignmentInfo {
-  .assignment-info {
-    .employee-card {
-      border-radius: 12px;
-      border: 1.5px solid #cbcbcb;
-      background: #ebebeb;
-      padding: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .employee-left-area {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        height: 36px;
-        .employee-name {
-          color: #000;
-          font-size: 16px;
-          line-height: 22px;
-          font-weight: 700;
-          padding-right: 12px;
-        }
-        .employee-details {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-          justify-content: flex-start;
-          align-items: flex-start;
-          padding-left: 12px;
-          border-left: 1px solid #ccc;
-          color: #000;
-          font-size: 12px;
-          line-height: 16px;
-          font-weight: 400;
-        }
-      }
-      .employee-right-area {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        height: 36px;
-        button {
-          display: flex;
-          gap: 4px;
-          background: transparent !important;
-          color: #000;
-          font-size: 12px;
-          line-height: 16px;
-          font-weight: 400;
-          padding: 0;
-          margin: 0;
-          span {
-            display: block;
-            font: inherit;
-            color: inherit;
-            line-height: inherit;
-          }
-          svg {
-            width: 16px;
-            height: 16px;
-            display: block;
-            path {
-              stroke: #000;
-            }
-          }
-        }
-      }
-    }
-  }
-}
+//     &.show {
+//       display: block;
+//     }
+//   }
+//   // 비밀번호 입력 필드 스타일
+// }
+// #seatAssignmentInfo {
+//   .assignment-info {
+//     .employee-card {
+//       border-radius: 12px;
+//       border: 1.5px solid #cbcbcb;
+//       background: #ebebeb;
+//       padding: 16px;
+//       display: flex;
+//       justify-content: space-between;
+//       align-items: center;
+//       .employee-left-area {
+//         display: flex;
+//         justify-content: flex-start;
+//         align-items: center;
+//         height: 36px;
+//         .employee-name {
+//           color: #000;
+//           font-size: 16px;
+//           line-height: 22px;
+//           font-weight: 700;
+//           padding-right: 12px;
+//         }
+//         .employee-details {
+//           display: flex;
+//           flex-direction: column;
+//           gap: 4px;
+//           justify-content: flex-start;
+//           align-items: flex-start;
+//           padding-left: 12px;
+//           border-left: 1px solid #ccc;
+//           color: #000;
+//           font-size: 12px;
+//           line-height: 16px;
+//           font-weight: 400;
+//         }
+//       }
+//       .employee-right-area {
+//         display: flex;
+//         justify-content: flex-end;
+//         align-items: center;
+//         height: 36px;
+//         button {
+//           display: flex;
+//           gap: 4px;
+//           background: transparent !important;
+//           color: #000;
+//           font-size: 12px;
+//           line-height: 16px;
+//           font-weight: 400;
+//           padding: 0;
+//           margin: 0;
+//           span {
+//             display: block;
+//             font: inherit;
+//             color: inherit;
+//             line-height: inherit;
+//           }
+//           svg {
+//             width: 16px;
+//             height: 16px;
+//             display: block;
+//             path {
+//               stroke: #000;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 .common-alert {
   position: fixed;
   bottom: 30px;
