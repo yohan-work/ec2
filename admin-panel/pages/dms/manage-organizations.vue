@@ -2,11 +2,15 @@
   <TitleArea title="조직 관리">
     <template #right>
       <div class="right-content">
-        <Button variant="blue" :size="38">
+        <Button variant="blue" :size="38" @click="openModal('headquarters')">
+          <div v-html="addSvg"></div>
+          신규 본부 추가
+        </Button>
+        <Button variant="blue" :size="38" @click="openModal('group')">
           <div v-html="addSvg"></div>
           신규 그룹 추가
         </Button>
-        <Button variant="blue" :size="38">
+        <Button variant="blue" :size="38" @click="openModal('team')">
           <div v-html="addSvg"></div>
           신규 팀 추가
         </Button>
@@ -14,18 +18,27 @@
     </template>
   </TitleArea>
   <ContentsArea>
-    <div class="org-tree" id="orgTree">
-      <div class="org-item" data-id="1" data-type="headquarters">
+    <div v-if="isLoading" class="loading-container">
+      <Loading />
+    </div>
+    <div v-else class="org-tree" id="orgTree">
+      <div
+        v-for="headquarters in organizations"
+        :key="headquarters.id"
+        class="org-item"
+        :data-id="headquarters.id"
+        data-type="headquarters"
+      >
         <div class="org-content org-headquarters">
           <div class="org-info">
             <span class="org-icon"><div v-html="officeSvg"></div></span>
-            <span class="org-name">CiX 본부</span>
+            <span class="org-name">{{ headquarters.name }}</span>
           </div>
-          <!-- <div class="org-actions">
+          <div class="org-actions">
             <Button
               variant="text"
               :size="20"
-              @click="editOrganization('headquarters', 1)"
+              @click="editOrganization('headquarters', headquarters)"
             >
               <div v-html="modifySvg"></div>
               수정
@@ -33,140 +46,31 @@
             <Button
               variant="text"
               :size="20"
-              @click="deleteOrganization('headquarters', 1)"
+              @click="deleteOrganization('headquarters', headquarters)"
             >
               <div v-html="deleteSvg"></div>
               삭제
             </Button>
-          </div> -->
-        </div>
-        <div class="org-children">
-          <div class="org-item" data-id="1" data-type="group">
-            <div class="org-content org-group">
-              <div class="org-info">
-                <span class="org-icon"></span>
-                <span class="org-name">UX/UI 그룹</span>
-              </div>
-              <div class="org-actions">
-                <Button
-                  variant="text"
-                  :size="20"
-                  @click="editOrganization('group', 1)"
-                >
-                  <div v-html="modifySvg"></div>
-                  수정
-                </Button>
-                <Button
-                  variant="text"
-                  :size="20"
-                  @click="deleteOrganization('group', 1)"
-                >
-                  <div v-html="deleteSvg"></div>
-                  삭제
-                </Button>
-              </div>
-            </div>
-            <div class="org-children">
-              <div class="org-item" data-id="20" data-type="team">
-                <div class="org-content org-team">
-                  <div class="org-info">
-                    <span class="org-icon"></span>
-                    <span class="org-name">PMO 팀</span>
-                  </div>
-                  <div class="org-actions">
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="editOrganization('team', 20)"
-                    >
-                      <div v-html="modifySvg"></div>
-                      수정
-                    </Button>
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="deleteOrganization('team', 20)"
-                    >
-                      <div v-html="deleteSvg"></div>
-                      삭제
-                    </Button>
-                  </div>
-                  <div class="org-count">
-                    <span>총</span> <strong>12</strong>명
-                  </div>
-                </div>
-              </div>
-              <div class="org-item" data-id="1" data-type="team">
-                <div class="org-content org-team">
-                  <div class="org-info">
-                    <span class="org-icon"></span>
-                    <span class="org-name">UX/UI 1 팀</span>
-                  </div>
-                  <div class="org-actions">
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="editOrganization('team', 1)"
-                    >
-                      <div v-html="modifySvg"></div>
-                      수정
-                    </Button>
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="deleteOrganization('team', 1)"
-                    >
-                      <div v-html="deleteSvg"></div>
-                      삭제
-                    </Button>
-                  </div>
-                  <div class="org-count">
-                    <span>총</span> <strong>42</strong>명
-                  </div>
-                </div>
-              </div>
-              <div class="org-item" data-id="2" data-type="team">
-                <div class="org-content org-team">
-                  <div class="org-info">
-                    <span class="org-icon"></span>
-                    <span class="org-name">UX/UI 2 팀</span>
-                  </div>
-                  <div class="org-actions">
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="editOrganization('team', 2)"
-                    >
-                      <div v-html="modifySvg"></div>
-                      수정
-                    </Button>
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="deleteOrganization('team', 2)"
-                    >
-                      <div v-html="deleteSvg"></div>
-                      삭제
-                    </Button>
-                  </div>
-                  <div class="org-count">
-                    <span>총</span> <strong>33</strong>명
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
-          <div class="org-item" data-id="5" data-type="group">
+        </div>
+        <div class="org-children" v-if="headquarters.groups.length > 0">
+          <div
+            v-for="group in headquarters.groups"
+            :key="group.id"
+            class="org-item"
+            :data-id="group.id"
+            data-type="group"
+          >
             <div class="org-content org-group">
               <div class="org-info">
                 <span class="org-icon"></span>
-                <span class="org-name">콘텐츠 그룹</span>
+                <span class="org-name">{{ group.name }}</span>
               </div>
               <div class="org-actions">
                 <Button
                   variant="text"
                   :size="20"
-                  @click="editOrganization('group', 5)"
+                  @click="editOrganization('group', group)"
                 >
                   <div v-html="modifySvg"></div>
                   수정
@@ -174,25 +78,31 @@
                 <Button
                   variant="text"
                   :size="20"
-                  @click="deleteOrganization('group', 5)"
+                  @click="deleteOrganization('group', group)"
                 >
                   <div v-html="deleteSvg"></div>
                   삭제
                 </Button>
               </div>
             </div>
-            <div class="org-children">
-              <div class="org-item" data-id="25" data-type="team">
+            <div class="org-children" v-if="group.teams.length > 0">
+              <div
+                v-for="team in group.teams"
+                :key="team.id"
+                class="org-item"
+                :data-id="team.id"
+                data-type="team"
+              >
                 <div class="org-content org-team">
                   <div class="org-info">
                     <span class="org-icon"></span>
-                    <span class="org-name">콘텐츠 1 팀</span>
+                    <span class="org-name">{{ team.name }}</span>
                   </div>
                   <div class="org-actions">
                     <Button
                       variant="text"
                       :size="20"
-                      @click="editOrganization('team', 25)"
+                      @click="editOrganization('team', team)"
                     >
                       <div v-html="modifySvg"></div>
                       수정
@@ -200,130 +110,16 @@
                     <Button
                       variant="text"
                       :size="20"
-                      @click="deleteOrganization('team', 25)"
+                      @click="deleteOrganization('team', team)"
                     >
                       <div v-html="deleteSvg"></div>
                       삭제
                     </Button>
                   </div>
                   <div class="org-count">
-                    <span>총</span> <strong>0</strong>명
-                  </div>
-                </div>
-              </div>
-              <div class="org-item" data-id="26" data-type="team">
-                <div class="org-content org-team">
-                  <div class="org-info">
-                    <span class="org-icon"></span>
-                    <span class="org-name">콘텐츠 2 팀</span>
-                  </div>
-                  <div class="org-actions">
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="editOrganization('team', 26)"
-                    >
-                      <div v-html="modifySvg"></div>
-                      수정
-                    </Button>
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="deleteOrganization('team', 26)"
-                    >
-                      <div v-html="deleteSvg"></div>
-                      삭제
-                    </Button>
-                  </div>
-                  <div class="org-count">
-                    <span>총</span> <strong>0</strong>명
-                  </div>
-                </div>
-              </div>
-              <div class="org-item" data-id="27" data-type="team">
-                <div class="org-content org-team">
-                  <div class="org-info">
-                    <span class="org-icon"></span>
-                    <span class="org-name">콘텐츠 3 팀</span>
-                  </div>
-                  <div class="org-actions">
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="editOrganization('team', 27)"
-                    >
-                      <div v-html="modifySvg"></div>
-                      수정
-                    </Button>
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="deleteOrganization('team', 27)"
-                    >
-                      <div v-html="deleteSvg"></div>
-                      삭제
-                    </Button>
-                  </div>
-                  <div class="org-count">
-                    <span>총</span> <strong>0</strong>명
-                  </div>
-                </div>
-              </div>
-              <div class="org-item" data-id="28" data-type="team">
-                <div class="org-content org-team">
-                  <div class="org-info">
-                    <span class="org-icon"></span>
-                    <span class="org-name">콘텐츠 4 팀</span>
-                  </div>
-                  <div class="org-actions">
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="editOrganization('team', 28)"
-                    >
-                      <div v-html="modifySvg"></div>
-                      수정
-                    </Button>
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="deleteOrganization('team', 28)"
-                    >
-                      <div v-html="deleteSvg"></div>
-                      삭제
-                    </Button>
-                  </div>
-                  <div class="org-count">
-                    <span>총</span> <strong>0</strong>명
-                  </div>
-                </div>
-              </div>
-              <div class="org-item" data-id="29" data-type="team">
-                <div class="org-content org-team">
-                  <div class="org-info">
-                    <span class="org-icon"></span>
-                    <span class="org-name">콘텐츠 5 팀</span>
-                  </div>
-                  <div class="org-actions">
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="editOrganization('team', 29)"
-                    >
-                      <div v-html="modifySvg"></div>
-                      수정
-                    </Button>
-                    <Button
-                      variant="text"
-                      :size="20"
-                      @click="deleteOrganization('team', 29)"
-                    >
-                      <div v-html="deleteSvg"></div>
-                      삭제
-                    </Button>
-                  </div>
-                  <div class="org-count">
-                    <span>총</span> <strong>0</strong>명
+                    <span>총</span>
+                    <strong>{{ team.employees?.length || 0 }}</strong
+                    >명
                   </div>
                 </div>
               </div>
@@ -333,6 +129,24 @@
       </div>
     </div>
   </ContentsArea>
+
+  <!-- 조직 추가/수정 모달 -->
+  <OrganizationModal
+    :isOpen="modal.isOpen"
+    :organizationType="modal.type"
+    :editData="modal.editData"
+    @close="closeModal"
+    @success="handleModalSuccess"
+  />
+
+  <!-- 삭제 확인 모달 -->
+  <ConfirmModal
+    :isOpen="deleteModal.isOpen"
+    :title="deleteModal.title"
+    :message="deleteModal.message"
+    @confirm="confirmDelete"
+    @cancel="cancelDelete"
+  />
 </template>
 
 <script setup>
@@ -343,6 +157,9 @@ import addSvg from '~/components/assets/dms/icons/add.svg?raw'
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
 import Button from '~/components/ui/Button.vue'
+import Loading from '~/components/ui/Loading.vue'
+import OrganizationModal from '~/components/dms/OrganizationModal.vue'
+import ConfirmModal from '~/components/ui/ConfirmModal.vue'
 import { useYear } from '~/composables/useYear'
 import { onMounted } from 'vue'
 
@@ -352,59 +169,140 @@ definePageMeta({
 })
 
 // 연도 관련 로직
+const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } =
+  useYear()
 
 // 페이지 로드 시 올해로 리셋
 onMounted(() => {
   resetToCurrentYear()
+  loadOrganizations()
 })
-const { selectedYear, yearOptions, setSelectedYear, resetToCurrentYear } =
-  useYear()
 
 // 연도 변경 핸들러
 const handleYearChange = year => {
   setSelectedYear(year)
 }
 
-// 테이블 데이터
-const tableHeaders = [
-  { key: 'department', label: '부서명' },
-  { key: 'manager', label: '부서장' },
-  { key: 'employeeCount', label: '직원 수' },
-  { key: 'budget', label: '예산' },
-  { key: 'status', label: '상태' },
-  { key: 'actions', label: '작업' },
-]
-
-const tableData = ref([
-  {
-    department: '개발팀',
-    manager: '김철수',
-    employeeCount: 25,
-    budget: '₩500M',
-    status: '활성',
-    actions: '관리',
-  },
-  {
-    department: '마케팅팀',
-    manager: '이영희',
-    employeeCount: 12,
-    budget: '₩200M',
-    status: '활성',
-    actions: '관리',
-  },
-])
-
+// 데이터 상태
+const organizations = ref([])
 const isLoading = ref(false)
 
-// 조직 관리 함수들
-const editOrganization = (type, id) => {
-  // 편집 기능 구현 필요
-  // TODO: 편집 모달 또는 페이지로 이동
+// 모달 상태
+const modal = ref({
+  isOpen: false,
+  type: 'headquarters',
+  editData: null,
+})
+
+// 삭제 모달 상태
+const deleteModal = ref({
+  isOpen: false,
+  type: '',
+  data: null,
+  title: '',
+  message: '',
+})
+
+// 조직 데이터 로드
+const loadOrganizations = async () => {
+  isLoading.value = true
+  try {
+    const response = await $fetch('/api/dms/organizations/headquarters')
+    if (response.success) {
+      organizations.value = response.data
+    }
+  } catch (error) {
+    console.error('Error loading organizations:', error)
+  } finally {
+    isLoading.value = false
+  }
 }
 
-const deleteOrganization = (type, id) => {
-  // 삭제 기능 구현 필요
-  // TODO: 삭제 확인 모달 표시
+// 모달 열기
+const openModal = (type, editData = null) => {
+  modal.value = {
+    isOpen: true,
+    type,
+    editData,
+  }
+}
+
+// 모달 닫기
+const closeModal = () => {
+  modal.value = {
+    isOpen: false,
+    type: 'headquarters',
+    editData: null,
+  }
+}
+
+// 모달 성공 처리
+const handleModalSuccess = data => {
+  loadOrganizations() // 데이터 새로고침
+  closeModal()
+}
+
+// 조직 수정
+const editOrganization = (type, data) => {
+  openModal(type, data)
+}
+
+// 조직 삭제
+const deleteOrganization = (type, data) => {
+  const typeNames = {
+    headquarters: '본부',
+    group: '그룹',
+    team: '팀',
+  }
+
+  deleteModal.value = {
+    isOpen: true,
+    type,
+    data,
+    title: `${typeNames[type]} 삭제`,
+    message: `"${data.name}" ${typeNames[type]}을(를) 삭제하시겠습니까?`,
+  }
+}
+
+// 삭제 확인
+const confirmDelete = async () => {
+  try {
+    const { type, data } = deleteModal.value
+    const endpoint = getDeleteEndpoint(type)
+
+    const response = await $fetch(`${endpoint}/${data.id}`, {
+      method: 'DELETE',
+    })
+
+    if (response.success) {
+      await loadOrganizations() // 데이터 새로고침
+      cancelDelete()
+    }
+  } catch (error) {
+    console.error('Error deleting organization:', error)
+    // 에러 처리
+  }
+}
+
+// 삭제 취소
+const cancelDelete = () => {
+  deleteModal.value = {
+    isOpen: false,
+    type: '',
+    data: null,
+    title: '',
+    message: '',
+  }
+}
+
+// 삭제 엔드포인트 가져오기
+const getDeleteEndpoint = type => {
+  const endpoints = {
+    headquarters: '/api/dms/organizations/headquarters',
+    group: '/api/dms/organizations/groups',
+    team: '/api/dms/organizations/teams',
+  }
+  return endpoints[type]
 }
 </script>
 
@@ -420,6 +318,13 @@ const deleteOrganization = (type, id) => {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
 }
 
 // 조직도 트리 스타일

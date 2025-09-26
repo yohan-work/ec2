@@ -29,13 +29,14 @@ export default defineEventHandler(async event => {
     })
 
     // 히스토리 로깅
-    await logDmsHistory({
-      admin_name: 'DMS 관리자', // TODO: 실제 관리자 이름으로 변경 필요
-      menu_name: '고객사 관리',
-      action_type: 'Delete',
-      details: `고객사 "${existingClient.name}" 삭제`,
-      ip_address: getClientIP(event),
-    })
+    await logDmsHistory(
+      {
+        menu_name: '고객사 관리',
+        action_type: 'Delete',
+        details: `고객사 "${existingClient.name}" 삭제`,
+      },
+      event
+    )
 
     return {
       success: true,

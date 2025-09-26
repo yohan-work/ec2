@@ -85,17 +85,14 @@
         </div>
       </FilterContainer>
 
-      <div class="table-section">
-        <div class="table-header"></div>
-      </div>
-
       <div v-if="isLoading" class="loading-container">
         <Loading />
       </div>
 
-      <div v-else-if="employees.length === 0" class="empty-container">
-        <p>등록된 직원이 없습니다.</p>
-      </div>
+      <EmptyContainer
+        v-else-if="employees.length === 0"
+        message="등록된 직원이 없습니다."
+      />
 
       <Table v-else>
         <thead>
@@ -200,6 +197,7 @@ import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
 import MainContainer from '~/components/dms/MainContainer.vue'
 import FilterContainer from '~/components/dms/FilterContainer.vue'
+import EmptyContainer from '~/components/dms/EmptyContainer.vue'
 import Button from '~/components/ui/Button.vue'
 import Input from '~/components/ui/Input.vue'
 import Select from '~/components/ui/Select.vue'
@@ -269,9 +267,9 @@ const getStatusVariant = status => {
 // 전체 직원 수 가져오기 (필터링 전)
 const fetchAllEmployeesCount = async () => {
   try {
-    const { data } = await $fetch('/api/dms/employees')
-    if (data) {
-      allEmployees.value = data.employees.length
+    const response = await $fetch('/api/dms/employees')
+    if (response.success && response.data) {
+      allEmployees.value = response.data.length
     }
   } catch (error) {
     console.error('전체 직원 수 조회 오류:', error)
@@ -291,10 +289,10 @@ const fetchEmployees = async () => {
     if (selectedCl.value) params.append('career_level', selectedCl.value)
     if (selectedStatus.value) params.append('status', selectedStatus.value)
 
-    const { data } = await $fetch(`/api/dms/employees?${params}`)
+    const response = await $fetch(`/api/dms/employees?${params}`)
 
-    if (data) {
-      employees.value = data.employees
+    if (response.success && response.data) {
+      employees.value = response.data
     }
   } catch (error) {
     console.error('직원 목록 조회 오류:', error)
@@ -307,14 +305,14 @@ const fetchEmployees = async () => {
 // 옵션 데이터 조회
 const fetchOptions = async () => {
   try {
-    const { data } = await $fetch('/api/dms/employees/options')
+    const response = await $fetch('/api/dms/employees/options')
 
-    if (data) {
-      groupOptions.value = data.groups
-      teamOptions.value = data.teams
-      jobOptions.value = data.jobRoles
-      clOptions.value = data.careerLevels
-      statusOptions.value = data.statusOptions
+    if (response.success && response.data) {
+      groupOptions.value = response.data.groups
+      teamOptions.value = response.data.teams
+      jobOptions.value = response.data.jobRoles
+      clOptions.value = response.data.careerLevels
+      statusOptions.value = response.data.statusOptions
     }
   } catch (error) {
     console.error('옵션 데이터 조회 오류:', error)
@@ -324,10 +322,10 @@ const fetchOptions = async () => {
 // 매니저 옵션 조회
 const fetchManagerOptions = async () => {
   try {
-    const { data } = await $fetch('/api/dms/employees?limit=1000&status=active')
+    const response = await $fetch('/api/dms/employees?limit=1000&status=active')
 
-    if (data) {
-      managerOptions.value = data.employees
+    if (response.success && response.data) {
+      managerOptions.value = response.data
         .filter(emp => emp.is_people_manager)
         .map(emp => ({
           value: emp.id,
@@ -459,18 +457,6 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   padding: 60px 0;
-}
-
-.empty-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 0;
-
-  p {
-    color: #6b7280;
-    font-size: 16px;
-  }
 }
 
 .employee-info {

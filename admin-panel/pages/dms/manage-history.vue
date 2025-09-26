@@ -109,15 +109,14 @@
 
       <!-- 히스토리 테이블 -->
       <div class="table-section">
-        <div class="table-header"></div>
-
         <div v-if="isLoading" class="loading-container">
           <Loading />
         </div>
 
-        <div v-else-if="histories.length === 0" class="empty-container">
-          <p>등록된 히스토리가 없습니다.</p>
-        </div>
+        <EmptyContainer
+          v-else-if="histories.length === 0"
+          message="등록된 히스토리가 없습니다."
+        />
 
         <Table v-else>
           <thead>
@@ -212,6 +211,7 @@ import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
 import MainContainer from '~/components/dms/MainContainer.vue'
 import FilterContainer from '~/components/dms/FilterContainer.vue'
+import EmptyContainer from '~/components/dms/EmptyContainer.vue'
 import Table from '~/components/ui/Table.vue'
 import Button from '~/components/ui/Button.vue'
 import Select from '~/components/ui/Select.vue'
@@ -239,11 +239,7 @@ const isThisMonthSelected = ref(false)
 
 // 페이지 로드 시 초기화
 onMounted(async () => {
-  await Promise.all([
-    loadAllHistoriesCount(),
-    loadHistories(),
-    loadStatistics(),
-  ])
+  await loadHistories()
 })
 
 // 데이터 상태
@@ -358,18 +354,6 @@ const resetFilters = () => {
 }
 
 // 히스토리 데이터 로드
-// 전체 히스토리 갯수 가져오기 (필터링 전)
-const loadAllHistoriesCount = async () => {
-  try {
-    const { data } = await $fetch('/api/dms/history?page=1&limit=1')
-    if (data) {
-      allHistories.value = data.pagination.total
-    }
-  } catch (error) {
-    console.error('전체 히스토리 갯수 조회 오류:', error)
-  }
-}
-
 const loadHistories = async () => {
   try {
     isLoading.value = true
@@ -404,51 +388,21 @@ const loadHistories = async () => {
     if (response.success) {
       histories.value = response.data.histories
       pagination.value = response.data.pagination
+
+      // 통계 데이터가 있으면 업데이트 (첫 페이지일 때만)
+      if (response.data.statistics) {
+        allHistories.value = response.data.statistics.totalCount
+        totalCount.value = response.data.statistics.totalCount
+        todayCount.value = response.data.statistics.todayCount
+        weekCount.value = response.data.statistics.weekCount
+      }
+
       console.log('히스토리 데이터:', histories.value)
     }
   } catch (error) {
     console.error('히스토리 로드 오류:', error)
   } finally {
     isLoading.value = false
-  }
-}
-
-// 통계 데이터 로드
-const loadStatistics = async () => {
-  try {
-    // 전체 카운트
-    const totalResponse = await $fetch('/api/dms/history?limit=1')
-    totalCount.value = totalResponse.data.pagination.total
-
-    // 오늘 카운트
-    const today = new Date()
-    const todayStart = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate()
-    )
-    const todayEnd = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() + 1
-    )
-
-    const todayResponse = await $fetch(
-      `/api/dms/history?limit=1&start_date=${todayStart.toISOString()}&end_date=${todayEnd.toISOString()}`
-    )
-    todayCount.value = todayResponse.data.pagination.total
-
-    // 이번 주 카운트
-    const weekStart = new Date(today)
-    weekStart.setDate(today.getDate() - today.getDay())
-    weekStart.setHours(0, 0, 0, 0)
-
-    const weekResponse = await $fetch(
-      `/api/dms/history?limit=1&start_date=${weekStart.toISOString()}&end_date=${todayEnd.toISOString()}`
-    )
-    weekCount.value = weekResponse.data.pagination.total
-  } catch (error) {
-    console.error('통계 로드 오류:', error)
   }
 }
 

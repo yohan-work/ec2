@@ -50,6 +50,7 @@ export default defineEventHandler(async event => {
         id: true,
         email: true,
         employee_id: true,
+        name: true,
         is_active: true,
       },
     })
@@ -74,6 +75,7 @@ export default defineEventHandler(async event => {
         id: user.id,
         email: user.email,
         employee_id: user.employee_id,
+        name: user.name,
       },
     }
   } catch (error: any) {

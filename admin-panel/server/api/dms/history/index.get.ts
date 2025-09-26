@@ -84,6 +84,50 @@ export default defineEventHandler(async event => {
       prisma.dms_change_history.count({ where }),
     ])
 
+    // 통계 데이터 계산 (첫 페이지일 때만)
+    let statistics = null
+    if (pageNum === 1) {
+      const today = new Date()
+      const todayStart = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      )
+      const todayEnd = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + 1
+      )
+      const weekStart = new Date(today)
+      weekStart.setDate(today.getDate() - today.getDay())
+      weekStart.setHours(0, 0, 0, 0)
+
+      const [todayCount, weekCount] = await Promise.all([
+        prisma.dms_change_history.count({
+          where: {
+            created_at: {
+              gte: todayStart,
+              lt: todayEnd,
+            },
+          },
+        }),
+        prisma.dms_change_history.count({
+          where: {
+            created_at: {
+              gte: weekStart,
+              lt: todayEnd,
+            },
+          },
+        }),
+      ])
+
+      statistics = {
+        totalCount: total,
+        todayCount,
+        weekCount,
+      }
+    }
+
     return {
       success: true,
       data: {
@@ -94,6 +138,7 @@ export default defineEventHandler(async event => {
           total,
           totalPages: Math.ceil(total / limitNum),
         },
+        statistics,
       },
     }
   } catch (error) {

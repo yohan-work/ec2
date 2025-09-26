@@ -1,4 +1,5 @@
 import { prisma } from '~/lib/prisma'
+import { logDmsHistory } from '~/server/api/dms/history/utils'
 
 export default defineEventHandler(async event => {
   try {
@@ -30,16 +31,14 @@ export default defineEventHandler(async event => {
     })
 
     // 변경 히스토리 기록
-    await prisma.dms_change_history.create({
-      data: {
-        admin_name: 'System', // TODO: 실제 관리자 이름으로 변경
-        employee_id: null, // 삭제된 직원이므로 null
+    await logDmsHistory(
+      {
         menu_name: '직원 관리',
-        action_type: '삭제',
+        action_type: 'Delete',
         details: `직원 삭제: ${existingEmployee.name} (${existingEmployee.email})`,
-        ip_address: 'unknown', // TODO: getClientIP 함수 구현 필요
       },
-    })
+      event
+    )
 
     return {
       success: true,

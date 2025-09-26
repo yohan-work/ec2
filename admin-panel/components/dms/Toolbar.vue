@@ -240,7 +240,8 @@ const confirmLogout = async () => {
     await navigateTo('/dms/login')
   } catch (error) {
     console.error('로그아웃 오류:', error)
-    // 에러가 발생해도 로그인 페이지로 리다이렉트
+
+    // 로그인 페이지로 리다이렉트
     await navigateTo('/dms/login')
   } finally {
     logoutLoading.value = false

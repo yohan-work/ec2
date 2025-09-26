@@ -1,4 +1,5 @@
 import { prisma } from '~/lib/prisma'
+import { logDmsHistory } from '~/server/api/dms/history/utils'
 import { type EmployeeStatusCode } from '~/utils/dms/employee-utils'
 
 // 유효성 검사 함수
@@ -92,16 +93,14 @@ export default defineEventHandler(async event => {
     })
 
     // 변경 히스토리 기록
-    await prisma.dms_change_history.create({
-      data: {
-        admin_name: 'System', // TODO: 실제 관리자 이름으로 변경
-        employee_id: employee.id,
+    await logDmsHistory(
+      {
         menu_name: '직원 관리',
-        action_type: '추가',
+        action_type: 'Insert',
         details: `직원 추가: ${data.name} (${data.email})`,
-        ip_address: 'unknown', // TODO: getClientIP 함수 구현 필요
       },
-    })
+      event
+    )
 
     return {
       success: true,

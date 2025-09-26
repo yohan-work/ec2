@@ -65,6 +65,7 @@ export default defineEventHandler(async event => {
     const sessionData = {
       id: user.id,
       email: user.email,
+      name: user.name,
       employee_id: user.employee_id,
       loginTime: new Date().toISOString(),
     }

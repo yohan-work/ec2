@@ -1,27 +1,90 @@
 import { prisma } from '~/lib/prisma'
+import { getCookie, getHeader } from 'h3'
 
 export interface HistoryLogData {
-  admin_name: string
+  admin_name?: string // 선택사항으로 변경
   employee_id?: number
   menu_name: string
   action_type: 'Insert' | 'Update' | 'Delete'
   details: string
-  ip_address: string
+  ip_address?: string // 선택사항으로 변경
+}
+
+/**
+ * 세션에서 관리자 정보를 가져오는 함수
+ */
+async function getAdminInfo(event: any) {
+  try {
+    // 쿠키에서 세션 정보 가져오기
+    const sessionCookie = getCookie(event, 'dms_session')
+    console.log('sessionCookie:', sessionCookie)
+    if (!sessionCookie) {
+      console.log('세션 쿠키가 없습니다')
+      return null
+    }
+
+    const sessionData = JSON.parse(sessionCookie)
+    console.log('sessionData:', sessionData)
+
+    // 세션 만료 시간 체크 (8시간)
+    const sessionExpiry = 8 * 60 * 60 * 1000
+    const loginTime = new Date(sessionData.loginTime)
+    const now = new Date()
+
+    if (now.getTime() - loginTime.getTime() > sessionExpiry) {
+      console.log('세션이 만료되었습니다')
+      return null
+    }
+
+    // 쿠키에서 사용자 정보 직접 사용 (DB 조회 불필요)
+    const result = {
+      id: sessionData.id,
+      email: sessionData.email,
+      name: sessionData.name,
+      employee_id: sessionData.employee_id,
+    }
+    console.log('쿠키에서 가져온 adminInfo result:', result)
+    return result
+  } catch (error) {
+    console.error('세션 정보 조회 오류:', error)
+    return null
+  }
 }
 
 /**
  * DMS 변경 히스토리를 기록하는 함수
  */
-export async function logDmsHistory(data: HistoryLogData) {
+export async function logDmsHistory(data: HistoryLogData, event?: any) {
   try {
+    // 세션에서 관리자 정보 가져오기
+    let adminName = data.admin_name || '시스템'
+    let employeeId = data.employee_id
+    let ipAddress = data.ip_address || '127.0.0.1'
+
+    if (event) {
+      const adminInfo = await getAdminInfo(event)
+      console.log('adminInfo:', adminInfo)
+      if (adminInfo) {
+        adminName = adminInfo.name
+        employeeId = adminInfo.employee_id || employeeId
+        console.log('최종 adminName:', adminName, 'employeeId:', employeeId)
+      } else {
+        console.log('adminInfo가 null입니다')
+      }
+
+      // IP 주소 가져오기
+      ipAddress = getClientIP(event)
+      console.log('IP 주소:', ipAddress)
+    }
+
     await prisma.dms_change_history.create({
       data: {
-        admin_name: data.admin_name,
-        employee_id: data.employee_id || null,
+        admin_name: adminName,
+        employee_id: employeeId || null,
         menu_name: data.menu_name,
         action_type: data.action_type,
         details: data.details,
-        ip_address: data.ip_address,
+        ip_address: ipAddress,
       },
     })
   } catch (error) {
@@ -37,12 +100,24 @@ export function getClientIP(event: any): string {
   const forwarded = getHeader(event, 'x-forwarded-for')
   const realIP = getHeader(event, 'x-real-ip')
   const cfConnectingIP = getHeader(event, 'cf-connecting-ip')
+  const remoteAddr = getHeader(event, 'remote-addr')
+  const clientIP = getHeader(event, 'client-ip')
+
+  console.log('IP 헤더들:', {
+    'x-forwarded-for': forwarded,
+    'x-real-ip': realIP,
+    'cf-connecting-ip': cfConnectingIP,
+    'remote-addr': remoteAddr,
+    'client-ip': clientIP,
+  })
 
   if (cfConnectingIP) return cfConnectingIP
   if (realIP) return realIP
   if (forwarded) return forwarded.split(',')[0].trim()
+  if (remoteAddr) return remoteAddr
+  if (clientIP) return clientIP
 
-  return '127.0.0.1' // 기본값
+  return 'unknown' // 기본값
 }
 
 /**
