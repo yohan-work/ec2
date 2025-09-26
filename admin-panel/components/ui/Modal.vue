@@ -8,7 +8,10 @@
     :data-bs-keyboard="static ? 'false' : 'true'"
     @click.self="handleBackdropClick"
   >
-    <div class="modal-dialog modal-dialog-centered" :class="sizeClass">
+    <div
+      class="modal-dialog modal-dialog-centered"
+      :style="{ maxWidth: modalWidth }"
+    >
       <div class="modal-content">
         <div v-if="title" class="modal-header">
           <h5 class="modal-title">{{ title }}</h5>
@@ -37,7 +40,7 @@ import { computed } from 'vue'
 interface Props {
   show: boolean
   title?: string
-  size?: 'sm' | 'md' | 'lg' | 'xl'
+  width?: string | number
   closable?: boolean
   static?: boolean
   closeOnBackdrop?: boolean
@@ -46,7 +49,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   show: false,
   title: '',
-  size: 'md',
+  width: '442px',
   closable: true,
   static: false,
   closeOnBackdrop: true,
@@ -57,14 +60,11 @@ const emit = defineEmits<{
   'update:show': [show: boolean]
 }>()
 
-const sizeClass = computed(() => {
-  const sizeMap = {
-    sm: 'modal-sm',
-    md: '',
-    lg: 'modal-lg',
-    xl: 'modal-xl',
+const modalWidth = computed(() => {
+  if (typeof props.width === 'number') {
+    return `${props.width}px`
   }
-  return sizeMap[props.size]
+  return props.width
 })
 
 const close = () => {
@@ -149,7 +149,7 @@ const handleBackdropClick = () => {
   pointer-events: auto;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  // border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   // box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
   outline: 0;
@@ -476,8 +476,6 @@ const handleBackdropClick = () => {
         border: 2px solid #000;
         background: #999;
         color: #000;
-        &.disabled {
-        }
       }
     }
   }
