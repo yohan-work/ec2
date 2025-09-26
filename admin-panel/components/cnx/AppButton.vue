@@ -1,56 +1,53 @@
 <template>
-  <component 
-    :is="tag" 
-    :class="buttonClasses" 
-    :disabled="disabled"
-    :href="href"
-    :target="target"
-    :rel="rel"
-    @click="handleClick"
+  <!-- 1. to가 있을 경우 NuxtLink 태그 -->
+  <NuxtLink 
+    v-if="to"
+    :to="to"
+    :class="buttonClasses"
   >
-    <span v-if="variant !== 'circle'" class="button-text">
-      <slot />
-    </span>
-    <span v-else class="button-icon">
-      <slot />
-    </span>
-  </component>
+    {{ text }}
+  </NuxtLink>
+
+  <!-- 2. href가 있을 경우 a 태그 (외부 링크) -->
+  <a 
+    v-else-if="href"
+    :href="href"
+    :class="buttonClasses"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {{ text }}
+  </a>
+
+  <!-- 3. 그 외에는 button 태그 (이벤트 emit) -->
+  <button 
+    v-else
+    :class="buttonClasses"
+    @click="handleButtonClick"
+  >
+    {{ text }}
+  </button>
 </template>
 
-<!--
-사용법:
-- Button: <AppButton @click="handler">텍스트</AppButton>
-- Link: <AppButton href="/path">텍스트</AppButton>
-- Circle: <AppButton variant="circle">+</AppButton>
-- Arrow: <AppButton variant="arrow">더보기</AppButton>
-- Colors: color="green" | "teal"
-- Hover Effects: 
-  * effect="left" | "right"
-  * hoverDuration={300} (ms)
-- 예시: <AppButton effect="right">오른쪽으로 이동</AppButton>
--->
 
 <script setup lang="ts">
 import { computed } from 'vue'
 
 const props = defineProps<{
-  variant?: 'primary' | 'arrow' | 'circle'
-  color?: 'default' | 'green' | 'teal'
+  text: string
+  variant?: 'primary' | 'circle'
+  color?: 'default' | 'green' | 'teal' | 'white'
   effect?: 'left' | 'right'
   disabled?: boolean
   href?: string
-  target?: '_blank' | '_self' | '_parent' | '_top'
-  rel?: string
+  to?: string | object
+  arrow?: boolean
+  arrowDirection?: 'left' | 'right'
 }>()
 
 const emit = defineEmits<{
-  click: [event: MouseEvent]
+  click: []
 }>()
-
-// href가 있으면 a 태그, 없으면 button 태그
-const tag = computed(() => {
-  return props.href ? 'a' : 'button'
-})
 
 const buttonClasses = computed(() => {
   const classes = []
@@ -58,6 +55,15 @@ const buttonClasses = computed(() => {
   // 기본 variant 클래스
   if (props.variant) {
     classes.push(props.variant)
+  }
+  
+  // 링크 타입 감지 (arrow prop으로 제어)
+  if (props.href) {
+    // href가 있으면 외부 링크로 outlink 화살표 (자동)
+    classes.push('outlink')
+  } else if (props.to && props.arrow) {
+    // to가 있고 arrow가 true일 때만 내부 링크로 link 화살표
+    classes.push('link')
   }
   
   // 색상 클래스
@@ -75,15 +81,19 @@ const buttonClasses = computed(() => {
     classes.push('disabled')
   }
   
+  // 화살표 방향 (circle 버튼용)
+  if (props.arrowDirection) {
+    classes.push(`arrow-${props.arrowDirection}`)
+  }
+  
   return classes.join(' ')
 })
 
-const handleClick = (event: MouseEvent) => {
+const handleButtonClick = () => {
   if (props.disabled) {
-    event.preventDefault()
     return
   }
-  emit('click', event)
+  emit('click')
 }
 </script>
 
@@ -97,27 +107,35 @@ const handleClick = (event: MouseEvent) => {
 $button-colors: (
   'default': $d-black,
   'green': $p-green,
-  'teal': $s-teal
+  'teal': $s-teal,
+  'white': $d-white
 );
 
 // 공통 버튼 스타일 mixin
 @mixin button-base {
   display: inline-block;
-  min-width: rem(145);
-  padding: rem(9.5) rem(24);
-  border: rem(2) solid $d-black;
+  min-width: rem(100);
+  padding: rem(5) rem(14);
+  border: rem(1) solid $d-black;
   border-radius: 43px;
   position: relative;
   cursor: pointer;
   overflow: hidden;
   transition: all 0.35s;
+  @include tablet {
+    min-width: rem(145);
+    padding: rem(9.5) rem(24);
+    border-width: rem(2);
+  }
 }
 
-// 공통 내부 요소 스타일 mixin
-@mixin button-content {
-  position: relative;
-  z-index: 1;
-  transition: all 0.35s;
+// circle 버튼 전용 스타일 mixin
+@mixin button-circle {
+  min-width: auto;
+  padding: 0;
+  width: rem(44);
+  height: rem(44);
+  border-radius: 50%;
 }
 
 // 변수들
@@ -127,10 +145,7 @@ $skew-offset: 10%; // skew에 따른 기하학적 오프셋
 
 // hover 효과 mixin들 (수학적 계산 적용)
 @mixin hover-left {
-  .button-text,
-  .button-icon {
-    color: $d-white;
-  }
+  color: $d-white;
   &::before {
     // 최종 위치: skew 오프셋만큼 왼쪽으로
     transform: skewX($skew-angle) translateX(-$skew-offset);
@@ -138,10 +153,7 @@ $skew-offset: 10%; // skew에 따른 기하학적 오프셋
 }
 
 @mixin hover-right {
-  .button-text,
-  .button-icon {
-    color: $d-white;
-  }
+  color: $d-white;
   &::before {
     // 최종 위치: skew 오프셋만큼 왼쪽으로 (skew 방향이 다르므로)
     transform: skewX(-$skew-angle) translateX(-$skew-offset);
@@ -150,17 +162,45 @@ $skew-offset: 10%; // skew에 따른 기하학적 오프셋
 
 button,
 a {
+
+  // 기본 텍스트 스타일
+  font-weight: 700;
+  font-size: rem(11);
+  color: $d-black;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  transition: all 0.35s;
+
+  @include tablet {
+    font-size: rem(14);
+  }
+
   @include button-base;
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: -10%;
-    left: 0;
-    width: 120%;
-    height: 120%;
-    background: $d-black;
-    transition: all 0.35s;
+  // circle 버튼 전용 스타일
+  &.circle {
+    @include button-circle;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  
+  // hover 효과가 있는 버튼에만 ::before 요소 생성
+  &.hover-left,
+  &.hover-right {
+    &::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: 0;
+      width: 120%;
+      height: 120%;
+      background: $d-black;
+      transition: all 0.35s;
+      z-index: -1;
+    }
   }
 
   // 방향별 초기 위치 설정 (수학적 계산)
@@ -181,53 +221,103 @@ a {
     }
   }
 
-  // 버튼 내부 텍스트 (일반 버튼용)
-  .button-text {
-    @include button-content;
-    display: block;
-    font-weight: 700;
-    font-size: 14px;
-    color: $d-black;
-    text-align: center;
+  // white 색상 hover 배경 설정
+  &.white::before {
+    background: $d-white;
   }
 
-  // 버튼 내부 아이콘 (원형 버튼용)
-  .button-icon {
-    @include button-content;
+  // 화살표가 있는 버튼 (내부 링크)
+  &.link {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: rem(40);
-    height: rem(40);
-    border-radius: 50%;
-    font-size: 16px;
-    color: $d-black;
+    justify-content: space-between;
+    gap: rem(14);
+    text-align: left;
+    &::after {
+      content: '';
+      display: inline-block;
+      width: rem(8);
+      height: rem(8);
+      background-color: currentColor;
+      -webkit-mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
+      -webkit-mask-size: contain;
+      mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
+      mask-size: contain;
+      transition: all 0.4s;
+      @include tablet {
+        width: rem(14);
+        height: rem(14);
+      }
+    }
+    @include tablet {
+      min-width: rem(168);
+    }
   }
 
-  // 화살표가 있는 버튼
-  &.arrow {
-    .button-text,
-    .button-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      min-width: rem(168);
-      text-align: left;
-      &::after {
-        content: '';
-        display: inline-block;
-        width: rem(8);
-        height: rem(8);
-        background-color: currentColor;
-        -webkit-mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
-        -webkit-mask-size: contain;
-        mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
-        mask-size: contain;
-        transition: all 0.4s;
-        @include tablet {
-          width: rem(14);
-          height: rem(14);
-        }
+  // circle 버튼에 link가 있을 때
+  &.circle.link {
+    min-width: auto;
+    @include tablet {
+      min-width: auto;
+    }
+    
+    &::after {
+      content: '';
+      display: inline-block;
+      width: rem(12);
+      height: rem(12);
+      background-color: currentColor;
+      -webkit-mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
+      -webkit-mask-size: contain;
+      mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
+      mask-size: contain;
+      transition: all 0.4s;
+      transform: translate(-50%, -50%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      
+      @include tablet {
+        width: rem(16);
+        height: rem(16);
+      }
+    }
+  }
+
+  // 화살표 방향별 회전
+  &.circle.link.arrow-left {
+    &::after {
+      transform: translate(-50%, -50%) rotate(180deg);
+    }
+  }
+
+  &.circle.link.arrow-right {
+    &::after {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+  }
+
+  // 외부 링크 버튼
+  &.outlink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: rem(168);
+    text-align: left;
+    &::after {
+      content: '';
+      display: inline-block;
+      width: rem(7);
+      height: rem(7);
+      background-color: currentColor;
+      -webkit-mask: url('~/components/assets/cnx/outlink-arrow.svg') no-repeat center;
+      -webkit-mask-size: contain;
+      mask: url('~/components/assets/cnx/outlink-arrow.svg') no-repeat center;
+      mask-size: contain;
+      transition: all 0.4s;
+      @include tablet {
+        width: rem(12);
+        height: rem(12);
       }
     }
   }
@@ -236,10 +326,20 @@ a {
   @each $name, $color in $button-colors {
     &.#{$name} {
       border-color: $color;
-      .button-text,
-      .button-icon {
-        color: $color;
-      }
+      color: $color;
+    }
+  }
+
+  // white 색상 특별 처리 (테두리와 텍스트가 흰색)
+  &.white {
+    border-color: $d-white;
+    color: $d-white;
+    background-color: transparent;
+    
+    // hover 시 배경이 흰색이 되므로 텍스트는 검은색으로
+    &.hover-left:hover,
+    &.hover-right:hover {
+      color: $d-black;
     }
   }
 
@@ -250,6 +350,12 @@ a {
 
   &.hover-right:hover {
     @include hover-right;
+  }
+
+  // hover 시 모든 색상에서 흰색 텍스트
+  &.hover-left:hover,
+  &.hover-right:hover {
+    color: $d-white;
   }
 
 }
