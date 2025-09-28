@@ -153,6 +153,19 @@
         <span>Logout</span>
       </button>
     </div>
+
+    <!-- 로그아웃 확인 모달 -->
+    <ConfirmModal
+      :show="showLogoutModal"
+      @close="closeLogoutModal"
+      @confirm="confirmLogout"
+      title="로그아웃"
+      message="로그아웃 하시겠습니까?"
+      confirm-text="로그아웃"
+      :loading="logoutLoading"
+      loading-text="로그아웃 중..."
+      modal-class="logout-modal"
+    />
   </div>
 </template>
 
@@ -167,6 +180,7 @@ import permissionSvg from '~/components/assets/dms/icons/permission.svg?raw'
 import positionSvg from '~/components/assets/dms/icons/position.svg?raw'
 import historySvg from '~/components/assets/dms/icons/history.svg?raw'
 import accessControlSvg from '~/components/assets/dms/icons/access-control.svg?raw'
+import ConfirmModal from '~/components/ui/ConfirmModal.vue'
 
 // Props 정의
 interface Props {
@@ -180,6 +194,10 @@ const emit = defineEmits<{
 }>()
 
 const route = useRoute()
+
+// 모달 상태 관리
+const showLogoutModal = ref(false)
+const logoutLoading = ref(false)
 
 // 현재 라우트와 일치하는지 확인하는 함수
 const isActiveRoute = (path: string) => {
@@ -198,20 +216,35 @@ const handlePasswordChange = () => {
   // 비밀번호 변경 로직
 }
 
-const handleLogout = async () => {
-  if (confirm('로그아웃 하시겠습니까?')) {
-    try {
-      await $fetch('/api/dms/logout', {
-        method: 'POST',
-      })
+// 로그아웃 버튼 클릭 시 모달 표시
+const handleLogout = () => {
+  showLogoutModal.value = true
+}
 
-      // 로그인 페이지로 리다이렉트
-      await navigateTo('/dms/login')
-    } catch (error) {
-      console.error('로그아웃 오류:', error)
-      // 에러가 발생해도 로그인 페이지로 리다이렉트
-      await navigateTo('/dms/login')
-    }
+// 로그아웃 모달 닫기
+const closeLogoutModal = () => {
+  showLogoutModal.value = false
+  logoutLoading.value = false
+}
+
+// 로그아웃 확인
+const confirmLogout = async () => {
+  logoutLoading.value = true
+
+  try {
+    await $fetch('/api/dms/logout', {
+      method: 'POST',
+    })
+
+    // 로그인 페이지로 리다이렉트
+    await navigateTo('/dms/login')
+  } catch (error) {
+    console.error('로그아웃 오류:', error)
+    // 에러가 발생해도 로그인 페이지로 리다이렉트
+    await navigateTo('/dms/login')
+  } finally {
+    logoutLoading.value = false
+    showLogoutModal.value = false
   }
 }
 
@@ -278,6 +311,13 @@ onUnmounted(() => {
       padding-bottom: 24px;
       + .toolbar-section {
         padding-top: 24px;
+      }
+      &.mobile-only {
+        + .toolbar-section {
+          @media (min-width: 1024px) {
+            padding-top: 0;
+          }
+        }
       }
     }
     .toolbar-menu-grid {

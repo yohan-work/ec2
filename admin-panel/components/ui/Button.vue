@@ -255,7 +255,9 @@ const buttonClasses = computed(() => {
     }
   }
   &:focus-visible {
-    outline-offset: 3px;
+    outline: none;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
   }
 }
 .icon-btn {
@@ -288,6 +290,12 @@ const buttonClasses = computed(() => {
   &.size-16 {
     width: 16px;
     height: 16px;
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
   }
 
   svg {

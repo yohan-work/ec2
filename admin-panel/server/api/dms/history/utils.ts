@@ -50,18 +50,18 @@ export function getClientIP(event: any): string {
  */
 export function getMenuName(path: string): string {
   const menuMap: Record<string, string> = {
-    '/dms/manage-clients': '고객사 관리',
-    '/dms/manage-employees': '직원 관리',
-    '/dms/manage-organizations': '조직 관리',
-    '/dms/manage-permissions': '권한 관리',
-    '/dms/manage-users': '사용자 관리',
-    '/dms/manage-access-control': '접근 제어 관리',
-    '/dms/project-list': '프로젝트 목록',
     '/dms/project-revenue': '프로젝트 수익',
     '/dms/project-mm': '프로젝트 MM',
     '/dms/sso': 'SSO 관리',
     '/dms/staff-utility': '직원 유틸리티',
+    '/dms/project-list': '프로젝트 목록',
+    '/dms/manage-employees': '직원 관리',
+    '/dms/manage-clients': '고객사 관리',
+    '/dms/manage-organizations': '조직 관리',
+    '/dms/manage-users': '사용자 관리',
+    '/dms/manage-permissions': '권한 관리',
     '/dms/manage-history': '변경 히스토리',
+    '/dms/manage-access-control': '접근 제어',
   }
 
   return menuMap[path] || '알 수 없는 메뉴'

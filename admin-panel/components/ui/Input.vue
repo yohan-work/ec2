@@ -161,23 +161,17 @@ const handleInput = (event: Event) => {
     font-weight: 700;
     color: #333;
   }
-  input,
-  select {
+  input {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
-    &[type='checkbox'],
-    &[type='radio'] {
-      width: 16px;
-      margin-right: 8px;
-      padding: 0;
-    }
-    &:focus {
+    &:focus-visible,
+    &:focus-within {
       outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      border-color: #86b7fe;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
     }
   }
 }
@@ -192,7 +186,6 @@ const handleInput = (event: Event) => {
     font-weight: 400;
   }
 }
-.form-select,
 .form-control {
   display: flex;
   padding: 10px 12px;
@@ -216,6 +209,10 @@ const handleInput = (event: Event) => {
         center/24px 24px no-repeat;
       color: transparent;
       opacity: 1;
+      outline-offset: 3px;
+      border-radius: 2px;
+      outline-width: 4px;
+      outline-color: rgba(#86b7fe, 0.5) !important;
     }
   }
 }

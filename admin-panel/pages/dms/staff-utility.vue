@@ -19,7 +19,7 @@
     </template>
     <template #right>
       <div class="right-content">
-        <Button variant="outline" :size="40" :padding="12">
+        <Button variant="outline" :size="40" :padding="16">
           <div v-html="excelSvg"></div>
           Download
         </Button>

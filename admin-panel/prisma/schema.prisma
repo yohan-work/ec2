@@ -140,27 +140,68 @@ enum recruits_status {
 
 // DMS 용 model은 아래쪽에 등록 예정입니다. 
 
-model dms_clients {
+// 직원 관리
+model dms_employees {
+  id               Int       @id @default(autoincrement())
+  email            String    @unique @db.VarChar(255) // Concentrix 이메일 주소
+  name             String?    @db.VarChar(255) // 이름
+  headquarter_id   Int?
+  group_id         Int?
+  team_id          Int?
+  manager_id       Int?
+  job_role         String?   @db.VarChar(255) // 직무
+  career_level     String?   @db.VarChar(255) // 직급
+  status           String    @default("active") @db.VarChar(20) // 상태 코드 (active, resigned, on_leave, transferred, pre_hire)
+  is_people_manager Boolean  @default(false) // 피플매니저 여부
+  start_date       DateTime? @db.DateTime(0) // 입사일
+  end_date         DateTime? @db.DateTime(0) // 관리 종료일 (퇴사일/조직이동일)
+  created_at       DateTime  @default(now()) @db.DateTime(0)
+  updated_at       DateTime  @default(now()) @db.DateTime(0) @updatedAt
+  
+  // 관계
+  leaves           dms_employees_leave[] // 휴직 기록들
+  change_history   dms_change_history[] // 변경 히스토리
+
+  // 핵심 검색 필드 인덱스
+  @@index([email], map: "idx_dms_employees_email")
+  @@index([name], map: "idx_dms_employees_name")
+  @@index([status], map: "idx_dms_employees_status")
+  @@index([group_id], map: "idx_dms_employees_group")
+  @@index([team_id], map: "idx_dms_employees_team")
+  @@index([career_level], map: "idx_dms_employees_career_level")
+  @@index([job_role], map: "idx_dms_employees_job_role")
+  @@index([is_people_manager], map: "idx_dms_employees_people_manager")
+  
+  // 날짜 필드 인덱스 (필요시 사용)
+  @@index([start_date], map: "idx_dms_employees_start_date")
+  @@index([end_date], map: "idx_dms_employees_end_date")
+}
+
+// 직원 휴직 관리
+model dms_employees_leave {
   id          Int       @id @default(autoincrement())
-  name        String    @unique @db.VarChar(255) // 고객사
-  created_at     DateTime  @default(now()) @db.DateTime(0)
-  updated_at     DateTime  @default(now()) @db.DateTime(0) @updatedAt
+  employee_id Int       // 직원 ID
+  start_date  DateTime  @db.DateTime(0) // 휴직 시작일
+  end_date    DateTime? @db.DateTime(0) // 휴직 종료일 (null이면 현재 휴직 중)
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime  @default(now()) @db.DateTime(0) @updatedAt
+  
+  // 관계
+  employee    dms_employees @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+  
+  @@index([employee_id], map: "idx_dms_leave_employee")
+  @@index([start_date], map: "idx_dms_leave_start")
 }
 
-model dms_ip_access_control {
-  id          Int                       @id @default(autoincrement())
-  ip_address  String                    @db.VarChar(45) // IPv4 또는 IPv6 주소 (예: "123.456.1.0/24", "123.456.7.890")
-  subnet_mask Int?                      // 서브넷 마스크 (예: 24, 16, 8) - CIDR 표기법에서 / 뒤의 숫자
-  is_active   Boolean                   @default(true) // 활성화/비활성화 상태
-  description String?                   @db.VarChar(100) // IP 설명 (예: "본사 네트워크", "개발팀 IP")
-  created_by  Int? // 생성자 ID (DMS 관리자)
-  created_at  DateTime                  @default(now()) @db.DateTime(0)
-  updated_at  DateTime                  @default(now()) @db.DateTime(0) @updatedAt
-
-  @@index([is_active], map: "idx_dms_ip_active")
-  @@index([ip_address], map: "idx_dms_ip_address")
+// 고객사 관리
+model dms_clients {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique @db.VarChar(255) // 고객사
+  created_at    DateTime  @default(now()) @db.DateTime(0)
+  updated_at    DateTime  @default(now()) @db.DateTime(0) @updatedAt
 }
 
+// 사용자 관리
 model dms_admin_users {
   id             Int       @id @default(autoincrement())
   email          String    @unique @db.VarChar(255) // Concentrix 이메일 주소
@@ -176,19 +217,38 @@ model dms_admin_users {
   @@index([is_active], map: "idx_dms_admin_active")
 }
 
+// 변경 히스토리
 model dms_change_history {
   id              Int       @id @default(autoincrement())
   admin_name      String    @db.VarChar(100) // 작업자 이름 (admin_users 테이블의 이름)
-  employee_id     Int?      // 직원 ID (나중에 employee 테이블과 연동)
+  employee_id     Int?      // 직원 ID
   menu_name       String    @db.VarChar(100) // 작업 항목 (메뉴명)
   action_type     String    @db.VarChar(20) // 작업 내용 (추가/수정/삭제)
   details         String    @db.Text // 세부 작업 내용
   ip_address      String    @db.VarChar(45) // 접속 IP
   created_at      DateTime  @default(now()) @db.DateTime(0) // 작업일시
+  
+  // 관계
+  employee        dms_employees? @relation(fields: [employee_id], references: [id], onDelete: SetNull)
 
   @@index([admin_name], map: "idx_dms_history_admin")
   @@index([employee_id], map: "idx_dms_history_employee")
   @@index([menu_name], map: "idx_dms_history_menu")
   @@index([action_type], map: "idx_dms_history_action")
   @@index([created_at], map: "idx_dms_history_created")
+}
+
+// 접근 제어
+model dms_ip_access_control {
+  id          Int                       @id @default(autoincrement())
+  ip_address  String                    @db.VarChar(45) // IPv4 또는 IPv6 주소 (예: "123.456.1.0/24", "123.456.7.890")
+  subnet_mask Int?                      // 서브넷 마스크 (예: 24, 16, 8) - CIDR 표기법에서 / 뒤의 숫자
+  is_active   Boolean                   @default(true) // 활성화/비활성화 상태
+  description String?                   @db.VarChar(100) // IP 설명 (예: "본사 네트워크", "개발팀 IP")
+  created_by  Int? // 생성자 ID (DMS 관리자)
+  created_at  DateTime                  @default(now()) @db.DateTime(0)
+  updated_at  DateTime                  @default(now()) @db.DateTime(0) @updatedAt
+
+  @@index([is_active], map: "idx_dms_ip_active")
+  @@index([ip_address], map: "idx_dms_ip_address")
 }
