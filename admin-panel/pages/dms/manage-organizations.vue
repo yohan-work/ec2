@@ -391,7 +391,7 @@ const loadGroups = async headquartersId => {
 
 const loadLeaders = async () => {
   try {
-    const response = await $fetch('/api/dms/employees')
+    const response = await $fetch('/api/dms/employees?is_people_manager=true')
     if (response.success) {
       leaderOptions.value = response.data.map(emp => ({
         value: emp.id,
@@ -797,7 +797,6 @@ const getDeleteEndpoint = type => {
 .organization-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
 }
 
 .form-group {

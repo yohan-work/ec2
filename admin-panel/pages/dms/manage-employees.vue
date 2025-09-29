@@ -121,15 +121,15 @@
                 >
               </div>
             </td>
-            <td>{{ employee.group_id ? `그룹 ${employee.group_id}` : '-' }}</td>
-            <td>{{ employee.team_id ? `팀 ${employee.team_id}` : '-' }}</td>
-            <td>{{ employee.manager_name || '-' }}</td>
+            <td>{{ employee.group?.name || '-' }}</td>
+            <td>{{ employee.team?.name || '-' }}</td>
+            <td>{{ employee.manager?.name || '-' }}</td>
             <td>{{ employee.job_role || '-' }}</td>
             <td>{{ employee.career_level || '-' }}</td>
             <td>{{ employee.email }}</td>
             <td>
               <Badge :variant="getStatusVariant(employee.status)">
-                {{ employee.status_label || getStatusLabel(employee.status) }}
+                {{ getStatusLabel(employee.status) }}
               </Badge>
             </td>
             <td>
@@ -187,6 +187,14 @@
             placeholder="honggildong 또는 honggildong@concentrix.com"
             :error="employeeFormErrors.email"
           />
+          <Input
+            id="start_date"
+            label="입사일"
+            v-model="employeeFormData.start_date"
+            type="date"
+          />
+        </div>
+        <div class="right">
           <Select
             id="group_id"
             label="그룹"
@@ -223,20 +231,9 @@
             :multiple="false"
           />
         </div>
-        <div class="right">
-          <Input
-            id="start_date"
-            label="입사일"
-            v-model="employeeFormData.start_date"
-            type="date"
-          />
-          <Select
-            id="manager_id"
-            label="매니저"
-            v-model="employeeFormData.manager_id"
-            :options="managerOptions"
-            placeholder="매니저 선택"
-          />
+      </div>
+      <div class="form-row">
+        <div class="left">
           <Radio
             title="상태"
             v-model="employeeFormData.status"
@@ -250,6 +247,15 @@
             label="퇴사일"
             v-model="employeeFormData.end_date"
             type="date"
+          />
+        </div>
+        <div class="right">
+          <Select
+            id="manager_id"
+            label="매니저"
+            v-model="employeeFormData.manager_id"
+            :options="managerOptions"
+            placeholder="매니저 선택"
           />
         </div>
       </div>
@@ -328,6 +334,7 @@ import {
   getCareerLevelLabel,
   getCareerLevelOptions,
   getJobRoleOptions,
+  filterManagerCandidates,
 } from '~/utils/dms/employee-utils'
 
 definePageMeta({
@@ -482,17 +489,24 @@ const fetchOptions = async () => {
 }
 
 // 매니저 옵션 조회
-const fetchManagerOptions = async () => {
+const fetchManagerOptions = async (currentEmployee = null) => {
   try {
-    const response = await $fetch('/api/dms/employees?limit=1000&status=active')
+    const response = await $fetch(
+      '/api/dms/employees?is_people_manager=true&status=active'
+    )
 
     if (response.success && response.data) {
-      managerOptions.value = response.data
-        .filter(emp => emp.is_people_manager)
-        .map(emp => ({
-          value: emp.id,
-          label: `${emp.name} (${emp.email})`,
-        }))
+      let candidates = response.data
+
+      // 수정 모드인 경우 필터링 적용
+      if (currentEmployee) {
+        candidates = filterManagerCandidates(response.data, currentEmployee)
+      }
+
+      managerOptions.value = candidates.map(emp => ({
+        value: emp.id,
+        label: `${emp.name} (${emp.email})`,
+      }))
     }
   } catch (error) {
     console.error('매니저 옵션 조회 오류:', error)
@@ -502,8 +516,10 @@ const fetchManagerOptions = async () => {
 // 그룹 선택 시 팀 옵션 필터링
 const filterTeamsByGroup = groupId => {
   if (groupId) {
+    // groupId를 숫자로 변환하여 비교
+    const numericGroupId = parseInt(groupId)
     teamOptions.value = allTeamOptions.value.filter(
-      team => team.group_id === groupId
+      team => team.group_id === numericGroupId
     )
   } else {
     teamOptions.value = allTeamOptions.value
@@ -599,15 +615,20 @@ watch(
 )
 
 // 모달 관련
-const openAddModal = () => {
-  console.log('신규 직원 추가 모달 열기')
+const openAddModal = async () => {
   selectedEmployee.value = null
   isModalOpen.value = true
+
+  // 신규 추가 시에는 필터링 없이 모든 피플 매니저 로드
+  await fetchManagerOptions()
 }
 
-const editEmployee = employee => {
+const editEmployee = async employee => {
   selectedEmployee.value = employee
   isModalOpen.value = true
+
+  // 수정 시에는 현재 직원 기준으로 매니저 옵션 필터링
+  await fetchManagerOptions(employee)
 }
 
 const closeModal = () => {
@@ -809,6 +830,31 @@ onMounted(async () => {
   padding: 60px 0;
 }
 
+.filter-group {
+  @media screen and (min-width: 1200px) {
+    min-width: 13.5%;
+    .form-group {
+      width: 100%;
+    }
+    &:nth-child(1) {
+      min-width: 20%;
+      @media (max-width: 1450px) {
+        min-width: 15%;
+      }
+    }
+    &:nth-child(2) {
+      min-width: calc(13.5% * 2 + 12px);
+      .form-group {
+        width: calc(50% - 6px);
+      }
+    }
+    &:nth-child(6) {
+      /* 검색 버튼 */
+      min-width: 90px;
+    }
+  }
+}
+
 .employee-info {
   display: flex;
   flex-direction: column;
@@ -861,6 +907,11 @@ onMounted(async () => {
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+  }
+  + .form-row {
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
   }
 }
 

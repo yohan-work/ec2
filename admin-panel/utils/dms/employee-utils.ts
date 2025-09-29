@@ -27,6 +27,7 @@ export type JobRoleLabel = 'PM' | 'PMO' | '기획자' | '디자이너' | '퍼블
 
 // 직급 (Career Level) - DB에 저장되는 코드
 export type CareerLevelCode =
+  | 'CL5' // 상무
   | 'CL6' // 이사
   | 'CL7' // 부장
   | 'CL8B' // 차장
@@ -36,6 +37,7 @@ export type CareerLevelCode =
 
 // 직급 (Career Level) - 화면에 표시되는 한글
 export type CareerLevelLabel =
+  | '상무'
   | '이사'
   | '부장'
   | '차장'
@@ -91,6 +93,7 @@ export function getCareerLevelLabel(code: CareerLevelCode | null): string {
   }
 
   const careerLevelMap: Record<CareerLevelCode, CareerLevelLabel> = {
+    CL5: '상무',
     CL6: '이사',
     CL7: '부장',
     CL8B: '차장',
@@ -106,6 +109,7 @@ export function getCareerLevelLabel(code: CareerLevelCode | null): string {
  */
 export function getCareerLevelOptions() {
   const levels: CareerLevelCode[] = [
+    'CL5',
     'CL6',
     'CL7',
     'CL8B',
@@ -128,6 +132,70 @@ export function getJobRoleOptions() {
     value: role,
     label: getJobRoleLabel(role),
   }))
+}
+
+/**
+ * 직급 레벨을 반환합니다 (낮을수록 높은 직급)
+ */
+export function getCareerLevelRank(
+  careerLevel: CareerLevelCode | null
+): number {
+  if (!careerLevel) return 999 // 인턴은 가장 낮은 직급으로 처리
+
+  const levelRanks: Record<CareerLevelCode, number> = {
+    CL5: 1, // 상무 (최고)
+    CL6: 2, // 이사
+    CL7: 3, // 부장
+    CL8B: 4, // 차장
+    CL8A: 5, // 과장
+    CL9B: 6, // 대리
+    CL9A: 7, // 사원 (최저)
+  }
+
+  return levelRanks[careerLevel] || 999
+}
+
+/**
+ * 매니저 후보를 필터링합니다
+ * @param candidates 매니저 후보 목록
+ * @param currentEmployee 현재 직원 정보
+ * @returns 필터링된 매니저 후보 목록
+ */
+export function filterManagerCandidates(
+  candidates: Array<{
+    id: number
+    name: string
+    email: string
+    career_level: CareerLevelCode | null
+    manager_id: number | null
+  }>,
+  currentEmployee: {
+    id: number
+    career_level: CareerLevelCode | null
+  }
+) {
+  const currentEmployeeId = currentEmployee.id
+  const currentEmployeeLevel = getCareerLevelRank(currentEmployee.career_level)
+
+  return candidates.filter(candidate => {
+    // 1. 본인 제외
+    if (candidate.id === currentEmployeeId) {
+      return false
+    }
+
+    // 2. 본인보다 직급이 낮은 사람 제외 (숫자가 클수록 낮은 직급)
+    const candidateLevel = getCareerLevelRank(candidate.career_level)
+    if (candidateLevel > currentEmployeeLevel) {
+      return false
+    }
+
+    // 3. 본인을 매니저로 지정한 사람 제외 (상호 참조 방지)
+    if (candidate.manager_id === currentEmployeeId) {
+      return false
+    }
+
+    return true
+  })
 }
 
 /**
@@ -167,6 +235,7 @@ export function getCareerLevelCode(label: string): CareerLevelCode | null {
   }
 
   const codeMap: Record<CareerLevelLabel, CareerLevelCode> = {
+    상무: 'CL5',
     이사: 'CL6',
     부장: 'CL7',
     차장: 'CL8B',

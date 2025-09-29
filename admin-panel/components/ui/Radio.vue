@@ -95,6 +95,9 @@ const handleChange = event => {
   }
   .radio-label + .radio-options {
     min-height: 40px;
+    label {
+      padding: 0;
+    }
   }
 
   .radio-label {
@@ -106,9 +109,6 @@ const handleChange = event => {
     font-weight: 700;
     span {
       font-weight: 400;
-    }
-    ~ label {
-      padding: 0;
     }
   }
 

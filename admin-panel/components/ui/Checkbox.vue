@@ -128,6 +128,9 @@ const handleChange = event => {
   }
   .checkbox-label + .checkbox-options {
     min-height: 40px;
+    label {
+      padding: 0;
+    }
   }
 
   .checkbox-label {
@@ -139,9 +142,6 @@ const handleChange = event => {
     font-weight: 700;
     span {
       font-weight: 400;
-    }
-    ~ label {
-      padding: 0;
     }
   }
 

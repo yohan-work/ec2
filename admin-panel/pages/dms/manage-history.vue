@@ -131,15 +131,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-if="isLoading">
-              <td colspan="7" class="loading-cell">
-                <Loading />
-              </td>
-            </tr>
-            <tr v-else-if="histories.length === 0">
-              <td colspan="7" class="empty-cell">히스토리가 없습니다.</td>
-            </tr>
-            <tr v-else v-for="history in histories" :key="history.id">
+            <tr v-for="history in histories" :key="history.id">
               <td>{{ history.admin_name }}</td>
               <td>{{ history.menu_name }}</td>
               <td>
