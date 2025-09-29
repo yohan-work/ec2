@@ -106,19 +106,35 @@
         <h3 class="category-title">Neutral Colors</h3>
         <div class="color-items">
           <div class="color-item">
-            <div class="color-swatch color-neutral-gray"></div>
+            <div class="color-swatch color-gray-1"></div>
             <div class="color-info">
-              <span class="color-name">Cool Gray</span>
-              <span class="color-code">#f2f2f2</span>
-              <span class="color-variable" @click="copyVariable('$n-gray')" :title="'클릭하여 복사: $n-gray'">$n-gray</span>
+              <span class="color-name">Gray 1</span>
+              <span class="color-code">#86868B</span>
+              <span class="color-variable" @click="copyVariable('$gray-1')" :title="'클릭하여 복사: $gray-1'">$gray-1</span>
             </div>
           </div>
           <div class="color-item">
-            <div class="color-swatch color-neutral-dark-gray"></div>
+            <div class="color-swatch color-gray-2"></div>
             <div class="color-info">
-              <span class="color-name">Charcoal Gray</span>
-              <span class="color-code">#2a2b2c</span>
-              <span class="color-variable" @click="copyVariable('$n-dark-gray')" :title="'클릭하여 복사: $n-dark-gray'">$n-dark-gray</span>
+              <span class="color-name">Gray 2</span>
+              <span class="color-code">#CCCCCC</span>
+              <span class="color-variable" @click="copyVariable('$gray-2')" :title="'클릭하여 복사: $gray-2'">$gray-2</span>
+            </div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch color-gray-3"></div>
+            <div class="color-info">
+              <span class="color-name">Gray 3</span>
+              <span class="color-code">#EEEEEE</span>
+              <span class="color-variable" @click="copyVariable('$gray-3')" :title="'클릭하여 복사: $gray-3'">$gray-3</span>
+            </div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch color-gray-4"></div>
+            <div class="color-info">
+              <span class="color-name">Gray 4</span>
+              <span class="color-code">#A2A2A2</span>
+              <span class="color-variable" @click="copyVariable('$gray-4')" :title="'클릭하여 복사: $gray-4'">$gray-4</span>
             </div>
           </div>
         </div>
@@ -207,7 +223,7 @@ const copyVariable = async (variable) => {
     width: 80px;
     height: 80px;
     border-radius: 8px;
-    border: 1px solid $n-gray;
+    border: 1px solid $gray-1;
     margin-bottom: 16px;
     
     // Color classes using SCSS variables
@@ -249,6 +265,19 @@ const copyVariable = async (variable) => {
     
     &.color-neutral-dark-gray {
       background-color: $n-dark-gray;
+    }
+    // 반복문 대신 SCSS @each를 사용한 예시
+    &.color-gray-1 {
+      background-color: $gray-1;
+    }
+    &.color-gray-2 {
+      background-color: $gray-2;
+    }
+    &.color-gray-3 {
+      background-color: $gray-3;
+    }
+    &.color-gray-4 {
+      background-color: $gray-4;
     }
   }
   
