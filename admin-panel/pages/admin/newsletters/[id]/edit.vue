@@ -886,12 +886,6 @@ const convertParagraphsToHtml = () => {
     html += `<div class="body-image mb-4"><img src="${form.body_image}" alt="본문 이미지" style="max-width: 100%; height: auto; border-radius: 8px;" /></div>`
   }
 
-  // Subtitle 추가
-  if (form.subtitle.trim()) {
-    const boldStyle = form.subtitle_bold ? 'font-weight: bold;' : ''
-    html += `<h3 style="${boldStyle}" class="newsletter-subtitle">${form.subtitle}</h3>`
-  }
-
   // 문단들 추가
   const paragraphs = form.paragraphs
     .filter(p => p.content.trim())
