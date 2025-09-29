@@ -10,6 +10,10 @@ export default defineNuxtConfig({
         dir: 'public',
         baseURL: '/',
       },
+      {
+        dir: '.output/public',
+        baseURL: '/',
+      },
     ],
   },
 

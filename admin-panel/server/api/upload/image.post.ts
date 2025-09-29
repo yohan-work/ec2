@@ -74,12 +74,28 @@ export default defineEventHandler(async event => {
     // 파일 저장
     await writeFile(filePath, file.data)
 
-    // 프로덕션 환경에서는 public 폴더에도 백업 저장 (빌드 시 복사용)
+    // 프로덕션 환경에서는 심볼릭 링크로 연결 (중복 저장 방지)
     if (isProduction) {
       await mkdir(publicDir, { recursive: true })
       const publicFilePath = join(publicDir, fileName)
-      await writeFile(publicFilePath, file.data)
-      console.log(`백업 저장 완료: ${publicFilePath}`)
+      try {
+        const { symlink } = await import('fs/promises')
+        const relativePath = join(
+          '..',
+          '..',
+          '.output',
+          'public',
+          'uploads',
+          'images',
+          fileName
+        )
+        await symlink(relativePath, publicFilePath)
+        console.log(`심볼릭 링크 생성: ${publicFilePath} -> ${relativePath}`)
+      } catch (error) {
+        // 심볼릭 링크 실패 시 파일 복사로 대체
+        await writeFile(publicFilePath, file.data)
+        console.log(`백업 저장 완료: ${publicFilePath}`)
+      }
     }
 
     // 접근 가능한 URL 생성
