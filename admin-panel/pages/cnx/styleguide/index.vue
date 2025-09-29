@@ -42,13 +42,15 @@ import Colors from './colors.vue'
 import Typography from './typography.vue'
 import Buttons from './buttons.vue'
 import Tabs from './tabs.vue'
+import Title from './title.vue'
 
 // 탭 섹션 정의
 const sections = [
   { id: 'colors', title: 'Colors' },
   { id: 'typography', title: 'Typography' },
   { id: 'buttons', title: 'Buttons' },
-  { id: 'tabs', title: 'Tabs' }
+  { id: 'tabs', title: 'Tabs' },
+  { id: 'title', title: 'Title' }
 ]
 
 // 활성 탭을 추적
@@ -65,7 +67,8 @@ const getComponent = (sectionId) => {
     colors: Colors,
     typography: Typography,
     buttons: Buttons,
-    tabs: Tabs
+    tabs: Tabs,
+    title: Title
   }
   return componentMap[sectionId] || null
 }
