@@ -50,10 +50,6 @@ const tableClasses = computed(() => {
     background: transparent;
   }
 
-  .filter-container + & {
-    border-top: 1px solid #ddd;
-  }
-
   // .main-container & {
   //   overflow-y: scroll;
   //   width: calc(100% + 31px);
@@ -231,58 +227,46 @@ const tableClasses = computed(() => {
 }
 
 // Simple 스타일
-.table--simple {
-  .table-wrapper {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    overflow: hidden;
-  }
 
-  :deep(thead) {
-    background: #f9fafb;
-
-    th {
-      background: #f9fafb;
-      font-weight: 600;
-      color: #374151;
-      border-bottom: 1px solid #e5e7eb;
-
-      &:after {
-        border-bottom: 1px solid #e5e7eb;
-      }
-    }
-  }
-
-  :deep(tbody) {
-    tr {
+.table-wrapper:has(.table--simple) {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 32px;
+  width: calc(100% + 16px - 32px - 32px);
+  .table--simple {
+    :deep(thead) {
       background: #ffffff;
-      transition: background-color 0.15s ease;
 
-      &:hover {
-        background: #f9fafb;
-      }
-
-      &:nth-child(odd),
-      &:nth-child(even) {
+      th {
         background: #ffffff;
-      }
+        font-weight: 600;
+        color: #374151;
 
-      &:hover {
-        &:nth-child(odd),
-        &:nth-child(even) {
-          background: #f9fafb;
+        &:after {
+          border-bottom: 1px solid rgba(0, 0, 0, 0.3);
         }
       }
     }
 
-    td {
-      background: inherit;
-      color: #374151;
-      border-bottom: 1px solid #f3f4f6;
+    :deep(tbody) {
+      tr {
+        background: #ffffff;
+        transition: background-color 0.15s ease;
 
-      &:after {
-        border-bottom: 1px solid #f3f4f6;
+        &:hover {
+          background: #f9fafb;
+        }
+      }
+
+      td {
+        background: inherit;
+        color: #374151;
+        padding: 10px 16px;
+
+        &:after {
+          border-bottom: 1px solid #ddd;
+        }
       }
     }
   }
