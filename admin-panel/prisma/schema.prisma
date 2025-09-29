@@ -217,6 +217,7 @@ model dms_admin_users {
   password_hash  String    @db.VarChar(255)
   employee_id    Int?
   is_active      Boolean   @default(true) // 계정 활성화 상태
+  permissions    Json?     // 사용자 권한 정보 (일반메뉴 5개, 관리메뉴 7개)
   last_login_at  DateTime? @db.DateTime(0) // 마지막 로그인 시간
   created_at     DateTime  @default(now()) @db.DateTime(0)
   updated_at     DateTime  @default(now()) @db.DateTime(0) @updatedAt
