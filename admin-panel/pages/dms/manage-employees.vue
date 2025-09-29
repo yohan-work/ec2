@@ -37,7 +37,7 @@
         <div class="filter-group">
           <Select
             v-model="selectedJob"
-            :options="jobOptions"
+            :options="jobRoleOptions"
             placeholder="전체 직무"
             @change="searchEmployees"
           />
@@ -166,6 +166,9 @@
     :width="876"
   >
     <form @submit.prevent="handleEmployeeFormSubmit" class="employee-form">
+      <!-- 본부 hidden input -->
+      <input type="hidden" v-model="employeeFormData.headquarter_id" />
+
       <div class="form-row">
         <div class="left">
           <Input
@@ -181,7 +184,7 @@
             label="이메일"
             v-model="employeeFormData.email"
             type="email"
-            placeholder="concentrix@concentrix.com"
+            placeholder="honggildong 또는 honggildong@concentrix.com"
             :error="employeeFormErrors.email"
           />
           <Select
@@ -190,6 +193,7 @@
             v-model="employeeFormData.group_id"
             :options="groupOptions"
             placeholder="그룹 선택"
+            @change="filterTeamsByGroup(employeeFormData.group_id)"
           />
           <Select
             id="team_id"
@@ -205,11 +209,12 @@
             :options="careerLevelOptions"
             placeholder="직급 선택"
           />
-          <Input
+          <Select
             id="job_role"
             label="직무"
             v-model="employeeFormData.job_role"
-            placeholder="개발자, 디자이너, 기획자 등"
+            :options="jobRoleOptions"
+            placeholder="직무 선택"
           />
           <Checkbox
             v-model="employeeFormData.is_people_manager"
@@ -271,7 +276,7 @@
           @click="handleEmployeeFormSubmit"
         >
           {{
-            isEmployeeFormLoading ? '처리 중...' : isEditMode ? '수정' : '추가'
+            isEmployeeFormLoading ? '처리 중...' : isEditMode ? '수정' : '등록'
           }}
         </Button>
       </div>
@@ -322,6 +327,7 @@ import {
   getStatusCodeColor,
   getCareerLevelLabel,
   getCareerLevelOptions,
+  getJobRoleOptions,
 } from '~/utils/dms/employee-utils'
 
 definePageMeta({
@@ -358,11 +364,16 @@ const careerLevelOptions = computed(() => {
   return getCareerLevelOptions()
 })
 
+// 직무 옵션 생성
+const jobRoleOptions = computed(() => {
+  return getJobRoleOptions()
+})
+
 // 직원 폼 데이터
 const employeeFormData = reactive({
   email: '',
   name: '',
-  headquarter_id: null,
+  headquarter_id: 1, // 본부는 항상 1번으로 고정
   group_id: null,
   team_id: null,
   manager_id: null,
@@ -397,7 +408,7 @@ const selectedStatus = ref('')
 // 옵션 데이터
 const groupOptions = ref([])
 const teamOptions = ref([])
-const jobOptions = ref([])
+const allTeamOptions = ref([]) // 모든 팀 옵션 (그룹별 필터링용)
 const clOptions = ref([])
 const statusOptions = ref([])
 const managerOptions = ref([])
@@ -460,8 +471,8 @@ const fetchOptions = async () => {
 
     if (response.success && response.data) {
       groupOptions.value = response.data.groups
-      teamOptions.value = response.data.teams
-      jobOptions.value = response.data.jobRoles
+      allTeamOptions.value = response.data.teams // 모든 팀 옵션 저장
+      teamOptions.value = response.data.teams // 초기에는 모든 팀 표시
       clOptions.value = response.data.careerLevels
       statusOptions.value = response.data.statusOptions
     }
@@ -488,6 +499,19 @@ const fetchManagerOptions = async () => {
   }
 }
 
+// 그룹 선택 시 팀 옵션 필터링
+const filterTeamsByGroup = groupId => {
+  if (groupId) {
+    teamOptions.value = allTeamOptions.value.filter(
+      team => team.group_id === groupId
+    )
+  } else {
+    teamOptions.value = allTeamOptions.value
+  }
+  // 그룹이 변경되면 팀 선택 초기화
+  employeeFormData.team_id = null
+}
+
 // 검색
 const searchEmployees = () => {
   isSearchExecuted.value = true
@@ -511,7 +535,7 @@ const resetEmployeeForm = () => {
   Object.assign(employeeFormData, {
     email: '',
     name: '',
-    headquarter_id: null,
+    headquarter_id: 1, // 본부는 항상 1번으로 고정
     group_id: null,
     team_id: null,
     manager_id: null,
@@ -535,7 +559,7 @@ const fillEmployeeForm = employee => {
     Object.assign(employeeFormData, {
       email: employee.email || '',
       name: employee.name || '',
-      headquarter_id: employee.headquarter_id || null,
+      headquarter_id: 1, // 본부는 항상 1번으로 고정
       group_id: employee.group_id || null,
       team_id: employee.team_id || null,
       manager_id: employee.manager_id || null,
@@ -550,6 +574,11 @@ const fillEmployeeForm = employee => {
         ? new Date(employee.end_date).toISOString().split('T')[0]
         : '',
     })
+
+    // 그룹이 있으면 해당 그룹의 팀 목록으로 필터링
+    if (employee.group_id) {
+      filterTeamsByGroup(employee.group_id)
+    }
   }
 }
 
@@ -597,8 +626,16 @@ const handleEmployeeFormSubmit = async () => {
   isEmployeeFormLoading.value = true
 
   try {
+    // 이메일 처리: @가 없으면 @concentrix.com 추가
+    let processedEmail = employeeFormData.email.trim()
+    if (processedEmail && !processedEmail.includes('@')) {
+      processedEmail = `${processedEmail}@concentrix.com`
+    }
+
     const submitData = {
       ...employeeFormData,
+      email: processedEmail,
+      headquarter_id: 1, // 본부는 항상 1번으로 고정
       group_id: employeeFormData.group_id
         ? parseInt(employeeFormData.group_id)
         : null,
@@ -646,11 +683,32 @@ const validateEmployeeForm = () => {
   if (!employeeFormData.email || employeeFormData.email.trim().length === 0) {
     employeeFormErrors.email = '이메일을 입력해주세요.'
     isValid = false
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(employeeFormData.email)) {
-    employeeFormErrors.email = '올바른 이메일 형식이 아닙니다.'
-    isValid = false
   } else {
-    employeeFormErrors.email = ''
+    const email = employeeFormData.email.trim()
+
+    // @가 있는 경우 도메인 검사
+    if (email.includes('@')) {
+      const domain = email.split('@')[1]
+      if (domain !== 'concentrix.com') {
+        employeeFormErrors.email =
+          '이메일 도메인은 @concentrix.com이어야 합니다.'
+        isValid = false
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        employeeFormErrors.email = '올바른 이메일 형식이 아닙니다.'
+        isValid = false
+      } else {
+        employeeFormErrors.email = ''
+      }
+    } else {
+      // @가 없는 경우 @concentrix.com을 추가한 후 검증
+      const emailToValidate = `${email}@concentrix.com`
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToValidate)) {
+        employeeFormErrors.email = '올바른 이메일 형식이 아닙니다.'
+        isValid = false
+      } else {
+        employeeFormErrors.email = ''
+      }
+    }
   }
 
   // 이름 검사

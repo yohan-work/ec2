@@ -1,41 +1,43 @@
 import { prisma } from '~/lib/prisma'
 import {
   getStatusLabel,
+  getJobRoleOptions,
+  getCareerLevelOptions,
   type EmployeeStatusCode,
 } from '~/utils/dms/employee-utils'
 
+// 타입 정의
+interface Group {
+  id: number
+  name: string
+}
+
+interface Team {
+  id: number
+  name: string
+  group_id: number
+}
+
 export default defineEventHandler(async event => {
   try {
-    // 그룹, 팀, 직무, 직급 옵션 조회
-    const [groups, teams, jobRoles, careerLevels] = await Promise.all([
-      // 그룹 옵션 (group_id가 있는 직원들의 그룹 정보)
-      prisma.dms_employees.findMany({
-        where: { group_id: { not: null } },
-        select: { group_id: true },
-        distinct: ['group_id'],
-      }),
+    // 그룹, 팀 옵션 조회 (직무, 직급은 utils에서 가져옴)
+    const [groups, teams] = await Promise.all([
+      // 그룹 옵션 (조직관리에서 등록한 실제 그룹 데이터)
+      (prisma as any).dms_groups.findMany({
+        select: { id: true, name: true },
+        orderBy: { sort_order: 'asc' },
+      }) as Promise<Group[]>,
 
-      // 팀 옵션 (team_id가 있는 직원들의 팀 정보)
-      prisma.dms_employees.findMany({
-        where: { team_id: { not: null } },
-        select: { team_id: true },
-        distinct: ['team_id'],
-      }),
-
-      // 직무 옵션
-      prisma.dms_employees.findMany({
-        where: { job_role: { not: null } },
-        select: { job_role: true },
-        distinct: ['job_role'],
-      }),
-
-      // 직급 옵션
-      prisma.dms_employees.findMany({
-        where: { career_level: { not: null } },
-        select: { career_level: true },
-        distinct: ['career_level'],
-      }),
+      // 팀 옵션 (조직관리에서 등록한 실제 팀 데이터)
+      (prisma as any).dms_teams.findMany({
+        select: { id: true, name: true, group_id: true },
+        orderBy: { sort_order: 'asc' },
+      }) as Promise<Team[]>,
     ])
+
+    // 직무, 직급 옵션 (utils에서 가져옴)
+    const jobRoles = getJobRoleOptions()
+    const careerLevels = getCareerLevelOptions()
 
     // 상태 옵션 (utils 함수 사용)
     const statusCodes: EmployeeStatusCode[] = [
@@ -53,18 +55,14 @@ export default defineEventHandler(async event => {
     return {
       success: true,
       data: {
-        groups: groups
-          .filter(g => g.group_id !== null)
-          .map(g => ({ value: g.group_id, label: `그룹 ${g.group_id}` })),
-        teams: teams
-          .filter(t => t.team_id !== null)
-          .map(t => ({ value: t.team_id, label: `팀 ${t.team_id}` })),
-        jobRoles: jobRoles
-          .filter(j => j.job_role !== null)
-          .map(j => ({ value: j.job_role, label: j.job_role })),
-        careerLevels: careerLevels
-          .filter(c => c.career_level !== null)
-          .map(c => ({ value: c.career_level, label: c.career_level })),
+        groups: groups.map((g: Group) => ({ value: g.id, label: g.name })),
+        teams: teams.map((t: Team) => ({
+          value: t.id,
+          label: t.name,
+          group_id: t.group_id,
+        })),
+        jobRoles: jobRoles,
+        careerLevels: careerLevels,
         statusOptions,
       },
     }

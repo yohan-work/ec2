@@ -233,7 +233,7 @@
               ? '처리 중...'
               : isEditMode
                 ? '수정'
-                : '추가'
+                : '등록'
           }}
         </Button>
       </div>
@@ -309,7 +309,7 @@ const modalTitle = computed(() => {
     group: '그룹',
     team: '팀',
   }
-  return `${isEditMode.value ? '수정' : '신규'} ${typeNames[modal.value.type]} ${isEditMode.value ? '' : '추가'}`
+  return `${isEditMode.value ? '수정' : '신규'} ${typeNames[modal.value.type]} ${isEditMode.value ? '' : '등록'}`
 })
 
 // 조직 폼 데이터

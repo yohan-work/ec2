@@ -1,5 +1,5 @@
 <template>
-  <TitleArea title="프로젝트 관리">
+  <TitleArea title="접근 제어">
     <template #right>
       <div class="right-content">
         <Button variant="blue" :size="38">

@@ -120,6 +120,17 @@ export function getCareerLevelOptions() {
 }
 
 /**
+ * 직무 옵션 배열을 반환합니다 (Select 컴포넌트용)
+ */
+export function getJobRoleOptions() {
+  const roles: JobRoleCode[] = ['PM', 'PMO', 'PLANNER', 'DESIGNER', 'DEVELOPER']
+  return roles.map(role => ({
+    value: role,
+    label: getJobRoleLabel(role),
+  }))
+}
+
+/**
  * 한글 라벨을 상태 코드로 변환
  */
 export function getStatusCode(label: EmployeeStatusLabel): EmployeeStatusCode {
