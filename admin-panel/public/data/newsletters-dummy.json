@@ -3,68 +3,53 @@
     {
       "id": 33,
       "title": "콘센트릭스, 프리미엄 콘텐츠 제작 역량 강화",
+      "subtitle": "고객 니즈에 초점 맞춘 고품질 콘텐츠 제공",
       "body_html": "<p>개발 서버 테스트를 위한 샘플 뉴스레터입니다.</p><br><p>이 뉴스레터는 프론트엔드 개발자들이 DB 연결 없이도 뉴스레터 시스템을 테스트할 수 있도록 제작된 더미 데이터입니다.</p><br><p>실제 운영 환경에서는 데이터베이스에서 실시간으로 뉴스레터 정보를 가져오게 됩니다.</p>",
-      "thumbnail_image": "/images/default_newsletter_thumbnail.jpg",
-      "published_at": "2025-09-19T19:35:00+09:00",
-      "admin_users": {
-        "departments": {
-          "name": "운영팀"
-        }
-      }
+      "thumbnail_image": "/images/default-newsletter-thumbnail.jpg",
+      "content_image": "/images/default-newsletter-content-image.jpg",
+      "published_at": "2025-09-19T19:35:00+09:00"
     },
     {
       "id": 25,
-      "title": "콘센트릭스서비스코리아, 'SAI Digital' 인수 완료 - 이커스 및 고객경험 솔루션 기술력 강화, 프리미엄 콘텐츠 제작 역량 강화 콘센트...",
+      "title": "콘센트릭스서비스코리아, 'SAI Digital' 인수 완료 - 이커머스 및 고객경험 솔루션 기술력 강화",
+      "subtitle": "콘센트릭스서비스코리아, 'SAI Digital' 인수 완료 - 이커머스 및 고객경험 솔루션 기술력 강화",
       "body_html": "<p>글로벌 테크놀로지 기반 서비스 전문기업 콘센트릭스서비스코리아(이하 '콘센트릭스')는 최근 E2E이커머스 및 고객경험(CX) 기술 솔루션 서비스 기업인 'SAI Digital' 인수를 완료하였다고 발표하였다. 콘센트릭스는 이번 인수를 통해 베트남 글로벌 개발센터 (Global Development Center)를 전략적 거점으로 육성하여, 기존 운영중인 인도 GDC와 더불어 시너지를 최대화한다는 전략이다.</p><br><p>'SAI Digital'은 이커머스 및 기술 솔루션 분야에서 높은 전문성을 보유하고 있으며, 이를 기반으로 플랫폼 설계, 구축 및 운영 서비스를 수행하고 있다. 또한, 이커머스 및 고객경험분야의 다양한 글로벌 솔루션 기업들과 전략적 파트너십을 맺고있으며, 자체 AI 솔루션도 보유하고 있다. 특히 베트남 딜리버리 센터를 통해 일본, 한국, 싱가포르 등에 기반을 둔 고객사에 서비스를 제공하며 아시아 태평양(APAC) 지역에서 강력한 비즈니스 기반을 구축하고 있다.</p><br><p>콘센트릭스는 'SAI Digital'을 APAC사업부에 통합함으로써 이커머스와 고객 경험 전반에 걸친 디지털 및 AI 역량을 강화할 수 있게 되었고, 고객사들에게 이커머스 최적화, 고객 경험 향상, 디지털 트랜스포메이션을 위한 더욱 향상된 서비스와 최적화된 솔루션을 제공할 예정이다. 현재 콘센트릭스는 APAC 시장에서 빠르게 성장 중이며, 'SAI Digital' 인수를 통해 이러한 성장세가 더욱 가속화될 전망이다.</p><br><p>콘센트릭스서비스코리아 조희제 대표는 \"한국과 베트남에 양국 언어에 능통한 IT 전문가를 배치하여 소통 장벽을 없애고 협업을 강화함으로써 시너지를 극대화하는 '한국형 베트남 오프쇼어 개발 운영 모델'을 구축할 것\"이라며, \"이를 통해 한국내 글로벌 기업에 최적화된 맞춤형 서비스 모델을 제공하고, 대규모 IT 개발 및 디지털관련 프로젝트에 있어 전문적이면서도 비용효율적인 솔루션을 제공할 수 있을 것\"이라고 전했다.</p><br><p>'SAI Digital' CEO 수하스하이웨일은 \"콘센트릭스 합류함으로써 이제 함께 아시아 시장에서 보다 차별화된 가치와 혁신적인 서비스를 제공할 수 있게 되었다\"며, \"속도와 서비스 퀄리티에 민감한 한국과 일본에서 빠르게 성장할 것으로 기대한다\"고 밝혔다.</p><br><p>한편, 콘센트릭스는 Fortune Global 500의 주요 기업들을 포함한 2,000여 글로벌 고객사들에게 다양한 고객 경험 (Customer Experience, CX) 전략 및 운영 서비스 제공, 그리고 디지털 E2E 서비스를 제공하고 있다.</p>",
-      "thumbnail_image": "/images/default_newsletter_thumbnail.jpg",
-      "published_at": "2025-09-12T21:13:00+09:00",
-      "admin_users": {
-        "departments": {
-          "name": "인사팀"
-        }
-      }
+      "thumbnail_image": "/images/default-newsletter-thumbnail.jpg",
+      "content_image": "/images/default-newsletter-content-image.jpg",
+      "published_at": "2025-09-12T21:13:00+09:00"
     },
     {
       "id": 24,
       "title": "콘센트릭스, 1일 美 나스닥 상장 …독립 회사로 새 출발",
-      "body_html": "CX(고객경험) 솔루션과 디지털마케팅 엔드투엔드 서비스 전문 글로벌 기업 콘센트릭스 Corp.(이하 콘센트릭스)는 지난 1일(현지 시간) 미국 나스닥 시장에 상장했다고 24일 밝혔다.미 경제 전문지 포춘의 2019년 500대 기업 순위에서 158위에 오른 글로벌 비즈니스 서비스 기업 시넥스(SYNNEX)의 자회사로 있던 콘센트릭스(CNXC)는 이번에 분리 독립하며 새로운 출발을 알렸다. 콘센트릭스는 나스닥 상장을 통해 조달한 자금을 바탕으로 글로벌 시장에서의 경쟁력을 더욱 강화하고, 혁신적인 CX 솔루션 개발에 투자를 확대할 예정이라고 발표했다.",
-      "thumbnail_image": "/images/default_newsletter_thumbnail.jpg",
-      "published_at": "2025-09-10T10:51:00+09:00",
-      "admin_users": {
-        "departments": {
-          "name": "운영팀"
-        }
-      }
+      "subtitle": "글로벌 CX 솔루션 전문기업, 나스닥 상장으로 독립 회사로 새 출발",
+      "body_html": "<p>CX(고객경험) 솔루션과 디지털마케팅 엔드투엔드 서비스 전문 글로벌 기업 콘센트릭스 Corp.(이하 콘센트릭스)는 지난 1일(현지 시간) 미국 나스닥 시장에 상장했다고 24일 밝혔다.</p><br><p>미 경제 전문지 포춘의 2019년 500대 기업 순위에서 158위에 오른 글로벌 비즈니스 서비스 기업 시넥스(SYNNEX)의 자회사로 있던 콘센트릭스(CNXC)는 이번에 분리 독립하며 새로운 출발을 알렸다. 콘센트릭스는 나스닥 상장을 통해 조달한 자금을 바탕으로 글로벌 시장에서의 경쟁력을 더욱 강화하고, 혁신적인 CX 솔루션 개발에 투자를 확대할 예정이라고 발표했다.</p>",
+      "thumbnail_image": "/images/default-newsletter-thumbnail.jpg",
+      "content_image": "/images/default-newsletter-content-image.jpg",
+      "published_at": "2025-09-10T10:51:00+09:00"
     },
     {
       "id": 22,
       "title": "콘센트릭스 CATALYST 코리아, 비즈니스 성장으로 '강남 2센터' 공식 오픈",
+      "subtitle": "ESG 경영 실천 및 근무 환경 편의성에 중점을 둔 효율적인 업무 환경 제공",
       "body_html": "ESG 경영 실천 및 근무 환경 편의성에 중점.. 효율적인 업무 환경 제공국내 프리미엄 디지털 E2E 서비스를 제공하는 콘센트릭스서비스코리아 CATALYST 사업부(이하 '콘센트릭스 CATALYST')가 비즈니스 성장으로 디지털 마케팅 비즈니스 수행을 위한 '강남 2센터'를 공식 오픈했다.콘센트릭스 CATALYST는 역삼동에 기존 강남센터를 운영 중이었으나, 급속한 비즈니스 성장과 인력 확충에 따라 추가 공간이 필요하게 되어 강남 2센터를 새롭게 오픈하게 되었다고 밝혔다. 새로운 강남 2센터는 최신 디지털 인프라와 협업 공간을 갖추고 있으며, 직원들의 업무 효율성과 만족도를 높이기 위한 다양한 편의시설을 제공한다.",
-      "thumbnail_image": "/images/default_newsletter_thumbnail.jpg",
-      "published_at": "2025-09-08T16:39:00+09:00",
-      "admin_users": {
-        "departments": {
-          "name": "운영팀"
-        }
-      }
+      "thumbnail_image": "/images/default-newsletter-thumbnail.jpg",
+      "published_at": "2025-09-08T16:39:00+09:00"
     },
     {
       "id": 21,
       "title": "부제목 추가 버전 테스트",
+      "subtitle": "글로벌 B2B 디지털 세일즈 기업 'ServiceSource' 인수로 디지털 트랜스포메이션 가속화",
       "body_html": "부제목입니다 안녕안녕콘센트릭스가 글로벌 B2B 디지털 세일즈 기업 'ServiceSource'를 인수했다고 밝혔다.'ServiceSource'는 B2B 디지털 세일즈 및 고객 성공 솔루션을 제공하는 글로벌 서비스 기업으로 콘센트릭스는 이번 인수를 통해 빠르게 성장하고 있는 B2B 디지털 세일즈 사업을 가속화할 예정이다. 특히 'ServiceSource'를 통해 확보한 기술력과 전문 인력을 바탕으로 기존 고객들에게 더욱 포괄적이고 혁신적인 디지털 솔루션을 제공할 수 있게 되었다고 설명했다. 이번 인수는 콘센트릭스의 디지털 트랜스포메이션 전략의 핵심 요소로, 고객사의 매출 증대와 비즈니스 성장을 지원하는 통합 솔루션 제공이 목표다.",
-      "thumbnail_image": "/images/default_newsletter_thumbnail.jpg",
-      "published_at": "2025-09-08T16:19:00+09:00",
-      "admin_users": {
-        "departments": {
-          "name": "운영팀"
-        }
-      }
+      "thumbnail_image": "/images/default-newsletter-thumbnail.jpg",
+      "published_at": "2025-09-08T16:19:00+09:00"
     },
     {
       "id": 20,
       "title": "콘센트릭스, AI 기반 고객 서비스 솔루션 출시",
-      "body_html": "콘센트릭스가 최신 AI 기술을 활용한 차세대 고객 서비스 솔루션을 공식 출시했다고 발표했다. 이번 솔루션은 자연어 처리(NLP)와 머신러닝 기술을 결합하여 고객 문의를 실시간으로 분석하고, 개인화된 응답을 제공하는 것이 특징이다. 특히 다국어 지원 기능을 통해 글로벌 기업들의 다양한 고객 서비스 요구사항을 효과적으로 충족할 수 있도록 설계되었다. 콘센트릭스는 이 솔루션을 통해 고객사의 서비스 품질 향상과 운영 효율성 증대를 동시에 실현할 수 있을 것으로 기대한다고 밝혔다.",
-      "thumbnail_image": "/images/default_newsletter_thumbnail.jpg",
+      "subtitle": "자연어 처리와 머신러닝 기술로 고객 서비스 품질 향상과 운영 효율성 증대",
+      "body_html": "<p>콘센트릭스가 최신 AI 기술을 활용한 차세대 고객 서비스 솔루션을 공식 출시했다고 발표했다. 이번 솔루션은 자연어 처리(NLP)와 머신러닝 기술을 결합하여 고객 문의를 실시간으로 분석하고, 개인화된 응답을 제공하는 것이 특징이다.</p><br><p>특히 다국어 지원 기능을 통해 글로벌 기업들의 다양한 고객 서비스 요구사항을 효과적으로 충족할 수 있도록 설계되었다. 콘센트릭스는 이 솔루션을 통해 고객사의 서비스 품질 향상과 운영 효율성 증대를 동시에 실현할 수 있을 것으로 기대한다고 밝혔다.</p>",
+      "thumbnail_image": "/images/default-newsletter-thumbnail.jpg",
+      "content_image": "/images/default-newsletter-content-image.jpg",
       "published_at": "2025-09-05T14:22:00+09:00",
       "admin_users": {
         "departments": {
@@ -75,26 +60,19 @@
     {
       "id": 19,
       "title": "2025년 상반기 우수 직원 시상식 개최",
-      "body_html": "콘센트릭스서비스코리아가 2025년 상반기 우수 직원 시상식을 성공적으로 개최했다. 이번 시상식에서는 뛰어난 성과를 보인 직원들과 팀을 대상으로 다양한 부문에서 시상이 이루어졌다. 특히 고객 만족도 향상에 기여한 직원들과 혁신적인 아이디어로 업무 효율성을 개선한 팀들이 주요 수상자로 선정되었다. 회사는 이러한 시상을 통해 직원들의 노고를 인정하고, 지속적인 동기부여와 조직 문화 발전을 도모하고 있다고 설명했다.",
-      "thumbnail_image": "/images/default_newsletter_thumbnail.jpg",
-      "published_at": "2025-09-03T11:45:00+09:00",
-      "admin_users": {
-        "departments": {
-          "name": "인사팀"
-        }
-      }
+      "subtitle": "뛰어난 성과를 보인 직원들과 팀을 대상으로 다양한 부문에서 시상 진행",
+      "body_html": "<p>콘센트릭스서비스코리아가 2025년 상반기 우수 직원 시상식을 성공적으로 개최했다. 이번 시상식에서는 뛰어난 성과를 보인 직원들과 팀을 대상으로 다양한 부문에서 시상이 이루어졌다.</p><br><p>특히 고객 만족도 향상에 기여한 직원들과 혁신적인 아이디어로 업무 효율성을 개선한 팀들이 주요 수상자로 선정되었다. 회사는 이러한 시상을 통해 직원들의 노고를 인정하고, 지속적인 동기부여와 조직 문화 발전을 도모하고 있다고 설명했다.</p>",
+      "thumbnail_image": "/images/default-newsletter-thumbnail.jpg",
+      "content_image": "/images/default-newsletter-content-image.jpg",
+      "published_at": "2025-09-03T11:45:00+09:00"
     },
     {
       "id": 18,
       "title": "콘센트릭스, 지속가능경영 보고서 발간",
+      "subtitle": "2024년 ESG 경영 성과 공개, 탄소 중립 목표 달성을 위한 구체적 로드맵 수립",
       "body_html": "콘센트릭스가 2024년 지속가능경영 보고서를 발간하며 ESG(환경·사회·지배구조) 경영 성과를 공개했다. 보고서에 따르면, 콘센트릭스는 탄소 중립 목표 달성을 위한 구체적인 로드맵을 수립하고, 재생에너지 사용 확대와 친환경 기술 도입에 적극 투자하고 있다. 또한 직원 복지 향상과 지역사회 공헌 활동을 통해 사회적 가치 창출에도 힘쓰고 있다고 밝혔다. 회사는 앞으로도 지속가능한 비즈니스 모델을 통해 모든 이해관계자들과 함께 성장해 나갈 것이라고 강조했다.",
-      "thumbnail_image": "/images/default_newsletter_thumbnail.jpg",
-      "published_at": "2025-08-28T09:30:00+09:00",
-      "admin_users": {
-        "departments": {
-          "name": "경영기획팀"
-        }
-      }
+      "thumbnail_image": "/images/default-newsletter-thumbnail.jpg",
+      "published_at": "2025-08-28T09:30:00+09:00"
     }
   ],
   "pagination": {

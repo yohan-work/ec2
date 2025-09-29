@@ -35,154 +35,34 @@
     <!-- 메인 콘텐츠 -->
     <main>
       <div class="newsletter">
-        <!-- 제목 및 검색 
-        <div class="md:flex md:items-center md:justify-between mb-8">
-          <div class="flex-1 min-w-0">
-            
-            <p class="mt-1 text-sm text-gray-500">
-              총 {{ pagination.total }}개의 뉴스레터
-            </p> 
-          </div>-->
+        
+        <div class="inner">
+          <!-- 제목 -->
+          <AppTitle>
+            Newsroom
+          </AppTitle>
 
-          <!-- 검색 -->
-          <!-- <div class="mt-4 flex md:mt-0 md:ml-4">
-            <div class="relative rounded-md shadow-sm">
-              <input
-                v-model="searchQuery"
-                @input="debouncedSearch"
-                type="text"
-                placeholder="뉴스레터 검색..."
-                class="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-              <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                <svg
-                  class="h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div> 
-        </div> -->
+          <!-- 뉴스레터 목록 -->
+          <NewsletterList
+            :newsletters="newsletters"
+            :loading="loading"
+            @newsletter-click="handleNewsletterClick"
+          />
 
-        <AppTitle>
-          Newsroom
-        </AppTitle>
-        <!-- 뉴스레터 목록 -->
-        <NewsletterList
-          :newsletters="newsletters"
-          :loading="loading"
-          @newsletter-click="handleNewsletterClick"
-        />
+          <!-- 더보기 버튼 -->
+          <div v-if="shouldShowLoadMore && !loading" class="newsletter-load-more">
+            <AppButton 
+              color="primary"
+              effect="left"
+              @click="loadMoreNewsletters"
+              :disabled="loadingMore"
+              :text="loadingMore ? '로딩 중...' : '더보기'"
+            >
+            </AppButton>
+          </div>
 
-        <!-- 더보기 -->
-        <div v-if="shouldShowLoadMore && !loading" class="newsletter-load-more">
-          <!-- <button
-            @click="loadMoreNewsletters"
-            :disabled="loadingMore"
-          >
-            <span
-              v-if="loadingMore"
-            ></span>
-            {{ loadingMore ? '로딩 중...' : '더보기' }}
-          </button> -->
-          <AppButton 
-            color="green"
-            effect="left"
-            @click="loadMoreNewsletters"
-            :disabled="loadingMore"
-          >
-          <!-- <span
-              v-if="loadingMore"
-              class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
-            ></span> -->
-          {{ loadingMore ? '로딩 중...' : '더보기' }}
-          </AppButton>
         </div>
 
-        <!-- 페이지네이션 -->
-        <!-- <div
-          v-if="pagination.pages > 1"
-          class="mt-8 flex items-center justify-between"
-        >
-          <div class="flex-1 flex justify-between sm:hidden">
-            <button
-              @click="goToPage(pagination.page - 1)"
-              :disabled="pagination.page <= 1"
-              class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-            >
-              이전
-            </button>
-            <button
-              @click="goToPage(pagination.page + 1)"
-              :disabled="pagination.page >= pagination.pages"
-              class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-            >
-              다음
-            </button>
-          </div>
-
-          <div
-            class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
-          >
-            <div>
-              <p class="text-sm text-gray-700">
-                총 <span class="font-medium">{{ pagination.total }}</span
-                >개 중
-                <span class="font-medium">{{
-                  (pagination.page - 1) * pagination.limit + 1
-                }}</span
-                >-<span class="font-medium">{{
-                  Math.min(pagination.page * pagination.limit, pagination.total)
-                }}</span
-                >개 표시
-              </p>
-            </div>
-            <div>
-              <nav
-                class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-              >
-                <button
-                  @click="goToPage(pagination.page - 1)"
-                  :disabled="pagination.page <= 1"
-                  class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-                >
-                  이전
-                </button>
-
-                <button
-                  v-for="page in getPageNumbers()"
-                  :key="page"
-                  @click="goToPage(page)"
-                  :class="[
-                    page === pagination.page
-                      ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                      : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
-                    'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
-                  ]"
-                >
-                  {{ page }}
-                </button>
-
-                <button
-                  @click="goToPage(pagination.page + 1)"
-                  :disabled="pagination.page >= pagination.pages"
-                  class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-                >
-                  다음
-                </button>
-              </nav>
-            </div>
-          </div>
-        </div> -->
       </div>
     </main>
   </div>
@@ -458,8 +338,10 @@ useHead({
 @use '~/layouts/scss/cnx/_functions' as *;
 
 .newsletter {
-  width: min(calc(100% - rem(48)), rem(1320));
-  margin: 0 auto rem(200);
+  .inner {
+    width: min(calc(100% - rem(48)), rem(1320));
+    margin: 0 auto rem(200);
+  }
   .newsletter-load-more {
     text-align: center;
     margin: rem(60) 0 rem(100);
