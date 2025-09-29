@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="permission-item"
-    :class="`permission-${props.variant}`"
-    :data-id="id"
-  >
+  <div class="permission-item" :data-id="id">
     <div class="permission-content">
       <div class="permission-info">
         <span class="permission-name">{{ name }}</span>
@@ -42,13 +38,11 @@ interface Props {
   id: string | number
   name: string
   count: number
-  variant?: 'default' | 'white'
   leftPermissions?: string[]
   rightPermissions?: string[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'default',
   leftPermissions: () => [],
   rightPermissions: () => [],
 })
@@ -75,32 +69,6 @@ defineEmits<{
     width: 100%;
   }
 
-  // Default variant (기존 스타일)
-  &.permission-default {
-    .permission-content {
-      background: #f7f7f7;
-    }
-    .permission-access {
-      background: #f7f7f7;
-      .permission-list {
-        background: #fff;
-      }
-    }
-  }
-
-  // White variant
-  &.permission-white {
-    margin-bottom: -24px;
-    .permission-content {
-      background: #fff;
-    }
-    .permission-access {
-      background: #fff;
-      .permission-list {
-        background: #f7f7f7;
-      }
-    }
-  }
   .permission-content {
     display: flex;
     flex-wrap: wrap;
@@ -111,6 +79,7 @@ defineEmits<{
     gap: 16px;
     padding: 16px 20px;
     border-radius: 12px;
+    background: #f7f7f7;
     .permission-name {
       color: #3c3c3c;
       font-size: 14px;
@@ -144,12 +113,14 @@ defineEmits<{
       line-height: 22px;
       gap: 16px;
       flex: 1;
+      background: #f7f7f7;
 
       .permission-list {
         flex: 1;
         border-radius: 10px;
         padding: 20px;
         min-height: 120px;
+        background: #fff;
       }
     }
     .permission-actions {

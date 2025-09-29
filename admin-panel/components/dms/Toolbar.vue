@@ -167,6 +167,82 @@
       modal-class="logout-modal"
     />
   </div>
+
+  <!-- 비밀번호 변경 모달 -->
+  <Modal
+    :show="showPasswordModal"
+    title="비밀번호 변경"
+    width="442px"
+    @close="closePasswordModal"
+  >
+    <div class="change-password-form">
+      <div class="password-hint">
+        -비밀번호는 8자 이상으로 설정해주세요.<br />
+        -현재 비밀번호와 다른 새로운 비밀번호를 사용해주세요.<br />
+      </div>
+      <div class="form-group">
+        <label for="currentPassword" class="form-label">현재 비밀번호</label>
+        <Input
+          id="currentPassword"
+          v-model="passwordForm.currentPassword"
+          type="password"
+          placeholder="현재 비밀번호를 입력하세요"
+          :error="passwordErrors.currentPassword"
+          @input="clearPasswordError('currentPassword')"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="newPassword" class="form-label">신규 비밀번호</label>
+        <Input
+          id="newPassword"
+          v-model="passwordForm.newPassword"
+          type="password"
+          placeholder="새로운 비밀번호를 입력하세요"
+          :error="passwordErrors.newPassword"
+          @input="validateField('newPassword')"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label"
+          >신규 비밀번호 확인</label
+        >
+        <Input
+          id="confirmPassword"
+          v-model="passwordForm.confirmPassword"
+          type="password"
+          placeholder="새로운 비밀번호를 다시 입력하세요"
+          :error="passwordErrors.confirmPassword"
+          @input="validateField('confirmPassword')"
+        />
+      </div>
+    </div>
+
+    <template #footer>
+      <div class="modal-actions">
+        <Button
+          variant="outline-dark"
+          :size="36"
+          :padding="40"
+          :disabled="passwordLoading"
+          @click="closePasswordModal"
+        >
+          취소
+        </Button>
+        <Button
+          variant="primary"
+          :size="36"
+          :padding="40"
+          :disabled="!isPasswordFormValid"
+          :loading="passwordLoading"
+          @click="handlePasswordSubmit"
+        >
+          {{ passwordLoading ? '변경 중...' : '비밀번호 변경' }}
+        </Button>
+      </div>
+    </template>
+  </Modal>
 </template>
 
 <script setup lang="ts">
@@ -181,6 +257,9 @@ import positionSvg from '~/components/assets/dms/icons/position.svg?raw'
 import historySvg from '~/components/assets/dms/icons/history.svg?raw'
 import accessControlSvg from '~/components/assets/dms/icons/access-control.svg?raw'
 import ConfirmModal from '~/components/ui/ConfirmModal.vue'
+import Modal from '~/components/ui/Modal.vue'
+import Input from '~/components/ui/Input.vue'
+import Button from '~/components/ui/Button.vue'
 
 // Props 정의
 interface Props {
@@ -198,6 +277,22 @@ const route = useRoute()
 // 모달 상태 관리
 const showLogoutModal = ref(false)
 const logoutLoading = ref(false)
+const showPasswordModal = ref(false)
+const passwordLoading = ref(false)
+
+// 비밀번호 변경 폼 데이터
+const passwordForm = reactive({
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+})
+
+// 비밀번호 변경 에러 메시지
+const passwordErrors = reactive({
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+})
 
 // 현재 라우트와 일치하는지 확인하는 함수
 const isActiveRoute = (path: string) => {
@@ -212,8 +307,162 @@ const handleMenuClick = () => {
   }
 }
 
+// 비밀번호 변경 폼 유효성 검사
+const isPasswordFormValid = computed(() => {
+  return (
+    passwordForm.currentPassword.trim() !== '' &&
+    passwordForm.newPassword.trim() !== '' &&
+    passwordForm.confirmPassword.trim() !== '' &&
+    Object.values(passwordErrors).every(error => error === '')
+  )
+})
+
+// 비밀번호 에러 메시지 초기화
+const clearPasswordError = (field: keyof typeof passwordErrors) => {
+  passwordErrors[field] = ''
+}
+
+// 실시간 유효성 검사
+const validateField = (field: keyof typeof passwordErrors) => {
+  clearPasswordError(field)
+
+  if (field === 'newPassword' && passwordForm.newPassword.trim() !== '') {
+    const passwordError = validatePassword(passwordForm.newPassword)
+    if (passwordError) {
+      passwordErrors.newPassword = passwordError
+    }
+  }
+
+  if (
+    field === 'confirmPassword' &&
+    passwordForm.confirmPassword.trim() !== ''
+  ) {
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      passwordErrors.confirmPassword = '비밀번호가 일치하지 않습니다.'
+    }
+  }
+}
+
+// 비밀번호 변경 폼 초기화
+const resetPasswordForm = () => {
+  passwordForm.currentPassword = ''
+  passwordForm.newPassword = ''
+  passwordForm.confirmPassword = ''
+  clearPasswordError('currentPassword')
+  clearPasswordError('newPassword')
+  clearPasswordError('confirmPassword')
+}
+
+// 비밀번호 변경 버튼 클릭
 const handlePasswordChange = () => {
-  // 비밀번호 변경 로직
+  showPasswordModal.value = true
+  resetPasswordForm()
+}
+
+// 비밀번호 변경 모달 닫기
+const closePasswordModal = () => {
+  showPasswordModal.value = false
+  resetPasswordForm()
+}
+
+// 비밀번호 유효성 검사
+const validatePassword = (password: string) => {
+  if (password.length < 8) {
+    return '비밀번호는 8자 이상이어야 합니다.'
+  }
+
+  return ''
+}
+
+// 비밀번호 변경 폼 유효성 검사
+const validatePasswordForm = () => {
+  let isValid = true
+
+  // 모든 에러 초기화
+  clearPasswordError('currentPassword')
+  clearPasswordError('newPassword')
+  clearPasswordError('confirmPassword')
+
+  // 현재 비밀번호 검사
+  if (passwordForm.currentPassword.trim() === '') {
+    passwordErrors.currentPassword = '현재 비밀번호를 입력하세요.'
+    isValid = false
+  }
+
+  // 새 비밀번호 검사
+  if (passwordForm.newPassword.trim() === '') {
+    passwordErrors.newPassword = '새 비밀번호를 입력하세요.'
+    isValid = false
+  } else {
+    const passwordError = validatePassword(passwordForm.newPassword)
+    if (passwordError) {
+      passwordErrors.newPassword = passwordError
+      isValid = false
+    }
+  }
+
+  // 비밀번호 확인 검사
+  if (passwordForm.confirmPassword.trim() === '') {
+    passwordErrors.confirmPassword = '비밀번호 확인을 입력하세요.'
+    isValid = false
+  } else if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+    passwordErrors.confirmPassword = '비밀번호가 일치하지 않습니다.'
+    isValid = false
+  }
+
+  // 현재 비밀번호와 새 비밀번호가 같은지 검사
+  if (
+    passwordForm.currentPassword === passwordForm.newPassword &&
+    passwordForm.currentPassword.trim() !== ''
+  ) {
+    passwordErrors.newPassword = '현재 비밀번호와 다른 비밀번호를 입력하세요.'
+    isValid = false
+  }
+
+  return isValid
+}
+
+// 비밀번호 변경 제출
+const handlePasswordSubmit = async () => {
+  if (!validatePasswordForm()) {
+    return
+  }
+
+  passwordLoading.value = true
+
+  try {
+    await $fetch('/api/dms/change-password', {
+      method: 'POST',
+      body: {
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword,
+      },
+    })
+
+    // 성공 처리
+    showPasswordModal.value = false
+    resetPasswordForm()
+
+    // 성공 메시지 표시 (간단한 알림)
+    alert('비밀번호가 성공적으로 변경되었습니다.')
+  } catch (error: any) {
+    console.error('비밀번호 변경 오류:', error)
+
+    // 서버에서 받은 에러 메시지 처리
+    if (error.data?.message) {
+      if (error.data.message.includes('현재 비밀번호')) {
+        passwordErrors.currentPassword = error.data.message
+      } else if (error.data.message.includes('새 비밀번호')) {
+        passwordErrors.newPassword = error.data.message
+      } else {
+        passwordErrors.currentPassword = error.data.message
+      }
+    } else {
+      passwordErrors.currentPassword = '비밀번호 변경 중 오류가 발생했습니다.'
+    }
+  } finally {
+    passwordLoading.value = false
+  }
 }
 
 // 로그아웃 버튼 클릭 시 모달 표시
@@ -372,5 +621,40 @@ onUnmounted(() => {
   @media (min-width: 1024px) {
     display: none !important;
   }
+}
+
+/* 비밀번호 변경 모달 스타일 */
+.change-password-form {
+  .form-group {
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .form-label {
+    display: block;
+    color: #000;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    margin-bottom: 8px;
+  }
+
+  .password-hint {
+    color: #000;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    margin: -12px 0 28px;
+  }
+}
+
+.modal-actions {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
 }
 </style>

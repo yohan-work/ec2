@@ -13,7 +13,6 @@
               id="20"
               name="본부장 정석안 상무"
               :count="12"
-              variant="white"
               :left-permissions="[
                 'Project Revenue',
                 'Project MM',
