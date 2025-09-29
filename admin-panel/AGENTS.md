@@ -106,17 +106,31 @@ admin-panel/
 
 ### 3. DMS (Delivery Management System)
 
-- **프로젝트 관리**: 프로젝트 목록, 수익 관리
-- **클라이언트 관리**: 클라이언트 정보 관리
-- **직원 관리**: 직원 정보 관리
-- **조직 관리**: 부서 및 조직 구조 관리
-- **접근 제어 관리**: 사용자별 권한 설정
-- **권한 관리**: 세부 권한 설정
-- **사용자 관리**: 시스템 사용자 관리
-- **변경 히스토리 관리**: 모든 CRUD 작업 추적 및 감사
-- **SSO**: 외주 등 비용 관리
-- **IP 접근 제어**: 등록된 IP에서만 접근 허용
-- **DMS 전용 로그인**: 독립적인 인증 시스템
+- **프로젝트 관리**:
+  - Project List: 프로젝트 목록 관리 (계약 정보, 기간, 금액 등)
+  - Project Revenue: 프로젝트 수익 관리 (월별 수익 추적)
+  - Project MM: 프로젝트 인력 관리 (월별 인력 배치 및 비용)
+- **클라이언트 관리**: 고객사 정보 CRUD 관리 (중복 체크 포함)
+- **직원 관리**:
+  - 직원 정보 CRUD 관리 (이름, 이메일, 직급, 직무, 상태 등)
+  - 조직별 필터링 및 검색 기능
+  - 매니저 지정 및 계층 구조 관리
+  - 직원 상태 관리 (활성, 퇴사, 휴직, 전출, 입사예정)
+- **조직 관리**:
+  - 본부/그룹/팀 3단계 조직 구조 관리
+  - 조직별 정렬 순서 관리
+  - 조직 리더 지정 및 관리
+- **접근 제어 관리**: IP 기반 접근 제어 (CIDR 표기법 지원)
+- **권한 관리**: 사용자별 세부 권한 설정 및 관리
+- **사용자 관리**: DMS 시스템 사용자 계정 관리
+- **변경 히스토리 관리**:
+  - 모든 CRUD 작업 자동 추적 (Insert/Update/Delete)
+  - 작업자, 메뉴명, 작업내용, IP, 작업일시 기록
+  - 날짜별 필터링 및 검색 기능
+  - 빠른 날짜 선택 (오늘, 이번주, 이번달)
+- **SSO**: 외주 비용 관리 및 MSA 계약 관리
+- **Staff Utility**: 직원 활용도 관리 (월별 Utilization 추적)
+- **DMS 전용 로그인**: 독립적인 인증 시스템 (Concentrix 이메일 + bcrypt)
 
 ## API 엔드포인트
 
@@ -144,14 +158,45 @@ admin-panel/
 
 ### DMS API (Delivery Management System 전용)
 
+**인증 및 세션 관리**
+
 - `POST /api/dms/login` - DMS 로그인
 - `POST /api/dms/logout` - DMS 로그아웃
 - `GET /api/dms/session` - DMS 세션 확인
 - `GET /api/dms/check-ip-access` - IP 접근 제어 확인
+
+**고객사 관리**
+
 - `GET /api/dms/clients` - 고객사 목록 조회
-- `POST /api/dms/clients` - 고객사 생성
+- `POST /api/dms/clients` - 고객사 생성 (중복 체크 포함)
 - `PUT /api/dms/clients/{id}` - 고객사 수정
 - `DELETE /api/dms/clients/{id}` - 고객사 삭제
+
+**직원 관리**
+
+- `GET /api/dms/employees` - 직원 목록 조회 (필터링, 검색 지원)
+- `POST /api/dms/employees` - 직원 생성
+- `PUT /api/dms/employees/{id}` - 직원 수정
+- `DELETE /api/dms/employees/{id}` - 직원 삭제
+- `GET /api/dms/employees/options` - 직원 관리 옵션 데이터 조회
+
+**조직 관리**
+
+- `GET /api/dms/organizations/headquarters` - 본부 목록 조회
+- `POST /api/dms/organizations/headquarters` - 본부 생성
+- `PUT /api/dms/organizations/headquarters/{id}` - 본부 수정
+- `DELETE /api/dms/organizations/headquarters/{id}` - 본부 삭제
+- `GET /api/dms/organizations/groups` - 그룹 목록 조회
+- `POST /api/dms/organizations/groups` - 그룹 생성
+- `PUT /api/dms/organizations/groups/{id}` - 그룹 수정
+- `DELETE /api/dms/organizations/groups/{id}` - 그룹 삭제
+- `GET /api/dms/organizations/teams` - 팀 목록 조회
+- `POST /api/dms/organizations/teams` - 팀 생성
+- `PUT /api/dms/organizations/teams/{id}` - 팀 수정
+- `DELETE /api/dms/organizations/teams/{id}` - 팀 삭제
+
+**변경 히스토리 관리**
+
 - `GET /api/dms/history` - 변경 히스토리 조회 (필터링, 페이지네이션 지원)
 - `POST /api/dms/history` - 변경 히스토리 생성 (시스템 내부 사용)
 
@@ -180,6 +225,10 @@ admin-panel/
 - **dms_admin_users**: DMS 관리자 사용자 정보
 - **dms_ip_access_control**: DMS IP 접근 제어 규칙
 - **dms_clients**: DMS 고객사 정보 (고객사명, 생성일, 수정일)
+- **dms_employees**: DMS 직원 정보 (이름, 이메일, 직급, 직무, 상태, 조직 정보 등)
+- **dms_headquarters**: DMS 본부 정보 (본부명, 리더, 정렬순서)
+- **dms_groups**: DMS 그룹 정보 (그룹명, 소속 본부, 리더, 정렬순서)
+- **dms_teams**: DMS 팀 정보 (팀명, 소속 그룹, 리더, 정렬순서)
 - **dms_change_history**: DMS 변경 히스토리 (작업자, 메뉴명, 작업내용, 세부내용, IP, 작업일시)
 
 ## 환경 설정
@@ -273,6 +322,13 @@ npx prisma generate
 - `departments`: 부서 정보
 - `roles`: 역할 정보
 - `audit_logs`: 감사 로그
+- `dms_clients`: DMS 고객사 데이터
+- `dms_employees`: DMS 직원 데이터
+- `dms_headquarters`: DMS 본부 데이터
+- `dms_groups`: DMS 그룹 데이터
+- `dms_teams`: DMS 팀 데이터
+- `dms_change_history`: DMS 변경 히스토리
+- `dms_ip_access_control`: DMS IP 접근 제어 규칙
 
 ## 배포
 
@@ -327,6 +383,9 @@ npx prisma generate
   - Concentrix 어드민: 관리자 활동 로그
   - DMS: Delivery Management System 사용자 활동 로그
   - DMS 변경 히스토리: 모든 데이터 변경 작업 자동 기록 및 추적
+  - DMS 직원 관리: 직원 정보 변경 추적
+  - DMS 조직 관리: 본부/그룹/팀 구조 변경 추적
+  - DMS 고객사 관리: 고객사 정보 변경 추적
 
 - **시스템 메트릭**:
   - 사이트별 성능 모니터링
@@ -355,5 +414,5 @@ npx prisma generate
 
 ---
 
-**최종 업데이트**: 2025년 9월 19일
-**문서 버전**: 0.0.4
+**최종 업데이트**: 2025년 9월 29일
+**문서 버전**: 0.0.5
