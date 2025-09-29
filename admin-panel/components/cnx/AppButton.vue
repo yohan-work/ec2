@@ -133,9 +133,13 @@ $button-colors: (
 @mixin button-circle {
   min-width: auto;
   padding: 0;
-  width: rem(44);
-  height: rem(44);
+  width: rem(36);
+  height: rem(36);
   border-radius: 50%;
+  @include tablet {
+    width: rem(54);
+    height: rem(54);
+  }
 }
 
 // 변수들
