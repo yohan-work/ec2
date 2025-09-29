@@ -159,16 +159,124 @@
   </ContentsArea>
 
   <!-- 직원 추가/수정 모달 -->
-  <EmployeeModal
+  <Modal
     :show="isModalOpen"
-    :employee="selectedEmployee"
-    :groupOptions="groupOptions"
-    :teamOptions="teamOptions"
-    :managerOptions="managerOptions"
-    :statusOptions="statusOptions"
     @close="closeModal"
-    @submit="handleEmployeeSubmit"
-  />
+    :title="modalTitle"
+    :width="876"
+  >
+    <form @submit.prevent="handleEmployeeFormSubmit" class="employee-form">
+      <div class="form-row">
+        <div class="left">
+          <Input
+            id="name"
+            label="이름 *"
+            v-model="employeeFormData.name"
+            placeholder="홍길동"
+            :error="employeeFormErrors.name"
+            required
+          />
+          <Input
+            id="email"
+            label="이메일"
+            v-model="employeeFormData.email"
+            type="email"
+            placeholder="concentrix@concentrix.com"
+            :error="employeeFormErrors.email"
+          />
+          <Select
+            id="group_id"
+            label="그룹"
+            v-model="employeeFormData.group_id"
+            :options="groupOptions"
+            placeholder="그룹 선택"
+          />
+          <Select
+            id="team_id"
+            label="팀"
+            v-model="employeeFormData.team_id"
+            :options="teamOptions"
+            placeholder="팀 선택"
+          />
+          <Select
+            id="career_level"
+            label="직급(CL)"
+            v-model="employeeFormData.career_level"
+            :options="careerLevelOptions"
+            placeholder="직급 선택"
+          />
+          <Input
+            id="job_role"
+            label="직무"
+            v-model="employeeFormData.job_role"
+            placeholder="개발자, 디자이너, 기획자 등"
+          />
+          <Checkbox
+            v-model="employeeFormData.is_people_manager"
+            :options="[{ value: true, label: '피플 매니저' }]"
+            name="is_people_manager"
+            :multiple="false"
+          />
+        </div>
+        <div class="right">
+          <Input
+            id="start_date"
+            label="입사일"
+            v-model="employeeFormData.start_date"
+            type="date"
+          />
+          <Select
+            id="manager_id"
+            label="매니저"
+            v-model="employeeFormData.manager_id"
+            :options="managerOptions"
+            placeholder="매니저 선택"
+          />
+          <Radio
+            title="상태"
+            v-model="employeeFormData.status"
+            :options="statusOptions"
+            name="status"
+            :multiple="false"
+            :vertical="false"
+          />
+          <Input
+            id="end_date"
+            label="퇴사일"
+            v-model="employeeFormData.end_date"
+            type="date"
+          />
+        </div>
+      </div>
+    </form>
+
+    <template #footer>
+      <div class="modal-actions">
+        <Button
+          type="button"
+          variant="outline-dark"
+          :size="36"
+          :padding="40"
+          @click="closeModal"
+          :disabled="isEmployeeFormLoading"
+        >
+          취소
+        </Button>
+        <Button
+          type="submit"
+          variant="primary"
+          :size="36"
+          :padding="40"
+          :disabled="isEmployeeFormLoading"
+          @click="handleEmployeeFormSubmit"
+        >
+          {{
+            isEmployeeFormLoading ? '처리 중...' : isEditMode ? '수정' : '추가'
+          }}
+        </Button>
+      </div>
+    </template>
+  </Modal>
 
   <!-- 삭제 확인 모달 -->
   <ConfirmModal
@@ -204,10 +312,17 @@ import Select from '~/components/ui/Select.vue'
 import Table from '~/components/ui/Table.vue'
 import Badge from '~/components/ui/Badge.vue'
 import Loading from '~/components/ui/Loading.vue'
-import EmployeeModal from '~/components/dms/EmployeeModal.vue'
+import Modal from '~/components/ui/Modal.vue'
+import Radio from '~/components/ui/Radio.vue'
+import Checkbox from '~/components/ui/Checkbox.vue'
 import ConfirmModal from '~/components/ui/ConfirmModal.vue'
-import { ref, reactive, onMounted, computed } from 'vue'
-import { getStatusLabel, getStatusCodeColor } from '~/utils/dms/employee-utils'
+import { ref, reactive, onMounted, computed, watch } from 'vue'
+import {
+  getStatusLabel,
+  getStatusCodeColor,
+  getCareerLevelLabel,
+  getCareerLevelOptions,
+} from '~/utils/dms/employee-utils'
 
 definePageMeta({
   layout: 'dms',
@@ -228,6 +343,42 @@ const allEmployees = ref([]) // 전체 직원 데이터 (필터링 전)
 const isLoading = ref(false)
 const isModalOpen = ref(false)
 const selectedEmployee = ref(null)
+
+// 직원 폼 관련
+const isEmployeeFormLoading = ref(false)
+const isEditMode = ref(false)
+
+// 모달 제목
+const modalTitle = computed(() => {
+  return isEditMode.value ? '직원 정보 수정' : '신규 직원 추가'
+})
+
+// 직급 옵션 생성
+const careerLevelOptions = computed(() => {
+  return getCareerLevelOptions()
+})
+
+// 직원 폼 데이터
+const employeeFormData = reactive({
+  email: '',
+  name: '',
+  headquarter_id: null,
+  group_id: null,
+  team_id: null,
+  manager_id: null,
+  job_role: '',
+  career_level: null,
+  status: 'active',
+  is_people_manager: false,
+  start_date: '',
+  end_date: '',
+})
+
+// 직원 폼 에러
+const employeeFormErrors = reactive({
+  email: '',
+  name: '',
+})
 
 // 삭제 확인 모달
 const showDeleteModal = ref(false)
@@ -355,6 +506,69 @@ const resetFilters = () => {
   fetchEmployees()
 }
 
+// 폼 초기화
+const resetEmployeeForm = () => {
+  Object.assign(employeeFormData, {
+    email: '',
+    name: '',
+    headquarter_id: null,
+    group_id: null,
+    team_id: null,
+    manager_id: null,
+    job_role: '',
+    career_level: null,
+    status: 'active',
+    is_people_manager: false,
+    start_date: '',
+    end_date: '',
+  })
+
+  Object.assign(employeeFormErrors, {
+    email: '',
+    name: '',
+  })
+}
+
+// 직원 데이터로 폼 채우기
+const fillEmployeeForm = employee => {
+  if (employee) {
+    Object.assign(employeeFormData, {
+      email: employee.email || '',
+      name: employee.name || '',
+      headquarter_id: employee.headquarter_id || null,
+      group_id: employee.group_id || null,
+      team_id: employee.team_id || null,
+      manager_id: employee.manager_id || null,
+      job_role: employee.job_role || '',
+      career_level: employee.career_level || null,
+      status: employee.status || 'active',
+      is_people_manager: employee.is_people_manager || false,
+      start_date: employee.start_date
+        ? new Date(employee.start_date).toISOString().split('T')[0]
+        : '',
+      end_date: employee.end_date
+        ? new Date(employee.end_date).toISOString().split('T')[0]
+        : '',
+    })
+  }
+}
+
+// 모달 열림/닫힘 감지
+watch(
+  () => isModalOpen.value,
+  newVal => {
+    if (newVal) {
+      if (selectedEmployee.value) {
+        isEditMode.value = true
+        fillEmployeeForm(selectedEmployee.value)
+      } else {
+        isEditMode.value = false
+        resetEmployeeForm()
+      }
+    }
+  }
+)
+
 // 모달 관련
 const openAddModal = () => {
   console.log('신규 직원 추가 모달 열기')
@@ -370,9 +584,87 @@ const editEmployee = employee => {
 const closeModal = () => {
   isModalOpen.value = false
   selectedEmployee.value = null
+  resetEmployeeForm()
 }
 
-// 직원 추가/수정 처리
+// 폼 제출
+const handleEmployeeFormSubmit = async () => {
+  // 유효성 검사
+  if (!validateEmployeeForm()) {
+    return
+  }
+
+  isEmployeeFormLoading.value = true
+
+  try {
+    const submitData = {
+      ...employeeFormData,
+      group_id: employeeFormData.group_id
+        ? parseInt(employeeFormData.group_id)
+        : null,
+      team_id: employeeFormData.team_id
+        ? parseInt(employeeFormData.team_id)
+        : null,
+      manager_id: employeeFormData.manager_id
+        ? parseInt(employeeFormData.manager_id)
+        : null,
+      start_date: employeeFormData.start_date || null,
+      end_date: employeeFormData.end_date || null,
+    }
+
+    if (selectedEmployee.value) {
+      // 수정
+      await $fetch(`/api/dms/employees/${selectedEmployee.value.id}`, {
+        method: 'PUT',
+        body: submitData,
+      })
+    } else {
+      // 추가
+      await $fetch('/api/dms/employees', {
+        method: 'POST',
+        body: submitData,
+      })
+    }
+
+    closeModal()
+    await fetchEmployees()
+
+    // TODO: 성공 토스트 표시
+  } catch (error) {
+    console.error('직원 처리 오류:', error)
+    // TODO: 에러 토스트 표시
+  } finally {
+    isEmployeeFormLoading.value = false
+  }
+}
+
+// 유효성 검사
+const validateEmployeeForm = () => {
+  let isValid = true
+
+  // 이메일 검사
+  if (!employeeFormData.email || employeeFormData.email.trim().length === 0) {
+    employeeFormErrors.email = '이메일을 입력해주세요.'
+    isValid = false
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(employeeFormData.email)) {
+    employeeFormErrors.email = '올바른 이메일 형식이 아닙니다.'
+    isValid = false
+  } else {
+    employeeFormErrors.email = ''
+  }
+
+  // 이름 검사
+  if (!employeeFormData.name || employeeFormData.name.trim().length === 0) {
+    employeeFormErrors.name = '이름을 입력해주세요.'
+    isValid = false
+  } else {
+    employeeFormErrors.name = ''
+  }
+
+  return isValid
+}
+
+// 직원 추가/수정 처리 (기존 함수 유지)
 const handleEmployeeSubmit = async formData => {
   try {
     isLoading.value = true
@@ -498,11 +790,37 @@ onMounted(async () => {
   z-index: 10;
 }
 
+// 직원 폼 스타일
+.employee-form {
+  margin: 0 auto;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 16px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
 // 반응형 디자인
 @media (max-width: 768px) {
   .employee-actions {
     flex-direction: column;
     gap: 8px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
   }
 }
 </style>

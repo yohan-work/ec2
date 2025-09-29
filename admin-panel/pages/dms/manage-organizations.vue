@@ -21,6 +21,10 @@
     <div v-if="isLoading" class="loading-container">
       <Loading />
     </div>
+    <EmptyContainer
+      v-else-if="organizations.length === 0"
+      message="등록된 조직이 없습니다."
+    />
     <div v-else class="org-tree" id="orgTree">
       <div
         v-for="headquarters in organizations"
@@ -131,13 +135,110 @@
   </ContentsArea>
 
   <!-- 조직 추가/수정 모달 -->
-  <OrganizationModal
-    :isOpen="modal.isOpen"
-    :organizationType="modal.type"
-    :editData="modal.editData"
+  <Modal
+    :show="modal.isOpen"
+    :title="modalTitle"
+    :width="'442px'"
     @close="closeModal"
-    @success="handleModalSuccess"
-  />
+  >
+    <form
+      @submit.prevent="handleOrganizationFormSubmit"
+      class="organization-form"
+    >
+      <div class="form-group">
+        <label class="form-label">
+          {{
+            modal.type === 'headquarters'
+              ? '본부명'
+              : modal.type === 'group'
+                ? '그룹명'
+                : '팀명'
+          }}
+          <span class="required">*</span>
+        </label>
+        <Input
+          v-model="organizationForm.name"
+          :placeholder="`${modal.type === 'headquarters' ? '본부' : modal.type === 'group' ? '그룹' : '팀'}명을 입력하세요`"
+          :error="organizationFormErrors.name"
+        />
+      </div>
+
+      <!-- 본부 선택 (그룹, 팀 추가 시) -->
+      <div
+        v-if="modal.type === 'group' || modal.type === 'team'"
+        class="form-group"
+      >
+        <label class="form-label">
+          소속 본부
+          <span class="required">*</span>
+        </label>
+        <Select
+          v-model="organizationForm.headquarters_id"
+          :options="headquartersOptions"
+          placeholder="본부를 선택하세요"
+          :error="organizationFormErrors.headquarters_id"
+          @change="handleHeadquartersChange"
+        />
+      </div>
+
+      <!-- 그룹 선택 (팀 추가 시) -->
+      <div v-if="modal.type === 'team'" class="form-group">
+        <label class="form-label">
+          소속 그룹
+          <span class="required">*</span>
+        </label>
+        <Select
+          v-model="organizationForm.group_id"
+          :options="groupOptions"
+          placeholder="그룹을 선택하세요"
+          :error="organizationFormErrors.group_id"
+        />
+      </div>
+
+      <!-- 리더 선택 -->
+      <div class="form-group">
+        <label class="form-label">리더</label>
+        <Select
+          v-model="organizationForm.leader_id"
+          :options="leaderOptions"
+          placeholder="리더를 선택하세요 (선택사항)"
+        />
+      </div>
+
+      <!-- 정렬 순서 -->
+      <div class="form-group">
+        <label class="form-label">정렬 순서</label>
+        <Input
+          v-model.number="organizationForm.sort_order"
+          type="number"
+          placeholder="정렬 순서를 입력하세요"
+          :error="organizationFormErrors.sort_order"
+        />
+      </div>
+    </form>
+
+    <template #footer>
+      <div class="form-actions">
+        <Button type="button" variant="secondary" @click="closeModal">
+          취소
+        </Button>
+        <Button
+          type="submit"
+          variant="blue"
+          :disabled="isOrganizationFormSubmitting"
+          @click="handleOrganizationFormSubmit"
+        >
+          {{
+            isOrganizationFormSubmitting
+              ? '처리 중...'
+              : isEditMode
+                ? '수정'
+                : '추가'
+          }}
+        </Button>
+      </div>
+    </template>
+  </Modal>
 
   <!-- 삭제 확인 모달 -->
   <ConfirmModal
@@ -156,12 +257,15 @@ import deleteSvg from '~/components/assets/dms/icons/delete.svg?raw'
 import addSvg from '~/components/assets/dms/icons/add.svg?raw'
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
+import EmptyContainer from '~/components/dms/EmptyContainer.vue'
 import Button from '~/components/ui/Button.vue'
+import Input from '~/components/ui/Input.vue'
+import Select from '~/components/ui/Select.vue'
+import Modal from '~/components/ui/Modal.vue'
 import Loading from '~/components/ui/Loading.vue'
-import OrganizationModal from '~/components/dms/OrganizationModal.vue'
 import ConfirmModal from '~/components/ui/ConfirmModal.vue'
 import { useYear } from '~/composables/useYear'
-import { onMounted } from 'vue'
+import { onMounted, ref, reactive, computed, watch } from 'vue'
 
 definePageMeta({
   layout: 'dms',
@@ -194,6 +298,42 @@ const modal = ref({
   editData: null,
 })
 
+// 조직 폼 관련
+const isOrganizationFormSubmitting = ref(false)
+const isEditMode = ref(false)
+
+// 모달 제목
+const modalTitle = computed(() => {
+  const typeNames = {
+    headquarters: '본부',
+    group: '그룹',
+    team: '팀',
+  }
+  return `${isEditMode.value ? '수정' : '신규'} ${typeNames[modal.value.type]} ${isEditMode.value ? '' : '추가'}`
+})
+
+// 조직 폼 데이터
+const organizationForm = reactive({
+  name: '',
+  headquarters_id: null,
+  group_id: null,
+  leader_id: null,
+  sort_order: 0,
+})
+
+// 조직 폼 에러
+const organizationFormErrors = reactive({
+  name: '',
+  headquarters_id: '',
+  group_id: '',
+  sort_order: '',
+})
+
+// 옵션 데이터
+const headquartersOptions = ref([])
+const groupOptions = ref([])
+const leaderOptions = ref([])
+
 // 삭제 모달 상태
 const deleteModal = ref({
   isOpen: false,
@@ -218,12 +358,180 @@ const loadOrganizations = async () => {
   }
 }
 
+// 옵션 데이터 로드
+const loadHeadquarters = async () => {
+  try {
+    const response = await $fetch('/api/dms/organizations/headquarters')
+    if (response.success) {
+      headquartersOptions.value = response.data.map(hq => ({
+        value: hq.id,
+        label: hq.name,
+      }))
+    }
+  } catch (error) {
+    console.error('Error loading headquarters:', error)
+  }
+}
+
+const loadGroups = async headquartersId => {
+  try {
+    const response = await $fetch(
+      `/api/dms/organizations/groups?headquarters_id=${headquartersId}`
+    )
+    if (response.success) {
+      groupOptions.value = response.data.map(group => ({
+        value: group.id,
+        label: group.name,
+      }))
+    }
+  } catch (error) {
+    console.error('Error loading groups:', error)
+  }
+}
+
+const loadLeaders = async () => {
+  try {
+    const response = await $fetch('/api/dms/employees')
+    if (response.success) {
+      leaderOptions.value = response.data.map(emp => ({
+        value: emp.id,
+        label: `${emp.name} (${emp.email})`,
+      }))
+    }
+  } catch (error) {
+    console.error('Error loading leaders:', error)
+  }
+}
+
+// 본부 변경 핸들러
+const handleHeadquartersChange = async headquartersId => {
+  organizationForm.group_id = null
+  if (headquartersId) {
+    await loadGroups(headquartersId)
+  } else {
+    groupOptions.value = []
+  }
+}
+
+// 폼 초기화
+const resetOrganizationForm = () => {
+  Object.assign(organizationForm, {
+    name: '',
+    headquarters_id: null,
+    group_id: null,
+    leader_id: null,
+    sort_order: 0,
+  })
+  Object.assign(organizationFormErrors, {
+    name: '',
+    headquarters_id: '',
+    group_id: '',
+    sort_order: '',
+  })
+}
+
+// 조직 데이터로 폼 채우기
+const fillOrganizationForm = data => {
+  if (data) {
+    Object.assign(organizationForm, {
+      name: data.name || '',
+      headquarters_id: data.headquarters_id || null,
+      group_id: data.group_id || null,
+      leader_id: data.leader_id || null,
+      sort_order: data.sort_order || 0,
+    })
+  }
+}
+
+// 폼 검증
+const validateOrganizationForm = () => {
+  Object.assign(organizationFormErrors, {
+    name: '',
+    headquarters_id: '',
+    group_id: '',
+    sort_order: '',
+  })
+
+  if (!organizationForm.name.trim()) {
+    organizationFormErrors.name = `${modal.value.type === 'headquarters' ? '본부' : modal.value.type === 'group' ? '그룹' : '팀'}명을 입력해주세요`
+  }
+
+  if (modal.value.type === 'group' || modal.value.type === 'team') {
+    if (!organizationForm.headquarters_id) {
+      organizationFormErrors.headquarters_id = '소속 본부를 선택해주세요'
+    }
+  }
+
+  if (modal.value.type === 'team') {
+    if (!organizationForm.group_id) {
+      organizationFormErrors.group_id = '소속 그룹을 선택해주세요'
+    }
+  }
+
+  return Object.values(organizationFormErrors).every(error => !error)
+}
+
+// 폼 제출
+const handleOrganizationFormSubmit = async () => {
+  if (!validateOrganizationForm()) return
+
+  isOrganizationFormSubmitting.value = true
+
+  try {
+    const endpoint = getEndpoint()
+    const method = isEditMode.value ? 'PUT' : 'POST'
+    const url = isEditMode.value
+      ? `${endpoint}/${modal.value.editData.id}`
+      : endpoint
+
+    const response = await $fetch(url, {
+      method,
+      body: organizationForm,
+    })
+
+    if (response.success) {
+      await loadOrganizations() // 데이터 새로고침
+      closeModal()
+    }
+  } catch (error) {
+    console.error('Error submitting form:', error)
+    // 에러 처리
+  } finally {
+    isOrganizationFormSubmitting.value = false
+  }
+}
+
+// API 엔드포인트 가져오기
+const getEndpoint = () => {
+  const endpoints = {
+    headquarters: '/api/dms/organizations/headquarters',
+    group: '/api/dms/organizations/groups',
+    team: '/api/dms/organizations/teams',
+  }
+  return endpoints[modal.value.type]
+}
+
 // 모달 열기
-const openModal = (type, editData = null) => {
+const openModal = async (type, editData = null) => {
   modal.value = {
     isOpen: true,
     type,
     editData,
+  }
+
+  // 모달이 열릴 때 데이터 로드
+  resetOrganizationForm()
+  await loadHeadquarters()
+  await loadLeaders()
+
+  if (editData) {
+    isEditMode.value = true
+    fillOrganizationForm(editData)
+    if (organizationForm.headquarters_id) {
+      await loadGroups(organizationForm.headquarters_id)
+    }
+  } else {
+    isEditMode.value = false
   }
 }
 
@@ -234,9 +542,11 @@ const closeModal = () => {
     type: 'headquarters',
     editData: null,
   }
+  resetOrganizationForm()
+  isEditMode.value = false
 }
 
-// 모달 성공 처리
+// 모달 성공 처리 (기존 함수 유지)
 const handleModalSuccess = data => {
   loadOrganizations() // 데이터 새로고침
   closeModal()
@@ -481,5 +791,37 @@ const getDeleteEndpoint = type => {
       }
     }
   }
+}
+
+// 조직 폼 스타일
+.organization-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
 }
 </style>

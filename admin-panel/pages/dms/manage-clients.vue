@@ -13,10 +13,10 @@
     <div v-if="loading" class="loading-container">
       <Loading />
     </div>
-    <div v-else-if="error" class="error-container">
-      <p class="error-message">{{ error }}</p>
-      <Button @click="fetchClients">다시 시도</Button>
-    </div>
+    <EmptyContainer
+      v-else-if="clients.length === 0"
+      message="등록된 고객사가 없습니다."
+    />
     <div v-else class="management-card-container">
       <ManagementCard
         v-for="client in clients"
@@ -70,7 +70,7 @@
           @click="saveClient"
           :disabled="saving"
         >
-          {{ saving ? '저장 중...' : isEdit ? '수정' : '생성' }}
+          {{ saving ? '저장 중...' : isEdit ? '수정' : '등록' }}
         </Button>
       </div>
     </template>
@@ -99,6 +99,7 @@ import Button from '~/components/ui/Button.vue'
 import ManagementCard from '~/components/dms/ManagementCard.vue'
 import Modal from '~/components/ui/Modal.vue'
 import Input from '~/components/ui/Input.vue'
+import EmptyContainer from '~/components/dms/EmptyContainer.vue'
 import Loading from '~/components/ui/Loading.vue'
 import ConfirmModal from '~/components/ui/ConfirmModal.vue'
 import { ref, onMounted } from 'vue'
