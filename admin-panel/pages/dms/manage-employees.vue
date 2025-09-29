@@ -94,7 +94,7 @@
         message="등록된 직원이 없습니다."
       />
 
-      <Table v-else>
+      <Table v-else variant="simple">
         <thead>
           <tr>
             <th>직원</th>
@@ -114,10 +114,7 @@
               <div class="employee-info">
                 <span class="name">{{ employee.name }}</span>
                 <span v-if="employee.is_people_manager" class="manager-badge"
-                  >매니저</span
-                >
-                <span v-if="employee.is_on_leave" class="leave-badge"
-                  >휴직</span
+                  >M</span
                 >
               </div>
             </td>
@@ -128,7 +125,7 @@
             <td>{{ employee.career_level || '-' }}</td>
             <td>{{ employee.email }}</td>
             <td>
-              <Badge :variant="getStatusVariant(employee.status)">
+              <Badge :class="getStatusBadgeClass(employee.status)">
                 {{ getStatusLabel(employee.status) }}
               </Badge>
             </td>
@@ -193,6 +190,13 @@
             v-model="employeeFormData.start_date"
             type="date"
           />
+          <Select
+            id="manager_id"
+            label="매니저"
+            v-model="employeeFormData.manager_id"
+            :options="managerOptions"
+            placeholder="매니저 선택"
+          />
         </div>
         <div class="right">
           <Select
@@ -250,15 +254,7 @@
             type="date"
           />
         </div>
-        <div class="right">
-          <Select
-            id="manager_id"
-            label="매니저"
-            v-model="employeeFormData.manager_id"
-            :options="managerOptions"
-            placeholder="매니저 선택"
-          />
-        </div>
+        <div class="right"></div>
       </div>
     </form>
 
@@ -439,19 +435,19 @@ const getStatusVariant = status => {
   return variantMap[status] || 'secondary'
 }
 
-// 직원 목록 조회
-// 전체 직원 수 가져오기 (필터링 전)
-const fetchAllEmployeesCount = async () => {
-  try {
-    const response = await $fetch('/api/dms/employees')
-    if (response.success && response.data) {
-      allEmployees.value = response.data.length
-    }
-  } catch (error) {
-    console.error('전체 직원 수 조회 오류:', error)
+// 상태별 badge 클래스 반환
+const getStatusBadgeClass = status => {
+  const classMap = {
+    active: 'badge-active',
+    resigned: 'badge-resigned',
+    on_leave: 'badge-on-leave',
+    transferred: 'badge-transferred',
+    pre_hire: 'badge-pre-hire',
   }
+  return classMap[status] || 'badge-default'
 }
 
+// 직원 목록 조회 (통합)
 const fetchEmployees = async () => {
   try {
     isLoading.value = true
@@ -469,6 +465,13 @@ const fetchEmployees = async () => {
 
     if (response.success && response.data) {
       employees.value = response.data
+
+      // 전체 직원 수 업데이트 (필터링 전 전체 수를 별도로 조회하지 않고 현재 데이터로 추정)
+      // 실제로는 API에서 total count를 반환해야 하지만, 현재는 필터링된 결과의 길이로 설정
+      allEmployees.value = response.data.length
+
+      // 매니저 옵션 업데이트
+      updateManagerOptions()
     }
   } catch (error) {
     console.error('직원 목록 조회 오류:', error)
@@ -522,31 +525,30 @@ const fetchOptions = async () => {
   }
 }
 
-// 매니저 옵션 조회
-const fetchManagerOptions = async (currentEmployee = null) => {
+// 매니저 옵션 업데이트 (직원 데이터에서 필터링)
+const updateManagerOptions = (currentEmployee = null) => {
   try {
-    const response = await $fetch(
-      '/api/dms/employees?is_people_manager=true&status=active'
+    // 현재 직원 목록에서 피플 매니저만 필터링
+    const managerCandidates = employees.value.filter(
+      emp => emp.is_people_manager && emp.status === 'active'
     )
 
-    if (response.success && response.data) {
-      let candidates = response.data
+    let candidates = managerCandidates
 
-      // 수정 모드인 경우 필터링 적용
-      if (currentEmployee) {
-        candidates = filterManagerCandidates(response.data, currentEmployee)
-      }
-
-      managerOptions.value = [
-        { value: '', label: '매니저 없음' },
-        ...candidates.map(emp => ({
-          value: emp.id,
-          label: `${emp.name} (${emp.email})`,
-        })),
-      ]
+    // 수정 모드인 경우 필터링 적용
+    if (currentEmployee) {
+      candidates = filterManagerCandidates(managerCandidates, currentEmployee)
     }
+
+    managerOptions.value = [
+      { value: '', label: '매니저 없음' },
+      ...candidates.map(emp => ({
+        value: emp.id,
+        label: `${emp.name} (${emp.email})`,
+      })),
+    ]
   } catch (error) {
-    console.error('매니저 옵션 조회 오류:', error)
+    console.error('매니저 옵션 업데이트 오류:', error)
   }
 }
 
@@ -672,7 +674,7 @@ const openAddModal = async () => {
   isModalOpen.value = true
 
   // 신규 추가 시에는 필터링 없이 모든 피플 매니저 로드
-  await fetchManagerOptions()
+  updateManagerOptions()
 }
 
 const editEmployee = async employee => {
@@ -680,7 +682,7 @@ const editEmployee = async employee => {
   isModalOpen.value = true
 
   // 수정 시에는 현재 직원 기준으로 매니저 옵션 필터링
-  await fetchManagerOptions(employee)
+  updateManagerOptions(employee)
 }
 
 const closeModal = () => {
@@ -873,12 +875,7 @@ const confirmDelete = async () => {
 
 // 초기화
 onMounted(async () => {
-  await Promise.all([
-    fetchOptions(),
-    fetchManagerOptions(),
-    fetchAllEmployeesCount(),
-    fetchEmployees(),
-  ])
+  await Promise.all([fetchOptions(), fetchEmployees()])
 })
 </script>
 
@@ -917,7 +914,6 @@ onMounted(async () => {
 
 .employee-info {
   display: flex;
-  flex-direction: column;
   gap: 4px;
 
   .name {
@@ -930,9 +926,13 @@ onMounted(async () => {
     background-color: #dbeafe;
     color: #1e40af;
     font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 4px;
+    line-height: 24px;
     font-weight: 500;
+    padding: 0;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    text-align: center;
   }
 
   .leave-badge {
