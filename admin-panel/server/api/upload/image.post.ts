@@ -44,8 +44,8 @@ export default defineEventHandler(async event => {
       })
     }
 
-    // 업로드 디렉토리 생성
-    const uploadDir = join(process.cwd(), 'uploads', 'images')
+    // 업로드 디렉토리 생성 (public 폴더 내부로 변경)
+    const uploadDir = join(process.cwd(), 'public', 'uploads', 'images')
 
     await mkdir(uploadDir, { recursive: true })
 
