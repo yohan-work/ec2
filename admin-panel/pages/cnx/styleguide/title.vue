@@ -64,6 +64,57 @@
 /&gt;</code></pre>
         </div>
       </section>
+
+      <!-- 왼쪽 정렬 -->
+      <section class="section">
+        <h2 class="section-title">왼쪽 정렬</h2>
+        <div class="title-group">
+          <div class="usage-example">
+            <AppTitle 
+              title="왼쪽 정렬 제목"
+              text="왼쪽 정렬된 설명입니다."
+              align="left"
+            />
+          </div>
+        </div>
+        <div class="code-examples">
+          <pre><code>&lt;AppTitle title="왼쪽 정렬 제목" text="왼쪽 정렬된 설명입니다." align="left" /&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- 가운데 정렬 -->
+      <section class="section">
+        <h2 class="section-title">가운데 정렬</h2>
+        <div class="title-group">
+          <div class="usage-example">
+            <AppTitle 
+              title="가운데 정렬 제목"
+              text="가운데 정렬된 설명입니다."
+              align="center"
+            />
+          </div>
+        </div>
+        <div class="code-examples">
+          <pre><code>&lt;AppTitle title="가운데 정렬 제목" text="가운데 정렬된 설명입니다." align="center" /&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- 오른쪽 정렬 -->
+      <section class="section">
+        <h2 class="section-title">오른쪽 정렬</h2>
+        <div class="title-group">
+          <div class="usage-example">
+            <AppTitle 
+              title="오른쪽 정렬 제목"
+              text="오른쪽 정렬된 설명입니다."
+              align="right"
+            />
+          </div>
+        </div>
+        <div class="code-examples">
+          <pre><code>&lt;AppTitle title="오른쪽 정렬 제목" text="오른쪽 정렬된 설명입니다." align="right" /&gt;</code></pre>
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -118,9 +169,9 @@ import AppTitle from '~/components/cnx/AppTitle.vue'
       margin-top: rem(24);
 
       .usage-example {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        // display: flex;
+        // flex-direction: column;
+        // align-items: center;
         gap: rem(12);
         padding: rem(16);
         background-color: $d-white;
@@ -143,7 +194,6 @@ import AppTitle from '~/components/cnx/AppTitle.vue'
           padding: 0;
           max-width: none;
           margin: 0;
-          text-align: center;
         }
       }
     }
