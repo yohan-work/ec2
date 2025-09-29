@@ -328,3 +328,27 @@ useHead({
   @apply text-foreground bg-muted px-1 py-0.5 rounded;
 }
 </style>
+
+<style lang="scss" scoped>
+@use '~/layouts/scss/cnx.scss' as *;
+@use '~/layouts/scss/cnx/_variables' as *;
+@use '~/layouts/scss/cnx/_mixins' as *;
+@use '~/layouts/scss/cnx/_functions' as *;
+
+.newsletter {
+  &-subtitle {
+    font-weight: $font-weight-bold;
+    font-size: rem(16);
+    margin-bottom: rem(14);
+    @include tablet {
+      font-size: rem(34);
+      margin-bottom: rem(17);
+    }
+    @include desktop {
+      font-size: rem(24);
+      margin-bottom: rem(24);
+    }
+    color: #003366;
+  }
+}
+</style>
