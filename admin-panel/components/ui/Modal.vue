@@ -119,7 +119,7 @@ const handleBackdropClick = () => {
 
   @media (max-width: 1023px) {
     max-width: 100%;
-    margin: 0.5rem;
+    margin: 0.5rem auto;
   }
 
   &.modal-fullscreen {

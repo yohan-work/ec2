@@ -178,7 +178,8 @@
     <div class="change-password-form">
       <div class="password-hint">
         -비밀번호는 8자 이상으로 설정해주세요.<br />
-        -현재 비밀번호와 다른 새로운 비밀번호를 사용해주세요.<br />
+        -영문 대소문자, 숫자, 특수문자를 조합하면 더 안전합니다.<br />
+        -현재 비밀번호와 다른 신규 비밀번호를 사용해주세요.<br />
       </div>
       <div class="form-group">
         <label for="currentPassword" class="form-label">현재 비밀번호</label>
@@ -198,7 +199,7 @@
           id="newPassword"
           v-model="passwordForm.newPassword"
           type="password"
-          placeholder="새로운 비밀번호를 입력하세요"
+          placeholder="신규 비밀번호를 입력하세요"
           :error="passwordErrors.newPassword"
           @input="validateField('newPassword')"
         />
@@ -212,7 +213,7 @@
           id="confirmPassword"
           v-model="passwordForm.confirmPassword"
           type="password"
-          placeholder="새로운 비밀번호를 다시 입력하세요"
+          placeholder="신규 비밀번호를 한번 더 입력하세요"
           :error="passwordErrors.confirmPassword"
           @input="validateField('confirmPassword')"
         />
