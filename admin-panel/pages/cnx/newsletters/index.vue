@@ -35,12 +35,9 @@
     <!-- 메인 콘텐츠 -->
     <main>
       <div class="newsletter">
-        
         <div class="inner">
           <!-- 제목 -->
-          <AppTitle>
-            Newsroom
-          </AppTitle>
+          <AppTitle> Newsroom </AppTitle>
 
           <!-- 뉴스레터 목록 -->
           <NewsletterList
@@ -50,8 +47,11 @@
           />
 
           <!-- 더보기 버튼 -->
-          <div v-if="shouldShowLoadMore && !loading" class="newsletter-load-more">
-            <AppButton 
+          <div
+            v-if="shouldShowLoadMore && !loading"
+            class="newsletter-load-more"
+          >
+            <AppButton
               color="primary"
               effect="left"
               @click="loadMoreNewsletters"
@@ -60,9 +60,7 @@
             >
             </AppButton>
           </div>
-
         </div>
-
       </div>
     </main>
   </div>
@@ -76,10 +74,8 @@ import NewsletterList from './NewsletterList.vue'
 /**
  * 뉴스레터 목록 페이지
  *
- * === dummy data ===
- * for seungjoo Park
- * 실제 DB 연결 로직은 주석처리되어 있으며, 별도로 백업해두었습니다.
- * /public/data/newsletters-dummy.json 파일을 사용합니다.
+ * 실제 DB 연결 로직으로 변경 완료
+ * API: GET /api/public/newsletters
  *
  */
 
@@ -105,50 +101,20 @@ const fetchNewsletters = async () => {
   try {
     loading.value = true
 
-    // === DB 연결 로직 (주석처리) ===
-    // const query = {
-    //   // pagination.value.page,
-    //   page: 1,
-    //   limit: pagination.value.limit,
-    // }
-
-    // if (searchQuery.value) {
-    //   query.search = searchQuery.value
-    // }
-
-    // const response = await $fetch('/api/public/newsletters', { query })
-
-    // newsletters.value = response.data
-    // pagination.value = response.pagination
-    // displayedCount.value = response.data.length
-
-    // === 더미 데이터 로직 ===
-    const response = await $fetch('/data/newsletters-dummy.json')
-
-    // 검색 필터링
-    let filteredData = response.data
-    if (searchQuery.value) {
-      const searchTerm = searchQuery.value.toLowerCase()
-      filteredData = response.data.filter(
-        newsletter =>
-          newsletter.title.toLowerCase().includes(searchTerm) ||
-          newsletter.body_html.toLowerCase().includes(searchTerm)
-      )
-    }
-
-    // 페이지네이션 처리
-    const startIndex = 0
-    const endIndex = pagination.value.limit
-    const paginatedData = filteredData.slice(startIndex, endIndex)
-
-    newsletters.value = paginatedData
-    pagination.value = {
+    const query = {
       page: 1,
       limit: pagination.value.limit,
-      total: filteredData.length,
-      pages: Math.ceil(filteredData.length / pagination.value.limit),
     }
-    displayedCount.value = paginatedData.length
+
+    if (searchQuery.value) {
+      query.search = searchQuery.value
+    }
+
+    const response = await $fetch('/api/public/newsletters', { query })
+
+    newsletters.value = response.data
+    pagination.value = response.pagination
+    displayedCount.value = response.data.length
   } catch (error) {
     console.error('뉴스레터 목록 조회 실패:', error)
   } finally {
@@ -161,58 +127,26 @@ const loadMoreNewsletters = async () => {
   try {
     loadingMore.value = true
 
-    // === DB 연결 로직 (주석처리) ===
-    // const nextPage =
-    //   Math.floor(displayedCount.value / pagination.value.limit) + 1
+    const nextPage =
+      Math.floor(displayedCount.value / pagination.value.limit) + 1
 
-    // const query = {
-    //   page: nextPage,
-    //   limit: pagination.value.limit,
-    // }
-
-    // if (searchQuery.value) {
-    //   query.search = searchQuery.value
-    // }
-
-    // const response = await $fetch('/api/public/newsletters', { query })
-
-    // // 기존 뉴스레터에 새로운 뉴스레터 추가
-    // newsletters.value = [...newsletters.value, ...response.data]
-    // displayedCount.value += response.data.length
-
-    // // pagination 정보 업데이트
-    // pagination.value = response.pagination
-
-    // === 더미 데이터 로직 ===
-    const response = await $fetch('/data/newsletters-dummy.json')
-
-    // 검색 필터링
-    let filteredData = response.data
-    if (searchQuery.value) {
-      const searchTerm = searchQuery.value.toLowerCase()
-      filteredData = response.data.filter(
-        newsletter =>
-          newsletter.title.toLowerCase().includes(searchTerm) ||
-          newsletter.body_html.toLowerCase().includes(searchTerm)
-      )
+    const query = {
+      page: nextPage,
+      limit: pagination.value.limit,
     }
 
-    // 다음 페이지 데이터 계산
-    const nextStartIndex = displayedCount.value
-    const nextEndIndex = nextStartIndex + pagination.value.limit
-    const nextPageData = filteredData.slice(nextStartIndex, nextEndIndex)
+    if (searchQuery.value) {
+      query.search = searchQuery.value
+    }
+
+    const response = await $fetch('/api/public/newsletters', { query })
 
     // 기존 뉴스레터에 새로운 뉴스레터 추가
-    newsletters.value = [...newsletters.value, ...nextPageData]
-    displayedCount.value += nextPageData.length
+    newsletters.value = [...newsletters.value, ...response.data]
+    displayedCount.value += response.data.length
 
     // pagination 정보 업데이트
-    pagination.value = {
-      page: Math.floor(displayedCount.value / pagination.value.limit),
-      limit: pagination.value.limit,
-      total: filteredData.length,
-      pages: Math.ceil(filteredData.length / pagination.value.limit),
-    }
+    pagination.value = response.pagination
   } catch (error) {
     console.error('추가 뉴스레터 로드 실패:', error)
   } finally {
