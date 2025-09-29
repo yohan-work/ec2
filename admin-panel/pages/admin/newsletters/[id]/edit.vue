@@ -477,7 +477,7 @@
                         :class="
                           form.subtitle_bold ? 'font-bold' : 'font-normal'
                         "
-                        class="text-lg text-gray-900"
+                        class="newsletter-subtitle"
                       >
                         {{ form.subtitle }}
                       </h3>
@@ -889,7 +889,7 @@ const convertParagraphsToHtml = () => {
   // Subtitle 추가
   if (form.subtitle.trim()) {
     const boldStyle = form.subtitle_bold ? 'font-weight: bold;' : ''
-    html += `<h3 style="${boldStyle} font-size: 1.125rem; margin-bottom: 1rem;">${form.subtitle}</h3>`
+    html += `<h3 style="${boldStyle}" class="newsletter-subtitle">${form.subtitle}</h3>`
   }
 
   // 문단들 추가
@@ -1066,5 +1066,29 @@ useHead({
 
 [contenteditable='true'] blockquote {
   @apply border-l-4 border-border pl-4 italic text-muted-foreground;
+}
+</style>
+
+<style lang="scss" scoped>
+@use '~/layouts/scss/cnx.scss' as *;
+@use '~/layouts/scss/cnx/_variables' as *;
+@use '~/layouts/scss/cnx/_mixins' as *;
+@use '~/layouts/scss/cnx/_functions' as *;
+
+.newsletter {
+  &-subtitle {
+    font-weight: $font-weight-bold;
+    font-size: rem(16);
+    margin-bottom: rem(14);
+    @include tablet {
+      font-size: rem(34);
+      margin-bottom: rem(17);
+    }
+    @include desktop {
+      font-size: rem(24);
+      margin-bottom: rem(24);
+    }
+    color: #003366;
+  }
 }
 </style>
