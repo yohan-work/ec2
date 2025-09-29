@@ -55,6 +55,10 @@ const props = defineProps({
   reverse: {
     type: Boolean,
     default: false
+  },
+  imagePath: {
+    type: String,
+    default: ''
   }
 })
 
@@ -65,7 +69,8 @@ const imageAlt = props.imageAlt
 const reverse = props.reverse
 
 const route = useRoute()
-const baseImagePath = `/assets/cnx${route.path}`
+// imagePath가 제공되면 사용, 아니면 현재 페이지 경로 사용
+const baseImagePath = props.imagePath || `/assets/cnx${route.path}`
 
 // 반응형 이미지 경로들
 const desktopImage = ref('')

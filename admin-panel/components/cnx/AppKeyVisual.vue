@@ -39,6 +39,10 @@ const props = defineProps({
   animationDuration: {
     type: Number,
     default: 1000
+  },
+  imagePath: {
+    type: String,
+    default: ''
   }
 })
 
@@ -47,7 +51,8 @@ const imageAlt = props.imageAlt
 const animationDuration = props.animationDuration
 
 const route = useRoute()
-const baseImagePath = `/assets/cnx${route.path}`
+// imagePath가 제공되면 사용, 아니면 현재 페이지 경로 사용
+const baseImagePath = props.imagePath || `/assets/cnx${route.path}`
 
 // 반응형 이미지 경로들
 const desktopImage = ref('')

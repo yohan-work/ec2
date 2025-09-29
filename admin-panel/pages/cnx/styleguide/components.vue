@@ -1,0 +1,381 @@
+<template>
+  <div class="styleguide-section">
+    <!-- AppKeyVisual 컴포넌트 -->
+    <div class="component-section">
+      <h3 class="section-title">AppKeyVisual</h3>
+      <p class="section-description">
+        페이지 상단에 사용되는 키 비주얼 컴포넌트입니다. 반응형 이미지와 애니메이션 효과를 지원합니다.
+      </p>
+      
+      <div class="component-demo">
+        <h4 class="demo-title">기본 사용법</h4>
+        <div class="demo-content">
+          <AppKeyVisual 
+            imageAlt="Style Guide Key Visual"
+            :animationDuration="1500"
+            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppKeyVisual 
+  imageAlt="Style Guide Key Visual"
+  :animationDuration="1500"
+  imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+/&gt;</code></pre>
+        </div>
+        
+        <div class="props-table">
+          <h4 class="props-title">Props</h4>
+          <table class="props-table-content">
+            <thead>
+              <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>imageAlt</td>
+                <td>String</td>
+                <td>''</td>
+                <td>이미지 alt 텍스트</td>
+              </tr>
+              <tr>
+                <td>animationDuration</td>
+                <td>Number</td>
+                <td>1000</td>
+                <td>애니메이션 지속 시간 (ms)</td>
+              </tr>
+              <tr>
+                <td>imagePath</td>
+                <td>String</td>
+                <td>''</td>
+                <td>이미지 경로 (지정하지 않으면 현재 페이지 경로 사용)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- AppImgCont 컴포넌트 -->
+    <div class="component-section">
+      <h3 class="section-title">AppImgCont</h3>
+      <p class="section-description">
+        텍스트와 이미지를 함께 표시하는 컨텐츠 컴포넌트입니다. 반응형 레이아웃과 reverse 옵션을 지원합니다.
+      </p>
+      
+      <div class="component-demo">
+        <h4 class="demo-title">기본 사용법</h4>
+        <div class="demo-content">
+          <AppImgCont 
+            title="Sample Title"
+            text="이것은 AppImgCont 컴포넌트의 기본 사용 예시입니다. 텍스트와 이미지가 함께 표시됩니다."
+            imageName="DA01"
+            imageAlt="Sample Image"
+            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppImgCont 
+  title="Sample Title"
+  text="이것은 AppImgCont 컴포넌트의 기본 사용 예시입니다."
+  imageName="DA01"
+  imageAlt="Sample Image"
+  imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+/&gt;</code></pre>
+        </div>
+        
+        <h4 class="demo-title">Reverse 옵션</h4>
+        <div class="demo-content">
+          <AppImgCont 
+            title="Reverse Layout"
+            text="reverse 옵션을 true로 설정하면 태블릿 이상에서 이미지와 텍스트의 위치가 바뀝니다."
+            imageName="DA02"
+            imageAlt="Reverse Layout Image"
+            :reverse="true"
+            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppImgCont 
+  title="Reverse Layout"
+  text="reverse 옵션을 true로 설정하면..."
+  imageName="DA02"
+  imageAlt="Reverse Layout Image"
+  :reverse="true"
+  imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+/&gt;</code></pre>
+        </div>
+        
+        <div class="props-table">
+          <h4 class="props-title">Props</h4>
+          <table class="props-table-content">
+            <thead>
+              <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>title</td>
+                <td>String</td>
+                <td>''</td>
+                <td>제목 텍스트</td>
+              </tr>
+              <tr>
+                <td>text</td>
+                <td>String</td>
+                <td>''</td>
+                <td>설명 텍스트</td>
+              </tr>
+              <tr>
+                <td>imageName</td>
+                <td>String</td>
+                <td>''</td>
+                <td>이미지 파일명 (확장자 제외)</td>
+              </tr>
+              <tr>
+                <td>imageAlt</td>
+                <td>String</td>
+                <td>''</td>
+                <td>이미지 alt 텍스트</td>
+              </tr>
+              <tr>
+                <td>reverse</td>
+                <td>Boolean</td>
+                <td>false</td>
+                <td>태블릿 이상에서 레이아웃 반전</td>
+              </tr>
+              <tr>
+                <td>imagePath</td>
+                <td>String</td>
+                <td>''</td>
+                <td>이미지 경로 (지정하지 않으면 현재 페이지 경로 사용)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
+import AppImgCont from '~/components/cnx/AppImgCont.vue'
+</script>
+
+<style lang="scss" scoped>
+@use '~/layouts/scss/cnx.scss' as *;
+@use '~/layouts/scss/cnx/_variables' as *;
+@use '~/layouts/scss/cnx/_mixins' as *;
+@use '~/layouts/scss/cnx/_functions' as *;
+
+.styleguide-section {
+  padding: 20px 0;
+}
+
+.component-section {
+  margin-bottom: 60px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: $p-blue;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $n-gray;
+}
+
+.section-description {
+  font-size: 16px;
+  color: $n-dark-gray;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.component-demo {
+  margin-bottom: 40px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: $d-black;
+  margin-bottom: 16px;
+}
+
+.demo-content {
+  margin-bottom: 24px;
+}
+
+.code-example {
+  margin-bottom: 30px;
+}
+
+.code-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: $d-black;
+  margin-bottom: 12px;
+}
+
+.code-block {
+  background: $gray-3;
+  border: 1px solid $gray-2;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  
+  code {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    color: $d-black;
+  }
+}
+
+.props-table {
+  margin-top: 30px;
+}
+
+.props-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: $d-black;
+  margin-bottom: 12px;
+}
+
+.props-table-content {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: rem(8);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  thead {
+    background: $gray-3;
+    
+    th {
+      font-size: 14px;
+      font-weight: 600;
+      color: $d-black;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid $gray-2;
+      
+      &:first-child {
+        border-top-left-radius: 8px;
+      }
+      
+      &:last-child {
+        border-top-right-radius: 8px;
+      }
+    }
+  }
+  
+  tbody {
+    tr {
+      border-bottom: 1px solid $gray-2;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    
+    td {
+      font-size: 14px;
+      color: $n-dark-gray;
+      padding: 12px 16px;
+      
+      &:first-child {
+        font-weight: 500;
+        color: $d-black;
+      }
+      
+      &:nth-child(2) {
+        color: $p-blue;
+      }
+    }
+  }
+}
+
+// 반응형
+@include tablet {
+  .styleguide-section {
+    padding: 16px 0;
+  }
+  
+  .component-section {
+    margin-bottom: 40px;
+  }
+  
+  .demo-content {
+    // 패딩 제거됨
+  }
+  
+  .code-block {
+    padding: 12px;
+  }
+  
+  .props-table-content {
+    thead th,
+    tbody td {
+      padding: 10px 12px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .styleguide-section {
+    padding: 12px 0;
+  }
+  
+  .component-section {
+    margin-bottom: 30px;
+  }
+  
+  .demo-content {
+    // 패딩 제거됨
+  }
+  
+  .code-block {
+    padding: 10px;
+    
+    code {
+      font-size: 12px;
+    }
+  }
+  
+  .props-table-content {
+    font-size: 12px;
+    
+    thead th,
+    tbody td {
+      padding: 8px 10px;
+    }
+  }
+}
+</style>
