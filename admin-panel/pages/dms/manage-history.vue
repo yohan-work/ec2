@@ -118,7 +118,7 @@
           message="등록된 히스토리가 없습니다."
         />
 
-        <Table v-else>
+        <Table v-else variant="simple">
           <thead>
             <tr>
               <th>작업자</th>

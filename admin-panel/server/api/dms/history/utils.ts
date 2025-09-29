@@ -54,7 +54,7 @@ async function getAdminInfo(event: any) {
 export async function logDmsHistory(data: HistoryLogData, event?: any) {
   try {
     // 세션에서 관리자 정보 가져오기
-    let adminName = data.admin_name || '시스템'
+    let adminName = data.admin_name || 'System'
     let employeeId = data.employee_id
     let ipAddress = data.ip_address || '127.0.0.1'
 

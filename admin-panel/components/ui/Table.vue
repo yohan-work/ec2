@@ -16,14 +16,16 @@ import { computed } from 'vue'
 
 interface Props {
   autoWidth?: boolean
+  variant?: 'default' | 'simple'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   autoWidth: false,
+  variant: 'default',
 })
 
 const tableClasses = computed(() => {
-  return 'table'
+  return `table table--${props.variant}`
 })
 </script>
 
@@ -223,6 +225,64 @@ const tableClasses = computed(() => {
       }
       &.center {
         text-align: center;
+      }
+    }
+  }
+}
+
+// Simple 스타일
+.table--simple {
+  .table-wrapper {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  :deep(thead) {
+    background: #f9fafb;
+
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+      border-bottom: 1px solid #e5e7eb;
+
+      &:after {
+        border-bottom: 1px solid #e5e7eb;
+      }
+    }
+  }
+
+  :deep(tbody) {
+    tr {
+      background: #ffffff;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background: #f9fafb;
+      }
+
+      &:nth-child(odd),
+      &:nth-child(even) {
+        background: #ffffff;
+      }
+
+      &:hover {
+        &:nth-child(odd),
+        &:nth-child(even) {
+          background: #f9fafb;
+        }
+      }
+    }
+
+    td {
+      background: inherit;
+      color: #374151;
+      border-bottom: 1px solid #f3f4f6;
+
+      &:after {
+        border-bottom: 1px solid #f3f4f6;
       }
     }
   }
