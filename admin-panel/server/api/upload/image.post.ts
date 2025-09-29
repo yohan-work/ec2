@@ -1,6 +1,7 @@
 import { writeFile } from 'fs/promises'
 import { mkdir } from 'fs/promises'
 import { join } from 'path'
+import { existsSync } from 'fs'
 
 export default defineEventHandler(async event => {
   try {
@@ -44,8 +45,19 @@ export default defineEventHandler(async event => {
       })
     }
 
-    // 업로드 디렉토리 생성 (public 폴더 내부로 변경)
-    const uploadDir = join(process.cwd(), 'public', 'uploads', 'images')
+    // 개발/프로덕션 환경에 따른 업로드 디렉토리 설정
+    const isDev = process.env.NODE_ENV === 'development'
+    const outputDir = join(
+      process.cwd(),
+      '.output',
+      'public',
+      'uploads',
+      'images'
+    )
+    const publicDir = join(process.cwd(), 'public', 'uploads', 'images')
+
+    // 프로덕션 환경에서는 .output/public에, 개발 환경에서는 public에 저장
+    const uploadDir = isDev ? publicDir : outputDir
 
     await mkdir(uploadDir, { recursive: true })
 
@@ -56,6 +68,13 @@ export default defineEventHandler(async event => {
 
     // 파일 저장
     await writeFile(filePath, file.data)
+
+    // 프로덕션 환경에서는 public 폴더에도 백업 저장 (빌드 시 복사용)
+    if (!isDev) {
+      await mkdir(publicDir, { recursive: true })
+      const publicFilePath = join(publicDir, fileName)
+      await writeFile(publicFilePath, file.data)
+    }
 
     // 접근 가능한 URL 생성
     const fileUrl = `/uploads/images/${fileName}`
