@@ -25,48 +25,29 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { findResponsiveImagePaths } from '~/utils/cnx/image-utils'
 
 // Props 정의
-interface Props {
-  imageAlt?: string
-  animationDuration?: number
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  imageAlt: '',
-  animationDuration: 1000 // 1초
+const props = defineProps({
+  imageAlt: {
+    type: String,
+    default: ''
+  },
+  animationDuration: {
+    type: Number,
+    default: 1000
+  }
 })
+
+// 템플릿에서 사용할 변수들
+const imageAlt = props.imageAlt
+const animationDuration = props.animationDuration
 
 const route = useRoute()
 const baseImagePath = `/assets/cnx${route.path}`
-
-// 지원하는 이미지 확장자 목록 (우선순위 순)
-const supportedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'svg']
-
-// 이미지 존재 여부를 확인하는 함수
-const checkImageExists = async (imagePath: string): Promise<boolean> => {
-  try {
-    const response = await fetch(imagePath, { method: 'HEAD' })
-    return response.ok
-  } catch {
-    return false
-  }
-}
-
-// 동적으로 이미지 경로를 찾는 함수
-const findImagePath = async (baseName: string): Promise<string> => {
-  for (const ext of supportedExtensions) {
-    const imagePath = `${baseImagePath}/${baseName}.${ext}`
-    if (await checkImageExists(imagePath)) {
-      return imagePath
-    }
-  }
-  // 모든 확장자를 시도했지만 찾지 못한 경우, 기본값으로 png 반환
-  return `${baseImagePath}/${baseName}.png`
-}
 
 // 반응형 이미지 경로들
 const desktopImage = ref('')
@@ -87,11 +68,12 @@ const startAnimation = () => {
 }
 
 // 이미지 경로 초기화 및 애니메이션 시작
-onMounted(async () => {
-  // 이미지 경로들을 동적으로 찾아서 설정
-  desktopImage.value = await findImagePath('kv')
-  mobileImage.value = await findImagePath('kv_m')
-  tabletImage.value = await findImagePath('kv_t')
+onMounted(() => {
+  // 유틸 함수를 사용하여 반응형 이미지 경로들 생성
+  const imagePaths = findResponsiveImagePaths('kv', baseImagePath)
+  desktopImage.value = imagePaths.desktopImage
+  mobileImage.value = imagePaths.mobileImage
+  tabletImage.value = imagePaths.tabletImage
   
   // 이미지가 로드된 후 애니메이션 시작
   setTimeout(() => {

@@ -9,6 +9,16 @@
 .inner {
   width: 100%;
   max-width:rem(1320);
+  margin: 0 auto;
+  padding: 0 rem(24);
+
+  @include tablet {
+    padding: 0 rem(80);
+  }
+
+  @include desktop {
+    padding: 0;
+  }
 }
 
 // Typography Classes
