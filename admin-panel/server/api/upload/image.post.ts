@@ -46,7 +46,6 @@ export default defineEventHandler(async event => {
     }
 
     // 개발/프로덕션 환경에 따른 업로드 디렉토리 설정
-    const isDev = process.env.NODE_ENV === 'development'
     const outputDir = join(
       process.cwd(),
       '.output',
@@ -56,8 +55,14 @@ export default defineEventHandler(async event => {
     )
     const publicDir = join(process.cwd(), 'public', 'uploads', 'images')
 
-    // 프로덕션 환경에서는 .output/public에, 개발 환경에서는 public에 저장
-    const uploadDir = isDev ? publicDir : outputDir
+    // .output 폴더가 존재하면 프로덕션으로 간주, 없으면 개발 환경으로 간주
+    const isProduction = existsSync(join(process.cwd(), '.output'))
+    const uploadDir = isProduction ? outputDir : publicDir
+
+    console.log(
+      `이미지 업로드 환경: ${isProduction ? 'Production' : 'Development'}`
+    )
+    console.log(`업로드 디렉토리: ${uploadDir}`)
 
     await mkdir(uploadDir, { recursive: true })
 
@@ -70,10 +75,11 @@ export default defineEventHandler(async event => {
     await writeFile(filePath, file.data)
 
     // 프로덕션 환경에서는 public 폴더에도 백업 저장 (빌드 시 복사용)
-    if (!isDev) {
+    if (isProduction) {
       await mkdir(publicDir, { recursive: true })
       const publicFilePath = join(publicDir, fileName)
       await writeFile(publicFilePath, file.data)
+      console.log(`백업 저장 완료: ${publicFilePath}`)
     }
 
     // 접근 가능한 URL 생성
