@@ -1,5 +1,5 @@
 <template>
-  <div class="app-title">
+  <div class="app-title" :class="`text-${align}`">
     <h2 v-if="title" v-html="title"></h2>
     <p v-if="text" v-html="text"></p>
   </div>
@@ -14,6 +14,11 @@ const props = defineProps({
   text: {
     type: String,
     default: ''
+  },
+  align: {
+    type: String,
+    default: 'center',
+    validator: (value) => ['left', 'center', 'right'].includes(value)
   }
 })
 </script>
@@ -26,6 +31,16 @@ const props = defineProps({
 
 .app-title {
   padding: rem(64) 0;
+
+  &-text-left {
+    text-align: left;
+  }
+  &-text-center {
+    text-align: center;
+  }
+  &-text-right {
+    text-align: right;
+  }
 
   @include tablet {
     padding: rem(100) 0;
@@ -55,5 +70,17 @@ const props = defineProps({
     color: #86868B;
   }
 
+  // 정렬 옵션
+  &.text-left {
+    text-align: left;
+  }
+
+  &.text-center {
+    text-align: center;
+  }
+
+  &.text-right {
+    text-align: right;
+  }
 }
 </style>
