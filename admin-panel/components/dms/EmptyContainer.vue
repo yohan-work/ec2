@@ -1,35 +1,21 @@
 <template>
   <div class="empty-container">
     <div class="empty-content">
-      <div class="empty-icon">
-        <svg
-          width="48"
-          height="48"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-            fill="#9CA3AF"
-          />
-        </svg>
-      </div>
-      <p class="empty-message">{{ message }}</p>
-      <p v-if="subMessage" class="empty-sub-message">{{ subMessage }}</p>
+      <p class="empty-message">
+        <div v-html="emptySvg"></div>
+        {{ message }}
+      </p>
     </div>
   </div>
 </template>
 
 <script setup>
+import emptySvg from '~/components/assets/dms/icons/alert-warning.svg?raw'
+
 defineProps({
   message: {
     type: String,
     default: '데이터가 없습니다.',
-  },
-  subMessage: {
-    type: String,
-    default: '',
   },
 })
 </script>
@@ -40,31 +26,38 @@ defineProps({
   justify-content: center;
   align-items: center;
   min-height: 200px;
-  padding: 40px 20px;
+  padding: 40px 0;
+  height: 100%;
 
   .empty-content {
-    text-align: center;
-
-    .empty-icon {
-      margin-bottom: 16px;
-      opacity: 0.6;
-      text-align: center;
-      svg {
-        margin: 0 auto;
-      }
-    }
+    display: flex;
+    padding: 16px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 8px;
+    border: 1px solid #bf7e11;
+    background: #fff7ea;
 
     .empty-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 360px;
+      color: #000;
       font-size: 16px;
-      color: #6b7280;
-      margin: 0 0 8px 0;
-      font-weight: 500;
-    }
-
-    .empty-sub-message {
-      font-size: 14px;
-      color: #9ca3af;
-      margin: 0;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 22px;
+      @media (max-width: 450px) {
+        min-width: 100%;
+        width: 100%;
+      }
+      > div {
+        display: inline-block;
+        vertical-align: middle;
+      }
     }
   }
 }
