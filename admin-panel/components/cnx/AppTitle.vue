@@ -31,16 +31,7 @@ const props = defineProps({
 
 .app-title {
   padding: rem(64) 0;
-
-  &-text-left {
-    text-align: left;
-  }
-  &-text-center {
-    text-align: center;
-  }
-  &-text-right {
-    text-align: right;
-  }
+  text-align: center; // 기본값을 center로 설정
 
   @include tablet {
     padding: rem(100) 0;
@@ -73,10 +64,6 @@ const props = defineProps({
   // 정렬 옵션
   &.text-left {
     text-align: left;
-  }
-
-  &.text-center {
-    text-align: center;
   }
 
   &.text-right {

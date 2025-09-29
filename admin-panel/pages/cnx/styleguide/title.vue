@@ -65,6 +65,22 @@
         </div>
       </section>
 
+      <!-- 가운데 정렬 -->
+      <section class="section">
+        <h2 class="section-title">가운데 정렬 <strong>(기본값)</strong></h2>
+        <div class="title-group">
+          <div class="usage-example">
+            <AppTitle 
+              title="가운데 정렬 제목"
+              text="기본 값은 가운데 정렬된 설명입니다."
+            />
+          </div>
+        </div>
+        <div class="code-examples">
+          <pre><code>&lt;AppTitle title="가운데 정렬 제목" text="기본 값은 가운데 정렬된 설명입니다." /&gt;</code></pre>
+        </div>
+      </section>
+
       <!-- 왼쪽 정렬 -->
       <section class="section">
         <h2 class="section-title">왼쪽 정렬</h2>
@@ -81,24 +97,7 @@
           <pre><code>&lt;AppTitle title="왼쪽 정렬 제목" text="왼쪽 정렬된 설명입니다." align="left" /&gt;</code></pre>
         </div>
       </section>
-
-      <!-- 가운데 정렬 -->
-      <section class="section">
-        <h2 class="section-title">가운데 정렬</h2>
-        <div class="title-group">
-          <div class="usage-example">
-            <AppTitle 
-              title="가운데 정렬 제목"
-              text="가운데 정렬된 설명입니다."
-              align="center"
-            />
-          </div>
-        </div>
-        <div class="code-examples">
-          <pre><code>&lt;AppTitle title="가운데 정렬 제목" text="가운데 정렬된 설명입니다." align="center" /&gt;</code></pre>
-        </div>
-      </section>
-
+      
       <!-- 오른쪽 정렬 -->
       <section class="section">
         <h2 class="section-title">오른쪽 정렬</h2>
