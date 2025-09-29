@@ -34,7 +34,7 @@ const props = defineProps({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   min-height: 40px;
 
   .title-area-left {

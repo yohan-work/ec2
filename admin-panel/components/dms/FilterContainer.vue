@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 16px 12px;
+  gap: 16px 8px;
   padding: 24px 32px 0;
   width: calc(100% + 15px);
   flex-wrap: wrap;
@@ -26,7 +26,7 @@
   :deep(.filter-group) {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     flex-wrap: wrap;
 
     .date-input {
