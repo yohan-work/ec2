@@ -1,13 +1,13 @@
 <template>
-  <div class="app-img-cont" :class="{ 'reverse': reverse }">
+  <div class="app-img-cont" :class="{ 'reverse': reverse }" ref="containerRef">
     <!-- 텍스트 컨텐츠 -->
-    <div class="text-content">
-      <h3 v-if="title" class="subtitle" v-html="title"></h3>
-      <p v-if="text" class="description" v-html="text"></p>
+    <div class="text-content" ref="textContentRef">
+      <h3 v-if="title" class="subtitle" ref="titleRef" v-html="title"></h3>
+      <p v-if="text" class="description" ref="textRef" v-html="text"></p>
     </div>
     
     <!-- 이미지 컨텐츠 -->
-    <div class="image-content">
+    <div class="image-content" ref="imageContentRef">
       <picture>
         <source 
           v-if="desktopImage"
@@ -30,9 +30,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { findResponsiveImagePaths } from '~/utils/cnx/image-utils'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+// GSAP ScrollTrigger 플러그인 등록
+gsap.registerPlugin(ScrollTrigger)
 
 // Props 정의
 const props = defineProps({
@@ -68,6 +73,12 @@ const text = props.text
 const imageAlt = props.imageAlt
 const reverse = props.reverse
 
+// refs for GSAP animation
+const containerRef = ref(null)
+const imageContentRef = ref(null)
+const titleRef = ref(null)
+const textRef = ref(null)
+
 const route = useRoute()
 // imagePath가 제공되면 사용, 아니면 현재 페이지 경로 사용
 const baseImagePath = props.imagePath || `/assets/cnx${route.path}`
@@ -77,8 +88,76 @@ const desktopImage = ref('')
 const mobileImage = ref('')
 const tabletImage = ref('')
 
-// 이미지 경로 초기화
-onMounted(() => {
+// GSAP 애니메이션 초기화
+const initAnimation = () => {
+  if (!containerRef.value) return
+
+  // 초기 상태 설정 (애니메이션 전 상태)
+  gsap.set(imageContentRef.value, { 
+    opacity: 0, 
+    y: 50 
+  })
+  gsap.set(titleRef.value, { 
+    opacity: 0, 
+    y: 30 
+  })
+  gsap.set(textRef.value, { 
+    opacity: 0, 
+    y: 30 
+  })
+
+  // ScrollTrigger 애니메이션 설정
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: containerRef.value,
+      start: 'top 80%',
+      end: 'bottom 20%',
+      toggleActions: 'play none none reverse'
+    }
+  })
+
+  // 순차적 애니메이션: 이미지 → 타이틀 → 텍스트 (나타날 때)
+  tl.to(imageContentRef.value, {
+    duration: 0.8,
+    opacity: 1,
+    y: 0,
+    ease: 'power2.out'
+  })
+  .to(titleRef.value, {
+    duration: 0.6,
+    opacity: 1,
+    y: 0,
+    ease: 'power2.out'
+  }, '-=0.4') // 이미지 애니메이션과 0.4초 겹침
+  .to(textRef.value, {
+    duration: 0.6,
+    opacity: 1,
+    y: 0,
+    ease: 'power2.out'
+  }, '-=0.3') // 타이틀 애니메이션과 0.3초 겹침
+
+  // 역재생 애니메이션 (사라질 때) - 더 빠르게
+  const reverseTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: containerRef.value,
+      start: 'top 80%',
+      end: 'bottom 20%',
+      toggleActions: 'none none none play'
+    }
+  })
+
+  // 빠른 역재생: 텍스트 → 타이틀 → 이미지 (동시에 사라짐)
+  reverseTl.to([textRef.value, titleRef.value, imageContentRef.value], {
+    duration: 0.3, // 더 빠른 속도
+    opacity: 0,
+    y: -20, // 위로 사라짐
+    ease: 'power2.in',
+    stagger: 0.05 // 약간의 간격
+  })
+}
+
+// 이미지 경로 초기화 및 애니메이션 설정
+onMounted(async () => {
   if (props.imageName) {
     // 유틸 함수를 사용하여 반응형 이미지 경로들 생성
     const imagePaths = findResponsiveImagePaths(props.imageName, baseImagePath)
@@ -86,6 +165,10 @@ onMounted(() => {
     mobileImage.value = imagePaths.mobileImage
     tabletImage.value = imagePaths.tabletImage
   }
+
+  // DOM이 완전히 렌더링된 후 애니메이션 초기화
+  await nextTick()
+  initAnimation()
 })
 </script>
 
