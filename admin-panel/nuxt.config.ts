@@ -4,6 +4,15 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
 
+  nitro: {
+    publicAssets: [
+      {
+        dir: 'public',
+        baseURL: '/',
+      },
+    ],
+  },
+
   // Pages 디렉토리 활성화 (Nuxt 3 안정버전)
   pages: true,
 
