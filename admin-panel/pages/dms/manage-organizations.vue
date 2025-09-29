@@ -431,11 +431,28 @@ const resetOrganizationForm = () => {
 }
 
 // 조직 데이터로 폼 채우기
-const fillOrganizationForm = data => {
+const fillOrganizationForm = async data => {
   if (data) {
+    // 팀의 경우 그룹 정보를 별도로 조회하여 본부 ID를 가져옴
+    let headquartersId =
+      data.headquarters_id || data.group?.headquarters?.id || null
+
+    if (data.group_id && !headquartersId) {
+      try {
+        const groupResponse = await $fetch(
+          `/api/dms/organizations/groups/${data.group_id}`
+        )
+        if (groupResponse.success) {
+          headquartersId = groupResponse.data.headquarters_id
+        }
+      } catch (error) {
+        console.error('그룹 정보 조회 실패:', error)
+      }
+    }
+
     Object.assign(organizationForm, {
       name: data.name || '',
-      headquarters_id: data.headquarters_id || null,
+      headquarters_id: headquartersId,
       group_id: data.group_id || null,
       leader_id: data.leader_id || null,
       sort_order: data.sort_order || 0,
@@ -526,7 +543,7 @@ const openModal = async (type, editData = null) => {
 
   if (editData) {
     isEditMode.value = true
-    fillOrganizationForm(editData)
+    await fillOrganizationForm(editData)
     if (organizationForm.headquarters_id) {
       await loadGroups(organizationForm.headquarters_id)
     }

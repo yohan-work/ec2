@@ -117,10 +117,17 @@ export function getCareerLevelOptions() {
     'CL9B',
     'CL9A',
   ]
-  return levels.map(level => ({
-    value: level,
-    label: getCareerLevelLabel(level),
-  }))
+
+  // 인턴 옵션을 맨 뒤에 추가 (사원 다음)
+  const options = [
+    ...levels.map(level => ({
+      value: level,
+      label: getCareerLevelLabel(level),
+    })),
+    { value: null, label: '인턴' },
+  ]
+
+  return options
 }
 
 /**

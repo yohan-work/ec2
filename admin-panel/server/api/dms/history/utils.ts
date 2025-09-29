@@ -17,14 +17,12 @@ async function getAdminInfo(event: any) {
   try {
     // 쿠키에서 세션 정보 가져오기
     const sessionCookie = getCookie(event, 'dms_session')
-    console.log('sessionCookie:', sessionCookie)
     if (!sessionCookie) {
       console.log('세션 쿠키가 없습니다')
       return null
     }
 
     const sessionData = JSON.parse(sessionCookie)
-    console.log('sessionData:', sessionData)
 
     // 세션 만료 시간 체크 (8시간)
     const sessionExpiry = 8 * 60 * 60 * 1000
@@ -43,7 +41,6 @@ async function getAdminInfo(event: any) {
       name: sessionData.name,
       employee_id: sessionData.employee_id,
     }
-    console.log('쿠키에서 가져온 adminInfo result:', result)
     return result
   } catch (error) {
     console.error('세션 정보 조회 오류:', error)
@@ -63,18 +60,15 @@ export async function logDmsHistory(data: HistoryLogData, event?: any) {
 
     if (event) {
       const adminInfo = await getAdminInfo(event)
-      console.log('adminInfo:', adminInfo)
       if (adminInfo) {
         adminName = adminInfo.name
         employeeId = adminInfo.employee_id || employeeId
-        console.log('최종 adminName:', adminName, 'employeeId:', employeeId)
       } else {
         console.log('adminInfo가 null입니다')
       }
 
       // IP 주소 가져오기
       ipAddress = getClientIP(event)
-      console.log('IP 주소:', ipAddress)
     }
 
     await prisma.dms_change_history.create({
@@ -102,14 +96,6 @@ export function getClientIP(event: any): string {
   const cfConnectingIP = getHeader(event, 'cf-connecting-ip')
   const remoteAddr = getHeader(event, 'remote-addr')
   const clientIP = getHeader(event, 'client-ip')
-
-  console.log('IP 헤더들:', {
-    'x-forwarded-for': forwarded,
-    'x-real-ip': realIP,
-    'cf-connecting-ip': cfConnectingIP,
-    'remote-addr': remoteAddr,
-    'client-ip': clientIP,
-  })
 
   if (cfConnectingIP) return cfConnectingIP
   if (realIP) return realIP

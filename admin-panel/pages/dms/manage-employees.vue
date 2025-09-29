@@ -199,7 +199,7 @@
             id="group_id"
             label="그룹"
             v-model="employeeFormData.group_id"
-            :options="groupOptions"
+            :options="formGroupOptions"
             placeholder="그룹 선택"
             @change="filterTeamsByGroup(employeeFormData.group_id)"
           />
@@ -207,15 +207,16 @@
             id="team_id"
             label="팀"
             v-model="employeeFormData.team_id"
-            :options="teamOptions"
+            :options="formTeamOptions"
             placeholder="팀 선택"
           />
           <Select
             id="career_level"
-            label="직급(CL)"
+            label="직급(CL) *"
             v-model="employeeFormData.career_level"
             :options="careerLevelOptions"
             placeholder="직급 선택"
+            :error="employeeFormErrors.career_level"
           />
           <Select
             id="job_role"
@@ -373,7 +374,7 @@ const careerLevelOptions = computed(() => {
 
 // 직무 옵션 생성
 const jobRoleOptions = computed(() => {
-  return getJobRoleOptions()
+  return [{ value: '', label: '선택 안함' }, ...getJobRoleOptions()]
 })
 
 // 직원 폼 데이터
@@ -396,6 +397,7 @@ const employeeFormData = reactive({
 const employeeFormErrors = reactive({
   email: '',
   name: '',
+  career_level: '',
 })
 
 // 삭제 확인 모달
@@ -413,12 +415,17 @@ const selectedCl = ref('')
 const selectedStatus = ref('')
 
 // 옵션 데이터
-const groupOptions = ref([])
-const teamOptions = ref([])
+const groupOptions = ref([]) // 필터용 그룹 옵션
+const teamOptions = ref([]) // 필터용 팀 옵션
 const allTeamOptions = ref([]) // 모든 팀 옵션 (그룹별 필터링용)
 const clOptions = ref([])
 const statusOptions = ref([])
 const managerOptions = ref([])
+
+// 폼용 옵션 데이터
+const formGroupOptions = ref([]) // 폼용 그룹 옵션
+const formTeamOptions = ref([]) // 폼용 팀 옵션
+const formAllTeamOptions = ref([]) // 폼용 모든 팀 옵션
 
 // 상태 라벨 및 스타일 (utils 함수 사용)
 const getStatusVariant = status => {
@@ -477,9 +484,36 @@ const fetchOptions = async () => {
     const response = await $fetch('/api/dms/employees/options')
 
     if (response.success && response.data) {
-      groupOptions.value = response.data.groups
-      allTeamOptions.value = response.data.teams // 모든 팀 옵션 저장
-      teamOptions.value = response.data.teams // 초기에는 모든 팀 표시
+      // 필터용 그룹 옵션에 "전체 그룹" 추가
+      groupOptions.value = [
+        { value: '', label: '전체 그룹' },
+        ...response.data.groups,
+      ]
+
+      // 필터용 팀 옵션에 "전체 팀" 추가
+      const teamOptionsWithNone = [
+        { value: '', label: '전체 팀' },
+        ...response.data.teams,
+      ]
+
+      allTeamOptions.value = teamOptionsWithNone // 모든 팀 옵션 저장
+      teamOptions.value = teamOptionsWithNone // 초기에는 모든 팀 표시
+
+      // 폼용 그룹 옵션에 "선택 안함" 추가
+      formGroupOptions.value = [
+        { value: '', label: '선택 안함' },
+        ...response.data.groups,
+      ]
+
+      // 폼용 팀 옵션에 "선택 안함" 추가
+      const formTeamOptionsWithNone = [
+        { value: '', label: '선택 안함' },
+        ...response.data.teams,
+      ]
+
+      formAllTeamOptions.value = formTeamOptionsWithNone // 폼용 모든 팀 옵션 저장
+      formTeamOptions.value = formTeamOptionsWithNone // 폼용 팀 옵션 초기화
+
       clOptions.value = response.data.careerLevels
       statusOptions.value = response.data.statusOptions
     }
@@ -503,10 +537,13 @@ const fetchManagerOptions = async (currentEmployee = null) => {
         candidates = filterManagerCandidates(response.data, currentEmployee)
       }
 
-      managerOptions.value = candidates.map(emp => ({
-        value: emp.id,
-        label: `${emp.name} (${emp.email})`,
-      }))
+      managerOptions.value = [
+        { value: '', label: '매니저 없음' },
+        ...candidates.map(emp => ({
+          value: emp.id,
+          label: `${emp.name} (${emp.email})`,
+        })),
+      ]
     }
   } catch (error) {
     console.error('매니저 옵션 조회 오류:', error)
@@ -518,11 +555,19 @@ const filterTeamsByGroup = groupId => {
   if (groupId) {
     // groupId를 숫자로 변환하여 비교
     const numericGroupId = parseInt(groupId)
+
+    // 필터용 팀 옵션 필터링
     teamOptions.value = allTeamOptions.value.filter(
-      team => team.group_id === numericGroupId
+      team => team.group_id === numericGroupId || team.value === ''
+    )
+
+    // 폼용 팀 옵션 필터링
+    formTeamOptions.value = formAllTeamOptions.value.filter(
+      team => team.group_id === numericGroupId || team.value === ''
     )
   } else {
     teamOptions.value = allTeamOptions.value
+    formTeamOptions.value = formAllTeamOptions.value
   }
   // 그룹이 변경되면 팀 선택 초기화
   employeeFormData.team_id = null
@@ -566,7 +611,11 @@ const resetEmployeeForm = () => {
   Object.assign(employeeFormErrors, {
     email: '',
     name: '',
+    career_level: '',
   })
+
+  // 폼용 팀 옵션 초기화 (모든 팀 표시)
+  formTeamOptions.value = formAllTeamOptions.value
 }
 
 // 직원 데이터로 폼 채우기
@@ -594,6 +643,9 @@ const fillEmployeeForm = employee => {
     // 그룹이 있으면 해당 그룹의 팀 목록으로 필터링
     if (employee.group_id) {
       filterTeamsByGroup(employee.group_id)
+    } else {
+      // 그룹이 없으면 모든 팀 옵션 표시
+      formTeamOptions.value = formAllTeamOptions.value
     }
   }
 }
@@ -738,6 +790,14 @@ const validateEmployeeForm = () => {
     isValid = false
   } else {
     employeeFormErrors.name = ''
+  }
+
+  // 직급 검사
+  if (!employeeFormData.career_level) {
+    employeeFormErrors.career_level = '직급을 선택해주세요.'
+    isValid = false
+  } else {
+    employeeFormErrors.career_level = ''
   }
 
   return isValid
