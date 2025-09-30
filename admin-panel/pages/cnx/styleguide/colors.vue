@@ -52,6 +52,14 @@
               <span class="color-variable" @click="copyVariable('$p-green')" :title="'클릭하여 복사: $p-green'">$p-green</span>
             </div>
           </div>
+          <div class="color-item">
+            <div class="color-swatch color-primary-dark-blue"></div>
+            <div class="color-info">
+              <span class="color-name">Dark Blue</span>
+              <span class="color-code">#001933</span>
+              <span class="color-variable" @click="copyVariable('$p-dark-blue')" :title="'클릭하여 복사: $p-blue'">$p-dark-blue</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -241,6 +249,10 @@ const copyVariable = async (variable) => {
     
     &.color-primary-green {
       background-color: $p-green;
+    }
+
+    &.color-primary-dark-blue {
+      background-color: $p-dark-blue;
     }
     
     &.color-secondary-teal {
