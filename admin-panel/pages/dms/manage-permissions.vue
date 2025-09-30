@@ -117,7 +117,7 @@ const editOrganization = (type: string, id: string | number) => {
   gap: 24px;
   align-self: stretch;
   width: 100%;
-  padding: 0;
+  padding: 0 0 24px 0;
 
   .permission-item {
     width: 100%;

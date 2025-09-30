@@ -107,10 +107,8 @@ definePageMeta({
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  width: calc(100% + 15px);
-  height: 100%;
-  padding: 0 15px 23px 0;
-  margin-right: 15px;
+  width: 100%;
+  padding: 0 0 24px 0;
   overflow: auto;
   justify-content: flex-start;
   align-content: flex-start;

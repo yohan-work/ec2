@@ -300,12 +300,9 @@ const isActiveRoute = (path: string) => {
   return route.path === path
 }
 
-// 메뉴 클릭 시 툴바 닫기 (모바일에서만)
+// 메뉴 클릭 시 툴바 닫기
 const handleMenuClick = () => {
-  // 브라우저 너비가 1023px 이하일 때만 툴바 닫기
-  if (window.innerWidth <= 1023) {
-    emit('closeMenu')
-  }
+  emit('closeMenu')
 }
 
 // 비밀번호 변경 폼 유효성 검사

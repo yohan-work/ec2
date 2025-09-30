@@ -1004,6 +1004,10 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .table-section {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  padding: 20px 0 0;
   table {
     th,
     td {
@@ -1051,7 +1055,6 @@ onMounted(async () => {
     align-items: center;
     gap: 20px;
     position: relative;
-    z-index: 10;
     @media (max-width: 768px) {
       flex-direction: column;
       gap: 8px;
