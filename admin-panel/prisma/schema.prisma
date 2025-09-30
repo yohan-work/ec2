@@ -143,7 +143,7 @@ enum recruits_status {
 // 직원 관리
 model dms_employees {
   id               Int       @id @default(autoincrement())
-  email            String    @unique @db.VarChar(255) // Concentrix 이메일 주소
+  email            String?   @unique @db.VarChar(255) // Concentrix 이메일 주소
   name             String?    @db.VarChar(255) // 이름
   headquarter_id   Int?      // 소속 본부 ID
   group_id         Int?      // 소속 그룹 ID

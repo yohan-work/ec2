@@ -6,10 +6,15 @@ import { type EmployeeStatusCode } from '~/utils/dms/employee-utils'
 const validateEmployeeData = (data: any) => {
   const errors: string[] = []
 
-  if (!data.email || typeof data.email !== 'string') {
-    errors.push('이메일을 입력해주세요.')
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-    errors.push('올바른 이메일 형식이 아닙니다.')
+  // 이메일 검사 (선택사항이므로 형식 검사만)
+  if (
+    data.email &&
+    typeof data.email === 'string' &&
+    data.email.trim().length > 0
+  ) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) {
+      errors.push('올바른 이메일 형식이 아닙니다.')
+    }
   }
 
   if (
@@ -51,6 +56,7 @@ const validateEmployeeData = (data: any) => {
     is_people_manager: Boolean(data.is_people_manager),
     start_date: data.start_date ? new Date(data.start_date) : null,
     end_date: data.end_date ? new Date(data.end_date) : null,
+    leave_periods: data.leave_periods || [], // 휴직기간 데이터
   }
 }
 
@@ -80,23 +86,33 @@ export default defineEventHandler(async event => {
       })
     }
 
-    // 이메일 중복 확인 (자신 제외)
-    const emailConflict = await prisma.dms_employees.findFirst({
-      where: {
-        email: data.email,
-        id: { not: id },
-      },
-    })
-
-    if (emailConflict) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: '이미 등록된 이메일 주소입니다.',
+    // 이메일 중복 확인 (이메일이 있는 경우에만, 자신 제외)
+    if (data.email && data.email.trim().length > 0) {
+      const emailConflict = await prisma.dms_employees.findFirst({
+        where: {
+          email: data.email,
+          id: { not: id },
+        },
       })
+
+      if (emailConflict) {
+        throw createError({
+          statusCode: 400,
+          statusMessage: '이미 등록된 이메일 주소입니다.',
+        })
+      }
+    } else {
+      // 이메일이 없으면 null로 설정
+      data.email = null
     }
 
     // 변경사항 추적을 위한 이전 데이터 저장
     const oldData = { ...existingEmployee }
+
+    // 기존 휴직기간 삭제
+    await prisma.dms_employees_leave.deleteMany({
+      where: { employee_id: id },
+    })
 
     // 직원 정보 업데이트
     const updatedEmployee = await prisma.dms_employees.update({
@@ -114,6 +130,14 @@ export default defineEventHandler(async event => {
         is_people_manager: data.is_people_manager,
         start_date: data.start_date,
         end_date: data.end_date,
+        leaves: {
+          create: data.leave_periods
+            .filter((period: any) => period.start_date) // 시작일만 있으면 됨
+            .map((period: any) => ({
+              start_date: new Date(period.start_date),
+              end_date: period.end_date ? new Date(period.end_date) : null,
+            })),
+        },
       },
     })
 
@@ -139,9 +163,35 @@ export default defineEventHandler(async event => {
       )
     }
 
+    // 휴직기간 데이터를 포함한 직원 정보 조회
+    const employeeWithLeaves = await prisma.dms_employees.findUnique({
+      where: { id },
+      include: {
+        manager: {
+          select: { name: true },
+        },
+        group: {
+          select: { name: true },
+        },
+        team: {
+          select: { name: true },
+        },
+        leaves: {
+          select: {
+            id: true,
+            start_date: true,
+            end_date: true,
+          },
+          orderBy: {
+            start_date: 'asc',
+          },
+        },
+      },
+    })
+
     return {
       success: true,
-      data: updatedEmployee,
+      data: employeeWithLeaves,
       message: '직원 정보가 성공적으로 수정되었습니다.',
     }
   } catch (error: any) {
