@@ -1,6 +1,7 @@
-import { writeFile } from 'fs/promises'
+import { writeFile, copyFile } from 'fs/promises'
 import { mkdir } from 'fs/promises'
 import { join } from 'path'
+import { existsSync } from 'fs'
 
 export default defineEventHandler(async event => {
   try {
@@ -44,18 +45,47 @@ export default defineEventHandler(async event => {
       })
     }
 
-    // 업로드 디렉토리 생성
-    const uploadDir = join(process.cwd(), 'uploads', 'images')
+    // 업로드 디렉토리 설정
+    const publicDir = join(process.cwd(), 'public', 'uploads', 'images')
+    const outputDir = join(
+      process.cwd(),
+      '.output',
+      'public',
+      'uploads',
+      'images'
+    )
 
-    await mkdir(uploadDir, { recursive: true })
+    // 프로덕션 환경 확인 (.output 디렉토리 존재 여부로 판단)
+    const isProduction = existsSync(join(process.cwd(), '.output'))
 
-    // 파일명 생성 (타임스탬프 + 원본명)
+    console.log(
+      `이미지 업로드 환경: ${isProduction ? 'Production' : 'Development'}`
+    )
+    console.log(`Public 디렉토리: ${publicDir}`)
+    if (isProduction) {
+      console.log(`Output 디렉토리: ${outputDir}`)
+    }
+
+    // 디렉토리 생성
+    await mkdir(publicDir, { recursive: true })
+    if (isProduction) {
+      await mkdir(outputDir, { recursive: true })
+    }
+
+    // 파일명 생성 및 저장
     const timestamp = Date.now()
     const fileName = `${timestamp}_${file.filename}`
-    const filePath = join(uploadDir, fileName)
+    const publicFilePath = join(publicDir, fileName)
+    const outputFilePath = join(outputDir, fileName)
 
-    // 파일 저장
-    await writeFile(filePath, file.data)
+    // 파일 저장 (public 디렉토리)
+    await writeFile(publicFilePath, file.data)
+
+    // 프로덕션 환경에서는 .output 디렉토리에도 복사
+    if (isProduction) {
+      await copyFile(publicFilePath, outputFilePath)
+      console.log(`이미지 파일 복사 완료: ${outputFilePath}`)
+    }
 
     // 접근 가능한 URL 생성
     const fileUrl = `/uploads/images/${fileName}`
