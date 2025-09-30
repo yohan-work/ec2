@@ -9,10 +9,7 @@ export default defineNuxtConfig({
       {
         dir: 'public',
         baseURL: '/',
-      },
-      {
-        dir: '.output/public',
-        baseURL: '/',
+        maxAge: 60 * 60 * 24 * 365, // 1년 캐시
       },
     ],
   },
