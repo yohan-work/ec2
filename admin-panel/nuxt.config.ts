@@ -7,8 +7,9 @@ export default defineNuxtConfig({
   nitro: {
     publicAssets: [
       {
-        dir: 'uploads',
-        baseURL: '/uploads',
+        dir: 'public',
+        baseURL: '/',
+        maxAge: 60 * 60 * 24 * 365, // 1년 캐시
       },
     ],
   },

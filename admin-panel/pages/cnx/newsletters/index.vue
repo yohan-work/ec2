@@ -38,9 +38,7 @@
         
         <div class="inner">
           <!-- 제목 -->
-          <AppTitle>
-            Newsroom
-          </AppTitle>
+          <AppTitle title="Newsroom" />
 
           <!-- 뉴스레터 목록 -->
           <NewsletterList
@@ -53,7 +51,6 @@
           <div v-if="shouldShowLoadMore && !loading" class="newsletter-load-more">
             <AppButton 
               color="primary"
-              effect="left"
               @click="loadMoreNewsletters"
               :disabled="loadingMore"
               :text="loadingMore ? '로딩 중...' : '더보기'"
