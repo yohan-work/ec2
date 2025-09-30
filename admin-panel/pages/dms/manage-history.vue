@@ -471,16 +471,10 @@ const formatDateTime = dateString => {
 
 <style lang="scss" scoped>
 .table-section {
-  .table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding: 20px;
-
-    .pagination-info {
-      font-size: 14px;
-      color: #6b7280;
+  table {
+    th,
+    td {
+      white-space: nowrap;
     }
   }
 

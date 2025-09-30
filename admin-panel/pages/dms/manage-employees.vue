@@ -912,6 +912,13 @@ onMounted(async () => {
   }
 }
 
+table {
+  th,
+  td {
+    white-space: nowrap;
+  }
+}
+
 .employee-info {
   display: flex;
   gap: 4px;
@@ -930,19 +937,10 @@ onMounted(async () => {
     font-weight: 500;
     padding: 0;
     border-radius: 50%;
+    min-width: 24px;
     width: 24px;
     height: 24px;
     text-align: center;
-  }
-
-  .leave-badge {
-    display: inline-block;
-    background-color: #fef3c7;
-    color: #d97706;
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 500;
   }
 }
 
