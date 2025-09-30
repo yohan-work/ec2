@@ -41,9 +41,12 @@ const props = defineProps<{
   disabled?: boolean
   href?: string
   to?: string | object
-  arrow?: boolean
+  arrow?: boolean | 'reverse'
   arrowDirection?: 'left' | 'right'
 }>()
+
+// effect의 기본값을 left로 설정
+const effect = computed(() => props.effect || 'left')
 
 const emit = defineEmits<{
   click: []
@@ -62,8 +65,11 @@ const buttonClasses = computed(() => {
     // href가 있으면 외부 링크로 outlink 화살표 (자동)
     classes.push('outlink')
   } else if (props.to && props.arrow) {
-    // to가 있고 arrow가 true일 때만 내부 링크로 link 화살표
+    // to가 있고 arrow가 true 또는 'reverse'일 때 내부 링크로 link 화살표
     classes.push('link')
+    if (props.arrow === 'reverse') {
+      classes.push('reverse')
+    }
   }
   
   // 색상 클래스
@@ -71,10 +77,8 @@ const buttonClasses = computed(() => {
     classes.push(props.color)
   }
   
-  // hover 효과 클래스
-  if (props.effect) {
-    classes.push(`hover-${props.effect}`)
-  }
+  // hover 효과 클래스 (기본값: left)
+  classes.push(`hover-${effect.value}`)
   
   // disabled 상태
   if (props.disabled) {
@@ -301,12 +305,26 @@ a {
     }
   }
 
+  // reverse 클래스 - 화살표 방향 반전
+  &.link.reverse {
+    &::after {
+      transform: rotate(180deg);
+    }
+  }
+
+  &.circle.link.reverse {
+    &::after {
+      transform: translate(-50%, -50%) rotate(180deg);
+    }
+  }
+
   // 외부 링크 버튼
   &.outlink {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
     min-width: rem(168);
+    gap: rem(14);
     text-align: left;
     &::after {
       content: '';
