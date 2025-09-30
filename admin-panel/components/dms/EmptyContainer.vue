@@ -1,10 +1,10 @@
 <template>
   <div class="empty-container">
     <div class="empty-content">
-      <p class="empty-message">
+      <div class="empty-message">
         <div v-html="emptySvg"></div>
         {{ message }}
-      </p>
+      </div>
     </div>
   </div>
 </template>
