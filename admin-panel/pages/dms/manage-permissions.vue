@@ -4,7 +4,8 @@
     <div class="permission-tree">
       <PermissionCard
         id="20"
-        name="본부장 정석안 상무"
+        position="본부장"
+        name="정석안 상무"
         :count="12"
         :left-permissions="[
           'Project Revenue',
@@ -32,7 +33,8 @@
         <div class="permission-children">
           <PermissionCard
             id="20"
-            name="그룹장 정은재 이사"
+            position="그룹장"
+            name="정은재 이사"
             :count="12"
             :left-permissions="[
               'Project Revenue',
@@ -53,6 +55,7 @@
           />
           <PermissionCard
             id="21"
+            position="팀장"
             name="PM팀 박선희 부장"
             :count="12"
             :left-permissions="['Staff(Utility)', 'Project List']"
@@ -61,6 +64,7 @@
           />
           <PermissionCard
             id="1"
+            position="팀장"
             name="UX/UI 1팀 이상헌 이사"
             :count="42"
             :left-permissions="[
@@ -74,6 +78,7 @@
           />
           <PermissionCard
             id="2"
+            position="팀장"
             name="UX/UI 2팀 정지원 부장"
             :count="33"
             :left-permissions="['Staff(Utility)', 'Project List']"
@@ -87,13 +92,8 @@
 </template>
 
 <script setup lang="ts">
-import officeSvg from '~/components/assets/dms/icons/office.svg?raw'
-import modifySvg from '~/components/assets/dms/icons/modify.svg?raw'
-import deleteSvg from '~/components/assets/dms/icons/delete.svg?raw'
-import addSvg from '~/components/assets/dms/icons/add.svg?raw'
 import TitleArea from '~/components/dms/TitleArea.vue'
 import ContentsArea from '~/components/dms/ContentsArea.vue'
-import Button from '~/components/ui/Button.vue'
 import PermissionCard from '~/components/dms/PermissionCard.vue'
 
 definePageMeta({
@@ -109,19 +109,6 @@ const editOrganization = (type: string, id: string | number) => {
 </script>
 
 <style lang="scss" scoped>
-.center-content {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  color: #374151;
-}
-
-.right-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 // 조직도 트리 스타일
 .permission-tree {
   display: flex;
@@ -140,9 +127,6 @@ const editOrganization = (type: string, id: string | number) => {
     &[data-type='headquarters'] {
       background: #fafafa;
     }
-    &[data-type='group'] {
-      background: #fff;
-    }
   }
 
   .permission-content {
@@ -159,14 +143,6 @@ const editOrganization = (type: string, id: string | number) => {
     align-items: center;
     gap: 8px;
     flex: 1;
-
-    + .permission-children {
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 0 24px 24px 24px;
-    }
   }
 
   .permission-name {
@@ -174,20 +150,6 @@ const editOrganization = (type: string, id: string | number) => {
     color: #000;
   }
 
-  .permission-count {
-    display: none;
-  }
-
-  .permission-actions {
-    display: flex;
-    gap: 20px;
-    button {
-      color: black;
-      background: transparent;
-    }
-  }
-
-  // 타입별 스타일
   .permission-headquarters {
     padding: 24px;
     .permission-name {
@@ -195,74 +157,15 @@ const editOrganization = (type: string, id: string | number) => {
       font-size: 18px;
       line-height: 24px;
     }
-    .permission-icon {
-      width: 24px;
-      height: 24px;
-      text-align: center;
-      svg {
-        width: 100%;
-        height: 100%;
-      }
-    }
   }
+
   .permission-children {
     display: flex;
-    flex-direction: column;
     gap: 20px;
     padding: 20px 24px;
     background: #fff;
     border-top: 1px solid #cbcbcb;
-  }
-
-  .permission-group {
-    padding: 24px;
-    .permission-name {
-      color: #222;
-      font-size: 16px;
-      line-height: 22px;
-    }
-    .permission-icon {
-      display: none;
-    }
-  }
-
-  .permission-team {
-    padding: 16px 20px;
-    border-radius: 12px;
-    background: #f7f7f7;
-    .permission-name {
-      color: #3c3c3c;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 20px;
-    }
-    .permission-count {
-      display: flex;
-      min-width: 100%;
-      padding: 20px;
-      justify-content: center;
-      align-items: center;
-      color: #222;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 22px;
-      border-radius: 10px;
-      background: #fff;
-      span {
-        display: inline-block;
-        font-size: 14px;
-        line-height: 20px;
-        padding: 0 4px 0 0;
-        color: #666;
-      }
-    }
-    .permission-actions {
-      opacity: 0.95;
-      gap: 16px;
-      button {
-        color: #666;
-      }
-    }
+    flex-wrap: wrap;
   }
 }
 </style>
