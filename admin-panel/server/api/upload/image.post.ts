@@ -55,8 +55,9 @@ export default defineEventHandler(async event => {
     )
     const publicDir = join(process.cwd(), 'public', 'uploads', 'images')
 
-    // .output 폴더가 존재하면 프로덕션으로 간주, 없으면 개발 환경으로 간주
+    // .output 폴더가 존재하면 프로덕션으로 간주
     const isProduction = existsSync(join(process.cwd(), '.output'))
+
     const uploadDir = isProduction ? outputDir : publicDir
 
     console.log(
@@ -66,37 +67,13 @@ export default defineEventHandler(async event => {
 
     await mkdir(uploadDir, { recursive: true })
 
-    // 파일명 생성 (타임스탬프 + 원본명)
+    // 파일명 생성 및 저장
     const timestamp = Date.now()
     const fileName = `${timestamp}_${file.filename}`
     const filePath = join(uploadDir, fileName)
 
     // 파일 저장
     await writeFile(filePath, file.data)
-
-    // 프로덕션 환경에서는 심볼릭 링크로 연결 (중복 저장 방지)
-    if (isProduction) {
-      await mkdir(publicDir, { recursive: true })
-      const publicFilePath = join(publicDir, fileName)
-      try {
-        const { symlink } = await import('fs/promises')
-        const relativePath = join(
-          '..',
-          '..',
-          '.output',
-          'public',
-          'uploads',
-          'images',
-          fileName
-        )
-        await symlink(relativePath, publicFilePath)
-        console.log(`심볼릭 링크 생성: ${publicFilePath} -> ${relativePath}`)
-      } catch (error) {
-        // 심볼릭 링크 실패 시 파일 복사로 대체
-        await writeFile(publicFilePath, file.data)
-        console.log(`백업 저장 완료: ${publicFilePath}`)
-      }
-    }
 
     // 접근 가능한 URL 생성
     const fileUrl = `/uploads/images/${fileName}`
