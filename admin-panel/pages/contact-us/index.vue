@@ -93,7 +93,7 @@
                 <template #customer-service>
                     <AppButtonTab v-model="activeTab2" :tabs="tabs2" alignment="left" @tab-change="onTabChange">
                         <template v-for="(center, index) in customerServiceCenters" :key="index" #[`tab-${index}`]>
-                            <div class="container">
+                            <div class="container customer-service">
                                 <div class="container__content">
                                     <h2 class="container__content-title">
                                         콘센트릭스 <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
@@ -115,7 +115,7 @@
                                     </div>
                                 </div>
                                 <!-- S : 네이버 지도 영역  -->
-                                <div class="customer-service container__map">
+                                <div class="container__map">
                                     <!-- <NaverMap :lat="center.mapLat" :lng="center.mapLng" /> -->
                                     <div class="contact-map">
                                     </div>
@@ -375,7 +375,8 @@ const onTabChange = (index, tab) => {
                 }
 
                 @include desktop {
-                    margin: 0 0 rem(15);
+                    max-height: rem(64);
+                    margin: 0 0 rem(13.66);
                 }
 
                 div {
@@ -432,6 +433,10 @@ const onTabChange = (index, tab) => {
                     }
                 }
             }
+
+            &-item:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 
@@ -450,13 +455,13 @@ const onTabChange = (index, tab) => {
             margin: rem(24) 0 0;
 
             @include tablet {
-                height: 130%;
-                margin: rem(-75) 0 0;
+                aspect-ratio: 308/283;
+                margin: rem(-65) 0 0;
             }
 
             @include desktop {
-                height: 120%;
-                margin: rem(-100) 0 0;
+                height: rem(590);
+                margin: rem(-95) 0 0;
             }
         }
     }
@@ -585,15 +590,24 @@ const onTabChange = (index, tab) => {
 }
 
 .customer-service {
-    .contact-map {
+    .container__content {
         @include tablet {
-            height: 150%;
-            margin: rem(-120) 0 0;
+            gap: rem(80);
+        }
+        @include desktop {
+            gap: rem(222);
+        }
+    }
+    .contact-map {
+
+        @include tablet {
+            aspect-ratio: 308/283;
+            margin: rem(-111) 0 0;
         }
 
         @include desktop {
-            height: 130%;
-            margin: rem(-160) 0 0;
+            height: rem(590);
+            margin: rem(-157) 0 0;
         }
     }
 }
