@@ -64,8 +64,8 @@ const buttonClasses = computed(() => {
   if (props.href) {
     // href가 있으면 외부 링크로 outlink 화살표 (자동)
     classes.push('outlink')
-  } else if (props.to && props.arrow) {
-    // to가 있고 arrow가 true 또는 'reverse'일 때 내부 링크로 link 화살표
+  } else if (props.arrow) {
+    // arrow가 true 또는 'reverse'일 때 link 화살표
     classes.push('link')
     if (props.arrow === 'reverse') {
       classes.push('reverse')
