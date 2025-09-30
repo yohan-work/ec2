@@ -72,7 +72,7 @@
     { text: '강남2센터' },
     { text: '용산센터' }
   ]"
-  &lt;!-- left 또는 center 적용 가능 --&gt;
+  &lt;!-- default=left / center 또는 right 적용 가능 --&gt;
   alignment="center"
   @tab-change="handleButtonTabChange"
 &gt;
@@ -92,7 +92,7 @@
           <h4 class="props-title">Props</h4>
           <ul class="props-list">
             <li><strong>tabs:</strong> 탭 데이터 배열 (각 객체는 text 속성 필요)</li>
-            <li><strong>alignment:</strong> 탭 정렬 방식 ('left', 'center')</li>
+            <li><strong>alignment:</strong> 탭 정렬 방식 / 기본값 사용시 alignment 필요X / alignment="center", "right" 적용 가능</li>
             <li><strong>v-model:</strong> 활성 탭 인덱스</li>
           </ul>
         </div>

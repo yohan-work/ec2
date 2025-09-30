@@ -40,9 +40,16 @@
           imageName="DA03"
         />
       </section>
-      
-      
     </div>
+
+    <!-- AppSubCont 컴포넌트 추가 -->
+    <AppSubCont 
+      title="Empowering Brands<br>with Data-Driven Marketing"
+      description="고객사 데이터분석, 디지털 광고 운영, 콘텐츠 제작, SEO 등<br>디지털 마케팅 영역에 필요한 모든 Task들이 하나로 통합된, 진정한 의미의<br>End-to-End 디지털 마케팅 솔루션을 제공합니다."
+      imageName="subContImg"
+      imageAlt="디지털 광고 솔루션 이미지"
+    />
+    
   </div>
 </template>
 
@@ -50,6 +57,7 @@
 import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
+import AppSubCont from '~/components/cnx/AppSubCont.vue'
 
 // 레이아웃 설정
 definePageMeta({

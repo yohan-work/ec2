@@ -85,73 +85,75 @@
         </div>
       </FilterContainer>
 
-      <div v-if="isLoading" class="loading-container">
-        <Loading />
+      <div class="table-section">
+        <div v-if="isLoading" class="loading-container">
+          <Loading />
+        </div>
+
+        <EmptyContainer
+          v-else-if="employees.length === 0"
+          message="등록된 직원이 없습니다."
+        />
+
+        <Table v-else variant="simple">
+          <thead>
+            <tr>
+              <th>직원</th>
+              <th>그룹</th>
+              <th>팀</th>
+              <th>매니저</th>
+              <th>직무</th>
+              <th>직급(CL)</th>
+              <th>이메일</th>
+              <th>상태</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="employee in employees" :key="employee.id">
+              <td>
+                <div class="employee-info">
+                  <span class="name">{{ employee.name }}</span>
+                  <span v-if="employee.is_people_manager" class="manager-badge"
+                    >M</span
+                  >
+                </div>
+              </td>
+              <td>{{ employee.group?.name || '-' }}</td>
+              <td>{{ employee.team?.name || '-' }}</td>
+              <td>{{ employee.manager?.name || '-' }}</td>
+              <td>{{ employee.job_role || '-' }}</td>
+              <td>{{ employee.career_level || '-' }}</td>
+              <td>{{ employee.email }}</td>
+              <td>
+                <Badge :class="getStatusBadgeClass(employee.status)">
+                  {{ getStatusLabel(employee.status) }}
+                </Badge>
+              </td>
+              <td>
+                <div class="employee-actions">
+                  <Button
+                    variant="text"
+                    :size="20"
+                    @click="editEmployee(employee)"
+                  >
+                    <div v-html="modifySvg"></div>
+                    수정
+                  </Button>
+                  <Button
+                    variant="text"
+                    :size="20"
+                    @click="deleteEmployee(employee)"
+                  >
+                    <div v-html="deleteSvg"></div>
+                    삭제
+                  </Button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       </div>
-
-      <EmptyContainer
-        v-else-if="employees.length === 0"
-        message="등록된 직원이 없습니다."
-      />
-
-      <Table v-else variant="simple">
-        <thead>
-          <tr>
-            <th>직원</th>
-            <th>그룹</th>
-            <th>팀</th>
-            <th>매니저</th>
-            <th>직무</th>
-            <th>직급(CL)</th>
-            <th>이메일</th>
-            <th>상태</th>
-            <th>관리</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="employee in employees" :key="employee.id">
-            <td>
-              <div class="employee-info">
-                <span class="name">{{ employee.name }}</span>
-                <span v-if="employee.is_people_manager" class="manager-badge"
-                  >M</span
-                >
-              </div>
-            </td>
-            <td>{{ employee.group?.name || '-' }}</td>
-            <td>{{ employee.team?.name || '-' }}</td>
-            <td>{{ employee.manager?.name || '-' }}</td>
-            <td>{{ employee.job_role || '-' }}</td>
-            <td>{{ employee.career_level || '-' }}</td>
-            <td>{{ employee.email }}</td>
-            <td>
-              <Badge :class="getStatusBadgeClass(employee.status)">
-                {{ getStatusLabel(employee.status) }}
-              </Badge>
-            </td>
-            <td>
-              <div class="employee-actions">
-                <Button
-                  variant="text"
-                  :size="20"
-                  @click="editEmployee(employee)"
-                >
-                  <div v-html="modifySvg"></div>
-                  수정
-                </Button>
-                <Button
-                  variant="text"
-                  :size="20"
-                  @click="deleteEmployee(employee)"
-                >
-                  <div v-html="deleteSvg"></div>
-                  삭제
-                </Button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </Table>
     </MainContainer>
   </ContentsArea>
 
@@ -205,7 +207,7 @@
             v-model="employeeFormData.group_id"
             :options="formGroupOptions"
             placeholder="그룹 선택"
-            @change="filterTeamsByGroup(employeeFormData.group_id)"
+            @change="filterTeamsByGroup(employeeFormData.group_id, false)"
           />
           <Select
             id="team_id"
@@ -218,7 +220,7 @@
             id="career_level"
             label="직급(CL) *"
             v-model="employeeFormData.career_level"
-            :options="careerLevelOptions"
+            :options="formCareerLevelOptions"
             placeholder="직급 선택"
             :error="employeeFormErrors.career_level"
           />
@@ -226,7 +228,7 @@
             id="job_role"
             label="직무"
             v-model="employeeFormData.job_role"
-            :options="jobRoleOptions"
+            :options="formJobRoleOptions"
             placeholder="직무 선택"
           />
           <Checkbox
@@ -237,16 +239,18 @@
           />
         </div>
       </div>
-      <div class="form-row">
+      <div class="form-full">
         <div class="left">
           <Radio
-            title="상태"
+            title="상태 *"
             v-model="employeeFormData.status"
-            :options="statusOptions"
+            :options="formStatusOptions"
             name="status"
             :multiple="false"
             :vertical="false"
           />
+        </div>
+        <div class="right">
           <Input
             id="end_date"
             label="퇴사일"
@@ -254,7 +258,52 @@
             type="date"
           />
         </div>
-        <div class="right"></div>
+      </div>
+      <div class="form-full leave-date-container">
+        <div class="leave-period-title">휴직 기간</div>
+        <div
+          v-for="(period, index) in employeeFormData.leave_periods"
+          :key="index"
+          class="leave-period-item"
+        >
+          <div class="leave-period-inputs">
+            <Input
+              :id="`leave_start_date_${index}`"
+              v-model="period.start_date"
+              type="date"
+              placeholder="휴직 시작일"
+            />
+            <span class="date-separator">-</span>
+            <Input
+              :id="`leave_end_date_${index}`"
+              v-model="period.end_date"
+              type="date"
+              placeholder="휴직 종료일 (선택사항)"
+            />
+          </div>
+          <div class="leave-period-actions">
+            <Button
+              v-if="index === 0"
+              type="button"
+              variant="outline"
+              :size="24"
+              title="Add"
+              class="add-period-btn"
+              @click="addLeavePeriod"
+            >
+            </Button>
+            <Button
+              v-else
+              type="button"
+              variant="outline"
+              :size="24"
+              title="Remove"
+              class="remove-period-btn"
+              @click="removeLeavePeriod(index)"
+            >
+            </Button>
+          </div>
+        </div>
       </div>
     </form>
 
@@ -363,14 +412,14 @@ const modalTitle = computed(() => {
   return isEditMode.value ? '직원 정보 수정' : '신규 직원 추가'
 })
 
-// 직급 옵션 생성
+// 직급 옵션 생성 (필터용)
 const careerLevelOptions = computed(() => {
-  return getCareerLevelOptions()
+  return [{ value: '', label: '전체 직급' }, ...getCareerLevelOptions()]
 })
 
-// 직무 옵션 생성
+// 직무 옵션 생성 (필터용)
 const jobRoleOptions = computed(() => {
-  return [{ value: '', label: '선택 안함' }, ...getJobRoleOptions()]
+  return [{ value: '', label: '전체 직무' }, ...getJobRoleOptions()]
 })
 
 // 직원 폼 데이터
@@ -387,6 +436,7 @@ const employeeFormData = reactive({
   is_people_manager: false,
   start_date: '',
   end_date: '',
+  leave_periods: [{ start_date: '', end_date: '' }], // 휴직기간 배열
 })
 
 // 직원 폼 에러
@@ -408,20 +458,23 @@ const selectedGroup = ref('')
 const selectedTeam = ref('')
 const selectedJob = ref('')
 const selectedCl = ref('')
-const selectedStatus = ref('')
+const selectedStatus = ref('') // 빈 값으로 설정하여 모든 상태 조회
 
 // 옵션 데이터
 const groupOptions = ref([]) // 필터용 그룹 옵션
 const teamOptions = ref([]) // 필터용 팀 옵션
 const allTeamOptions = ref([]) // 모든 팀 옵션 (그룹별 필터링용)
 const clOptions = ref([])
-const statusOptions = ref([])
+const statusOptions = ref([]) // 필터용 상태 옵션
 const managerOptions = ref([])
 
 // 폼용 옵션 데이터
 const formGroupOptions = ref([]) // 폼용 그룹 옵션
 const formTeamOptions = ref([]) // 폼용 팀 옵션
 const formAllTeamOptions = ref([]) // 폼용 모든 팀 옵션
+const formStatusOptions = ref([]) // 폼용 상태 옵션
+const formJobRoleOptions = ref([]) // 폼용 직무 옵션
+const formCareerLevelOptions = ref([]) // 폼용 직급 옵션
 
 // 상태 라벨 및 스타일 (utils 함수 사용)
 const getStatusVariant = status => {
@@ -464,7 +517,26 @@ const fetchEmployees = async () => {
     const response = await $fetch(`/api/dms/employees?${params}`)
 
     if (response.success && response.data) {
-      employees.value = response.data
+      // 상태별 정렬: 입사예정, 재직, 휴직, 조직이동, 퇴사 순서
+      const statusOrder = {
+        pre_hire: 1,
+        active: 2,
+        on_leave: 3,
+        transferred: 4,
+        resigned: 5,
+      }
+
+      employees.value = response.data.sort((a, b) => {
+        const statusA = statusOrder[a.status] || 999
+        const statusB = statusOrder[b.status] || 999
+
+        if (statusA !== statusB) {
+          return statusA - statusB
+        }
+
+        // 상태가 같으면 이름순으로 정렬
+        return a.name.localeCompare(b.name)
+      })
 
       // 전체 직원 수 업데이트 (필터링 전 전체 수를 별도로 조회하지 않고 현재 데이터로 추정)
       // 실제로는 API에서 total count를 반환해야 하지만, 현재는 필터링된 결과의 길이로 설정
@@ -517,8 +589,31 @@ const fetchOptions = async () => {
       formAllTeamOptions.value = formTeamOptionsWithNone // 폼용 모든 팀 옵션 저장
       formTeamOptions.value = formTeamOptionsWithNone // 폼용 팀 옵션 초기화
 
-      clOptions.value = response.data.careerLevels
-      statusOptions.value = response.data.statusOptions
+      clOptions.value = [
+        { value: '', label: '전체 직급' },
+        ...response.data.careerLevels,
+      ]
+
+      // 필터용 상태 옵션 (전체 상태 포함)
+      statusOptions.value = [
+        { value: '', label: '전체 상태' },
+        ...response.data.statusOptions,
+      ]
+
+      // 폼용 상태 옵션 (전체 상태 제외)
+      formStatusOptions.value = response.data.statusOptions
+
+      // 폼용 직무 옵션 (선택 안함 포함)
+      formJobRoleOptions.value = [
+        { value: '', label: '선택 안함' },
+        ...response.data.jobRoles,
+      ]
+
+      // 폼용 직급 옵션 (선택 안함 포함)
+      formCareerLevelOptions.value = [
+        { value: '', label: '선택 안함' },
+        ...response.data.careerLevels,
+      ]
     }
   } catch (error) {
     console.error('옵션 데이터 조회 오류:', error)
@@ -552,11 +647,24 @@ const updateManagerOptions = (currentEmployee = null) => {
   }
 }
 
+// 휴직기간 추가
+const addLeavePeriod = () => {
+  employeeFormData.leave_periods.push({ start_date: '', end_date: '' })
+}
+
+// 휴직기간 제거
+const removeLeavePeriod = index => {
+  if (employeeFormData.leave_periods.length > 1) {
+    employeeFormData.leave_periods.splice(index, 1)
+  }
+}
+
 // 그룹 선택 시 팀 옵션 필터링
-const filterTeamsByGroup = groupId => {
+const filterTeamsByGroup = (groupId, preserveTeamSelection = false) => {
   if (groupId) {
-    // groupId를 숫자로 변환하여 비교
-    const numericGroupId = parseInt(groupId)
+    // groupId를 숫자로 변환하여 비교 (이미 숫자면 그대로 사용)
+    const numericGroupId =
+      typeof groupId === 'number' ? groupId : parseInt(groupId)
 
     // 필터용 팀 옵션 필터링
     teamOptions.value = allTeamOptions.value.filter(
@@ -571,8 +679,11 @@ const filterTeamsByGroup = groupId => {
     teamOptions.value = allTeamOptions.value
     formTeamOptions.value = formAllTeamOptions.value
   }
-  // 그룹이 변경되면 팀 선택 초기화
-  employeeFormData.team_id = null
+
+  // 팀 선택 초기화는 수정 모드가 아닐 때만
+  if (!preserveTeamSelection) {
+    employeeFormData.team_id = null
+  }
 }
 
 // 검색
@@ -608,6 +719,7 @@ const resetEmployeeForm = () => {
     is_people_manager: false,
     start_date: '',
     end_date: '',
+    leave_periods: [{ start_date: '', end_date: '' }],
   })
 
   Object.assign(employeeFormErrors, {
@@ -616,19 +728,30 @@ const resetEmployeeForm = () => {
     career_level: '',
   })
 
-  // 폼용 팀 옵션 초기화 (모든 팀 표시)
+  // 폼용 옵션들 초기화
   formTeamOptions.value = formAllTeamOptions.value
+  formJobRoleOptions.value = [
+    { value: '', label: '선택 안함' },
+    ...getJobRoleOptions(),
+  ]
+  formCareerLevelOptions.value = [
+    { value: '', label: '선택 안함' },
+    ...getCareerLevelOptions(),
+  ]
 }
 
 // 직원 데이터로 폼 채우기
 const fillEmployeeForm = employee => {
   if (employee) {
+    // 팀 ID를 미리 저장
+    const originalTeamId = employee.team_id || null
+
     Object.assign(employeeFormData, {
       email: employee.email || '',
       name: employee.name || '',
       headquarter_id: 1, // 본부는 항상 1번으로 고정
       group_id: employee.group_id || null,
-      team_id: employee.team_id || null,
+      team_id: originalTeamId,
       manager_id: employee.manager_id || null,
       job_role: employee.job_role || '',
       career_level: employee.career_level || null,
@@ -640,11 +763,24 @@ const fillEmployeeForm = employee => {
       end_date: employee.end_date
         ? new Date(employee.end_date).toISOString().split('T')[0]
         : '',
+      leave_periods:
+        employee.leaves && employee.leaves.length > 0
+          ? employee.leaves.map(period => ({
+              start_date: period.start_date
+                ? new Date(period.start_date).toISOString().split('T')[0]
+                : '',
+              end_date: period.end_date
+                ? new Date(period.end_date).toISOString().split('T')[0]
+                : '',
+            }))
+          : [{ start_date: '', end_date: '' }],
     })
 
     // 그룹이 있으면 해당 그룹의 팀 목록으로 필터링
     if (employee.group_id) {
-      filterTeamsByGroup(employee.group_id)
+      // 그룹 ID를 숫자로 변환하여 필터링 (팀 선택 보존)
+      const numericGroupId = parseInt(employee.group_id)
+      filterTeamsByGroup(numericGroupId, true) // 팀 선택 보존
     } else {
       // 그룹이 없으면 모든 팀 옵션 표시
       formTeamOptions.value = formAllTeamOptions.value
@@ -701,10 +837,15 @@ const handleEmployeeFormSubmit = async () => {
   isEmployeeFormLoading.value = true
 
   try {
-    // 이메일 처리: @가 없으면 @concentrix.com 추가
-    let processedEmail = employeeFormData.email.trim()
+    // 이메일 처리: @가 없으면 @concentrix.com 추가 (이메일이 있는 경우에만)
+    let processedEmail = employeeFormData.email?.trim() || ''
     if (processedEmail && !processedEmail.includes('@')) {
       processedEmail = `${processedEmail}@concentrix.com`
+    }
+
+    // 이메일이 비어있으면 null로 설정
+    if (!processedEmail) {
+      processedEmail = null
     }
 
     const submitData = {
@@ -754,11 +895,8 @@ const handleEmployeeFormSubmit = async () => {
 const validateEmployeeForm = () => {
   let isValid = true
 
-  // 이메일 검사
-  if (!employeeFormData.email || employeeFormData.email.trim().length === 0) {
-    employeeFormErrors.email = '이메일을 입력해주세요.'
-    isValid = false
-  } else {
+  // 이메일 검사 (선택사항이므로 형식 검사만)
+  if (employeeFormData.email && employeeFormData.email.trim().length > 0) {
     const email = employeeFormData.email.trim()
 
     // @가 있는 경우 도메인 검사
@@ -784,6 +922,8 @@ const validateEmployeeForm = () => {
         employeeFormErrors.email = ''
       }
     }
+  } else {
+    employeeFormErrors.email = ''
   }
 
   // 이름 검사
@@ -802,38 +942,21 @@ const validateEmployeeForm = () => {
     employeeFormErrors.career_level = ''
   }
 
-  return isValid
-}
+  // 휴직기간 검사 (선택사항이므로 기본 검사만)
+  for (let i = 0; i < employeeFormData.leave_periods.length; i++) {
+    const period = employeeFormData.leave_periods[i]
 
-// 직원 추가/수정 처리 (기존 함수 유지)
-const handleEmployeeSubmit = async formData => {
-  try {
-    isLoading.value = true
-
-    if (selectedEmployee.value) {
-      // 수정
-      await $fetch(`/api/dms/employees/${selectedEmployee.value.id}`, {
-        method: 'PUT',
-        body: formData,
-      })
-    } else {
-      // 추가
-      await $fetch('/api/dms/employees', {
-        method: 'POST',
-        body: formData,
-      })
+    // 시작일과 종료일이 모두 있는 경우에만 날짜 순서 검사
+    if (period.start_date && period.end_date) {
+      if (new Date(period.end_date) < new Date(period.start_date)) {
+        // 종료일이 시작일보다 이전인 경우 (UI에서 경고 표시용)
+        isValid = false
+        break
+      }
     }
-
-    closeModal()
-    await fetchEmployees()
-
-    // TODO: 성공 토스트 표시
-  } catch (error) {
-    console.error('직원 처리 오류:', error)
-    // TODO: 에러 토스트 표시
-  } finally {
-    isLoading.value = false
   }
+
+  return isValid
 }
 
 // 직원 삭제 (모달 열기)
@@ -880,11 +1003,85 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 0;
+.table-section {
+  table {
+    th,
+    td {
+      white-space: nowrap;
+    }
+  }
+
+  table tbody {
+    tr:has(.badge.badge-resigned),
+    tr:has(.badge.badge-transferred) {
+      background-color: #f3f3f5;
+      &:hover {
+        background-color: #e2e4eb;
+      }
+    }
+  }
+
+  .employee-info {
+    display: flex;
+    gap: 4px;
+
+    .name {
+      font-weight: 500;
+      color: #111827;
+    }
+
+    .manager-badge {
+      display: inline-block;
+      background-color: #dbeafe;
+      color: #1e40af;
+      font-size: 11px;
+      line-height: 24px;
+      font-weight: 500;
+      padding: 0;
+      border-radius: 50%;
+      min-width: 24px;
+      width: 24px;
+      height: 24px;
+      text-align: center;
+    }
+  }
+
+  .employee-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 10;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+
+    .pagination-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+
+      .pagination-btn {
+        &.active {
+          background-color: #1976d2;
+          color: white;
+          border-color: #1976d2;
+        }
+      }
+
+      .pagination-ellipsis {
+        padding: 8px 12px;
+        color: #6b7280;
+      }
+    }
+  }
 }
 
 .filter-group {
@@ -912,51 +1109,12 @@ onMounted(async () => {
   }
 }
 
-.employee-info {
-  display: flex;
-  gap: 4px;
-
-  .name {
-    font-weight: 500;
-    color: #111827;
-  }
-
-  .manager-badge {
-    display: inline-block;
-    background-color: #dbeafe;
-    color: #1e40af;
-    font-size: 11px;
-    line-height: 24px;
-    font-weight: 500;
-    padding: 0;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    text-align: center;
-  }
-
-  .leave-badge {
-    display: inline-block;
-    background-color: #fef3c7;
-    color: #d97706;
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 500;
-  }
-}
-
-.employee-actions {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  position: relative;
-  z-index: 10;
-}
-
 // 직원 폼 스타일
-.employee-form {
-  margin: 0 auto;
+.modal-body {
+  padding: 0 0 8px 0;
+  .employee-form {
+    margin: 0 auto;
+  }
 }
 
 .form-row {
@@ -964,32 +1122,118 @@ onMounted(async () => {
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   margin-bottom: 16px;
-
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
-  + .form-row {
+  + .form-full {
     margin-top: 40px;
     border-top: 1px solid #ddd;
     padding-top: 20px;
   }
 }
-
-.modal-actions {
+.form-full {
   display: flex;
-  gap: 12px;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 40px;
+  > div {
+    width: calc(50% - 20px);
+  }
+  + .form-full {
+    margin-top: 20px;
+  }
 }
-
-// 반응형 디자인
-@media (max-width: 768px) {
-  .employee-actions {
-    flex-direction: column;
+.leave-date-container {
+  gap: 8px 40px;
+  .leave-period-title {
+    width: 100%;
+    color: #000;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+  }
+  .leave-period-item {
+    display: flex;
+    align-items: center;
     gap: 8px;
   }
 
-  .form-row {
-    grid-template-columns: 1fr;
+  .leave-period-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+
+    .form-group {
+      flex: 1;
+    }
+  }
+
+  .date-separator {
+    font-weight: 500;
+    color: #6b7280;
+    white-space: nowrap;
+  }
+
+  .leave-period-actions {
+    flex-shrink: 0;
+  }
+
+  // 아이콘 버튼 스타일
+  .add-period-btn,
+  .remove-period-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+    padding: 0;
+  }
+
+  .add-period-btn {
+    &::before {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 1.4px;
+      background-color: #6b7280;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 1.4px;
+      height: 12px;
+      background-color: #6b7280;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .remove-period-btn {
+    &::before {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 1.4px;
+      background-color: #6b7280;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .current-leave-indicator {
+    font-size: 12px;
+    color: #6b7280;
+    font-style: italic;
+    margin-top: 4px;
   }
 }
 </style>

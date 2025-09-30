@@ -4,7 +4,7 @@ export default defineEventHandler(async event => {
   try {
     const query = getQuery(event)
     const {
-      status = 'active',
+      status,
       search,
       is_people_manager,
       group_id,
@@ -74,6 +74,16 @@ export default defineEventHandler(async event => {
         team: {
           select: {
             name: true,
+          },
+        },
+        leaves: {
+          select: {
+            id: true,
+            start_date: true,
+            end_date: true,
+          },
+          orderBy: {
+            start_date: 'asc',
           },
         },
       },

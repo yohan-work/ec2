@@ -6,10 +6,15 @@ import { type EmployeeStatusCode } from '~/utils/dms/employee-utils'
 const validateEmployeeData = (data: any) => {
   const errors: string[] = []
 
-  if (!data.email || typeof data.email !== 'string') {
-    errors.push('이메일을 입력해주세요.')
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-    errors.push('올바른 이메일 형식이 아닙니다.')
+  // 이메일 검사 (선택사항이므로 형식 검사만)
+  if (
+    data.email &&
+    typeof data.email === 'string' &&
+    data.email.trim().length > 0
+  ) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) {
+      errors.push('올바른 이메일 형식이 아닙니다.')
+    }
   }
 
   if (
@@ -54,6 +59,7 @@ const validateEmployeeData = (data: any) => {
     is_people_manager: Boolean(data.is_people_manager),
     start_date: data.start_date ? new Date(data.start_date) : null,
     end_date: data.end_date ? new Date(data.end_date) : null,
+    leave_periods: data.leave_periods || [], // 휴직기간 데이터
   }
 }
 
@@ -62,16 +68,21 @@ export default defineEventHandler(async event => {
     const body = await readBody(event)
     const data = validateEmployeeData(body)
 
-    // 이메일 중복 확인
-    const existingEmployee = await prisma.dms_employees.findUnique({
-      where: { email: data.email },
-    })
-
-    if (existingEmployee) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: '이미 등록된 이메일 주소입니다.',
+    // 이메일 중복 확인 (이메일이 있는 경우에만)
+    if (data.email && data.email.trim().length > 0) {
+      const existingEmployee = await prisma.dms_employees.findUnique({
+        where: { email: data.email },
       })
+
+      if (existingEmployee) {
+        throw createError({
+          statusCode: 400,
+          statusMessage: '이미 등록된 이메일 주소입니다.',
+        })
+      }
+    } else {
+      // 이메일이 없으면 null로 설정
+      data.email = null
     }
 
     // 직원 생성
@@ -89,6 +100,14 @@ export default defineEventHandler(async event => {
         is_people_manager: data.is_people_manager,
         start_date: data.start_date,
         end_date: data.end_date,
+        leaves: {
+          create: data.leave_periods
+            .filter((period: any) => period.start_date) // 시작일만 있으면 됨
+            .map((period: any) => ({
+              start_date: new Date(period.start_date),
+              end_date: period.end_date ? new Date(period.end_date) : null,
+            })),
+        },
       },
     })
 

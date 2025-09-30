@@ -46,6 +46,7 @@ const badgeClasses = computed(() => {
   color: #000;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: #f3f3f5;
+  white-space: nowrap;
   &-default {
     color: #000;
     border: 1px solid rgba(0, 0, 0, 0.1);

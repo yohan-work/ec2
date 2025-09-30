@@ -169,12 +169,91 @@
         </div>
       </div>
     </div>
+
+    <!-- AppSubCont 컴포넌트 -->
+    <div class="component-section">
+      <h3 class="section-title">AppSubCont</h3>
+      <p class="section-description">
+        상단 타이틀 영역과 하단 이미지 영역으로 구성된 서브 컨텐츠 컴포넌트입니다. 스크롤 애니메이션과 반응형 이미지 처리를 지원합니다.
+      </p>
+      
+      <div class="component-demo">
+        <h4 class="demo-title">기본 사용법</h4>
+        <div class="demo-content">
+          <AppSubCont 
+            title="AppSubCont 컴포넌트<br>데모"
+            description="상단 타이틀 영역과 하단 이미지 영역으로 구성된<br>서브 컨텐츠 컴포넌트입니다.<br>스크롤 애니메이션과 반응형 이미지 처리를 지원합니다."
+            imageName="subContImg"
+            imageAlt="AppSubCont 데모 이미지"
+            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppSubCont 
+  title="AppSubCont 컴포넌트&lt;br&gt;데모"
+  description="상단 타이틀 영역과 하단 이미지 영역으로 구성된&lt;br&gt;서브 컨텐츠 컴포넌트입니다."
+  imageName="subContImg"
+  imageAlt="AppSubCont 데모 이미지"
+  imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+/&gt;</code></pre>
+        </div>
+        
+        <div class="props-table">
+          <h4 class="props-title">Props</h4>
+          <table class="props-table-content">
+            <thead>
+              <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>title</td>
+                <td>String</td>
+                <td>''</td>
+                <td>제목 텍스트 (HTML 태그 지원)</td>
+              </tr>
+              <tr>
+                <td>description</td>
+                <td>String</td>
+                <td>''</td>
+                <td>설명 텍스트 (HTML 태그 지원)</td>
+              </tr>
+              <tr>
+                <td>imageName</td>
+                <td>String</td>
+                <td>''</td>
+                <td>이미지 파일명 (확장자 제외)</td>
+              </tr>
+              <tr>
+                <td>imageAlt</td>
+                <td>String</td>
+                <td>''</td>
+                <td>이미지 alt 텍스트</td>
+              </tr>
+              <tr>
+                <td>imagePath</td>
+                <td>String</td>
+                <td>''</td>
+                <td>이미지 경로 (지정하지 않으면 현재 페이지 경로 사용)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
+import AppSubCont from '~/components/cnx/AppSubCont.vue'
 </script>
 
 <style lang="scss" scoped>
