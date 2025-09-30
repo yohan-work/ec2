@@ -42,7 +42,7 @@ const props = defineProps({
   }
 
   h2 {
-    @include headline-02;
+    @include headline-01;
     & + p {
       margin-top: rem(8);
 
