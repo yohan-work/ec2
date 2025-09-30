@@ -35,7 +35,7 @@ interface Tab {
 
 interface Props {
     tabs: Tab[];
-    alignment?: 'left' | 'center';
+    alignment?: 'left' | 'center' | 'right';
     modelValue?: number;
 }
 
@@ -139,6 +139,10 @@ const selectTab = (index: number) => {
 
     &.align-center .inner {
         justify-content: center;
+    }
+
+    &.align-right .inner {
+        justify-content: flex-end;
     }
 }
 
