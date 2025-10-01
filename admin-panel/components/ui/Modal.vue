@@ -255,7 +255,7 @@ onUnmounted(() => {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    padding: 32px 0 0 0;
+    padding: 40px 0 0 0;
 
     :deep(.modal-actions) {
       width: 100%;

@@ -1,12 +1,10 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g transform="translate(2, 2)">
-    <!-- 동그라미 -->
-    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
-    
-    <!-- IP 텍스트 (크게) -->
-    <text x="10" y="12" font-family="monospace" font-size="6" font-weight="bold" fill="currentColor" text-anchor="middle">IP</text>
-    
-    <!-- 사선 (접근 금지) -->
-    <line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  </g>
+  <!-- 자물쇠 몸체 -->
+  <rect x="5" y="9" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.4" fill="none"/>
+  
+  <!-- 자물쇠 고리 -->
+  <path d="M7 9V6C7 4.34315 8.34315 3 10 3H14C15.6569 3 17 4.34315 17 6V9" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  
+  <!-- IP 텍스트 -->
+  <text x="12" y="16" font-family="monospace" font-size="6" font-weight="bold" fill="currentColor" text-anchor="middle">IP</text>
 </svg>

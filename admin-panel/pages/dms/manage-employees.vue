@@ -114,9 +114,9 @@
               <td>
                 <div class="employee-info">
                   <span class="name">{{ employee.name }}</span>
-                  <span v-if="employee.is_people_manager" class="manager-badge"
+                  <!-- <span v-if="employee.is_people_manager" class="manager-badge"
                     >M</span
-                  >
+                  > -->
                 </div>
               </td>
               <td>{{ employee.group?.name || '-' }}</td>
