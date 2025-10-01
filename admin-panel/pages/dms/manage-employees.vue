@@ -669,7 +669,7 @@ const updateManagerOptions = (currentEmployee = null) => {
       { value: '', label: '매니저 없음' },
       ...candidates.map(emp => ({
         value: emp.id,
-        label: `${emp.name} (${emp.email})`,
+        label: `${emp.name} ${emp.career_level} (${emp.email})`,
       })),
     ]
   } catch (error) {
