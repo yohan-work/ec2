@@ -50,6 +50,7 @@ export default defineNuxtConfig({
       cognitoDomain: process.env.NUXT_PUBLIC_COGNITO_DOMAIN,
       redirectSignIn: process.env.NUXT_PUBLIC_REDIRECT_SIGN_IN,
       redirectSignOut: process.env.NUXT_PUBLIC_REDIRECT_SIGN_OUT,
+      useDummy: process.env.NUXT_PUBLIC_USE_DUMMY === 'true',
     },
   },
 
