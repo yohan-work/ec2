@@ -887,10 +887,10 @@ const convertParagraphsToHtml = () => {
   //   }
 
   // 2. 부제목 추가 (Optional)
-  if (form.subtitle && form.subtitle.trim()) {
-    const fontWeight = form.subtitle_bold ? 'font-weight: bold;' : ''
-    html += `<h3 class="newsletter-subtitle" style="${fontWeight}">${form.subtitle}</h3>`
-  }
+  //   if (form.subtitle && form.subtitle.trim()) {
+  //     const fontWeight = form.subtitle_bold ? 'font-weight: bold;' : ''
+  //     html += `<h3 class="newsletter-subtitle" style="${fontWeight}">${form.subtitle}</h3>`
+  //   }
 
   // 3. 문단들 추가
   const paragraphs = form.paragraphs
