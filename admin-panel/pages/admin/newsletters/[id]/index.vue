@@ -126,6 +126,22 @@
       <!-- 본문 내용 -->
       <div class="bg-card rounded-lg shadow p-6">
         <h2 class="text-lg font-medium text-foreground mb-4">내용</h2>
+
+        <!-- 본문 이미지 (Optional) -->
+        <div v-if="newsletter.body_image" class="mb-6">
+          <img
+            :src="newsletter.body_image"
+            :alt="newsletter.title"
+            class="w-full h-auto object-cover rounded-lg border border-input"
+          />
+        </div>
+
+        <!-- 부제목 (Optional) -->
+        <h3 v-if="newsletter.subtitle" class="newsletter-subtitle">
+          {{ newsletter.subtitle }}
+        </h3>
+
+        <!-- 본문 HTML -->
         <div
           class="prose prose-sm max-w-none dark:prose-invert"
           v-html="newsletter.body_html"
