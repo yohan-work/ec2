@@ -31,7 +31,6 @@
     <!-- 메인 콘텐츠 -->
     <main>
       <div class="newsletter">
-
         <div class="inner">
           <!-- 로딩 상태 -->
           <div v-if="loading" class="text-center py-12">
@@ -75,10 +74,7 @@
           </div>
 
           <!-- 뉴스레터 내용 -->
-          <NewsletterContent
-            v-else-if="newsletter"
-            :newsletter="newsletter"
-          />
+          <NewsletterContent v-else-if="newsletter" :newsletter="newsletter" />
 
           <!-- 관련 뉴스레터 -->
           <RelatedNewsletters
@@ -89,16 +85,10 @@
 
           <!-- 더보기 버튼 -->
           <div class="newsletter-load-more">
-            <AppButton 
-              effect="left"
-              to="/newsletters"
-              text="목록 보기"
-            >
+            <AppButton effect="left" to="/newsletters" text="목록 보기">
             </AppButton>
           </div>
-          
         </div>
-
       </div>
     </main>
   </div>
@@ -123,6 +113,10 @@ import AppButton from '~/components/cnx/AppButton.vue'
 const route = useRoute()
 const newsletterId = route.params.id
 
+// 환경 설정
+const config = useRuntimeConfig()
+const useDummy = config.public.useDummy
+
 // 상태 관리
 const newsletter = ref(null)
 const loading = ref(true)
@@ -138,27 +132,31 @@ const fetchNewsletter = async () => {
     loading.value = true
     error.value = null
 
-    // === DB 연결 로직 (주석처리) ===
-    // const response = await $fetch(`/api/public/newsletters/${newsletterId}`)
-    // newsletter.value = response.data
+    if (useDummy) {
+      // === 더미 데이터 로직 ===
+      const response = await $fetch('/data/newsletters-dummy.json')
+      const foundNewsletter = response.data.find(
+        item => item.id == newsletterId
+      )
 
-    // === 더미 데이터 로직 ===
-    const response = await $fetch('/data/newsletters-dummy.json')
-    const foundNewsletter = response.data.find(item => item.id == newsletterId)
+      if (!foundNewsletter) {
+        error.value = '뉴스레터를 찾을 수 없습니다.'
+        return
+      }
 
-    if (!foundNewsletter) {
-      error.value = '뉴스레터를 찾을 수 없습니다.'
-      return
-    }
-
-    // 더미 데이터에 추가 필드 보완
-    newsletter.value = {
-      ...foundNewsletter,
-      created_at: foundNewsletter.published_at,
-      updated_at:
-        foundNewsletter.id === 25
-          ? '2025-09-19T19:35:00+09:00'
-          : foundNewsletter.published_at,
+      // 더미 데이터에 추가 필드 보완
+      newsletter.value = {
+        ...foundNewsletter,
+        created_at: foundNewsletter.published_at,
+        updated_at:
+          foundNewsletter.id === 25
+            ? '2025-09-19T19:35:00+09:00'
+            : foundNewsletter.published_at,
+      }
+    } else {
+      // === DB 연결 로직 ===
+      const response = await $fetch(`/api/public/newsletters/${newsletterId}`)
+      newsletter.value = response.data
     }
 
     // 뉴스레터 조회 성공 시 관련 뉴스레터도 가져오기
@@ -178,25 +176,27 @@ const fetchNewsletter = async () => {
 // 관련 뉴스레터 조회 (현재 뉴스레터 제외하고 최근 3개)
 const fetchRelatedNewsletters = async () => {
   try {
-    // === DB 연결 로직 (주석처리) ===
-    // const response = await $fetch('/api/public/newsletters/related', {
-    //   query: {
-    //     id: newsletterId,
-    //     limit: 3,
-    //   },
-    // })
-    // relatedNewsletters.value = response.data
+    if (useDummy) {
+      // === 더미 데이터 로직 ===
+      const response = await $fetch('/data/newsletters-dummy.json')
 
-    // === 더미 데이터 로직 ===
-    const response = await $fetch('/data/newsletters-dummy.json')
+      // 현재 뉴스레터를 제외하고 최근 5개 가져오기
+      const filteredNewsletters = response.data
+        .filter(item => item.id != newsletterId) // 현재 뉴스레터 제외
+        .sort((a, b) => new Date(b.published_at) - new Date(a.published_at)) // 최신순 정렬
+        .slice(0, 5) // 최대 5개만
 
-    // 현재 뉴스레터를 제외하고 최근 5개 가져오기
-    const filteredNewsletters = response.data
-      .filter(item => item.id != newsletterId) // 현재 뉴스레터 제외
-      .sort((a, b) => new Date(b.published_at) - new Date(a.published_at)) // 최신순 정렬
-      .slice(0, 5) // 최대 5개만
-
-    relatedNewsletters.value = filteredNewsletters
+      relatedNewsletters.value = filteredNewsletters
+    } else {
+      // === DB 연결 로직 ===
+      const response = await $fetch('/api/public/newsletters/related', {
+        query: {
+          id: newsletterId,
+          limit: 5,
+        },
+      })
+      relatedNewsletters.value = response.data
+    }
   } catch (err) {
     console.error('관련 뉴스레터 조회 실패:', err)
     // 관련 뉴스레터는 실패해도 메인 콘텐츠에 영향 없도록 빈 배열 유지
@@ -205,13 +205,13 @@ const fetchRelatedNewsletters = async () => {
 }
 
 // 날짜 포맷 (한국 시간대로 표시)
-const formatDate = (dateString) => {
+const formatDate = dateString => {
   if (!dateString) return ''
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}.${month}.${day}`;
+  const date = new Date(dateString)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}.${month}.${day}`
 }
 
 // 관련 뉴스레터 클릭 핸들러

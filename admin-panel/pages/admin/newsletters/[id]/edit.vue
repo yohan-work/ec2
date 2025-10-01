@@ -881,12 +881,18 @@ const getTotalWordCount = () => {
 const convertParagraphsToHtml = () => {
   let html = ''
 
-  // 본문 이미지가 있으면 제일 위에 추가
-  if (form.body_image) {
-    html += `<div class="body-image mb-4"><img src="${form.body_image}" alt="본문 이미지" style="max-width: 100%; height: auto; border-radius: 8px;" /></div>`
-  }
+  // 1. 본문 이미지가 있으면 제일 위에 추가
+  //   if (form.body_image) {
+  //     html += `<figure class="newsletter-hero-image"><img src="${form.body_image}" alt="${form.title}" /></figure>`
+  //   }
 
-  // 문단들 추가
+  // 2. 부제목 추가 (Optional)
+  //   if (form.subtitle && form.subtitle.trim()) {
+  //     const fontWeight = form.subtitle_bold ? 'font-weight: bold;' : ''
+  //     html += `<h3 class="newsletter-subtitle" style="${fontWeight}">${form.subtitle}</h3>`
+  //   }
+
+  // 3. 문단들 추가
   const paragraphs = form.paragraphs
     .filter(p => p.content.trim())
     .map(p => `<p>${p.content.replace(/\n/g, '<br>')}</p>`)
