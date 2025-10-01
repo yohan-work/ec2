@@ -126,6 +126,7 @@
                 <Badge
                   v-if="employee.job_role"
                   :class="getJobRoleBadgeClass(employee.job_role)"
+                  :data-job-role="employee.job_role"
                 >
                   {{ getJobRoleLabel(employee.job_role) }}
                 </Badge>
@@ -135,7 +136,7 @@
                 {{
                   getCareerLevelLabel(employee.career_level) +
                     '(' +
-                    employee.career_level +
+                    getCareerLevelCodeFromLabel(employee.career_level) +
                     ')' || '-'
                 }}
               </td>
@@ -393,6 +394,7 @@ import {
   getStatusLabel,
   getStatusCodeColor,
   getCareerLevelLabel,
+  getCareerLevelCodeFromLabel,
   getCareerLevelOptions,
   getJobRoleLabel,
   getJobRoleOptions,

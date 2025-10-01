@@ -19,31 +19,32 @@ export type EmployeeStatusLabel =
   | '조직이동'
   | '입사이전'
 
-// 직무 (Job Role) - DB에 저장되는 코드
-export type JobRoleCode = 'PMO' | 'PLANNER' | 'DESIGNER' | 'PUBLISHER'
+// 직무 (Job Role) - DB에 저장되는 한글 직무명
+export type JobRoleCode =
+  | '기획'
+  | '디자인'
+  | '퍼블리싱'
+  | '광고'
+  | '영상'
+  | 'PM'
+  | '매니저'
 
-// 직무 (Job Role) - 화면에 표시되는 한글
-export type JobRoleLabel = 'PMO' | '기획자' | '디자이너' | '퍼블리셔'
+// 직무 (Job Role) - 화면에 표시되는 한글 (동일)
+export type JobRoleLabel = JobRoleCode
 
-// 직급 (Career Level) - DB에 저장되는 코드
+// 직급 (Career Level) - DB에 저장되는 한글 직급명
 export type CareerLevelCode =
-  | 'CL5' // 상무
-  | 'CL6' // 이사
-  | 'CL7' // 부장
-  | 'CL8B' // 차장
-  | 'CL8A' // 과장
-  | 'CL9B' // 대리
-  | 'CL9A' // 사원
-
-// 직급 (Career Level) - 화면에 표시되는 한글
-export type CareerLevelLabel =
   | '상무'
   | '이사'
   | '부장'
   | '차장'
   | '과장'
   | '대리'
-  | '사원'
+  | '선생'
+  | '인턴'
+
+// 직급 (Career Level) - 화면에 표시되는 한글 (동일)
+export type CareerLevelLabel = CareerLevelCode
 
 export interface EmployeeWithLeaves {
   id: number
@@ -71,36 +72,20 @@ export function getStatusLabel(code: EmployeeStatusCode): EmployeeStatusLabel {
 }
 
 /**
- * 직무 코드를 한글 라벨로 변환
+ * 직무 코드를 한글 라벨로 변환 (이제 동일)
  */
 export function getJobRoleLabel(code: JobRoleCode): JobRoleLabel {
-  const jobRoleMap: Record<JobRoleCode, JobRoleLabel> = {
-    PMO: 'PMO',
-    PLANNER: '기획자',
-    DESIGNER: '디자이너',
-    PUBLISHER: '퍼블리셔',
-  }
-  return jobRoleMap[code]
+  return code
 }
 
 /**
- * 직급 코드를 한글 라벨로 변환
+ * 직급 코드를 한글 라벨로 변환 (이제 동일)
  */
 export function getCareerLevelLabel(code: CareerLevelCode | null): string {
   if (code === null) {
     return '인턴'
   }
-
-  const careerLevelMap: Record<CareerLevelCode, CareerLevelLabel> = {
-    CL5: '상무',
-    CL6: '이사',
-    CL7: '부장',
-    CL8B: '차장',
-    CL8A: '과장',
-    CL9B: '대리',
-    CL9A: '사원',
-  }
-  return careerLevelMap[code]
+  return code
 }
 
 /**
@@ -108,36 +93,61 @@ export function getCareerLevelLabel(code: CareerLevelCode | null): string {
  */
 export function getCareerLevelOptions() {
   const levels: CareerLevelCode[] = [
-    'CL5',
-    'CL6',
-    'CL7',
-    'CL8B',
-    'CL8A',
-    'CL9B',
-    'CL9A',
+    '상무',
+    '이사',
+    '부장',
+    '차장',
+    '과장',
+    '대리',
+    '선생',
+    '인턴',
   ]
 
-  // 인턴 옵션을 맨 뒤에 추가 (사원 다음)
-  const options = [
-    ...levels.map(level => ({
-      value: level,
-      label: getCareerLevelLabel(level),
-    })),
-    { value: null, label: '인턴' },
-  ]
-
-  return options
+  return levels.map(level => ({
+    value: level,
+    label: level,
+  }))
 }
 
 /**
  * 직무 옵션 배열을 반환합니다 (Select 컴포넌트용)
  */
 export function getJobRoleOptions() {
-  const roles: JobRoleCode[] = ['PMO', 'PLANNER', 'DESIGNER', 'PUBLISHER']
+  const roles: JobRoleCode[] = [
+    '기획',
+    '디자인',
+    '퍼블리싱',
+    '광고',
+    '영상',
+    'PM',
+    '매니저',
+  ]
   return roles.map(role => ({
     value: role,
-    label: getJobRoleLabel(role),
+    label: role,
   }))
+}
+
+/**
+ * 직급명을 CL 코드로 변환
+ */
+export function getCareerLevelCodeFromLabel(
+  label: CareerLevelCode | null
+): string {
+  if (!label) return 'CL9'
+
+  const codeMap: Record<CareerLevelCode, string> = {
+    상무: 'CL6',
+    이사: 'CL6',
+    부장: 'CL7',
+    차장: 'CL8B',
+    과장: 'CL8A',
+    대리: 'CL9',
+    선생: 'CL9',
+    인턴: 'CL9',
+  }
+
+  return codeMap[label] || 'CL9'
 }
 
 /**
@@ -146,16 +156,17 @@ export function getJobRoleOptions() {
 export function getCareerLevelRank(
   careerLevel: CareerLevelCode | null
 ): number {
-  if (!careerLevel) return 999 // 인턴은 가장 낮은 직급으로 처리
+  if (!careerLevel) return 999 // null인 경우 가장 낮은 직급으로 처리
 
   const levelRanks: Record<CareerLevelCode, number> = {
-    CL5: 1, // 상무 (최고)
-    CL6: 2, // 이사
-    CL7: 3, // 부장
-    CL8B: 4, // 차장
-    CL8A: 5, // 과장
-    CL9B: 6, // 대리
-    CL9A: 7, // 사원 (최저)
+    상무: 1, // 최고
+    이사: 2,
+    부장: 3,
+    차장: 4,
+    과장: 5,
+    대리: 6,
+    선생: 7,
+    인턴: 8, // 최저
   }
 
   return levelRanks[careerLevel] || 999
@@ -219,36 +230,24 @@ export function getStatusCode(label: EmployeeStatusLabel): EmployeeStatusCode {
 }
 
 /**
- * 한글 라벨을 직무 코드로 변환
+ * 한글 라벨을 직무 코드로 변환 (이제 동일)
  */
 export function getJobRoleCode(label: JobRoleLabel): JobRoleCode {
-  const codeMap: Record<JobRoleLabel, JobRoleCode> = {
-    PMO: 'PMO',
-    기획자: 'PLANNER',
-    디자이너: 'DESIGNER',
-    퍼블리셔: 'PUBLISHER',
-  }
-  return codeMap[label]
-}
+  const validRoles: JobRoleCode[] = [
+    '기획',
+    '디자인',
+    '퍼블리싱',
+    '광고',
+    '영상',
+    'PM',
+    '매니저',
+  ]
 
-/**
- * 한글 라벨을 직급 코드로 변환
- */
-export function getCareerLevelCode(label: string): CareerLevelCode | null {
-  if (label === '인턴') {
-    return null
+  if (validRoles.includes(label as JobRoleCode)) {
+    return label as JobRoleCode
   }
 
-  const codeMap: Record<CareerLevelLabel, CareerLevelCode> = {
-    상무: 'CL5',
-    이사: 'CL6',
-    부장: 'CL7',
-    차장: 'CL8B',
-    과장: 'CL8A',
-    대리: 'CL9B',
-    사원: 'CL9A',
-  }
-  return codeMap[label as CareerLevelLabel]
+  return '기획' // 기본값
 }
 
 /**
