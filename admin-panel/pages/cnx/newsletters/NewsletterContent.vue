@@ -151,20 +151,14 @@ const handleImageError = (event) => {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      aspect-ratio: 312 / 107;
+      margin: 0 auto;
     }
     @include tablet {
       margin-bottom: rem(40);
       border: 0;
-      img {
-        aspect-ratio: 128 / 35;
-      }
     }
     @include desktop {
       margin-bottom: rem(48);
-      img {
-        aspect-ratio: 11 / 3;
-      }
     }
   }
 
