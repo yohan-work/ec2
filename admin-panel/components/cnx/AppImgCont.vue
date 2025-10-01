@@ -1,9 +1,22 @@
 <template>
-  <div class="app-img-cont" :class="{ 'reverse': reverse }" ref="containerRef">
+  <div class="app-img-cont" :class="{ 'reverse': reverse, 'has-sub-items': subItems && subItems.length > 0 }" ref="containerRef">
     <!-- 텍스트 컨텐츠 -->
     <div class="text-content" ref="textContentRef">
       <h3 v-if="title" class="subtitle" ref="titleRef" v-html="title"></h3>
       <p v-if="text" class="description" ref="textRef" v-html="text"></p>
+      
+      <!-- 서브 아이템들 -->
+      <div v-if="subItems && subItems.length > 0" class="sub-items" ref="subItemsRef">
+        <div 
+          v-for="(item, index) in subItems" 
+          :key="index" 
+          class="sub-item"
+          :ref="el => subItemRefs[index] = el"
+        >
+          <h4 v-if="item.title" class="sub-title" v-html="item.title"></h4>
+          <p v-if="item.text" class="sub-text" v-html="item.text"></p>
+        </div>
+      </div>
     </div>
     
     <!-- 이미지 컨텐츠 -->
@@ -64,6 +77,10 @@ const props = defineProps({
   imagePath: {
     type: String,
     default: ''
+  },
+  subItems: {
+    type: Array,
+    default: () => []
   }
 })
 
@@ -78,6 +95,8 @@ const containerRef = ref(null)
 const imageContentRef = ref(null)
 const titleRef = ref(null)
 const textRef = ref(null)
+const subItemsRef = ref(null)
+const subItemRefs = ref([])
 
 const route = useRoute()
 // imagePath가 제공되면 사용, 아니면 현재 페이지 경로 사용
@@ -105,6 +124,18 @@ const initAnimation = () => {
     opacity: 0, 
     y: 30 
   })
+  
+  // 서브 아이템들 초기 상태 설정
+  if (subItemRefs.value && subItemRefs.value.length > 0) {
+    subItemRefs.value.forEach(subItemRef => {
+      if (subItemRef) {
+        gsap.set(subItemRef, { 
+          opacity: 0, 
+          y: 20 
+        })
+      }
+    })
+  }
 
   // ScrollTrigger 애니메이션 설정
   const tl = gsap.timeline({
@@ -116,7 +147,7 @@ const initAnimation = () => {
     }
   })
 
-  // 순차적 애니메이션: 이미지 → 타이틀 → 텍스트 (나타날 때)
+  // 순차적 애니메이션: 이미지 → 타이틀 → 텍스트 → 서브 아이템들 (나타날 때)
   tl.to(imageContentRef.value, {
     duration: 0.8,
     opacity: 1,
@@ -135,6 +166,17 @@ const initAnimation = () => {
     y: 0,
     ease: 'power2.out'
   }, '-=0.3') // 타이틀 애니메이션과 0.3초 겹침
+  
+  // 서브 아이템들 애니메이션 추가
+  if (subItemRefs.value && subItemRefs.value.length > 0) {
+    tl.to(subItemRefs.value, {
+      duration: 0.5,
+      opacity: 1,
+      y: 0,
+      ease: 'power2.out',
+      stagger: 0.1 // 각 서브 아이템 간 0.1초 간격
+    }, '-=0.2') // 텍스트 애니메이션과 0.2초 겹침
+  }
 
   // 역재생 애니메이션 (사라질 때) - 더 빠르게
   const reverseTl = gsap.timeline({
@@ -146,8 +188,15 @@ const initAnimation = () => {
     }
   })
 
-  // 빠른 역재생: 텍스트 → 타이틀 → 이미지 (동시에 사라짐)
-  reverseTl.to([textRef.value, titleRef.value, imageContentRef.value], {
+  // 빠른 역재생: 서브 아이템들 → 텍스트 → 타이틀 → 이미지 (동시에 사라짐)
+  const elementsToReverse = [textRef.value, titleRef.value, imageContentRef.value]
+  
+  // 서브 아이템들도 역재생에 포함
+  if (subItemRefs.value && subItemRefs.value.length > 0) {
+    elementsToReverse.unshift(...subItemRefs.value)
+  }
+  
+  reverseTl.to(elementsToReverse, {
     duration: 0.3, // 더 빠른 속도
     opacity: 0,
     y: -20, // 위로 사라짐
@@ -193,6 +242,13 @@ onMounted(async () => {
     margin-bottom: rem(60);
   }
 
+  // 서브 아이템이 있을 때 정렬을 top으로 변경
+  &.has-sub-items {
+    @include tablet {
+      align-items: flex-start;
+    }
+  }
+
   @include desktop {
     gap: rem(32);
     margin-bottom: rem(120);
@@ -224,6 +280,46 @@ onMounted(async () => {
       color: $gray-4;
       margin: 0;
       line-height: 1.6;
+    }
+
+    .sub-items {
+      margin-top: rem(18);
+      display: flex;
+      flex-direction: column;
+      gap: rem(24);
+
+      // 서브아이템이 1개일 때는 간격 제거
+      &:has(.sub-item:only-child) {
+        gap: 0;
+      }
+
+      @include tablet {
+        margin-top: rem(30);
+      }
+
+      @include desktop {
+        margin-top: rem(65);
+      }
+
+      .sub-item {
+        display: flex;
+        flex-direction: column;
+        gap: rem(8);
+
+        .sub-title {
+          @include body-03;
+          color: $d-black;
+          margin: 0;
+          font-weight: 700;
+        }
+
+        .sub-text {
+          @include body-03;
+          color: $gray-1;
+          margin: 0;
+          line-height: 1.6;
+        }
+      }
     }
   }
 

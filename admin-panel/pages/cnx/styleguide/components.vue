@@ -66,7 +66,7 @@
     <div class="component-section">
       <h3 class="section-title">AppImgCont</h3>
       <p class="section-description">
-        텍스트와 이미지를 함께 표시하는 컨텐츠 컴포넌트입니다. 반응형 레이아웃과 reverse 옵션을 지원합니다.
+        텍스트와 이미지를 함께 표시하는 컨텐츠 컴포넌트입니다. 반응형 레이아웃, reverse 옵션, 그리고 서브 아이템 기능을 지원합니다. 서브 아이템이 있을 때는 이미지와 텍스트박스의 정렬이 자동으로 top으로 변경됩니다.
       </p>
       
       <div class="component-demo">
@@ -112,6 +112,38 @@
   imageName="DA02"
   imageAlt="Reverse Layout Image"
   :reverse="true"
+  imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+/&gt;</code></pre>
+        </div>
+        
+        <h4 class="demo-title">서브 아이템 기능</h4>
+        <div class="demo-content">
+          <AppImgCont 
+            title="서브 아이템이 있는 레이아웃"
+            text="서브 아이템이 있을 때는 이미지와 텍스트박스의 정렬이 자동으로 top으로 변경됩니다."
+            imageName="DA01"
+            imageAlt="Sub Items Layout Image"
+            :subItems="[
+              { title: '서브타이틀 1', text: '첫 번째 서브 아이템의 설명 텍스트입니다.' },
+              { title: '서브타이틀 2', text: '두 번째 서브 아이템의 설명 텍스트입니다.' },
+              { title: '서브타이틀 3', text: '세 번째 서브 아이템의 설명 텍스트입니다.' }
+            ]"
+            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppImgCont 
+  title="서브 아이템이 있는 레이아웃"
+  text="서브 아이템이 있을 때는..."
+  imageName="DA01"
+  imageAlt="Sub Items Layout Image"
+  :subItems="[
+    { title: '서브타이틀 1', text: '첫 번째 서브 아이템의 설명 텍스트입니다.' },
+    { title: '서브타이틀 2', text: '두 번째 서브 아이템의 설명 텍스트입니다.' },
+    { title: '서브타이틀 3', text: '세 번째 서브 아이템의 설명 텍스트입니다.' }
+  ]"
   imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
 /&gt;</code></pre>
         </div>
@@ -163,6 +195,12 @@
                 <td>String</td>
                 <td>''</td>
                 <td>이미지 경로 (지정하지 않으면 현재 페이지 경로 사용)</td>
+              </tr>
+              <tr>
+                <td>subItems</td>
+                <td>Array</td>
+                <td>[]</td>
+                <td>서브 아이템 배열 (title, text 속성을 가진 객체들의 배열)</td>
               </tr>
             </tbody>
           </table>
@@ -412,7 +450,7 @@ import AppSubCont from '~/components/cnx/AppSubCont.vue'
   }
   
   .demo-content {
-    // 패딩 제거됨
+    margin-bottom: 20px;
   }
   
   .code-block {
@@ -437,7 +475,7 @@ import AppSubCont from '~/components/cnx/AppSubCont.vue'
   }
   
   .demo-content {
-    // 패딩 제거됨
+    margin-bottom: 20px;
   }
   
   .code-block {
