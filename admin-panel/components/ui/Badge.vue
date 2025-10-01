@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const badgeClasses = computed(() => {
-  const baseClasses = 'badge badge-md'
+  const baseClasses = 'badge'
   const variantClasses = {
     default: 'badge-default',
     secondary: 'badge-secondary',
@@ -86,28 +86,46 @@ const badgeClasses = computed(() => {
   // PLANNER: 'badge-planner',
   // DESIGNER: 'badge-designer',
   // PUBLISHER: 'badge-publisher',
-  &-pmo {
-    border: none;
-    background-color: #d3f4eb;
-    color: #1f665d;
-    font-weight: 700;
-  }
-  &-planner {
+  &[data-job-role='기획'] {
     border: none;
     background-color: #cfe0e8;
     color: #34566a;
     font-weight: 700;
   }
-  &-designer {
+  &[data-job-role='디자인'] {
     border: none;
     background-color: #ffcdd2;
     color: #a20f35;
     font-weight: 700;
   }
-  &-publisher {
+  &[data-job-role='퍼블리싱'] {
     border: none;
     background-color: #ffd688;
     color: #942b0c;
+    font-weight: 700;
+  }
+  &[data-job-role='광고'] {
+    border: none;
+    background-color: #e3d4ff;
+    color: #5a21a8;
+    font-weight: 700;
+  }
+  &[data-job-role='영상'] {
+    border: none;
+    background-color: #ee9dcc;
+    color: #722652;
+    font-weight: 700;
+  }
+  &[data-job-role='PM'] {
+    border: none;
+    background-color: #d3f4eb;
+    color: #1f665d;
+    font-weight: 700;
+  }
+  &[data-job-role='매니저'] {
+    border: none;
+    background-color: #003751;
+    color: #dcf6ff;
     font-weight: 700;
   }
 }

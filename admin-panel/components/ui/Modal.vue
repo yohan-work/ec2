@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 
 interface Props {
   show: boolean
@@ -73,10 +73,30 @@ const close = () => {
 }
 
 const handleBackdropClick = () => {
-  if (props.closeOnBackdrop && !props.static) {
+  // 모달이 닫히지 않고 애니메이션만 실행
+  const modalDialog = document.querySelector('.modal-dialog')
+  if (modalDialog) {
+    modalDialog.classList.add('bounce-animation')
+    setTimeout(() => {
+      modalDialog.classList.remove('bounce-animation')
+    }, 300)
+  }
+}
+
+const handleEscapeKey = (event: KeyboardEvent) => {
+  if (event.key === 'Escape' && props.show && props.closable && !props.static) {
     close()
   }
 }
+
+// 전역 ESC 키 이벤트 리스너 등록
+onMounted(() => {
+  document.addEventListener('keydown', handleEscapeKey)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleEscapeKey)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -116,10 +136,15 @@ const handleBackdropClick = () => {
   margin: 1.75rem auto;
   max-width: 442px;
   pointer-events: none;
+  transition: transform 0.3s ease;
 
   @media (max-width: 1023px) {
     max-width: 100%;
     margin: 0.5rem auto;
+  }
+
+  &.bounce-animation {
+    animation: modalBounce 0.3s ease;
   }
 
   &.modal-fullscreen {
@@ -128,7 +153,6 @@ const handleBackdropClick = () => {
     height: 100%;
   }
 
-  // 중앙 정렬 (기본값으로 설정)
   display: flex;
   align-items: center;
   min-height: calc(100% - 3.5rem);
@@ -633,6 +657,18 @@ const handleBackdropClick = () => {
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes modalBounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
