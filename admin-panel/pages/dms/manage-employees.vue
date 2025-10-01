@@ -122,8 +122,23 @@
               <td>{{ employee.group?.name || '-' }}</td>
               <td>{{ employee.team?.name || '-' }}</td>
               <td>{{ employee.manager?.name || '-' }}</td>
-              <td>{{ employee.job_role || '-' }}</td>
-              <td>{{ employee.career_level || '-' }}</td>
+              <td>
+                <Badge
+                  v-if="employee.job_role"
+                  :class="getJobRoleBadgeClass(employee.job_role)"
+                >
+                  {{ getJobRoleLabel(employee.job_role) }}
+                </Badge>
+                <span v-else>-</span>
+              </td>
+              <td>
+                {{
+                  getCareerLevelLabel(employee.career_level) +
+                    '(' +
+                    employee.career_level +
+                    ')' || '-'
+                }}
+              </td>
               <td>{{ employee.email }}</td>
               <td>
                 <Badge :class="getStatusBadgeClass(employee.status)">
@@ -379,6 +394,7 @@ import {
   getStatusCodeColor,
   getCareerLevelLabel,
   getCareerLevelOptions,
+  getJobRoleLabel,
   getJobRoleOptions,
   filterManagerCandidates,
 } from '~/utils/dms/employee-utils'
@@ -498,6 +514,18 @@ const getStatusBadgeClass = status => {
     pre_hire: 'badge-pre-hire',
   }
   return classMap[status] || 'badge-default'
+}
+
+// 직무별 badge 클래스 반환
+const getJobRoleBadgeClass = jobRole => {
+  const classMap = {
+    PM: 'badge-pm',
+    PMO: 'badge-pmo',
+    PLANNER: 'badge-planner',
+    DESIGNER: 'badge-designer',
+    PUBLISHER: 'badge-publisher',
+  }
+  return classMap[jobRole] || 'badge-default'
 }
 
 // 직원 목록 조회 (통합)
@@ -1027,7 +1055,7 @@ onMounted(async () => {
 
   .employee-info {
     display: flex;
-    gap: 4px;
+    gap: 8px;
 
     .name {
       font-weight: 500;
@@ -1035,14 +1063,16 @@ onMounted(async () => {
     }
 
     .manager-badge {
-      display: inline-block;
-      background-color: #dbeafe;
-      color: #1e40af;
-      font-size: 11px;
-      line-height: 24px;
-      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #003751;
+      color: #dcf6ff;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 700;
       padding: 0;
-      border-radius: 50%;
+      border-radius: 4px;
       min-width: 24px;
       width: 24px;
       height: 24px;

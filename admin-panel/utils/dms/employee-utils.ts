@@ -20,10 +20,10 @@ export type EmployeeStatusLabel =
   | '입사이전'
 
 // 직무 (Job Role) - DB에 저장되는 코드
-export type JobRoleCode = 'PM' | 'PMO' | 'PLANNER' | 'DESIGNER' | 'DEVELOPER'
+export type JobRoleCode = 'PMO' | 'PLANNER' | 'DESIGNER' | 'PUBLISHER'
 
 // 직무 (Job Role) - 화면에 표시되는 한글
-export type JobRoleLabel = 'PM' | 'PMO' | '기획자' | '디자이너' | '퍼블리셔'
+export type JobRoleLabel = 'PMO' | '기획자' | '디자이너' | '퍼블리셔'
 
 // 직급 (Career Level) - DB에 저장되는 코드
 export type CareerLevelCode =
@@ -75,11 +75,10 @@ export function getStatusLabel(code: EmployeeStatusCode): EmployeeStatusLabel {
  */
 export function getJobRoleLabel(code: JobRoleCode): JobRoleLabel {
   const jobRoleMap: Record<JobRoleCode, JobRoleLabel> = {
-    PM: 'PM',
     PMO: 'PMO',
     PLANNER: '기획자',
     DESIGNER: '디자이너',
-    DEVELOPER: '퍼블리셔',
+    PUBLISHER: '퍼블리셔',
   }
   return jobRoleMap[code]
 }
@@ -134,7 +133,7 @@ export function getCareerLevelOptions() {
  * 직무 옵션 배열을 반환합니다 (Select 컴포넌트용)
  */
 export function getJobRoleOptions() {
-  const roles: JobRoleCode[] = ['PM', 'PMO', 'PLANNER', 'DESIGNER', 'DEVELOPER']
+  const roles: JobRoleCode[] = ['PMO', 'PLANNER', 'DESIGNER', 'PUBLISHER']
   return roles.map(role => ({
     value: role,
     label: getJobRoleLabel(role),
@@ -224,11 +223,10 @@ export function getStatusCode(label: EmployeeStatusLabel): EmployeeStatusCode {
  */
 export function getJobRoleCode(label: JobRoleLabel): JobRoleCode {
   const codeMap: Record<JobRoleLabel, JobRoleCode> = {
-    PM: 'PM',
     PMO: 'PMO',
     기획자: 'PLANNER',
     디자이너: 'DESIGNER',
-    퍼블리셔: 'DEVELOPER',
+    퍼블리셔: 'PUBLISHER',
   }
   return codeMap[label]
 }

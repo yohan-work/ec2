@@ -86,23 +86,8 @@ export default defineEventHandler(async event => {
       })
     }
 
-    // 이메일 중복 확인 (이메일이 있는 경우에만, 자신 제외)
-    if (data.email && data.email.trim().length > 0) {
-      const emailConflict = await prisma.dms_employees.findFirst({
-        where: {
-          email: data.email,
-          id: { not: id },
-        },
-      })
-
-      if (emailConflict) {
-        throw createError({
-          statusCode: 400,
-          statusMessage: '이미 등록된 이메일 주소입니다.',
-        })
-      }
-    } else {
-      // 이메일이 없으면 null로 설정
+    // 이메일이 없으면 null로 설정
+    if (!data.email || data.email.trim().length === 0) {
       data.email = null
     }
 
