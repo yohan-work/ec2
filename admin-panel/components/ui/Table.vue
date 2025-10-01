@@ -226,14 +226,14 @@ const tableClasses = computed(() => {
   }
 }
 
-// Simple 스타일
-
+// Simple 스타일 - table-section과 같이 사용해 주세요.
 .table-wrapper:has(.table--simple) {
   background: #ffffff;
   border-radius: 8px;
-  overflow: hidden;
-  margin: 20px 32px;
+  margin: 0 32px;
   width: calc(100% + 16px - 32px - 32px);
+  height: calc(100% - 20px);
+  padding-bottom: 24px;
   .table--simple {
     :deep(thead) {
       background: #ffffff;

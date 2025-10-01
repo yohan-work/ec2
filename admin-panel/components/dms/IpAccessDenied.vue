@@ -41,7 +41,8 @@ defineProps<Props>()
   min-width: 1024px;
   &:has(.toolbar.show) {
     .page-container {
-      padding: 24px 366px 0 40px;
+      // padding: 24px 366px 0 40px;
+      padding: 24px 40px 0 40px;
     }
   }
   @media (max-width: 1023px) {

@@ -37,10 +37,13 @@
       display: flex;
       gap: 8px;
 
-      .active {
-        background-color: #e3f2fd;
-        border-color: #2196f3;
-        color: #1976d2;
+      button {
+        font-weight: 400;
+        &.active {
+          background-color: #f3f4f8;
+          border-color: #7e96f8;
+          color: #375ef9;
+        }
       }
     }
 

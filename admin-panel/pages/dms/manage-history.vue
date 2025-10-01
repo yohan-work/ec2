@@ -297,9 +297,13 @@ const setToday = () => {
 const setThisWeek = () => {
   const today = new Date()
   const startOfWeek = new Date(today)
-  startOfWeek.setDate(today.getDate() - today.getDay())
-  const endOfWeek = new Date(today)
-  endOfWeek.setDate(today.getDate() + (6 - today.getDay()))
+  // 월요일부터 시작 (일요일=0, 월요일=1)
+  const dayOfWeek = today.getDay()
+  const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
+  startOfWeek.setDate(today.getDate() + daysToMonday)
+
+  const endOfWeek = new Date(startOfWeek)
+  endOfWeek.setDate(startOfWeek.getDate() + 6)
 
   startDate.value = startOfWeek.toISOString().split('T')[0]
   endDate.value = endOfWeek.toISOString().split('T')[0]
@@ -312,11 +316,35 @@ const setThisWeek = () => {
 
 const setThisMonth = () => {
   const today = new Date()
-  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
-  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
 
-  startDate.value = startOfMonth.toISOString().split('T')[0]
-  endDate.value = endOfMonth.toISOString().split('T')[0]
+  // 이번달 1일부터 시작 (현재 년월의 1일)
+  const year = today.getFullYear()
+  const month = today.getMonth()
+  const startOfMonth = new Date(year, month, 1)
+
+  // 이번달 마지막 날 (다음 달 0일 = 이번 달 마지막 날)
+  const endOfMonth = new Date(year, month + 1, 0)
+
+  // YYYY-MM-DD 형식으로 변환
+  const formatDate = date => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
+  startDate.value = formatDate(startOfMonth)
+  endDate.value = formatDate(endOfMonth)
+
+  console.log('이번달 설정:', {
+    today: today.toISOString(),
+    year,
+    month: month + 1, // 0-based이므로 +1
+    startDate: startDate.value,
+    endDate: endDate.value,
+    startOfMonth: startOfMonth.toISOString(),
+    endOfMonth: endOfMonth.toISOString(),
+  })
 
   // 다른 선택 상태 초기화
   isTodaySelected.value = false
@@ -357,7 +385,10 @@ const loadHistories = async () => {
 
     // 날짜 범위 필터
     if (startDate.value && endDate.value) {
-      params.append('start_date', new Date(startDate.value).toISOString())
+      params.append(
+        'start_date',
+        new Date(startDate.value + 'T00:00:00').toISOString()
+      )
       params.append(
         'end_date',
         new Date(endDate.value + 'T23:59:59').toISOString()
@@ -471,6 +502,10 @@ const formatDateTime = dateString => {
 
 <style lang="scss" scoped>
 .table-section {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  padding: 20px 0 0;
   table {
     th,
     td {

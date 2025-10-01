@@ -163,11 +163,8 @@
         />
       </div>
 
-      <!-- 본부 선택 (그룹, 팀 추가 시) -->
-      <div
-        v-if="modal.type === 'group' || modal.type === 'team'"
-        class="form-group"
-      >
+      <!-- 본부 선택 (그룹, 팀 추가 시) - 숨김 처리 -->
+      <div v-if="false" class="form-group">
         <label class="form-label">
           소속 본부
           <span class="required">*</span>
@@ -177,6 +174,7 @@
           :options="headquartersOptions"
           placeholder="본부를 선택하세요"
           :error="organizationFormErrors.headquarters_id"
+          :disabled="!isEditMode"
           @change="handleHeadquartersChange"
         />
       </div>
@@ -218,13 +216,21 @@
     </form>
 
     <template #footer>
-      <div class="form-actions">
-        <Button type="button" variant="secondary" @click="closeModal">
+      <div class="modal-actions">
+        <Button
+          type="button"
+          variant="outline-dark"
+          :size="36"
+          :padding="40"
+          @click="closeModal"
+        >
           취소
         </Button>
         <Button
           type="submit"
-          variant="blue"
+          variant="primary"
+          :size="36"
+          :padding="40"
           :disabled="isOrganizationFormSubmitting"
           @click="handleOrganizationFormSubmit"
         >
@@ -549,6 +555,11 @@ const openModal = async (type, editData = null) => {
     }
   } else {
     isEditMode.value = false
+    // 그룹이나 팀 추가 시 본부를 1로 고정
+    if (type === 'group' || type === 'team') {
+      organizationForm.headquarters_id = 1
+      await loadGroups(1)
+    }
   }
 }
 
