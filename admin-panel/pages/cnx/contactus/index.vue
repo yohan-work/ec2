@@ -176,6 +176,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: 'concentrix',
+})
+
 import { ref } from 'vue'
 
 // Components
@@ -285,6 +289,11 @@ const onTabChange = (index, tab) => {
     console.log(`탭 변경: ${index}번째 탭 (${tab.text})`);
 };
 
+// 메타 태그
+useHead({
+  title: '센터 문의',
+  meta: [{ name: 'description', content: '센터 문의 정보를 확인하세요' }],
+})
 </script>
 
 <style scoped lang="scss">

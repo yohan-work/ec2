@@ -6,34 +6,31 @@
       <h2 class="newsletter-title">
         {{ newsletter.title }}
       </h2>
-      
+
       <!-- 작성일 -->
       <p class="newsletter-date">
         {{ formatDate(newsletter.published_at) }}
       </p>
-
     </div>
 
     <!-- 본문 -->
     <div class="newsletter-body">
-
       <!-- 본문 이미지(Optional)-->
-      <figure v-if="newsletter.content_image" class="newsletter-hero-image">
+      <figure v-if="newsletter.body_image" class="newsletter-hero-image">
         <img
-          :src="newsletter.content_image"
+          :src="newsletter.body_image"
           :alt="newsletter.title"
           @error="handleImageError"
         />
       </figure>
-      
+
       <!-- 소제목(Optional)-->
-      <h3 class="newsletter-subtitle">
+      <h3 v-if="newsletter.subtitle" class="newsletter-subtitle">
         {{ newsletter.subtitle }}
       </h3>
 
       <!-- 본문 내용 -->
       <div v-html="newsletter.body_html"></div>
-
     </div>
   </article>
 </template>
@@ -52,7 +49,7 @@ const props = defineProps({
 })
 
 // 날짜 포맷 (한국 시간대로 표시)
-const formatDate = (dateString) => {
+const formatDate = dateString => {
   if (!dateString) return ''
   const date = new Date(dateString)
   const year = date.getFullYear()
@@ -62,7 +59,7 @@ const formatDate = (dateString) => {
 }
 
 // 이미지 에러 핸들러
-const handleImageError = (event) => {
+const handleImageError = event => {
   console.warn('이미지 로드 실패:', event.target.src)
   // 필요시 기본 이미지로 대체하거나 이미지를 숨김 처리
   event.target.style.display = 'none'
@@ -76,7 +73,6 @@ const handleImageError = (event) => {
 @use '~/layouts/scss/cnx/_functions' as *;
 
 .newsletter {
-
   &-article {
     margin-top: rem(16);
     @include tablet {
@@ -132,7 +128,7 @@ const handleImageError = (event) => {
 
   &-date {
     font-size: $font-size-body2-mobile;
-    color: #A2A2A2;
+    color: #a2a2a2;
     @include tablet {
       font-weight: $font-weight-bold;
       font-size: $font-size-body1-tablet;
@@ -172,5 +168,4 @@ const handleImageError = (event) => {
     }
   }
 }
-
 </style>
