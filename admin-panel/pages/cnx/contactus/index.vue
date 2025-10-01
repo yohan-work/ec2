@@ -205,16 +205,6 @@ const handleTabChange = (event) => {
 const activeTab1 = ref(0);
 const activeTab2 = ref(0);
 
-// 센터 데이터 타입 정의
-// interface CenterData {
-//     name: string;
-//     location: string;
-//     phone: string;
-//     mapLat: number; // 네이버 지도 위도 (추후 적용)
-//     mapLng: number; // 네이버 지도 경도 (추후 적용)
-//     images: string[]; // 이미지 경로들 (추후 적용)
-// }
-
 // Digital & Technology Business 데이터
 const digitalTechCenters = [
     {
@@ -450,7 +440,9 @@ const onTabChange = (index, tab) => {
 
         .contact-map {
             width: 100%;
-            min-height: rem(284);
+            // min-height: rem(284);
+            max-height: rem(590);
+            aspect-ratio: 312/284;
             background-color: $gray-3;
             margin: rem(24) 0 0;
 
@@ -529,7 +521,8 @@ const onTabChange = (index, tab) => {
 
             div {
                 width: 100%;
-                
+                max-height: rem(335);
+
                 img {
                     width: 100%;
                     height: 100%;
@@ -547,17 +540,8 @@ const onTabChange = (index, tab) => {
 
             div {
                 width: 100%;
-                height: rem(175);
+                aspect-ratio: 2/1;
                 background-color: $gray-3;
-
-
-                @include tablet {
-                    height: rem(142);
-                }
-
-                @include desktop {
-                    height: rem(335);
-                }
             }
         }
 
@@ -573,17 +557,8 @@ const onTabChange = (index, tab) => {
 
             div {
                 width: 100%;
-                height: rem(115);
+                aspect-ratio: 1/1;
                 background-color: $gray-3;
-
-
-                @include tablet {
-                    height: rem(142);
-                }
-
-                @include desktop {
-                    height: rem(335);
-                }
             }
         }
     }
@@ -594,10 +569,12 @@ const onTabChange = (index, tab) => {
         @include tablet {
             gap: rem(80);
         }
+
         @include desktop {
             gap: rem(222);
         }
     }
+
     .contact-map {
 
         @include tablet {
