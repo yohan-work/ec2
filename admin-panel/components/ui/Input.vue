@@ -164,7 +164,7 @@ const handleInput = (event: Event) => {
   input {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #cbcbcb;
     border-radius: 4px;
     font-size: 14px;
     &:focus-visible,

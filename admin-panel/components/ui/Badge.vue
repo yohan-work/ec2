@@ -30,13 +30,9 @@ const badgeClasses = computed(() => {
 
 <style lang="scss" scoped>
 .badge {
-  // badge-active - 활성 상태
-  // badge-resigned - 퇴사 상태
-  // badge-on-leave - 휴직 상태
-  // badge-transferred - 전출 상태
-  // badge-pre-hire - 입사예정 상태
-  // badge-default - 기본 상태 (fallback)
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: auto;
   height: 24px;
   font-size: 14px;
@@ -47,6 +43,12 @@ const badgeClasses = computed(() => {
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: #f3f3f5;
   white-space: nowrap;
+  // badge-active - 활성 상태
+  // badge-resigned - 퇴사 상태
+  // badge-on-leave - 휴직 상태
+  // badge-transferred - 전출 상태
+  // badge-pre-hire - 입사예정 상태
+  // badge-default - 기본 상태 (fallback)
   &-default {
     color: #000;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -73,9 +75,40 @@ const badgeClasses = computed(() => {
     background: #f3f3f5;
   }
   &-transferred {
-    border: 1px solid rgba(217, 43, 43, 0.1);
-    background: #f4e9e9;
-    color: #cd2323;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    color: #000;
+  }
+
+  // 직무별 badge 스타일
+
+  // PMO: 'badge-pmo',
+  // PLANNER: 'badge-planner',
+  // DESIGNER: 'badge-designer',
+  // PUBLISHER: 'badge-publisher',
+  &-pmo {
+    border: none;
+    background-color: #d3f4eb;
+    color: #1f665d;
+    font-weight: 700;
+  }
+  &-planner {
+    border: none;
+    background-color: #cfe0e8;
+    color: #34566a;
+    font-weight: 700;
+  }
+  &-designer {
+    border: none;
+    background-color: #ffcdd2;
+    color: #a20f35;
+    font-weight: 700;
+  }
+  &-publisher {
+    border: none;
+    background-color: #ffd688;
+    color: #942b0c;
+    font-weight: 700;
   }
 }
 </style>
