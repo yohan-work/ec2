@@ -883,7 +883,7 @@ const convertParagraphsToHtml = () => {
 
   // 본문 이미지가 있으면 제일 위에 추가
   if (form.body_image) {
-    html += `<div class="body-image mb-4"><img src="${form.body_image}" alt="본문 이미지" style="max-width: 100%; height: auto; border-radius: 8px;" /></div>`
+    html += `<figure class="newsletter-hero-image"><img src="${form.body_image}" alt="${form.title}" /></figure>`
   }
 
   // 문단들 추가
