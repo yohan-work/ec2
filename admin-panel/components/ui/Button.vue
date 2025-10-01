@@ -109,6 +109,7 @@ const buttonClasses = computed(() => {
   transition: transform 0.2s ease;
   user-select: none;
   white-space: nowrap;
+  z-index: 1;
   &.height-20 {
     // text button
     height: 20px;
