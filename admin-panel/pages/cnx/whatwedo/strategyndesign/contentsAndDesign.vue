@@ -27,7 +27,7 @@
               </picture>
             </figure>
             <div class="banner-slide-item-text">
-              <div class="banner-slide-item-title-container" :class="getBorderClass(slide, index)">
+              <div class="banner-slide-item-title-container">
                 <h2 class="banner-slide-item-title" v-html="slide.title"></h2>
                 <AppButton  
                   :text="activeSlideIndex === index ? 'Close' : 'Learn More'"
@@ -38,7 +38,7 @@
                   @click="toggleSlide(index)"
                 />
               </div>
-              <div class="banner-slide-item-details">
+              <div class="banner-slide-item-details" :class="getBorderClass(slide, index)">
                 <p class="banner-slide-item-subtitle" v-if="slide.subtitle" v-html="slide.subtitle">
                 </p>
                 <p class="banner-slide-item-description" v-if="slide.description" v-html="slide.description">
@@ -100,8 +100,8 @@ const applyBannerSlideTitleMinHeight = () => {
     (el).style.minHeight = '';
   });
 
-  // 모바일/태블릿에서는 고정 높이 제거
-  if (window.innerWidth < DESKTOP_MIN_WIDTH) return;
+  // 768px 미만(모바일)에서는 고정 높이 제거, 768px 이상부터만 균일 높이 적용
+  if (window.innerWidth < 768) return;
 
   // 현재 레이아웃 기준 최대 높이 측정
   let maxHeight = 0;
@@ -180,6 +180,18 @@ onMounted(() => {
     return swiperWrapper ? swiperWrapper.scrollWidth : 0;
   };
 
+  // sticky header 높이를 고려해 ScrollTrigger 시작 지점을 보정
+  const getHeaderOffset = () => {
+    const header = document.querySelector('.the-header');
+    if (!header) return 0;
+    try {
+      return Math.round(header.getBoundingClientRect().height) || 0;
+    } catch (_) {
+      // fallback
+      return (header).offsetHeight || 0;
+    }
+  };
+
   const killScrollAnimation = () => {
     // 현재 진행도 저장 (재초기화 후 복원용)
     const savedProgress = bannerScroll && bannerScroll.scrollTrigger
@@ -247,7 +259,8 @@ onMounted(() => {
     bannerScroll = gsap.timeline({
       scrollTrigger: {
         trigger: container,
-        start: 'top top',
+        // sticky header 높이만큼 시작 지점을 아래로 내림
+        start: () => `top-=${getHeaderOffset()} top`,
         end: '+=200%',   // 기존과 동일하게 유지(원하시면 계산식으로 변경 가능)
         scrub: 1,
         pin: true,
@@ -539,6 +552,7 @@ const getBorderClass = (slide, index) => {
       transition: all 0.3s ease;
       @include tablet {
         width: calc(100% / 3);
+        min-width: rem(480);
       }
 
       @include desktop {
@@ -549,9 +563,21 @@ const getBorderClass = (slide, index) => {
         &:nth-child(#{$i}) {
           .banner-slide-item-content {
             @if $i < 10 {
-              background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg0#{$i}.jpg');
+              background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg0#{$i}_m.jpg');
+              @include tablet {
+                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg0#{$i}_t.jpg');
+              }
+              @include desktop {
+                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg0#{$i}.jpg');
+              }
             } @else {
-              background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg#{$i}.jpg');
+              background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg#{$i}_m.jpg');
+              @include tablet {
+                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg#{$i}_t.jpg');
+              }
+              @include desktop {
+                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg#{$i}.jpg');
+              }
             }
           }
         }
@@ -559,7 +585,7 @@ const getBorderClass = (slide, index) => {
       
       &-content {
         width: 100%;
-        height: 100vh;
+        height: calc(100vh - rem(90));
         padding: rem(40);
         display: flex;
         flex-direction: column;
@@ -568,6 +594,12 @@ const getBorderClass = (slide, index) => {
         background-repeat: no-repeat;
         transition: all 0.3s;
         overflow: hidden;color: $d-white;
+        @include tablet {
+          padding: rem(24);
+        }
+        @include desktop {
+          padding: rem(40);
+        }
         &.black-text {
           color: $d-black;
           .banner-slide-item-button {
@@ -580,11 +612,20 @@ const getBorderClass = (slide, index) => {
 
       &-image {
         width: 100%;
-        height: rem(360);
         flex: 0 0 rem(360);
         overflow: hidden;
         opacity: 0;
         transition: opacity 0.3s ease;
+        @include tablet {
+          flex: 0 0 rem(210);
+        }
+        @include desktop {
+          flex: 0 0 rem(360);
+        }
+        // 뷰포트 높이가 1000px 이하일 때는 360 고정 높이를 적용하지 않음
+        @media (max-height: 1000px) and (min-width: 768px) {
+          flex: 0 0 rem(210);
+        }
         img {
           width: 100%;
           height: 100%;
@@ -608,8 +649,15 @@ const getBorderClass = (slide, index) => {
 
       &-title {
         font-weight: 700;
-        font-size: rem(42);
-        margin-bottom: rem(45);
+        font-size: rem(24);
+        
+        @include tablet {
+          margin-bottom: rem(34);
+        }
+        @include desktop {
+          font-size: rem(42);
+          margin-bottom: rem(45);
+        }
       }
 
       &-subtitle {
@@ -633,19 +681,27 @@ const getBorderClass = (slide, index) => {
         opacity: 0;
         transition: opacity 0.3s ease;
         border-left: 1px solid;
-        padding-left: rem(18);
-        margin-left: rem(18);
+        padding-left: rem(40);
+        margin-left: rem(40);
         &.border-black {
-          border-color: $d-black;
+          border-color: rgba($d-black, 0.2);
         }
         &.border-white {
-          border-color: $d-white;
+          border-color: rgba($d-white, 0.2);
         }
       }
       
       // 활성 상태일 때 상세 정보 표시
       &.active {
-        width: 50%;
+        width: 100%;
+        @include tablet {
+          width: calc(100% / 3 * 2);
+          min-width: rem(560);
+        }
+        @include desktop {
+          width: 50%;
+          min-width: rem(960);
+        }
         @for $i from 1 through 11 {
           &:nth-child(#{$i}) {
             .banner-slide-item-content {
@@ -673,6 +729,7 @@ const getBorderClass = (slide, index) => {
     }
 
     &-down-button {
+      display: none;
       width: rem(68);
       height: rem(68);
       background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/btn_down.svg');
@@ -681,6 +738,9 @@ const getBorderClass = (slide, index) => {
       left: 50%;
       transform: translateX(-50%);
       z-index: 2;
+      @include desktop {
+        display: block;
+      }
     }
   }
 }
