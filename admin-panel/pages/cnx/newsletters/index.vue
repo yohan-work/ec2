@@ -1,37 +1,5 @@
 <template>
   <div>
-    <!-- 헤더 -->
-    <header class="bg-white shadow">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center">
-            <NuxtLink to="/" class="text-xl font-bold text-gray-900">
-              <img
-                src="~/public/assets/concentrix-logo.svg"
-                alt="Concentrix"
-                class=""
-              />
-            </NuxtLink>
-          </div>
-
-          <nav class="flex space-x-8">
-            <NuxtLink
-              to="/newsletters"
-              class="text-indigo-600 bg-indigo-50 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              뉴스레터
-            </NuxtLink>
-            <NuxtLink
-              to="/recruits"
-              class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              채용공고
-            </NuxtLink>
-          </nav>
-        </div>
-      </div>
-    </header>
-
     <!-- 메인 콘텐츠 -->
     <main>
       <div class="newsletter">
@@ -69,6 +37,11 @@
 import AppButton from '~/components/cnx/AppButton.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import NewsletterList from './NewsletterList.vue'
+
+// 레이아웃 설정
+definePageMeta({
+  layout: 'concentrix'
+});
 
 /**
  * 뉴스레터 목록 페이지

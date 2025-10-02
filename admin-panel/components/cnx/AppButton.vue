@@ -3,6 +3,7 @@
   <NuxtLink 
     v-if="to"
     :to="to"
+    v-bind="$attrs"
     :class="buttonClasses"
   >
     {{ text }}
@@ -12,6 +13,7 @@
   <a 
     v-else-if="href"
     :href="href"
+    v-bind="$attrs"
     :class="buttonClasses"
     target="_blank"
     rel="noopener noreferrer"
@@ -22,6 +24,7 @@
   <!-- 3. 그 외에는 button 태그 (이벤트 emit) -->
   <button 
     v-else
+    v-bind="$attrs"
     :class="buttonClasses"
     @click="handleButtonClick"
   >
@@ -32,18 +35,20 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { PropType } from 'vue'
+defineOptions({ inheritAttrs: false })
 
-const props = defineProps<{
-  text: string
-  variant?: 'primary' | 'circle'
-  color?: 'default' | 'green' | 'teal' | 'white'
-  effect?: 'left' | 'right'
-  disabled?: boolean
-  href?: string
-  to?: string | object
-  arrow?: boolean | 'reverse'
-  arrowDirection?: 'left' | 'right'
-}>()
+const props = defineProps({
+  text: { type: String, required: true },
+  variant: { type: String as PropType<'primary' | 'circle'>, default: undefined },
+  color: { type: String as PropType<'default' | 'green' | 'teal' | 'white'>, default: 'default' },
+  effect: { type: String as PropType<'left' | 'right'>, default: 'left' },
+  disabled: { type: Boolean, default: false },
+  href: { type: String, default: undefined },
+  to: { type: [String, Object] as PropType<string | Record<string, unknown>>, default: undefined },
+  arrow: { type: [Boolean, String] as PropType<boolean | 'reverse'>, default: false },
+  arrowDirection: { type: String as PropType<'left' | 'right'>, default: undefined },
+})
 
 // effect의 기본값을 left로 설정
 const effect = computed(() => props.effect || 'left')
