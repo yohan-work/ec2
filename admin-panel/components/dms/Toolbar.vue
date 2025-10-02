@@ -108,14 +108,16 @@
             <div v-html="permissionSvg"></div>
             <span>권한 관리</span>
           </NuxtLink>
-          <!-- <NuxtLink
-            to="/dms/manage-positions"
+          <NuxtLink
+            to="/dms/manage-costs"
             class="btn"
+            :class="{ active: isActiveRoute('/dms/manage-costs') }"
             data-style="toolbar-menu"
+            @click="handleMenuClick"
           >
-            <div v-html="positionSvg"></div>
-            <span>직급 관리</span>
-          </NuxtLink> -->
+            <div v-html="costSvg"></div>
+            <span>비용 관리</span>
+          </NuxtLink>
           <NuxtLink
             to="/dms/manage-history"
             class="btn"
@@ -254,6 +256,7 @@ import clientSvg from '~/components/assets/dms/icons/client.svg?raw'
 import organizationSvg from '~/components/assets/dms/icons/organization.svg?raw'
 import userSvg from '~/components/assets/dms/icons/user.svg?raw'
 import permissionSvg from '~/components/assets/dms/icons/permission.svg?raw'
+import costSvg from '~/components/assets/dms/icons/cost.svg?raw'
 import positionSvg from '~/components/assets/dms/icons/position.svg?raw'
 import historySvg from '~/components/assets/dms/icons/history.svg?raw'
 import accessControlSvg from '~/components/assets/dms/icons/access-control.svg?raw'

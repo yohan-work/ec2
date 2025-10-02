@@ -168,6 +168,7 @@ model dms_employees {
   headquarters     dms_headquarters? @relation(fields: [headquarter_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
   group            dms_groups? @relation(fields: [group_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
   team             dms_teams? @relation(fields: [team_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  admin_users      dms_admin_users[] // 관리자 사용자들
 
   // 핵심 검색 필드 인덱스
   @@index([email], map: "idx_dms_employees_email")
@@ -216,11 +217,15 @@ model dms_admin_users {
   name           String    @db.VarChar(255) // 이름
   password_hash  String    @db.VarChar(255)
   employee_id    Int?
+  role           String    @db.VarChar(50) // 역할 (대표이사/부사장/본부장/그룹장/팀장)
   is_active      Boolean   @default(true) // 계정 활성화 상태
   permissions    Json?     // 사용자 권한 정보 (일반메뉴 5개, 관리메뉴 7개)
   last_login_at  DateTime? @db.DateTime(0) // 마지막 로그인 시간
   created_at     DateTime  @default(now()) @db.DateTime(0)
   updated_at     DateTime  @default(now()) @db.DateTime(0) @updatedAt
+
+  // 관계
+  employee       dms_employees? @relation(fields: [employee_id], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "fk_dms_admin_employee")
 
   @@index([email], map: "idx_dms_admin_email")
   @@index([employee_id], map: "idx_dms_admin_employee")

@@ -114,9 +114,9 @@
               <td>
                 <div class="employee-info">
                   <span class="name">{{ employee.name }}</span>
-                  <span v-if="employee.is_people_manager" class="manager-badge"
+                  <!-- <span v-if="employee.is_people_manager" class="manager-badge"
                     >M</span
-                  >
+                  > -->
                 </div>
               </td>
               <td>{{ employee.group?.name || '-' }}</td>
@@ -669,7 +669,7 @@ const updateManagerOptions = (currentEmployee = null) => {
       { value: '', label: '매니저 없음' },
       ...candidates.map(emp => ({
         value: emp.id,
-        label: `${emp.name} (${emp.email})`,
+        label: `${emp.name} ${emp.career_level} (${emp.email})`,
       })),
     ]
   } catch (error) {
