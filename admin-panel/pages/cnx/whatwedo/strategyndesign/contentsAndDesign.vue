@@ -10,7 +10,7 @@
         :breakpoints="{
           768: {
             slidesPerView: 'auto',
-            freeMode: true,
+            freeMode: 'true',
             enabled: false, // 스와이퍼 비활성화
           },
         }"
@@ -83,9 +83,10 @@ import 'swiper/css/pagination';
 // Import GSAP
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Observer } from 'gsap/Observer';
 
 // Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Observer);
 
 // 데스크톱 기준 너비 (PC 전용 적용)
 const DESKTOP_MIN_WIDTH = 1024;
@@ -174,6 +175,7 @@ onMounted(() => {
   let widthWatchRaf = null;
   let widthStableTimer = null;
   let lastWrapperWidth = (swiperWrapper) ? swiperWrapper.scrollWidth : 0;
+  let horizontalObserver = null;
 
   const getWrapperWidth = () => {
     // scrollWidth는 자식들의 width 변화(토글 등)를 포함해 최신 전체 길이를 반환
@@ -193,6 +195,11 @@ onMounted(() => {
   };
 
   const killScrollAnimation = () => {
+    // 좌우 제스처 옵저버 해제
+    if (horizontalObserver) {
+      try { horizontalObserver.kill(); } catch (e) { /* ignore */ }
+      horizontalObserver = null;
+    }
     // 현재 진행도 저장 (재초기화 후 복원용)
     const savedProgress = bannerScroll && bannerScroll.scrollTrigger
       ? bannerScroll.scrollTrigger.progress
@@ -273,6 +280,43 @@ onMounted(() => {
       x: `-${wrapperWidth - containerWidth}px`,
       ease: 'none'
     });
+
+    // 좌우 제스처로 수평 이동도 지원 (데스크톱/태블릿 전용)
+    // horizontalObserver가 존재하면 먼저 정리
+    if (horizontalObserver) {
+      try { horizontalObserver.kill(); } catch (_) { /* ignore */ }
+      horizontalObserver = null;
+    }
+    const st = bannerScroll.scrollTrigger;
+    if (st) {
+      horizontalObserver = Observer.create({
+        target: container,
+        type: 'touch,wheel,pointer',
+        lockAxis: true,
+        dragMinimum: 5,
+        tolerance: 8,
+        preventDefault: false,
+        onChangeX(self) {
+          // 터치/드래그 좌우 이동을 스크롤로 변환
+          try {
+            const factor = 2; // 터치 스크럽 강도
+            // 진행 방향 반전: deltaX 부호 반전 적용
+            st.scroll(st.scroll() - self.deltaX * factor);
+          } catch (_) { /* ignore */ }
+        },
+        onWheel(self) {
+          // 수평 휠(또는 트랙패드 수평 제스처) 우선 처리
+          if (!st) return;
+          if (Math.abs(self.deltaX) > Math.abs(self.deltaY)) {
+            try {
+              const wheelFactor = 40; // 휠 스크럽 강도
+              // 진행 방향 반전: deltaX 부호 반전 적용
+              st.scroll(st.scroll() - self.deltaX * wheelFactor);
+            } catch (_) { /* ignore */ }
+          }
+        }
+      });
+    }
 
     // 새 세팅 반영 후 동일 진행도로 스크롤 위치 복원
     ScrollTrigger.refresh();
@@ -418,7 +462,7 @@ const slideData = ref([
     borderColor: 'white'
   },
   {
-    title: "Amorepacific <br>HK Sulwhasoo <br>D2C mall <br>Development",
+    title: "Amorepacific HK <br>Sulwhasoo <br>D2C mall <br>Development",
     subtitle: "아모레퍼시픽 <br>설화수 홍콩 D2C mall 구축",
     description: "사용자 친화적인 모바일 UX/UI 구현,<br>쇼핑 패턴을 반영한 BX & CX 최적화,<br>고객 경험 기반의 SEO 프로세스 수행,<br>본사 주도의 직영몰 표준 테마 제작",
     launch: "July 27, 2022",
@@ -544,7 +588,14 @@ const getBorderClass = (slide, index) => {
 @use '~/layouts/scss/cnx/_functions' as *;
 @use '~/layouts/scss/cnx/_base' as *;
 
+// Montserrat 폰트 import (로컬)
+@import './public/assets/fonts/montserrat.css';
+
+// 폰트 변수 정의
+$montserrat-font: 'Montserrat', sans-serif;
+
 .contents-and-design {
+
   .banner-slide {
     width: 100%;    
     // GPU 가속 힌트로 스크롤/변환 중 끊김 완화
@@ -623,9 +674,10 @@ const getBorderClass = (slide, index) => {
           flex: 0 0 rem(360);
         }
         // 뷰포트 높이가 1000px 이하일 때는 360 고정 높이를 적용하지 않음
-        @media (max-height: 1000px) and (min-width: 768px) {
+        @media (max-height: 910px) and (min-width: 768px) {
           flex: 0 0 rem(210);
         }
+
         img {
           width: 100%;
           height: 100%;
@@ -648,6 +700,7 @@ const getBorderClass = (slide, index) => {
       }
 
       &-title {
+        font-family: $montserrat-font;
         font-weight: 700;
         font-size: rem(24);
         
@@ -655,8 +708,9 @@ const getBorderClass = (slide, index) => {
           margin-bottom: rem(34);
         }
         @include desktop {
-          font-size: rem(42);
+          font-size: rem(40);
           margin-bottom: rem(45);
+          white-space: nowrap;
         }
       }
 
