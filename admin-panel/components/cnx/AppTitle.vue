@@ -65,7 +65,11 @@ const initAnimation = () => {
       trigger: containerRef.value,
       start: 'top 80%',
       end: 'bottom 20%',
-      toggleActions: 'play none none reverse'
+      toggleActions: 'play none none none',
+      once: true,
+      anticipatePin: 1,
+      refreshPriority: -10,
+      invalidateOnRefresh: true
     }
   })
 
@@ -88,26 +92,12 @@ const initAnimation = () => {
     }, titleRef.value ? '-=0.3' : 0) // 타이틀이 있으면 0.3초 겹침
   }
 
-  // 역재생 애니메이션 (사라질 때) - 더 빠르게
-  const reverseTl = gsap.timeline({
-    scrollTrigger: {
-      trigger: containerRef.value,
-      start: 'top 80%',
-      end: 'bottom 20%',
-      toggleActions: 'none none none play'
+  // 만약 현재 이미 뷰포트 안이라면 즉시 보이도록 보정
+  try {
+    if (ScrollTrigger.isInViewport(containerRef.value, 0.2)) {
+      gsap.set(elementsToAnimate, { opacity: 1, y: 0 });
     }
-  })
-
-  // 빠른 역재생: 텍스트 → 타이틀 (동시에 사라짐)
-  if (elementsToAnimate.length > 0) {
-    reverseTl.to(elementsToAnimate, {
-      duration: 0.3, // 더 빠른 속도
-      opacity: 0,
-      y: -20, // 위로 사라짐
-      ease: 'power2.in',
-      stagger: 0.05 // 약간의 간격
-    })
-  }
+  } catch (_) { /* noop */ }
 }
 
 // DOM이 완전히 렌더링된 후 애니메이션 초기화
