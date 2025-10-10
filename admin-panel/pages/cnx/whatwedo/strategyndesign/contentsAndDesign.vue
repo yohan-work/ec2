@@ -4,8 +4,14 @@
       <swiper
         :slidesPerView="1"
         :pagination="{
+          el: '.banner-slide-controller-pagination',
           clickable: true,
-          enabled: true,
+          enabled: true
+        }"
+        :autoplay="{
+          delay: 3000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
         }"
         :breakpoints="{
           768: {
@@ -15,21 +21,27 @@
           },
         }"
         :modules="modules"
+        @swiper="onSwiperInit"
         class="banner-slide"
       >
         <swiper-slide v-for="(slide, index) in slideData" :key="index" class="banner-slide-item" :class="{ 'active': activeSlideIndex === index }">
           <div class="banner-slide-item-content" :class="{ 'black-text': getEffectiveColor(slide, index) === 'black' }">
-            <figure class="banner-slide-item-image">
-              <picture>
-                <source :srcset="getImageSrc(index + 1)" media="(min-width: 768px)">
-                <source :srcset="getImageSrc(index + 1)" media="(min-width: 1024px)">
-                <img :src="getImageSrc(index + 1)" :alt="slide.title">
-              </picture>
-            </figure>
+            <ClientOnly>
+              <figure class="banner-slide-item-image" v-if="!isMobile">
+                <picture>
+                  <source :srcset="getImageSrc(index + 1)" media="(min-width: 768px)">
+                  <source :srcset="getImageSrc(index + 1)" media="(min-width: 1024px)">
+                  <img :src="getImageSrc(index + 1)" :alt="slide.title">
+                </picture>
+              </figure>
+            </ClientOnly>
             <div class="banner-slide-item-text">
-              <div class="banner-slide-item-title-container">
+            <div
+              class="banner-slide-item-title-container"
+            >
                 <h2 class="banner-slide-item-title" v-html="slide.title"></h2>
-                <AppButton  
+              <AppButton  
+                v-if="!isMobile"
                   :text="activeSlideIndex === index ? 'Close' : 'Learn More'"
                   :color="getEffectiveColor(slide, index) === 'black' ? 'default' : 'white'"
                   :effect="activeSlideIndex === index ? 'right' : 'left'"
@@ -38,22 +50,37 @@
                   @click="toggleSlide(index)"
                 />
               </div>
-              <div class="banner-slide-item-details" :class="getBorderClass(slide, index)">
-                <p class="banner-slide-item-subtitle" v-if="slide.subtitle" v-html="slide.subtitle">
+            <div
+              class="banner-slide-item-details"
+              :id="'slide-details-' + index"
+              :class="getBorderClass(slide, index)"
+              :aria-hidden="isMobile ? (activeSlideIndex === index ? 'false' : 'true') : null"
+            >
+                <p class="banner-slide-item-subtitle" v-if="!isMobile && slide.subtitle" v-html="slide.subtitle">
                 </p>
                 <p class="banner-slide-item-description" v-if="slide.description" v-html="slide.description">
                 </p>
-                <div class="banner-slide-item-meta" v-if="slide.launch && slide.client">
+                <div class="banner-slide-item-meta" v-if="!isMobile && slide.launch && slide.client">
                   <p><strong>Launch</strong> {{ slide.launch }}</p>
                   <p><strong>Client</strong> {{ slide.client }}</p>
                 </div>
-                <a class="banner-slide-item-link" v-if="slide.link" :href="`${slide.link}`" target="_blank" rel="noopener noreferrer">
+                <a class="banner-slide-item-link" v-if="!isMobile && slide.link" :href="`${slide.link}`" target="_blank" rel="noopener noreferrer">
                   {{ slide.link }}
                 </a>
               </div>
             </div>
           </div>
         </swiper-slide>
+        <div class="banner-slide-controller">
+          <div class="banner-slide-controller-pagination"></div>
+          <button 
+            class="banner-slide-controller-button"
+            aria-label="자동재생 시작/중지"
+            :aria-pressed="isAutoplayRunning ? 'true' : 'false'"
+            @click="toggleAutoplay"
+          >
+          </button>
+        </div>
         <button class="banner-slide-down-button" @click="scrollToNextSection" aria-label="다음 섹션으로 이동"></button>
       </swiper>
     </section>
@@ -73,7 +100,7 @@ import { nextTick } from 'vue';
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { FreeMode, Pagination, Mousewheel } from 'swiper/modules';
+import { FreeMode, Pagination, Mousewheel, Autoplay } from 'swiper/modules';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -139,8 +166,17 @@ definePageMeta({
   layout: 'concentrix'
 });
 
+// 이 페이지에서만 Montserrat 폰트 CSS를 로드
+useHead({
+  link: [
+    { rel: 'stylesheet', href: '/assets/fonts/montserrat.css' }
+  ]
+});
+
 // 활성 슬라이드 인덱스 관리
 const activeSlideIndex = ref(null);
+// 뷰포트 상태(모바일 여부)
+const isMobile = ref(false);
 // 폭 변화 안정화 감지를 외부에서 호출하기 위한 함수 (onMounted에서 주입)
 let startWidthStabilizeWatch = () => {};
 
@@ -161,6 +197,12 @@ const toggleSlide = (index) => {
       startWidthStabilizeWatch();
     }
   });
+};
+
+// 모바일에서 제목 컨테이너를 버튼처럼 활성화
+const onTitleActivate = (index) => {
+  if (!isMobile.value) return;
+  toggleSlide(index);
 };
 
 // ScrollTrigger 애니메이션 설정
@@ -299,7 +341,7 @@ onMounted(() => {
         onChangeX(self) {
           // 터치/드래그 좌우 이동을 스크롤로 변환
           try {
-            const factor = 2; // 터치 스크럽 강도
+            const factor = 0.5; // 터치 스크럽 강도 (자연 스크롤과 동일하게)
             // 진행 방향 반전: deltaX 부호 반전 적용
             st.scroll(st.scroll() - self.deltaX * factor);
           } catch (_) { /* ignore */ }
@@ -309,7 +351,7 @@ onMounted(() => {
           if (!st) return;
           if (Math.abs(self.deltaX) > Math.abs(self.deltaY)) {
             try {
-              const wheelFactor = 40; // 휠 스크럽 강도
+              const wheelFactor = 1; // 휠 스크럽 강도 (자연 스크롤과 동일하게)
               // 진행 방향 반전: deltaX 부호 반전 적용
               st.scroll(st.scroll() - self.deltaX * wheelFactor);
             } catch (_) { /* ignore */ }
@@ -390,6 +432,8 @@ onMounted(() => {
   const onResize = () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+      // 모바일 플래그 업데이트
+      isMobile.value = window.innerWidth < 768;
       if (window.innerWidth >= 768) {
         // init 내부에서 refresh를 수행하므로 여기서 중복 호출하지 않음
         initScrollAnimation();
@@ -408,6 +452,8 @@ onMounted(() => {
     // DOM, 이미지 등 렌더 안정화 후 초기화
     await nextTick();
     await waitForBannerImages();
+    // 초기 모바일 플래그 설정
+    isMobile.value = window.innerWidth < 768;
     if (window.innerWidth >= 768) {
       initScrollAnimation();
     }
@@ -443,7 +489,36 @@ onMounted(() => {
 });
 
 // Swiper 모듈 설정
-const modules = [FreeMode, Pagination, Mousewheel];
+const modules = [FreeMode, Pagination, Mousewheel, Autoplay];
+
+// Swiper 인스턴스 제어 및 자동재생 상태
+const swiperInstance = ref(null);
+const isAutoplayRunning = ref(true);
+
+const onSwiperInit = (swiper) => {
+  swiperInstance.value = swiper;
+  try {
+    isAutoplayRunning.value = !!(swiper && swiper.autoplay && swiper.autoplay.running);
+  } catch (_) {
+    isAutoplayRunning.value = false;
+  }
+};
+
+const toggleAutoplay = () => {
+  const s = swiperInstance.value;
+  if (!s || !s.autoplay) return;
+  try {
+    if (isAutoplayRunning.value) {
+      s.autoplay.stop();
+      isAutoplayRunning.value = false;
+    } else {
+      s.autoplay.start();
+      isAutoplayRunning.value = true;
+    }
+  } catch (_) {
+    // ignore
+  }
+};
 
 // 이미지 경로 생성 함수
 const getImageSrc = (index) => {
@@ -588,8 +663,6 @@ const getBorderClass = (slide, index) => {
 @use '~/layouts/scss/cnx/_functions' as *;
 @use '~/layouts/scss/cnx/_base' as *;
 
-// Montserrat 폰트 import (로컬)
-@import './public/assets/fonts/montserrat.css';
 
 // 폰트 변수 정의
 $montserrat-font: 'Montserrat', sans-serif;
@@ -598,6 +671,7 @@ $montserrat-font: 'Montserrat', sans-serif;
 
   .banner-slide {
     width: 100%;    
+    position: relative;  
     // GPU 가속 힌트로 스크롤/변환 중 끊김 완화
     &-item {
       transition: all 0.3s ease;
@@ -636,19 +710,23 @@ $montserrat-font: 'Montserrat', sans-serif;
       
       &-content {
         width: 100%;
-        height: calc(100vh - rem(90));
-        padding: rem(40);
+        height: calc(100vh - rem(71));
+        padding: rem(24);
         display: flex;
         flex-direction: column;
+        justify-content: center;
         background-size: cover;
-        background-position: left center;
         background-repeat: no-repeat;
+        background-position: center top;
         transition: all 0.3s;
         overflow: hidden;color: $d-white;
         @include tablet {
+          justify-content: flex-start;
           padding: rem(24);
+          background-position: left center;
         }
         @include desktop {
+          height: calc(100vh - rem(90));
           padding: rem(40);
         }
         &.black-text {
@@ -687,11 +765,16 @@ $montserrat-font: 'Montserrat', sans-serif;
 
       // 텍스트 영역 스타일
       &-text {
-        display: flex;
-        gap: rem(16);
-        flex: 1 1 auto;
-        min-height: 0; // flex 자식의 overflow 계산을 위해 필요
-        margin-top: rem(36);
+        text-align: center;
+        margin-top: 50vw;
+        @include tablet {
+          display: flex;
+          gap: rem(16);
+          flex: 1 1 auto;
+          min-height: 0; // flex 자식의 overflow 계산을 위해 필요
+          text-align: left;
+          margin-top: rem(36);
+        }
       }
 
       &-title-container {
@@ -703,14 +786,27 @@ $montserrat-font: 'Montserrat', sans-serif;
         font-family: $montserrat-font;
         font-weight: 700;
         font-size: rem(24);
-        
+        margin-bottom: rem(30);
+        :deep(br) {
+          display: none;
+        }
         @include tablet {
           margin-bottom: rem(34);
         }
+
         @include desktop {
           font-size: rem(40);
           margin-bottom: rem(45);
           white-space: nowrap;
+        }
+      }
+
+      // 모바일에서는 버튼 숨김, 태블릿 이상에서 표시
+      // AppButton은 자식 SFC이므로 deep selector 필요
+      :deep(.banner-slide-item-button) {
+        display: none;
+        @include tablet {
+          display: inline-flex;
         }
       }
 
@@ -721,6 +817,9 @@ $montserrat-font: 'Montserrat', sans-serif;
 
       &-description {
         @include body-02;
+        line-height: 1.6; 
+        text-wrap: balance;
+        word-break: keep-all;
         margin-bottom: rem(30);
       }
 
@@ -730,13 +829,15 @@ $montserrat-font: 'Montserrat', sans-serif;
       
       // 상세 정보 영역 스타일
       &-details {
-        width: 0%;
-        visibility: hidden;
-        opacity: 0;
         transition: opacity 0.3s ease;
-        border-left: 1px solid;
-        padding-left: rem(40);
-        margin-left: rem(40);
+        @include tablet {
+          width: 0%;
+          visibility: hidden;
+          opacity: 0;
+          border-left: 1px solid;
+          padding-left: rem(40);
+          margin-left: rem(40);
+        }
         &.border-black {
           border-color: rgba($d-black, 0.2);
         }
@@ -780,6 +881,7 @@ $montserrat-font: 'Montserrat', sans-serif;
           transition-delay: 0.4s;
         }
       }
+
     }
 
     &-down-button {
@@ -794,6 +896,42 @@ $montserrat-font: 'Montserrat', sans-serif;
       z-index: 2;
       @include desktop {
         display: block;
+      }
+    }
+
+    &-controller {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      position: absolute;
+      bottom: rem(28);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      &-pagination {
+        width: auto;
+        :deep(.swiper-pagination-bullet) {
+          width: rem(12);
+          height: rem(12);
+          background: $d-white;
+          margin: 0 rem(4);
+          transition: all 0.3s;
+        }
+      }
+      &-button {
+        width: rem(12);
+        height: rem(12);
+        background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_play.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+        margin-left: rem(8);
+
+        //재생중일때
+        &[aria-pressed="true"] {
+          background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_pause.svg');
+        }
       }
     }
   }
