@@ -1,68 +1,122 @@
 <template>
   <div class="contents-and-design">
+
+    <!-- S : banner-slide-section -->
     <section class="banner-slide-section">
       <swiper
         :slidesPerView="1"
-        :pagination="{
-          clickable: true,
-          enabled: true,
+        :pagination="paginationOptions"
+        :autoplay="{
+          delay: 3000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
         }"
         :breakpoints="{
           768: {
             slidesPerView: 'auto',
-            freeMode: true,
+            freeMode: 'true',
             enabled: false, // 스와이퍼 비활성화
           },
         }"
         :modules="modules"
+        :keyboard="keyboardOptions"
+        :a11y="a11yOptions"
+        @swiper="onSwiperInit"
         class="banner-slide"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="프로젝트 배너 캐러셀"
+        aria-live="off"
       >
-        <swiper-slide v-for="(slide, index) in slideData" :key="index" class="banner-slide-item" :class="{ 'active': activeSlideIndex === index }">
-          <div class="banner-slide-item-content" :class="{ 'black-text': getEffectiveColor(slide, index) === 'black' }">
-            <figure class="banner-slide-item-image">
-              <picture>
-                <source :srcset="getImageSrc(index + 1)" media="(min-width: 768px)">
-                <source :srcset="getImageSrc(index + 1)" media="(min-width: 1024px)">
-                <img :src="getImageSrc(index + 1)" :alt="slide.title">
-              </picture>
-            </figure>
+        <swiper-slide v-for="(slide, index) in slideData" :key="index" class="banner-slide-item" :class="{ 'active': activeSlideIndex === index }" role="group" :aria-label="`슬라이드 ${index + 1} / ${slideData.length}`">
+          <div class="banner-slide-item-content" :class="{ 'black-text': getEffectiveColor(slide, index) === 'black' }" :role="isMobile ? 'img' : null" :aria-label="isMobile ? getSlideAltText(slide) : null">
+            <ClientOnly>
+              <figure class="banner-slide-item-image" v-if="!isMobile">
+                <picture>
+                  <source :srcset="getImageSrc(index + 1)" media="(min-width: 768px)">
+                  <source :srcset="getImageSrc(index + 1)" media="(min-width: 1024px)">
+                  <img :src="getImageSrc(index + 1)" :alt="getSlideAltText(slide)">
+                </picture>
+              </figure>
+            </ClientOnly>
             <div class="banner-slide-item-text">
-              <div class="banner-slide-item-title-container">
+            <div
+              class="banner-slide-item-title-container"
+            >
                 <h2 class="banner-slide-item-title" v-html="slide.title"></h2>
-                <AppButton  
+              <AppButton  
+                v-if="!isMobile"
                   :text="activeSlideIndex === index ? 'Close' : 'Learn More'"
                   :color="getEffectiveColor(slide, index) === 'black' ? 'default' : 'white'"
                   :effect="activeSlideIndex === index ? 'right' : 'left'"
                   :arrow="activeSlideIndex === index ? 'reverse' : true"
                   class="banner-slide-item-button"
+                  :aria-controls="'slide-details-' + index"
+                  :aria-expanded="activeSlideIndex === index ? 'true' : 'false'"
                   @click="toggleSlide(index)"
                 />
               </div>
-              <div class="banner-slide-item-details" :class="getBorderClass(slide, index)">
-                <p class="banner-slide-item-subtitle" v-if="slide.subtitle" v-html="slide.subtitle">
+            <div
+              class="banner-slide-item-details"
+              :id="'slide-details-' + index"
+              :class="getBorderClass(slide, index)"
+              :aria-hidden="activeSlideIndex === index ? 'false' : 'true'"
+            >
+                <p class="banner-slide-item-subtitle" v-if="!isMobile && slide.subtitle" v-html="slide.subtitle">
                 </p>
                 <p class="banner-slide-item-description" v-if="slide.description" v-html="slide.description">
                 </p>
-                <div class="banner-slide-item-meta" v-if="slide.launch && slide.client">
+                <div class="banner-slide-item-meta" v-if="!isMobile && slide.launch && slide.client">
                   <p><strong>Launch</strong> {{ slide.launch }}</p>
                   <p><strong>Client</strong> {{ slide.client }}</p>
                 </div>
-                <a class="banner-slide-item-link" v-if="slide.link" :href="`${slide.link}`" target="_blank" rel="noopener noreferrer">
+                <a class="banner-slide-item-link" v-if="!isMobile && slide.link" :href="`${slide.link}`" target="_blank" rel="noopener noreferrer" :aria-label="`${slide.link} (새 창에서 열림)`">
                   {{ slide.link }}
                 </a>
               </div>
             </div>
           </div>
         </swiper-slide>
+        <div class="banner-slide-controller">
+          <div class="banner-slide-controller-pagination"></div>
+          <button 
+            class="banner-slide-controller-button"
+            aria-label="자동재생 시작/중지"
+            :aria-pressed="isAutoplayRunning ? 'true' : 'false'"
+            @click="toggleAutoplay"
+          >
+          </button>
+        </div>
         <button class="banner-slide-down-button" @click="scrollToNextSection" aria-label="다음 섹션으로 이동"></button>
       </swiper>
     </section>
-    <section class="contents-and-design-section" ref="nextSectionRef">
-      <AppTitle 
-      title="Concentrix <br>interactive <br>eXperience" 
-      text="CiX(Concentrix interactive eXperience)는 콘센트릭스 내에서 <br>UX/UI와 Contents 제작을 전담하는 Creative 조직입니다."
-      />
+    <!-- E : banner-slide-section -->
+
+    <!-- S : intro-section -->
+    <section class="intro-section" ref="nextSectionRef">
+      <div class="inner">
+        <AppTitle 
+          title="Concentrix <br>interactive <br>eXperience" 
+          text="CiX(Concentrix interactive eXperience)는 콘센트릭스 내에서 <br>UX/UI와 Contents 제작을 전담하는 Creative 조직입니다."
+        />
+        <div class="intro-section-content">
+          <span class="intro-section-content-line"></span>
+          <div class="intro-section-content-item" role="img" aria-label="CiX">
+            <div aria-hidden="true" class="intro-section-content-item-wrap">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/c.svg" alt="" aria-hidden="true">
+            </div>
+            <div aria-hidden="true" class="intro-section-content-item-wrap">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/i.svg" alt="" aria-hidden="true">
+            </div>
+            <div aria-hidden="true" class="intro-section-content-item-wrap">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/x.svg" alt="" aria-hidden="true">
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
+    <!-- E : intro-section -->
+    
   </div>
 </template>
 
@@ -73,22 +127,36 @@ import { nextTick } from 'vue';
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { FreeMode, Pagination, Mousewheel } from 'swiper/modules';
+import { FreeMode, Pagination, Mousewheel, Autoplay, A11y, Keyboard } from 'swiper/modules';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
+import 'swiper/css/a11y';
 
 // Import GSAP
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Observer } from 'gsap/Observer';
+
+// 레이아웃 설정
+definePageMeta({
+  layout: 'concentrix'
+});
+
+// 이 페이지에서만 Montserrat 폰트 CSS를 로드
+useHead({
+  link: [
+    { rel: 'stylesheet', href: '/assets/fonts/montserrat.css' }
+  ]
+});
 
 // Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Observer);
 
-// 데스크톱 기준 너비 (PC 전용 적용)
-const DESKTOP_MIN_WIDTH = 1024;
+// intro 섹션 정리용 클린업 콜백 모음
+let introCleanupCallbacks = [];
 
 // PC에서 가장 긴 제목 높이를 계산해 모든 제목의 min-height로 적용
 const applyBannerSlideTitleMinHeight = () => {
@@ -133,15 +201,24 @@ const waitForBannerImages = async () => {
   await Promise.all(waitPromises);
 };
 
-// 레이아웃 설정
-definePageMeta({
-  layout: 'concentrix'
-});
-
 // 활성 슬라이드 인덱스 관리
 const activeSlideIndex = ref(null);
+// 뷰포트 상태(모바일 여부)
+const isMobile = ref(false);
 // 폭 변화 안정화 감지를 외부에서 호출하기 위한 함수 (onMounted에서 주입)
 let startWidthStabilizeWatch = () => {};
+
+// 슬라이드용 대체 텍스트 생성 (title의 HTML 태그 제거)
+const getSlideAltText = (slide) => {
+  try {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = String(slide?.title ?? '');
+    const text = tmp.textContent || tmp.innerText || '';
+    return text.replace(/\s+/g, ' ').trim();
+  } catch (_) {
+    return typeof slide?.title === 'string' ? slide.title.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() : '';
+  }
+};
 
 // 슬라이드 토글 함수
 const toggleSlide = (index) => {
@@ -162,8 +239,14 @@ const toggleSlide = (index) => {
   });
 };
 
-// ScrollTrigger 애니메이션 설정
-onMounted(() => {
+// 모바일에서 제목 컨테이너를 버튼처럼 활성화
+const onTitleActivate = (index) => {
+  if (!isMobile.value) return;
+  toggleSlide(index);
+};
+
+// 배너 수평 스크롤 애니메이션 초기화
+const initBannerScrollAnimation = () => {
   const swiperWrapper = document.querySelector('.banner-slide .swiper-wrapper');
   const container = document.querySelector('.banner-slide');
 
@@ -174,6 +257,7 @@ onMounted(() => {
   let widthWatchRaf = null;
   let widthStableTimer = null;
   let lastWrapperWidth = (swiperWrapper) ? swiperWrapper.scrollWidth : 0;
+  let horizontalObserver = null;
 
   const getWrapperWidth = () => {
     // scrollWidth는 자식들의 width 변화(토글 등)를 포함해 최신 전체 길이를 반환
@@ -193,6 +277,11 @@ onMounted(() => {
   };
 
   const killScrollAnimation = () => {
+    // 좌우 제스처 옵저버 해제
+    if (horizontalObserver) {
+      try { horizontalObserver.kill(); } catch (e) { /* ignore */ }
+      horizontalObserver = null;
+    }
     // 현재 진행도 저장 (재초기화 후 복원용)
     const savedProgress = bannerScroll && bannerScroll.scrollTrigger
       ? bannerScroll.scrollTrigger.progress
@@ -274,6 +363,43 @@ onMounted(() => {
       ease: 'none'
     });
 
+    // 좌우 제스처로 수평 이동도 지원 (데스크톱/태블릿 전용)
+    // horizontalObserver가 존재하면 먼저 정리
+    if (horizontalObserver) {
+      try { horizontalObserver.kill(); } catch (_) { /* ignore */ }
+      horizontalObserver = null;
+    }
+    const st = bannerScroll.scrollTrigger;
+    if (st) {
+      horizontalObserver = Observer.create({
+        target: container,
+        type: 'touch,wheel,pointer',
+        lockAxis: true,
+        dragMinimum: 5,
+        tolerance: 8,
+        preventDefault: false,
+        onChangeX(self) {
+          // 터치/드래그 좌우 이동을 스크롤로 변환
+          try {
+            const factor = 0.5; // 터치 스크럽 강도 (자연 스크롤과 동일하게)
+            // 진행 방향 반전: deltaX 부호 반전 적용
+            st.scroll(st.scroll() - self.deltaX * factor);
+          } catch (_) { /* ignore */ }
+        },
+        onWheel(self) {
+          // 수평 휠(또는 트랙패드 수평 제스처) 우선 처리
+          if (!st) return;
+          if (Math.abs(self.deltaX) > Math.abs(self.deltaY)) {
+            try {
+              const wheelFactor = 1; // 휠 스크럽 강도 (자연 스크롤과 동일하게)
+              // 진행 방향 반전: deltaX 부호 반전 적용
+              st.scroll(st.scroll() - self.deltaX * wheelFactor);
+            } catch (_) { /* ignore */ }
+          }
+        }
+      });
+    }
+
     // 새 세팅 반영 후 동일 진행도로 스크롤 위치 복원
     ScrollTrigger.refresh();
     if (typeof prevProgress === 'number') {
@@ -346,6 +472,8 @@ onMounted(() => {
   const onResize = () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+      // 모바일 플래그 업데이트
+      isMobile.value = window.innerWidth < 768;
       if (window.innerWidth >= 768) {
         // init 내부에서 refresh를 수행하므로 여기서 중복 호출하지 않음
         initScrollAnimation();
@@ -364,6 +492,8 @@ onMounted(() => {
     // DOM, 이미지 등 렌더 안정화 후 초기화
     await nextTick();
     await waitForBannerImages();
+    // 초기 모바일 플래그 설정
+    isMobile.value = window.innerWidth < 768;
     if (window.innerWidth >= 768) {
       initScrollAnimation();
     }
@@ -388,7 +518,8 @@ onMounted(() => {
   // 초기 1회 적용 (레이아웃 안정화 후 적용)
   requestAnimationFrame(() => applyBannerSlideTitleMinHeight());
 
-  onBeforeUnmount(() => {
+  // cleanup 등록
+  introCleanupCallbacks.push(() => {
     window.removeEventListener('resize', onResize);
     if (onLoadHandler) window.removeEventListener('load', onLoadHandler);
     if (onPageShowHandler) window.removeEventListener('pageshow', onPageShowHandler);
@@ -396,10 +527,260 @@ onMounted(() => {
     killScrollAnimation();
     ScrollTrigger.refresh();
   });
+};
+
+// Intro CiX 이미지: 클래스 토글 방식으로 fade-in-up 처리 초기화
+const initIntroCixClassToggle = () => {
+  const wraps = document.querySelectorAll('.intro-section .intro-section-content-item-wrap');
+  if (!wraps || wraps.length === 0) return;
+
+  try {
+    wraps.forEach((wrap) => {
+      const img = wrap.querySelector('img');
+      if (!(img instanceof HTMLElement)) return;
+      const st = ScrollTrigger.create({
+        trigger: img,
+        start: 'top 90%',
+        toggleClass: { targets: wrap, className: 'active' },
+      });
+      // cleanup 등록
+      introCleanupCallbacks.push(() => { try { st.kill(); } catch (_) { /* ignore */ } });
+    });
+  } catch (_) {
+    // noop
+  }
+};
+
+// Intro section line height scroll linkage 초기화 (delta-based)
+const initIntroLineHeightLinkage = () => {
+  const contentEl = document.querySelector('.intro-section .intro-section-content');
+  const lineEl = contentEl ? contentEl.querySelector('.intro-section-content-line') : null;
+  if (!contentEl || !lineEl) return;
+
+  const MIN_HEIGHT = 20;
+  let heightPx = MIN_HEIGHT;
+  let lastScrollY = window.pageYOffset || window.scrollY || 0;
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+  const computeBottomWithin = () => {
+    const rect = (contentEl).getBoundingClientRect();
+    const anchorVp = window.innerHeight - 80; // 80px above viewport bottom
+    return anchorVp - rect.top; // bottom position within container coords
+  };
+
+  const apply = () => {
+    const contentHeight = (contentEl).clientHeight;
+    const bottomWithin = computeBottomWithin();
+    const clampedBottom = clamp(bottomWithin, MIN_HEIGHT, contentHeight);
+    // ensure height does not exceed available
+    heightPx = clamp(heightPx, MIN_HEIGHT, clampedBottom);
+    const topPx = clampedBottom - heightPx;
+    try { gsap.set(lineEl, { top: topPx, height: heightPx }); } catch (_) { /* noop */ }
+  };
+
+  const onScroll = () => {
+    const y = window.pageYOffset || window.scrollY || 0;
+    const delta = y - lastScrollY;
+    const contentHeight = (contentEl).clientHeight;
+    const bottomWithin = computeBottomWithin();
+
+    if (bottomWithin <= MIN_HEIGHT) {
+      heightPx = MIN_HEIGHT;
+    } else if (bottomWithin >= contentHeight) {
+      heightPx = contentHeight; // fully grown at bottom edge
+    } else if (delta !== 0) {
+      heightPx += delta; // grow/shrink by scroll delta
+    }
+
+    apply();
+    lastScrollY = y;
+  };
+
+  const onResize = () => {
+    apply();
+    onScroll();
+  };
+
+  // init
+  try { gsap.set(lineEl, { height: heightPx, top: 0 }); } catch (_) { /* noop */ }
+  apply();
+  onScroll();
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onResize);
+
+  // cleanup 등록
+  introCleanupCallbacks.push(() => {
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onResize);
+  });
+};
+
+// Intro CiX 이미지: 데스크톱에서 마우스 방향으로 기울기(tilt) 모션
+const initIntroHoverTilt = () => {
+  const wraps = document.querySelectorAll('.intro-section .intro-section-content-item-wrap');
+  if (!wraps || wraps.length === 0) return;
+
+  const isDesktop = () => window.innerWidth >= 1024;
+  const listeners = [];
+  const spinningSet = new WeakSet(); // 클릭 회전 중인 이미지 가드
+
+  const addForWrap = (wrap) => {
+    const img = wrap.querySelector('img');
+    if (!(img instanceof HTMLElement)) return;
+
+    const maxTilt = 30; // degrees
+
+    const onMove = (e) => {
+      const rect = wrap.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const nx = x / rect.width * 2 - 1; // -1 .. 1 (left .. right)
+      const ny = y / rect.height * 2 - 1; // -1 .. 1 (top .. bottom)
+      const rotateY = nx * maxTilt;
+      const rotateX = -ny * maxTilt;
+      try {
+        gsap.to(img, { rotateX, rotateY, z: 28, scale: 1.06, duration: 0.12, ease: 'power2.out' });
+      } catch (_) { /* noop */ }
+    };
+
+    const onLeave = () => {
+      try {
+        gsap.to(img, { rotateX: 0, rotateY: 0, z: 0, scale: 1, duration: 0.35, ease: 'power3.out' });
+      } catch (_) { /* noop */ }
+    };
+
+    const onClick = () => {
+      if (spinningSet.has(img)) return; // 이미 회전 중이면 무시
+      spinningSet.add(img);
+      try {
+        gsap.to(img, {
+          rotation: '+=360',
+          duration: 0.6,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            try { spinningSet.delete(img); } catch (_) { /* ignore */ }
+          }
+        });
+      } catch (_) { /* noop */ }
+    };
+
+    wrap.addEventListener('mousemove', onMove);
+    wrap.addEventListener('mouseleave', onLeave);
+    wrap.addEventListener('click', onClick);
+    listeners.push({ wrap, onMove, onLeave, onClick });
+  };
+
+  const enable = () => {
+    if (!isDesktop()) return;
+    if (listeners.length) return; // already enabled
+    wraps.forEach((w) => addForWrap(w));
+  };
+
+  const disable = () => {
+    // remove all and reset
+    listeners.splice(0).forEach(({ wrap, onMove, onLeave, onClick }) => {
+      wrap.removeEventListener('mousemove', onMove);
+      wrap.removeEventListener('mouseleave', onLeave);
+      wrap.removeEventListener('click', onClick);
+    });
+    // reset transforms of all images
+    wraps.forEach((w) => {
+      const img = w.querySelector('img');
+      if (img instanceof HTMLElement) {
+        try { gsap.set(img, { rotateX: 0, rotateY: 0, rotation: 0, z: 0, scale: 1 }); } catch (_) { /* noop */ }
+        try { spinningSet.delete(img); } catch (_) { /* ignore */ }
+      }
+    });
+  };
+
+  // 초기 상태 적용
+  enable();
+
+  const onResize = () => {
+    if (isDesktop()) {
+      enable();
+    } else {
+      disable();
+    }
+  };
+  window.addEventListener('resize', onResize);
+
+  // cleanup 등록
+  introCleanupCallbacks.push(() => {
+    window.removeEventListener('resize', onResize);
+    disable();
+  });
+};
+
+// onMounted에서 intro 관련 초기화 함수 호출 및 일괄 cleanup 처리
+onMounted(() => {
+  initBannerScrollAnimation();
+  initIntroCixClassToggle();
+  initIntroLineHeightLinkage();
+  initIntroHoverTilt();
+
+  onBeforeUnmount(() => {
+    introCleanupCallbacks.forEach((fn) => {
+      try { fn(); } catch (_) { /* ignore */ }
+    });
+    introCleanupCallbacks = [];
+  });
 });
 
 // Swiper 모듈 설정
-const modules = [FreeMode, Pagination, Mousewheel];
+const modules = [FreeMode, Pagination, Mousewheel, Autoplay, A11y, Keyboard];
+
+// Swiper 접근성/키보드 옵션
+const a11yOptions = {
+  enabled: true,
+  containerMessage: '프로젝트 배너 캐러셀',
+  // Swiper는 문자열 템플릿을 사용합니다. {{index}}, {{slidesLength}} 사용
+  slideLabelMessage: '슬라이드 {{index}} / {{slidesLength}}',
+};
+const keyboardOptions = {
+  enabled: true,
+  onlyInViewport: true,
+};
+const paginationOptions = {
+  el: '.banner-slide-controller-pagination',
+  clickable: true,
+  renderBullet: (index, className) => {
+    // 버튼으로 렌더링하여 포커스 가능 + 레이블 제공
+    const label = `슬라이드 ${index + 1}로 이동`;
+    return `<button type="button" class="${className}" aria-label="${label}" title="${label}"></button>`;
+  }
+};
+
+// Swiper 인스턴스 제어 및 자동재생 상태
+const swiperInstance = ref(null);
+const isAutoplayRunning = ref(true);
+
+const onSwiperInit = (swiper) => {
+  swiperInstance.value = swiper;
+  try {
+    isAutoplayRunning.value = !!(swiper && swiper.autoplay && swiper.autoplay.running);
+  } catch (_) {
+    isAutoplayRunning.value = false;
+  }
+};
+
+const toggleAutoplay = () => {
+  const s = swiperInstance.value;
+  if (!s || !s.autoplay) return;
+  try {
+    if (isAutoplayRunning.value) {
+      s.autoplay.stop();
+      isAutoplayRunning.value = false;
+    } else {
+      s.autoplay.start();
+      isAutoplayRunning.value = true;
+    }
+  } catch (_) {
+    // ignore
+  }
+};
 
 // 이미지 경로 생성 함수
 const getImageSrc = (index) => {
@@ -418,7 +799,7 @@ const slideData = ref([
     borderColor: 'white'
   },
   {
-    title: "Amorepacific <br>HK Sulwhasoo <br>D2C mall <br>Development",
+    title: "Amorepacific HK <br>Sulwhasoo <br>D2C mall <br>Development",
     subtitle: "아모레퍼시픽 <br>설화수 홍콩 D2C mall 구축",
     description: "사용자 친화적인 모바일 UX/UI 구현,<br>쇼핑 패턴을 반영한 BX & CX 최적화,<br>고객 경험 기반의 SEO 프로세스 수행,<br>본사 주도의 직영몰 표준 테마 제작",
     launch: "July 27, 2022",
@@ -544,9 +925,15 @@ const getBorderClass = (slide, index) => {
 @use '~/layouts/scss/cnx/_functions' as *;
 @use '~/layouts/scss/cnx/_base' as *;
 
+
+// 폰트 변수 정의
+$montserrat-font: 'Montserrat', sans-serif;
+
 .contents-and-design {
+
   .banner-slide {
     width: 100%;    
+    position: relative;  
     // GPU 가속 힌트로 스크롤/변환 중 끊김 완화
     &-item {
       transition: all 0.3s ease;
@@ -585,19 +972,23 @@ const getBorderClass = (slide, index) => {
       
       &-content {
         width: 100%;
-        height: calc(100vh - rem(90));
-        padding: rem(40);
+        height: calc(100vh - rem(71));
+        padding: rem(24);
         display: flex;
         flex-direction: column;
+        justify-content: center;
         background-size: cover;
-        background-position: left center;
         background-repeat: no-repeat;
+        background-position: center top;
         transition: all 0.3s;
         overflow: hidden;color: $d-white;
         @include tablet {
+          justify-content: flex-start;
           padding: rem(24);
+          background-position: left center;
         }
         @include desktop {
+          height: calc(100vh - rem(90));
           padding: rem(40);
         }
         &.black-text {
@@ -615,7 +1006,8 @@ const getBorderClass = (slide, index) => {
         flex: 0 0 rem(360);
         overflow: hidden;
         opacity: 0;
-        transition: opacity 0.3s ease;
+        visibility: hidden;
+        transition: opacity 0.45s ease;
         @include tablet {
           flex: 0 0 rem(210);
         }
@@ -623,9 +1015,10 @@ const getBorderClass = (slide, index) => {
           flex: 0 0 rem(360);
         }
         // 뷰포트 높이가 1000px 이하일 때는 360 고정 높이를 적용하지 않음
-        @media (max-height: 1000px) and (min-width: 768px) {
+        @media (max-height: 910px) and (min-width: 768px) {
           flex: 0 0 rem(210);
         }
+
         img {
           width: 100%;
           height: 100%;
@@ -635,11 +1028,16 @@ const getBorderClass = (slide, index) => {
 
       // 텍스트 영역 스타일
       &-text {
-        display: flex;
-        gap: rem(16);
-        flex: 1 1 auto;
-        min-height: 0; // flex 자식의 overflow 계산을 위해 필요
-        margin-top: rem(36);
+        text-align: center;
+        margin-top: 50vw;
+        @include tablet {
+          display: flex;
+          gap: rem(16);
+          flex: 1 1 auto;
+          min-height: 0; // flex 자식의 overflow 계산을 위해 필요
+          text-align: left;
+          margin-top: rem(36);
+        }
       }
 
       &-title-container {
@@ -648,15 +1046,33 @@ const getBorderClass = (slide, index) => {
       }
 
       &-title {
+        font-family: $montserrat-font;
         font-weight: 700;
         font-size: rem(24);
-        
+        margin-bottom: rem(30);
+        :deep(br) {
+          display: none;
+          @include tablet {
+            display: block;
+          }
+        }
         @include tablet {
           margin-bottom: rem(34);
         }
+
         @include desktop {
-          font-size: rem(42);
+          font-size: rem(40);
           margin-bottom: rem(45);
+          white-space: nowrap;
+        }
+      }
+
+      // 모바일에서는 버튼 숨김, 태블릿 이상에서 표시
+      // AppButton은 자식 SFC이므로 deep selector 필요
+      :deep(.banner-slide-item-button) {
+        display: none;
+        @include tablet {
+          display: inline-flex;
         }
       }
 
@@ -667,6 +1083,9 @@ const getBorderClass = (slide, index) => {
 
       &-description {
         @include body-02;
+        line-height: 1.6; 
+        overflow-wrap: anywhere; // text-wrap: balance 대체 (지원성 고려)
+        word-break: keep-all;
         margin-bottom: rem(30);
       }
 
@@ -676,13 +1095,18 @@ const getBorderClass = (slide, index) => {
       
       // 상세 정보 영역 스타일
       &-details {
-        width: 0%;
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        border-left: 1px solid;
-        padding-left: rem(40);
-        margin-left: rem(40);
+        will-change: opacity, transform, width;
+        transition: opacity 0.45s ease, transform 0.45s ease, width 0s ease;
+        @include tablet {
+          width: 0%;
+          visibility: hidden;
+          opacity: 0;
+          border-left: 1px solid;
+          padding-left: rem(40);
+          margin-left: rem(40);
+          position: relative;
+          transform: translateX(rem(20));
+        }
         &.border-black {
           border-color: rgba($d-black, 0.2);
         }
@@ -718,14 +1142,19 @@ const getBorderClass = (slide, index) => {
         }
         .banner-slide-item-image {
           opacity: 1;
+          visibility: visible;
+          transition-delay: 0.2s;
         }
         .banner-slide-item-details {
           width: 50%;
           visibility: visible;
           opacity: 1;
-          transition-delay: 0.4s;
+          transform: translateX(0);
+          transition-property: opacity, transform, width;
+          transition-delay: 0.45s, 0.45s, 0s; // 이미지 페이드(0.45s) 이후 상세영역 등장
         }
       }
+
     }
 
     &-down-button {
@@ -742,9 +1171,122 @@ const getBorderClass = (slide, index) => {
         display: block;
       }
     }
+
+    &-controller {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      position: absolute;
+      bottom: rem(28);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      &-pagination {
+        width: auto;
+        :deep(.swiper-pagination-bullet) {
+          width: rem(12);
+          height: rem(12);
+          background: $d-white;
+          margin: 0 rem(4);
+          transition: all 0.3s;
+          // 버튼으로 렌더되므로 기본 버튼 스타일 중화
+          border: none;
+          padding: 0;
+          border-radius: 50%;
+          cursor: pointer;
+          // 시각적 크기를 기존 12px 점과 유사하게 보이도록 내부 원 도형 사용 가능
+          // 하지만 접근성을 위해 실제 타겟은 24px 유지
+        }
+      }
+      &-button {
+        width: rem(12);
+        height: rem(12);
+        background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_play.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+        margin-left: rem(8);
+
+        //재생중일때
+        &[aria-pressed="true"] {
+          background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_pause.svg');
+        }
+        // 모바일 전용으로 표시, 태블릿 이상에서는 숨김
+        @include tablet {
+          display: none;
+        }
+      }
+    }
   }
-}
-.inner {
-  margin: 0 auto;
+
+  .intro-section {
+    &-content {
+      position: relative;
+      padding-top: rem(130);
+      overflow: hidden;
+      &-line {
+        width: rem(1);
+        height: 100px;
+        background-color: $d-black;
+        position: absolute;
+        transform: translateX(-50%);
+        left: 50%;
+        top: 0;
+        transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        &::after,
+        &::before {
+          content: '';
+          display: block;
+          width: rem(1);
+          height: rem(13);
+          background-color: $d-black;
+          position: absolute;
+        }
+        &::after {
+          transform: translateX(calc(-50% + rem(4.8))) rotate(45deg);
+          left: 50%;
+          bottom: rem(-1.3);
+        }
+
+        &::before {
+          transform: translateX(calc(-50% - rem(4.8))) rotate(-45deg);
+          left: 50%;
+          bottom: rem(-1.3);
+        }
+      }
+      &-item {
+        &-wrap {
+          perspective: rem(800);
+          opacity: 0; // 초기 상태
+          will-change: opacity, transform;
+          transition: opacity 0.6s ease, transform 0.6s ease;
+          img {
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.12s ease;
+          }
+          &.active {
+            opacity: 1;
+          }
+          $rotations: 90deg, -90deg, 90deg;
+          $margins: 0, 114.39, 117.89;
+          @for $i from 1 through 3 {
+            &:nth-child(#{$i}) {
+              @if nth($margins, $i) != 0 {
+                margin-top: rem(nth($margins, $i));
+              }
+              transform: translateY(rem(120)) rotate(nth($rotations, $i));
+            }
+          }
+          &.active {
+            transform: translateY(0) rotate(0deg);
+          }
+        }
+      }
+    }
+  }
+
 }
 </style>
