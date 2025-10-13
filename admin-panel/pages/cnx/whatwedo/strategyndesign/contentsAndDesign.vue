@@ -117,6 +117,31 @@
     </section>
     <!-- E : intro-section -->
     
+    <!-- S : overview-section -->
+    <section class="overview-section">
+      <div class="inner">
+        <div class="overview-section-content">
+          <ul class="overview-section-content-list">
+            <li class="overview-section-content-list-item">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/wedelivercreative.png" alt="wedelivercreative">
+            </li>
+          </ul>
+          <ul class="overview-section-content-list">
+            <li class="overview-section-content-list-item">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/report.gif" alt="report">
+            </li>
+            <li class="overview-section-content-list-item">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/planning.gif" alt="planning">
+            </li>
+            <li class="overview-section-content-list-item">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/service.gif" alt="service">
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <!-- E : overview-section -->
+
   </div>
 </template>
 
@@ -143,13 +168,6 @@ import { Observer } from 'gsap/Observer';
 // 레이아웃 설정
 definePageMeta({
   layout: 'concentrix'
-});
-
-// 이 페이지에서만 Montserrat 폰트 CSS를 로드
-useHead({
-  link: [
-    { rel: 'stylesheet', href: '/assets/fonts/montserrat.css' }
-  ]
 });
 
 // Register ScrollTrigger plugin
@@ -563,6 +581,22 @@ const initIntroLineHeightLinkage = () => {
 
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
+  // intro content의 기준 좌표계에서 overview .inner 상단까지의 최대 하한 지점 계산
+  const getMaxBottomWithin = () => {
+    try {
+      const overviewInner = document.querySelector('.overview-section .inner');
+      if (!overviewInner) return (contentEl).clientHeight;
+      const contentRect = (contentEl).getBoundingClientRect();
+      const overviewRect = (overviewInner).getBoundingClientRect();
+      // 두 요소 모두 viewport 기준 좌표이므로 차이를 내면 contentEl 기준 상대 좌표가 됨
+      const distance = overviewRect.top - contentRect.top;
+      // 음수 방지 및 최소값 보장
+      return Math.max(MIN_HEIGHT, distance);
+    } catch (_) {
+      return (contentEl).clientHeight;
+    }
+  };
+
   const computeBottomWithin = () => {
     const rect = (contentEl).getBoundingClientRect();
     const anchorVp = window.innerHeight - 80; // 80px above viewport bottom
@@ -570,25 +604,37 @@ const initIntroLineHeightLinkage = () => {
   };
 
   const apply = () => {
-    const contentHeight = (contentEl).clientHeight;
+    const maxBottom = getMaxBottomWithin();
     const bottomWithin = computeBottomWithin();
-    const clampedBottom = clamp(bottomWithin, MIN_HEIGHT, contentHeight);
+    const clampedBottom = clamp(bottomWithin, MIN_HEIGHT, maxBottom);
     // ensure height does not exceed available
     heightPx = clamp(heightPx, MIN_HEIGHT, clampedBottom);
     const topPx = clampedBottom - heightPx;
     try { gsap.set(lineEl, { top: topPx, height: heightPx }); } catch (_) { /* noop */ }
+    // 뷰포트 하단(y = window.innerHeight)이 overview-section 상단에 도달하면 클래스 부착
+    try {
+      const overviewSection = document.querySelector('.overview-section');
+      if (overviewSection) {
+        const r = (overviewSection).getBoundingClientRect();
+        const bottomY = window.innerHeight;
+        const visibleFromBottom = r.top <= bottomY; // viewport 하단이 섹션 상단을 지나면 true
+        (lineEl).classList.toggle('on-overview', visibleFromBottom);
+      } else {
+        (lineEl).classList.remove('on-overview');
+      }
+    } catch (_) { /* noop */ }
   };
 
   const onScroll = () => {
     const y = window.pageYOffset || window.scrollY || 0;
     const delta = y - lastScrollY;
-    const contentHeight = (contentEl).clientHeight;
+    const maxBottom = getMaxBottomWithin();
     const bottomWithin = computeBottomWithin();
 
     if (bottomWithin <= MIN_HEIGHT) {
       heightPx = MIN_HEIGHT;
-    } else if (bottomWithin >= contentHeight) {
-      heightPx = contentHeight; // fully grown at bottom edge
+    } else if (bottomWithin >= maxBottom) {
+      heightPx = maxBottom; // fully grown until overview .inner top
     } else if (delta !== 0) {
       heightPx += delta; // grow/shrink by scroll delta
     }
@@ -919,15 +965,14 @@ const getBorderClass = (slide, index) => {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:list';
+
 @use '~/layouts/scss/cnx.scss' as *;
 @use '~/layouts/scss/cnx/_variables' as *;
 @use '~/layouts/scss/cnx/_mixins' as *;
 @use '~/layouts/scss/cnx/_functions' as *;
 @use '~/layouts/scss/cnx/_base' as *;
 
-
-// 폰트 변수 정의
-$montserrat-font: 'Montserrat', sans-serif;
 
 .contents-and-design {
 
@@ -981,7 +1026,8 @@ $montserrat-font: 'Montserrat', sans-serif;
         background-repeat: no-repeat;
         background-position: center top;
         transition: all 0.3s;
-        overflow: hidden;color: $d-white;
+        overflow: hidden;
+        color: $d-white;
         @include tablet {
           justify-content: flex-start;
           padding: rem(24);
@@ -1046,7 +1092,6 @@ $montserrat-font: 'Montserrat', sans-serif;
       }
 
       &-title {
-        font-family: $montserrat-font;
         font-weight: 700;
         font-size: rem(24);
         margin-bottom: rem(30);
@@ -1224,7 +1269,6 @@ $montserrat-font: 'Montserrat', sans-serif;
     &-content {
       position: relative;
       padding-top: rem(130);
-      overflow: hidden;
       &-line {
         width: rem(1);
         height: 100px;
@@ -1254,6 +1298,13 @@ $montserrat-font: 'Montserrat', sans-serif;
           left: 50%;
           bottom: rem(-1.3);
         }
+        &.on-overview {
+          background-color: $gray-1;
+          &::after,
+          &::before {
+            background-color: $gray-1;
+          }
+        }
       }
       &-item {
         &-wrap {
@@ -1272,12 +1323,13 @@ $montserrat-font: 'Montserrat', sans-serif;
           }
           $rotations: 90deg, -90deg, 90deg;
           $margins: 0, 114.39, 117.89;
+          
           @for $i from 1 through 3 {
             &:nth-child(#{$i}) {
-              @if nth($margins, $i) != 0 {
-                margin-top: rem(nth($margins, $i));
+              @if list.nth($margins, $i) != 0 {
+                margin-top: rem(list.nth($margins, $i));
               }
-              transform: translateY(rem(120)) rotate(nth($rotations, $i));
+              transform: translateY(rem(120)) rotate(list.nth($rotations, $i));
             }
           }
           &.active {
@@ -1288,5 +1340,31 @@ $montserrat-font: 'Montserrat', sans-serif;
     }
   }
 
+  .overview-section {
+    background-color: $d-black;
+    padding: rem(324) 0 rem(250);
+    &-content {
+      &-list {
+        display: flex;
+        &-item {
+          display: inline-flex;
+          img {
+            object-fit: cover;
+          }
+          & + .overview-section-content-list-item {
+            &::before {
+              content: ',';
+              display: inline-block;
+              font-weight: 600;
+              font-size: rem(84);
+              color: $d-white;
+              align-self: flex-end;
+              margin-right: rem(16);
+            }
+          }
+        }
+      }
+    }
+  }
 }
 </style>
