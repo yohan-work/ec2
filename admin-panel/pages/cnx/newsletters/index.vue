@@ -40,8 +40,8 @@ import NewsletterList from './NewsletterList.vue'
 
 // 레이아웃 설정
 definePageMeta({
-  layout: 'concentrix'
-});
+  layout: 'concentrix',
+})
 
 /**
  * 뉴스레터 목록 페이지
@@ -246,10 +246,6 @@ const restoreScrollPosition = () => {
             behavior: 'smooth',
             block: 'center',
           })
-
-          // 하이라이트 효과(임시 처리)
-          targetElement.style.transition = 'box-shadow 0.3s ease'
-          targetElement.style.boxShadow = '0 0 0 3px rgba(99, 102, 241, 0.3)'
 
           setTimeout(() => {
             targetElement.style.boxShadow = ''

@@ -27,17 +27,20 @@ export default defineEventHandler(async event => {
       })
     }
 
-    // 현재 뉴스레터보다 이전에 발행된 뉴스레터들을 가져옴
-    const relatedNewsletters = await prisma.newsletters.findMany({
+    // 과거 기사 조회
+    const olderNewsletters = await prisma.newsletters.findMany({
       where: {
         status: 'published',
+        id: {
+          not: BigInt(currentId), // 현재 뉴스레터 제외
+        },
         published_at: {
           lt: currentNewsletter.published_at || new Date(), // 현재 뉴스레터보다 더 오래된 것들
         },
       },
       take: limit,
       orderBy: {
-        published_at: 'desc', // 최신 순서대로 정렬 (가장 최근에 발행된 것이 먼저)
+        published_at: 'desc', // 상대적 최신순 (오래된 것 중 가장 최신)
       },
       include: {
         admin_users: {
@@ -52,6 +55,43 @@ export default defineEventHandler(async event => {
         },
       },
     })
+
+    // 제일 오래된 게시글 접근 시 최신 기사로 보완
+    let relatedNewsletters = [...olderNewsletters]
+
+    if (relatedNewsletters.length < limit) {
+      const remainingCount = limit - relatedNewsletters.length
+
+      const newerNewsletters = await prisma.newsletters.findMany({
+        where: {
+          status: 'published',
+          id: {
+            not: BigInt(currentId), // 현재 뉴스레터 제외
+          },
+          published_at: {
+            gte: currentNewsletter.published_at || new Date(), // 현재 뉴스레터와 같거나 최신 것들
+          },
+        },
+        take: remainingCount,
+        orderBy: {
+          published_at: 'desc', // 최신순
+        },
+        include: {
+          admin_users: {
+            select: {
+              email: true,
+              departments: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      })
+
+      relatedNewsletters = [...relatedNewsletters, ...newerNewsletters]
+    }
 
     return {
       success: true,

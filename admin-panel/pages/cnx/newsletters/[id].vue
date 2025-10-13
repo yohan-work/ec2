@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- 메인 콘텐츠 -->
     <main>
       <div class="newsletter">
@@ -68,11 +67,10 @@
 </template>
 
 <script setup>
-
 // 레이아웃 설정
 definePageMeta({
-  layout: 'concentrix'
-});
+  layout: 'concentrix',
+})
 
 /**
  * 뉴스레터 상세 페이지
@@ -152,20 +150,53 @@ const fetchNewsletter = async () => {
   }
 }
 
-// 관련 뉴스레터 조회 (현재 뉴스레터 제외하고 최근 3개)
+// 관련 뉴스레터 조회 (과거 기사 우선, 부족 시 최신 기사로 보완)
 const fetchRelatedNewsletters = async () => {
   try {
     if (useDummy) {
       // === 더미 데이터 로직 ===
       const response = await $fetch('/data/newsletters-dummy.json')
 
-      // 현재 뉴스레터를 제외하고 최근 5개 가져오기
-      const filteredNewsletters = response.data
-        .filter(item => item.id != newsletterId) // 현재 뉴스레터 제외
-        .sort((a, b) => new Date(b.published_at) - new Date(a.published_at)) // 최신순 정렬
-        .slice(0, 5) // 최대 5개만
+      // 현재 뉴스레터의 날짜
+      const currentDate = new Date(newsletter.value.published_at)
 
-      relatedNewsletters.value = filteredNewsletters
+      // 현재 뉴스레터 제외
+      const allNewsletters = response.data.filter(
+        item => item.id != newsletterId
+      )
+
+      // 과거 기사와 최신 기사로 분리
+      const olderNewsletters = allNewsletters
+        .filter(item => new Date(item.published_at) < currentDate)
+        .sort((a, b) => new Date(b.published_at) - new Date(a.published_at)) // 상대적 최신순 (오래된 것 중 가장 최신)
+
+      const newerNewsletters = allNewsletters
+        .filter(item => new Date(item.published_at) >= currentDate)
+        .sort((a, b) => new Date(b.published_at) - new Date(a.published_at)) // 최신순
+
+      // 과거 기사를 우선으로 채우고, 부족하면 최신 기사로 보완
+      const result = []
+      const maxCount = 5
+
+      // 과거 기사 먼저 추가
+      for (
+        let i = 0;
+        i < olderNewsletters.length && result.length < maxCount;
+        i++
+      ) {
+        result.push(olderNewsletters[i])
+      }
+
+      // 제일 오래된 게시글 접근 시 최신 기사로 보완
+      for (
+        let i = 0;
+        i < newerNewsletters.length && result.length < maxCount;
+        i++
+      ) {
+        result.push(newerNewsletters[i])
+      }
+
+      relatedNewsletters.value = result
     } else {
       // === DB 연결 로직 ===
       const response = await $fetch('/api/public/newsletters/related', {
