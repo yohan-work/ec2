@@ -1,0 +1,148 @@
+<template>
+  <!-- Visual Title -->
+  <div class="careers-visual-title" ref="containerRef">
+    <picture>
+      <source srcset="/assets/cnx/careers/visual-work.png" media="(min-width: 1024px)" />
+      <source srcset="/assets/cnx/careers/visual-work_t.png" media="(min-width: 768px)" />
+      <img src="/assets/cnx/careers/visual-work_m.png" alt="What we do work" ref="imageRef" />
+    </picture>
+    <h4 class="careers-visual-title__title" v-html="title" ref="titleRef"></h4>
+  </div>
+</template>
+
+<script setup>
+
+  import { ref, onMounted, onUnmounted } from 'vue'
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  const props = defineProps({
+    title: {
+      type: String,
+      required: true
+    }
+  })
+
+  const imageRef = ref(null)
+  const titleRef = ref(null)
+  const containerRef = ref(null)
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  let observer = null
+
+  const initAnimation = () => {
+    if (!imageRef.value && !titleRef.value) return
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.value,
+        start: 'top 90%',
+        toggleActions: 'play none none none',
+      }
+    })
+
+    tl.fromTo(imageRef.value, {
+      scale: 1.2,
+    }, {
+      scale: 1,
+      ease: 'power2.out',
+      duration: 1
+    })
+    .fromTo(titleRef.value, {
+      y: '-50%',
+      opacity: 0,
+    }, {
+      y: 0,
+      opacity: 1,
+      ease: 'power2.out',
+      duration: 1
+    }, 0)
+  }
+
+  onMounted(() => {
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0) {
+            initAnimation()
+            if (observer) {
+              observer.disconnect()
+              observer = null
+            }
+          }
+        })
+      },
+      {
+        threshold: 0,
+        rootMargin: '0px 0px 2560px 0px',
+        root: null
+      }
+    )
+    
+    if (containerRef.value) {
+      observer.observe(containerRef.value)
+    }
+  })
+
+  onUnmounted(() => {
+    if (observer) {
+      observer.disconnect()
+    }
+  })
+
+</script>
+
+<style lang="scss" scoped>
+
+  @use '~/layouts/scss/cnx' as *;
+  @use '~/layouts/scss/cnx/_variables' as *;
+  @use '~/layouts/scss/cnx/_mixins' as *;
+  @use '~/layouts/scss/cnx/_functions' as *;
+
+  .careers-visual-title { 
+    position: relative;
+    overflow: hidden;
+    border-radius: rem(12);
+    picture {
+      aspect-ratio: 312 / 152;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.2);
+    }
+    @include tablet {
+      border-radius: rem(24);
+      picture {
+        aspect-ratio: 640 / 310;
+      }
+    }
+    @include desktop {
+      border-radius: rem(40);
+      picture {
+        aspect-ratio: 1320 / 640;
+      }
+    }
+
+    &__title {
+      position: absolute;
+      top: rem(16);
+      left: rem(12);
+      color: #fff;
+      transform: translateY(30px);
+      opacity: 0;
+      @include body-01;
+      @include tablet {
+        top: rem(32);
+        left: rem(24);
+        @include sub-headline-02;
+      }
+      @include desktop {
+        top: rem(60);
+        left: rem(44);
+      }
+    }
+  }
+</style>
