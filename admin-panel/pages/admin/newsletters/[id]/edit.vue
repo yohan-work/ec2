@@ -771,9 +771,9 @@ const uploadThumbnail = async () => {
     const file = event.target.files[0]
     if (!file) return
 
-    // 파일 크기 검사 (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('파일 크기가 너무 큽니다. (최대 5MB)')
+    // 파일 크기 검사 (15MB)
+    if (file.size > 15 * 1024 * 1024) {
+      alert('파일 크기가 너무 큽니다. (최대 15MB)')
       return
     }
 
@@ -815,9 +815,9 @@ const uploadBodyImage = async () => {
     const file = event.target.files[0]
     if (!file) return
 
-    // 파일 크기 검사 (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('파일 크기가 너무 큽니다. (최대 5MB)')
+    // 파일 크기 검사 (15MB)
+    if (file.size > 15 * 1024 * 1024) {
+      alert('파일 크기가 너무 큽니다. (최대 15MB)')
       return
     }
 

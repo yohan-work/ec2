@@ -36,12 +36,12 @@ export default defineEventHandler(async event => {
       })
     }
 
-    // 파일 크기 검사 (5MB 제한)
-    const maxSize = 5 * 1024 * 1024 // 5MB
+    // 파일 크기 검사 (15MB 제한)
+    const maxSize = 15 * 1024 * 1024 // 15MB
     if (file.data.length > maxSize) {
       throw createError({
         statusCode: 400,
-        statusMessage: '파일 크기가 너무 큽니다. (최대 5MB)',
+        statusMessage: '파일 크기가 너무 큽니다. (최대 15MB)',
       })
     }
 
