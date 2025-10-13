@@ -1,5 +1,106 @@
 <template>
   <div class="styleguide-section">
+
+    <!-- Swiper 컴포넌트 -->
+    <div class="component-section">
+      <h3 class="section-title">AppSwiper</h3>
+      <p class="section-description">
+        스와이퍼 컴포넌트입니다.<br>
+        autoplay와 애니메이션 속도, lightMode 옵션을 지원합니다.<br>
+      </p>
+
+      <div class="component-demo">
+        <h4 class="demo-title">기본 사용법</h4>
+        <div class="demo-content">
+          <AppSwiper :effect="'fade'" :autoplay="5000">
+            <picture>
+              <source srcset="/assets/cnx/careers/slide_01.png" media="(min-width: 1024px)" />
+              <source srcset="/assets/cnx/careers/slide_01_t.png" media="(min-width: 768px)" />
+              <img src="/assets/cnx/careers/slide_01_m.png" alt="Live at Concentrix" />
+            </picture>
+            <picture>
+              <source srcset="/assets/cnx/careers/slide_02.png" media="(min-width: 1024px)" />
+              <source srcset="/assets/cnx/careers/slide_02_t.png" media="(min-width: 768px)" />
+              <img src="/assets/cnx/careers/slide_02_m.png" alt="Our Operating Philosophies" />
+            </picture>
+            <picture>
+              <source srcset="/assets/cnx/careers/slide_03.png" media="(min-width: 1024px)" />
+              <source srcset="/assets/cnx/careers/slide_03_t.png" media="(min-width: 768px)" />
+              <img src="/assets/cnx/careers/slide_03_m.png" alt="Our Culture" />
+            </picture>
+          </AppSwiper>
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppSwiper :effect="'fade'" :autoplay="5000" /&gt;
+  &lt;picture&gt;
+    &lt;source srcset="/assets/cnx/careers/slide_01.png" media="(min-width: 1024px)" /&gt;
+    &lt;source srcset="/assets/cnx/careers/slide_01_t.png" media="(min-width: 768px)" /&gt;
+    &lt;img src="/assets/cnx/careers/slide_01_m.png" alt="Live at Concentrix" /&gt;
+  &lt;/picture&gt;
+  &lt;picture&gt;
+    &lt;source srcset="/assets/cnx/careers/slide_02.png" media="(min-width: 1024px)" /&gt;
+    &lt;source srcset="/assets/cnx/careers/slide_02_t.png" media="(min-width: 768px)" /&gt;
+    &lt;img src="/assets/cnx/careers/slide_02_m.png" alt="Our Operating Philosophies" /&gt;
+  &lt;/picture&gt;
+  &lt;picture&gt;
+    &lt;source srcset="/assets/cnx/careers/slide_03.png" media="(min-width: 1024px)" /&gt;
+    &lt;source srcset="/assets/cnx/careers/slide_03_t.png" media="(min-width: 768px)" /&gt;
+    &lt;img src="/assets/cnx/careers/slide_03_m.png" alt="Our Culture" /&gt;
+  &lt;/picture&gt;
+&lt;/AppSwiper&gt;  
+</code></pre>
+        </div>
+
+        <div class="props-table">
+          <h4 class="props-title">Props</h4>
+          <table class="props-table-content">
+            <thead>
+              <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Option</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>effect</td>
+                <td>String</td>
+                <td>'slide'</td>
+                <td>null | 'slide' | 'fade'</td>
+                <td>스와이퍼 효과</td>
+              </tr>
+              <tr>
+                <td>speed</td>
+                <td>Number</td>
+                <td>400</td>
+                <td>null | number</td>
+                <td>애니메이션 속도 (ms)</td>
+              </tr>
+              <tr>
+                <td>autoplay</td>
+                <td>Number</td>
+                <td>null</td>
+                <td>null | number</td>
+                <td>자동 재생 속도 (ms) / null시 자동 재생 비활성화</td>
+              </tr>
+              <tr>
+                <td>lightMode</td>
+                <td>Boolean</td>
+                <td>false</td>
+                <td>null | boolean</td>
+                <td>라이트 모드 / 사용 시 버튼, 페이지네이션 색상 흰색</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+      </div>
+    </div>
+
     <!-- AppKeyVisual 컴포넌트 -->
     <div class="component-section">
       <h3 class="section-title">AppKeyVisual</h3>
@@ -292,6 +393,7 @@
 import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AppSubCont from '~/components/cnx/AppSubCont.vue'
+import AppSwiper from '~/components/cnx/AppSwiper.vue'
 </script>
 
 <style lang="scss" scoped>
