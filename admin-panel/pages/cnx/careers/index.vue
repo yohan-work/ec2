@@ -19,7 +19,7 @@
           <source srcset="/assets/cnx/careers/slide_01_t.png" media="(min-width: 768px)" />
           <img src="/assets/cnx/careers/slide_01_m.png" alt="Live at Concentrix" />
         </picture>
-        <div class="careers__swiper-content sr-only">
+        <div class="careers__swiper-content a11y-hidden">
           <strong class="sub-headline-01">Life at Concentrix</strong>
           <p class="body-02">
             우리는 옳은 일은 한다고 믿습니다.<br>
@@ -35,7 +35,7 @@
           <source srcset="/assets/cnx/careers/slide_02_t.png" media="(min-width: 768px)" />
           <img src="/assets/cnx/careers/slide_02_m.png" alt="Our Operating Philosophies" />
         </picture>
-        <div class="careers__swiper-content sr-only">
+        <div class="careers__swiper-content a11y-hidden">
           <strong class="sub-headline-01">Our Operating Philosophies</strong>
           <p>
             <b class="sub-headline-02">Visibility</b><br>
@@ -57,7 +57,7 @@
           <source srcset="/assets/cnx/careers/slide_03_t.png" media="(min-width: 768px)" />
           <img src="/assets/cnx/careers/slide_03_m.png" alt="Our Culture" />
         </picture>
-        <div class="careers__swiper-content sr-only">
+        <div class="careers__swiper-content a11y-hidden">
           <strong class="sub-headline-01">Our Culture</strong>
           <p class="body-02">
             We are not here for the status quo!<br>

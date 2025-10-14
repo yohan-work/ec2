@@ -36,7 +36,7 @@
       <div class="swiper-pagination-custom" ref="paginationElRef"></div>
       <!-- play / pause button -->
       <button type="button" class="swiper-button-play-custom" ref="playElRef" :class="{ 'pause': !isPlaying }" @click="toggleAutoplay" v-if="props.autoplay">
-        <span class="sr-only">pause</span>
+        <span class="a11y-hidden">pause</span>
       </button>
     </div>
   </div>
@@ -92,7 +92,7 @@
     el: paginationElRef.value,
     type: 'bullets',
     renderBullet: (index, className) => {
-      return `<button class="${className} custom-bullet"><span class="sr-only">${index + 1}</span></button>`
+      return `<button class="${className} custom-bullet"><span class="a11y-hidden">${index + 1}</span></button>`
     }
   }))
 
