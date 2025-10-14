@@ -25,7 +25,7 @@
         <source 
           v-if="desktopImage"
           :srcset="desktopImage" 
-          media="(min-width: 1024px)"
+          media="(min-width: 1320px)"
         />
         <source 
           v-if="tabletImage"
@@ -218,6 +218,39 @@ onMounted(async () => {
   // DOM이 완전히 렌더링된 후 애니메이션 초기화
   await nextTick()
   initAnimation()
+
+  // 미디어 쿼리 테스트 코드
+  console.log('=== AppImgCont 미디어 쿼리 테스트 ===')
+  console.log('Desktop (min-width: 1320px):', window.matchMedia('(min-width: 1320px)').matches)
+  console.log('Tablet (min-width: 768px):', window.matchMedia('(min-width: 768px)').matches)
+  console.log('현재 화면 크기:', window.innerWidth + 'px')
+  console.log('이미지 경로들:', {
+    desktop: desktopImage.value,
+    tablet: tabletImage.value,
+    mobile: mobileImage.value
+  })
+
+  // 미디어 쿼리 변경 감지
+  const desktopMediaQuery = window.matchMedia('(min-width: 1320px)')
+  const tabletMediaQuery = window.matchMedia('(min-width: 768px)')
+
+  const handleMediaChange = (mediaQuery, name) => {
+    console.log(`${name} 미디어 쿼리 변경:`, mediaQuery.matches, `(현재 화면: ${window.innerWidth}px)`)
+  }
+
+  desktopMediaQuery.addEventListener('change', (e) => handleMediaChange(e, 'Desktop'))
+  tabletMediaQuery.addEventListener('change', (e) => handleMediaChange(e, 'Tablet'))
+
+  // 리사이즈 이벤트도 추가
+  const handleResize = () => {
+    console.log('화면 크기 변경:', window.innerWidth + 'px')
+    console.log('미디어 쿼리 상태:', {
+      desktop: window.matchMedia('(min-width: 1320px)').matches,
+      tablet: window.matchMedia('(min-width: 768px)').matches
+    })
+  }
+
+  window.addEventListener('resize', handleResize)
 })
 </script>
 
