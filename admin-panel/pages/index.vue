@@ -19,7 +19,7 @@ definePageMeta({
 
 // 메타 태그
 useHead({
-  title: '뉴스레터 & 채용공고',
+  title: '홈',
   meta: [
     { name: 'description', content: '최신 뉴스레터와 채용 정보를 확인하세요' },
   ],

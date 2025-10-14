@@ -1,0 +1,89 @@
+name: CI/CD
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: CI (lint/test/build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Test
+        run: npm test --if-present
+
+      - name: Build
+        run: npm run build
+
+  deploy:
+    name: CD (EC2 via SSH)
+    if: github.ref == 'refs/heads/main' && success()
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+
+            # nvm/환경 로드 (EC2가 nvm을 쓰는 경우 대비)
+            [ -f ~/.bash_profile ] && source ~/.bash_profile || true
+            [ -f ~/.bashrc ] && source ~/.bashrc || true
+            [ -s ~/.nvm/nvm.sh ] && . ~/.nvm/nvm.sh && nvm use --lts || true
+
+            cd "${EC2_PROJECT_PATH:-/home/ec2-user/ec2/admin-panel}"
+
+            echo "[1/4] Git sync"
+            git fetch --all
+            git checkout main
+            git pull origin main --ff-only
+
+            echo "[2/4] Install & Build"
+            if [ -f package-lock.json ]; then
+              npm ci --prefer-offline
+            else
+              npm install
+            fi
+            npm run build
+
+            echo "[3/4] PM2 reload/start"
+            pm2 describe "${PM2_APP:-cnx-dev}" >/dev/null 2>&1 || pm2 start ecosystem.config.cjs --name "${PM2_APP:-cnx-dev}"
+            pm2 reload "${PM2_APP:-cnx-dev}" || pm2 restart "${PM2_APP:-cnx-dev}"
+            pm2 save || true
+
+            echo "[4/4] Health check"
+            curl -fsS http://localhost:3000/ >/dev/null || (echo "Health check failed" && exit 1)
+
+            echo "✅ Deploy done"
