@@ -50,7 +50,7 @@
       duration: 1
     })
     .fromTo(titleRef.value, {
-      y: '-50%',
+      y: 30,
       opacity: 0,
     }, {
       y: 0,

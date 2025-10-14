@@ -6,7 +6,7 @@
       <h3 class="section-title">AppSwiper</h3>
       <p class="section-description">
         스와이퍼 컴포넌트입니다.<br>
-        autoplay와 애니메이션 속도, lightMode 옵션을 지원합니다.<br>
+        autoplay와 애니메이션 속도, darkMode 옵션을 지원합니다.<br>
       </p>
 
       <div class="component-demo">
@@ -88,11 +88,11 @@
                 <td>자동 재생 속도 (ms) / null시 자동 재생 비활성화</td>
               </tr>
               <tr>
-                <td>lightMode</td>
+                <td>darkMode</td>
                 <td>Boolean</td>
                 <td>false</td>
                 <td>null | boolean</td>
-                <td>라이트 모드 / 사용 시 버튼, 페이지네이션 색상 흰색</td>
+                <td>다크 모드 / 사용 시 버튼, 페이지네이션 색상 흰색</td>
               </tr>
             </tbody>
           </table>

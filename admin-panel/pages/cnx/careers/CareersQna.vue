@@ -39,16 +39,26 @@
   })
 
   const containerRef = ref(null)
-  const qaOpenRef = ref(new Set())
   const titleRef = ref(null)
   const listRef = ref(null)
+  const qaOpenRef = ref(new Set())
+
+  // Q&A 토글
+  // const toggleQaItem = (refName) => {
+  //   const newSet = new Set(qaOpenRef.value)
+  //   if (newSet.has(refName)) {
+  //     newSet.delete(refName)
+  //   } else {
+  //     newSet.add(refName)
+  //   }
+  //   qaOpenRef.value = newSet
+  // }
 
   // Q&A 토글
   const toggleQaItem = (refName) => {
-    console.log(refName)
-    const newSet = new Set(qaOpenRef.value)
-    if (newSet.has(refName)) {
-      newSet.delete(refName)
+    const newSet = new Set()
+    if (qaOpenRef.value.has(refName)) {
+      newSet.clear()
     } else {
       newSet.add(refName)
     }
@@ -179,7 +189,7 @@
       }
       &[aria-expanded='true'] {
         &::after {
-          transform: rotate(180deg);
+          transform: rotate(-180deg);
         }
       }
 
