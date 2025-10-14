@@ -2,9 +2,9 @@
   <div class="careers">
 
     <AppKeyVisual 
-      imageAlt="Style Guide Key Visual"
+      imageAlt="Careers Key Visual"
       :animationDuration="1500"
-      imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+      imagePath="/assets/cnx/careers"
     />
 
     <AppTitle 

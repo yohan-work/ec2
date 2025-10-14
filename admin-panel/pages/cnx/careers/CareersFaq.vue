@@ -91,9 +91,10 @@
   @use '~/layouts/scss/cnx/_functions' as *;
 
   .careers-faq {
-    margin-top: rem(64);
+    overflow: hidden;
+    margin-block: rem(64) rem(32);
     @include tablet {
-      margin-top: rem(100);
+      margin-block: rem(100) rem(64);
     }
     @include desktop {
       margin-top: rem(120); 
