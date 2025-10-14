@@ -22,6 +22,7 @@
         :keyboard="keyboardOptions"
         :a11y="a11yOptions"
         @swiper="onSwiperInit"
+        @slideChange="onSlideChange"
         class="banner-slide"
         role="region"
         aria-roledescription="carousel"
@@ -77,7 +78,7 @@
             </div>
           </div>
         </swiper-slide>
-        <div class="banner-slide-controller">
+        <div class="banner-slide-controller" :class="{ black: isPaginationBlack }">
           <div class="banner-slide-controller-pagination"></div>
           <button 
             class="banner-slide-controller-button"
@@ -254,7 +255,7 @@
         <AppSwiper 
           :effect="'fade'" 
           :autoplay="5000"
-          :lightMode="true"  
+          :darkMode="true"  
         >
           <picture>
             <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01.jpg" media="(min-width: 768px)" />
@@ -289,6 +290,53 @@
           text="CiX의 사업영역은 UX/BX 컨설팅, 디지털 채널의 구축/운영, <br>디지털마케팅 콘텐츠 제작으로 나누어집니다."
         >
         </AppTitle>
+        <div class="works-section-diagram">
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram.jpg" media="(min-width: 1024px)" />
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram_t.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram_m.jpg" alt="works_diagram" />
+          </picture>
+        </div>
+        <div class="works-section-content">
+          <div class="works-section-content-item">
+            <AppImgCont 
+              title="Operation"
+              text="다양한 디지털 채널에서의 KPI 달성을 위한 채널운영, 프로모션 기획, 이벤트 제작, 그외 브랜드 활동 등을 적극적이고 선제적으로 지원합니다. <br>또한 채널 내 UX/UI 개선 활동이나 추가 서비스개발을 수행하여 장기적인 관점에서의 채널 고도화를 지원합니다."
+              imageName="works01"
+              imageAlt="Operation"
+              imagePath="/assets/cnx/whatwedo/strategyndesign/contentsndesign"
+              :reverse="true"
+              :subItems="[
+                { title: 'Operation', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Advanced Operational Services <br>Producing Production Content <br>Create/Operate Events, Promotions <br>Digital Contents Monitoring' },
+              ]"
+            />  
+          </div>
+          <div class="works-section-content-item">
+            <AppImgCont 
+              title="UX/UI Design"
+              text="데이터 분석 기반의 플랫폼, 서비스, 시스템 개발을 지원합니다. Concentrix 만의 UX/UI Framework과 Process를 통해 안정적으로 프로젝트를 수행합니다. 또한 전략컨설팅, UX컨설팅 프로젝트의 기획, 디자인, 퍼블리싱 업무를 지원합니다."
+              imageName="works02"
+              imageAlt="UX/UI Design"
+              imagePath="/assets/cnx/whatwedo/strategyndesign/contentsndesign"
+              :subItems="[
+                { title: 'UX/UI Design', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Strategy/UX Consulting' },
+              ]"
+            />  
+          </div>
+          <div class="works-section-content-item">
+            <AppImgCont 
+              title="Digital Contents Creation"
+              text="글로벌 플랫폼 내 콘텐츠 제작 및 확산을 수행하며, 대형 온라인 전시 및 포럼 등의 행사기획부터 영상 콘텐츠 제작, 마이크로사이트 구축까지 지원합니다. 또한 소셜미디어 콘텐츠 전략, 기획, 촬영, 제작, 운영 등을 서비스하고 있으며 라이브 커머스, 메타버스와 같은 최신 트렌드를 반영한 서비스의 전략, 기획, 콘텐츠 제작, 촬영 지원 등의 업무를 지원합니다."
+              imageName="works03"
+              imageAlt="Digital Contents Creation"
+              imagePath="/assets/cnx/whatwedo/strategyndesign/contentsndesign"
+              :reverse="true"
+              :subItems="[
+                { title: 'Digital Contents Creation', text: 'Global Platform Product Details Page <br>Contents Migration <br>Social Channel Contents <br>Online Exhibition Planning and Production <br>Microsite Development <br>Live Commerce , Metaverse <br>Brand Content Creation' },
+              ]"
+            />  
+          </div>
+        </div>
       </div>
     </section>
     <!-- E : works-section -->
@@ -299,6 +347,7 @@
 import AppTitle from '~/components/cnx/AppTitle.vue';
 import AppButton from '~/components/cnx/AppButton.vue';
 import AppSwiper from '~/components/cnx/AppSwiper.vue';
+import AppImgCont from '~/components/cnx/AppImgCont.vue';
 import { nextTick } from 'vue';
 
 // Import Swiper Vue.js components
@@ -427,6 +476,7 @@ const initBannerScrollAnimation = () => {
   let widthStableTimer = null;
   let lastWrapperWidth = (swiperWrapper) ? swiperWrapper.scrollWidth : 0;
   let horizontalObserver = null;
+  let isRebuilding = false; // 재초기화 중복 가드
 
   const getWrapperWidth = () => {
     // scrollWidth는 자식들의 width 변화(토글 등)를 포함해 최신 전체 길이를 반환
@@ -481,6 +531,8 @@ const initBannerScrollAnimation = () => {
 
   const initScrollAnimation = () => {
     if (!swiperWrapper || !container) return;
+    if (isRebuilding) return;
+    isRebuilding = true;
 
     // kill 이전의 현재 translateX 값을 보관하여 delta 만큼만 부드럽게 이동
     const getCurrentTranslateX = (el) => {
@@ -510,6 +562,7 @@ const initBannerScrollAnimation = () => {
     // wrapper가 컨테이너보다 같거나 작으면 애니메이션 불필요
     if (wrapperWidth <= containerWidth) {
       ScrollTrigger.refresh();
+      isRebuilding = false;
       return;
     }
 
@@ -588,18 +641,20 @@ const initBannerScrollAnimation = () => {
 
       requestAnimationFrame(() => {
         const st = bannerScroll.scrollTrigger;
-        const targetScroll = st.start + prevProgress * (st.end - st.start);
-        // 애니메이션/스크롤을 동일 진행도로 맞춤
+        // 애니메이션/포지션을 동일 진행도로 맞춤 (스크롤 강제 이동은 생략하여 튐 현상 방지)
         bannerScroll.progress(prevProgress, false); // 이 시점에 wrapper transform → targetX
-        st.scroll(targetScroll);
-        st.update();
+        st && st.update();
         // transition 종료 후 정리
         const clearTransition = () => {
           try { (swiperWrapper).style.transition = ''; } catch (_) { /* ignore */ }
+          isRebuilding = false;
         };
         (swiperWrapper).addEventListener('transitionend', clearTransition, { once: true });
         setTimeout(clearTransition, 600);
       });
+    } else {
+      // 복원할 진행도가 없으면 즉시 플래그 해제
+      isRebuilding = false;
     }
   };
 
@@ -643,6 +698,7 @@ const initBannerScrollAnimation = () => {
   const onResize = () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+      if (isRebuilding) return; // 재초기화 중에는 리사이즈 처리 생략
       // 모바일 플래그 업데이트
       isMobile.value = window.innerWidth < 768;
       if (window.innerWidth >= 768) {
@@ -840,7 +896,7 @@ const initIntroHoverTilt = () => {
       const rotateY = nx * maxTilt;
       const rotateX = -ny * maxTilt;
       try {
-        gsap.to(img, { rotateX, rotateY, z: 28, scale: 1.06, duration: 0.12, ease: 'power2.out' });
+        gsap.to(img, { rotateX, rotateY, z: 28, scale: 1.08, duration: 0.12, ease: 'power2.out' });
       } catch (_) { /* noop */ }
     };
 
@@ -957,6 +1013,7 @@ const paginationOptions = {
 // Swiper 인스턴스 제어 및 자동재생 상태
 const swiperInstance = ref(null);
 const isAutoplayRunning = ref(true);
+const currentSlideIndex = ref(0);
 
 const onSwiperInit = (swiper) => {
   swiperInstance.value = swiper;
@@ -965,6 +1022,14 @@ const onSwiperInit = (swiper) => {
   } catch (_) {
     isAutoplayRunning.value = false;
   }
+  try {
+    currentSlideIndex.value = typeof swiper?.realIndex === 'number' ? swiper.realIndex : (swiper?.activeIndex ?? 0);
+    swiper?.on?.('slideChange', () => {
+      try {
+        currentSlideIndex.value = typeof swiper?.realIndex === 'number' ? swiper.realIndex : (swiper?.activeIndex ?? 0);
+      } catch (_) { /* ignore */ }
+    });
+  } catch (_) { /* ignore */ }
 };
 
 const toggleAutoplay = () => {
@@ -983,6 +1048,23 @@ const toggleAutoplay = () => {
   }
 };
 
+// 슬라이드 변경 이벤트 핸들러 (템플릿 바인딩용)
+const onSlideChange = (swiper) => {
+  try {
+    currentSlideIndex.value = typeof swiper?.realIndex === 'number' ? swiper.realIndex : (swiper?.activeIndex ?? 0);
+  } catch (_) { /* ignore */ }
+};
+
+// 현재 슬라이드의 paginationColor가 black인지 여부
+const isPaginationBlack = computed(() => {
+  try {
+    const idx = typeof currentSlideIndex.value === 'number' ? currentSlideIndex.value : 0;
+    return slideData.value?.[idx]?.paginationColor === 'black';
+  } catch (_) {
+    return false;
+  }
+});
+
 // 이미지 경로 생성 함수
 const getImageSrc = (index) => {
   const paddedIndex = index < 10 ? `0${index}` : `${index}`;
@@ -997,7 +1079,7 @@ const slideData = ref([
     description: "글로벌 Top Tier 타이어 기술력과 Formula E 및다수의 글로벌 모터스포츠 대회에 타이어 공급, 참가팀 후원에 대한 정보를 제공하고자 글로벌 웹사이트 신규 구축 및 확산 업무 수행",
     launch: "Septtember 28, 2022",
     client: "Hankook Tire & Technology",
-    borderColor: 'white'
+    borderColor: 'white',
   },
   {
     title: "Amorepacific HK <br>Sulwhasoo <br>D2C mall <br>Development",
@@ -1057,7 +1139,8 @@ const slideData = ref([
     client: "LG Electronics",
     textColor: 'black',
     activeColor: 'white',
-    borderColor: 'white'
+    borderColor: 'white',
+    paginationColor: 'black'
   },
   {
     title: "Counselor <br>App Service <br>Development",
@@ -1082,7 +1165,8 @@ const slideData = ref([
     launch: "June, 2019",
     client: "Amorepacific",
     textColor: 'black',
-    borderColor: 'black'
+    borderColor: 'black',
+    paginationColor: 'black'
   }
 ]);
 
@@ -1130,7 +1214,9 @@ const getBorderClass = (slide, index) => {
 
 
 .contents-and-design {
-
+  * {
+    word-break: keep-all;
+  }
   .banner-slide {
     width: 100%;    
     position: relative;  
@@ -1172,7 +1258,7 @@ const getBorderClass = (slide, index) => {
       
       &-content {
         width: 100%;
-        height: calc(100vh - rem(71));
+        height: max(rem(620), calc(100vh - rem(71)));
         padding: rem(24);
         display: flex;
         flex-direction: column;
@@ -1185,6 +1271,7 @@ const getBorderClass = (slide, index) => {
         color: $d-white;
         @include tablet {
           justify-content: flex-start;
+          height: calc(100vh - rem(71));
           padding: rem(24);
           background-position: left center;
         }
@@ -1397,6 +1484,7 @@ const getBorderClass = (slide, index) => {
           // 하지만 접근성을 위해 실제 타겟은 24px 유지
         }
       }
+
       &-button {
         width: rem(12);
         height: rem(12);
@@ -1413,6 +1501,19 @@ const getBorderClass = (slide, index) => {
         // 모바일 전용으로 표시, 태블릿 이상에서는 숨김
         @include tablet {
           display: none;
+        }
+      }
+      
+      // pagination color variant: black (controller-level)
+      &.black {
+        :deep(.swiper-pagination-bullet) {
+          background: $d-black;
+        }
+        .banner-slide-controller-button {
+          background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_play_black.svg');
+          &[aria-pressed="true"] {
+            background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_pause_black.svg');
+          }
         }
       }
     }
@@ -1639,10 +1740,26 @@ const getBorderClass = (slide, index) => {
   }
 
   .works-section {
-    padding: rem(100) 0;
+    @include tablet {
+      padding: rem(100) 0;
+    }
+    
     .app-title {
       @include tablet {
         padding: rem(97) 0;
+      }
+    }
+    :deep(.app-img-cont) {
+      .text-content {
+        .description {
+          color: $d-black;
+        }
+      }
+    }
+    &-diagram {
+      margin-bottom: rem(100);
+      img {
+        margin: 0 auto;
       }
     }
   }
