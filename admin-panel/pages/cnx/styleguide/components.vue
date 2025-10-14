@@ -397,11 +397,6 @@ import AppSwiper from '~/components/cnx/AppSwiper.vue'
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-
 .styleguide-section {
   padding: 20px 0;
 }

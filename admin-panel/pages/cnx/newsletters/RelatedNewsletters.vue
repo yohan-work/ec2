@@ -76,10 +76,6 @@ const handleNewsletterClick = (newsletterId) => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-
 .related-newsletters {
   &-title {
     font-weight: $font-weight-bold;

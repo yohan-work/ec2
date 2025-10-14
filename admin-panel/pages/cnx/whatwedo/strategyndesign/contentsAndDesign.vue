@@ -1206,13 +1206,6 @@ const getBorderClass = (slide, index) => {
 <style lang="scss" scoped>
 @use 'sass:list';
 
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-@use '~/layouts/scss/cnx/_base' as *;
-
-
 .contents-and-design {
   * {
     word-break: keep-all;

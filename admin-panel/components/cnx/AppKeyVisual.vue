@@ -88,10 +88,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx/_functions' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-
 .app-key-visual {
   width: 100%;
   height: rem(150); // 모바일 기본 150px

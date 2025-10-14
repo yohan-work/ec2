@@ -59,9 +59,6 @@ if (props.show) {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-
 .toast {
   position: fixed;
   top: 20px;

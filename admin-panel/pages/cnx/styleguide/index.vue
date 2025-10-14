@@ -78,9 +78,6 @@ const getComponent = (sectionId) => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-
 .styleguide {
   max-width: 1200px;
   margin: 0 auto;

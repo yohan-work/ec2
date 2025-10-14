@@ -67,11 +67,6 @@ const handleImageError = event => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-
 .newsletter {
   &-article {
     margin-top: rem(16);

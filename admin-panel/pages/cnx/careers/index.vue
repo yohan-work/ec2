@@ -598,13 +598,7 @@
 </script>
 
 <style lang="scss" scoped>
-
-  @use '~/layouts/scss/cnx' as *;
-  @use '~/layouts/scss/cnx/_variables' as *;
-  @use '~/layouts/scss/cnx/_mixins' as *;
-  @use '~/layouts/scss/cnx/_functions' as *;
-
-  .careers {
+.careers {
 
     &__title {
       padding: rem(56) 0;

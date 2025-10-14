@@ -287,10 +287,6 @@ const copyMixin = async (className) => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-
 .styleguide-section {
   margin-bottom: 80px;
 }

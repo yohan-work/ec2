@@ -10,7 +10,7 @@
       <picture class="careers-faq__image" ref="imageRef">
         <source srcset="/assets/cnx/careers/careers_kit.png" media="(min-width: 1024px)">
         <source srcset="/assets/cnx/careers/careers_kit_t.png" media="(min-width: 768px)">
-        <img src="/assets/cnx/careers/careers_kit_m.png" alt="welcome kit"></img>
+        <img src="/assets/cnx/careers/careers_kit_m.png" alt="welcome kit"/>
       </picture>
     </div>
   </div>
@@ -84,13 +84,7 @@
 </script>
 
 <style lang="scss" scoped>
-
-  @use '~/layouts/scss/cnx' as *;
-  @use '~/layouts/scss/cnx/_variables' as *;
-  @use '~/layouts/scss/cnx/_mixins' as *;
-  @use '~/layouts/scss/cnx/_functions' as *;
-
-  .careers-faq {
+.careers-faq {
     overflow: hidden;
     margin-block: rem(64) rem(32);
     @include tablet {

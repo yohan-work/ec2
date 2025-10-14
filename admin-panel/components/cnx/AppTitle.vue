@@ -110,11 +110,6 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-
 .app-title {
   padding: rem(64) 0;
   text-align: center; // 기본값을 center로 설정

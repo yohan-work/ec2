@@ -243,10 +243,6 @@ defineOptions({
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-
 .the-footer {
   background: $p-dark-blue;
   color: $d-white;

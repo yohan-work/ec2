@@ -107,11 +107,6 @@ const handleButtonClick = () => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-
 // 색상 맵 정의
 $button-colors: (
   'default': $d-black,
