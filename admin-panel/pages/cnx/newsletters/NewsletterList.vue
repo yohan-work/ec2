@@ -14,16 +14,6 @@
         @newsletter-click="handleNewsletterClick"
       />
     </ul>
-
-    <!-- 빈 상태 -->
-    <div v-else class="text-center py-12">
-      <h3 class="mt-2 text-sm font-medium text-gray-900">
-        뉴스레터가 없습니다
-      </h3>
-      <p class="mt-1 text-sm text-gray-500">
-        아직 발행된 뉴스레터가 없습니다.
-      </p>
-    </div>
   </div>
 </template>
 
