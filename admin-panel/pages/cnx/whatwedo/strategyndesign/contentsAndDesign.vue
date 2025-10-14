@@ -96,6 +96,7 @@
     <section class="intro-section" ref="nextSectionRef">
       <div class="inner">
         <AppTitle 
+          class="intro-app-title"
           title="Concentrix <br>interactive <br>eXperience" 
           text="CiX(Concentrix interactive eXperience)는 콘센트릭스 내에서 <br>UX/UI와 Contents 제작을 전담하는 Creative 조직입니다."
         />
@@ -121,33 +122,183 @@
     <section class="overview-section">
       <div class="inner">
         <div class="overview-section-content">
-          <ul class="overview-section-content-list">
+          <!-- PC -->
+          <ul class="overview-section-content-list" v-if="!isMobile">
             <li class="overview-section-content-list-item">
               <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/wedelivercreative.png" alt="wedelivercreative">
             </li>
           </ul>
+          <!-- Mobile -->
+          <ul class="overview-section-content-list" v-else>
+            <li class="overview-section-content-list-item">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/wedeliver.png" alt="wedeliver">
+            </li>
+            <li class="overview-section-content-list-item">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/creative.png" alt="creative">
+            </li>
+          </ul>
           <ul class="overview-section-content-list">
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/report.gif" alt="report">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/report.gif" alt="report">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/report_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/planning.gif" alt="planning">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/planning.gif" alt="planning">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/planning_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/service.gif" alt="service">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/service.gif" alt="service">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/service_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+            </li>
+          </ul>
+          <ul class="overview-section-content-list">
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/graphics.gif" alt="graphics">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/graphics_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/color.gif" alt="color">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/color_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/typography.gif" alt="typography">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/typography_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/logo.gif" alt="logo">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/logo_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+            </li>
+          </ul>
+          <ul class="overview-section-content-list">
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/icon.gif" alt="icon">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/icon_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/guide.gif" alt="guide">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/guide_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/image.gif" alt="image">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/image_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/interaction.gif" alt="interaction">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/interaction_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+            </li>
+          </ul>
+          <ul class="overview-section-content-list">
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/motion.gif" alt="motion">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/motion_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/sound.gif" alt="sound">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/sound_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/illustration.gif" alt="illustration">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/illustration_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
             </li>
           </ul>
         </div>
-      </div>
+      </div> 
     </section>
     <!-- E : overview-section -->
 
+    <section class="office-section">
+      <div class="inner">
+        <AppTitle 
+          title="CiX Office"
+          text="우리는 팀원들의 몰입과 탄탄한 팀워크를 위해서 일하는 환경도 생각합니다."
+        >
+        </AppTitle>
+        <AppSwiper 
+          :effect="'fade'" 
+          :autoplay="5000"
+          :lightMode="true"  
+        >
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01_t.jpg" alt="office_01" />
+          </picture>
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_02.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_02_t.jpg" alt="office_02" />
+          </picture>
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_03.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_03_t.jpg" alt="office_03" />
+          </picture>
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_04.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_04_t.jpg" alt="office_04" />
+          </picture>
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_05.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_05_t.jpg" alt="office_05" />
+          </picture>
+        </AppSwiper> 
+      </div>
+    </section>
+
+    <!-- S : works-section -->
+    <section class="works-section">
+      <div class="inner">
+        <AppTitle 
+          class="works-app-title"
+          title="CiX Works"
+          text="CiX의 사업영역은 UX/BX 컨설팅, 디지털 채널의 구축/운영, <br>디지털마케팅 콘텐츠 제작으로 나누어집니다."
+        >
+        </AppTitle>
+      </div>
+    </section>
+    <!-- E : works-section -->
   </div>
 </template>
 
 <script setup>
 import AppTitle from '~/components/cnx/AppTitle.vue';
 import AppButton from '~/components/cnx/AppButton.vue';
+import AppSwiper from '~/components/cnx/AppSwiper.vue';
 import { nextTick } from 'vue';
 
 // Import Swiper Vue.js components
@@ -353,7 +504,7 @@ const initBannerScrollAnimation = () => {
     // 기존 것이 있으면 제거하고 진행도 저장
     const prevProgress = killScrollAnimation();
 
-  const containerWidth = (container).offsetWidth;
+    const containerWidth = (container).offsetWidth;
     const wrapperWidth = getWrapperWidth();
 
     // wrapper가 컨테이너보다 같거나 작으면 애니메이션 불필요
@@ -387,7 +538,9 @@ const initBannerScrollAnimation = () => {
       try { horizontalObserver.kill(); } catch (_) { /* ignore */ }
       horizontalObserver = null;
     }
+
     const st = bannerScroll.scrollTrigger;
+
     if (st) {
       horizontalObserver = Observer.create({
         target: container,
@@ -785,10 +938,12 @@ const a11yOptions = {
   // Swiper는 문자열 템플릿을 사용합니다. {{index}}, {{slidesLength}} 사용
   slideLabelMessage: '슬라이드 {{index}} / {{slidesLength}}',
 };
+
 const keyboardOptions = {
   enabled: true,
   onlyInViewport: true,
 };
+
 const paginationOptions = {
   el: '.banner-slide-controller-pagination',
   clickable: true,
@@ -1040,8 +1195,6 @@ const getBorderClass = (slide, index) => {
         &.black-text {
           color: $d-black;
           .banner-slide-item-button {
-            // 버튼 color는 :color 바인딩으로 처리되지만,
-            // 텍스트 영역 전체 색 변경을 위해 명시적으로 유지
             border-color: $d-black;
           }
         }
@@ -1080,7 +1233,7 @@ const getBorderClass = (slide, index) => {
           display: flex;
           gap: rem(16);
           flex: 1 1 auto;
-          min-height: 0; // flex 자식의 overflow 계산을 위해 필요
+          min-height: 0;
           text-align: left;
           margin-top: rem(36);
         }
@@ -1129,7 +1282,7 @@ const getBorderClass = (slide, index) => {
       &-description {
         @include body-02;
         line-height: 1.6; 
-        overflow-wrap: anywhere; // text-wrap: balance 대체 (지원성 고려)
+        overflow-wrap: anywhere;
         word-break: keep-all;
         margin-bottom: rem(30);
       }
@@ -1266,9 +1419,21 @@ const getBorderClass = (slide, index) => {
   }
 
   .intro-section {
+    @media (max-width: 767px) {
+      margin-bottom: rem(-18);
+      :deep(.intro-app-title) {
+        padding-bottom: rem(18.5);
+      }
+    }
     &-content {
       position: relative;
-      padding-top: rem(130);
+      padding: rem(40) 0 0;
+      @include tablet {
+        padding: rem(72.5) 0;
+      }
+      @include desktop {
+        padding: rem(130) 0;
+      }
       &-line {
         width: rem(1);
         height: 100px;
@@ -1312,6 +1477,7 @@ const getBorderClass = (slide, index) => {
           opacity: 0; // 초기 상태
           will-change: opacity, transform;
           transition: opacity 0.6s ease, transform 0.6s ease;
+          margin: 0 auto;
           img {
             margin: 0 auto;
             transform-style: preserve-3d;
@@ -1322,47 +1488,161 @@ const getBorderClass = (slide, index) => {
             opacity: 1;
           }
           $rotations: 90deg, -90deg, 90deg;
-          $margins: 0, 114.39, 117.89;
-          
+
           @for $i from 1 through 3 {
             &:nth-child(#{$i}) {
-              @if list.nth($margins, $i) != 0 {
-                margin-top: rem(list.nth($margins, $i));
-              }
               transform: translateY(rem(120)) rotate(list.nth($rotations, $i));
             }
           }
+
           &.active {
             transform: translateY(0) rotate(0deg);
           }
+          &:nth-child(1) {
+            max-width: rem(161);
+          }
+          &:nth-child(2) {
+            max-width: rem(104);
+            margin-top: rem(28);
+          }
+          &:nth-child(3) {
+            max-width: rem(143);
+            margin-top: rem(28);
+          }
+          @include tablet {
+            &:nth-child(1) {
+              max-width: rem(314);
+            }
+            &:nth-child(2) {
+              max-width: rem(227);
+              margin-top: rem(114.39);
+            }
+            &:nth-child(3) {
+              max-width: rem(314);
+              margin-top: rem(117.89);
+            }
+          }
+          @include desktop {
+            &:nth-child(1),
+            &:nth-child(2),
+            &:nth-child(3) {
+              max-width: 100%;
+            }
+          }
+        }
+      }
+    }
+    
+  }
+
+  .overview-section {
+    background-color: $d-black;
+    padding: rem(102) rem(24) rem(75);
+    @include tablet {
+      padding: rem(156) rem(24) rem(130);
+    }
+    @include desktop {
+      padding: rem(324) rem(24) rem(250);
+    }
+    .inner {
+      max-width: rem(1412);
+    }
+    &-content {
+      padding-top: rem(30);
+      &-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include tablet {
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 0;
+        }
+        &-item {
+          margin-top: rem(8);
+          @include tablet {
+            display: inline-flex;
+            margin-top: 0;
+          }
+          &-comma {
+            display: none;
+            font-weight: 600;
+            font-size: rem(84);
+            color: $d-white;
+            flex-shrink: 0;
+            @include tablet {
+              display: inline-block;
+            }
+          }
+
+          // CSS-only hover swap (JS 없이 이미지 오버레이 전환)
+          .img-swap {
+            position: relative;
+            display: inline-block;
+            .img-hover {
+              position: absolute;
+              inset: 0;
+              opacity: 0;
+              visibility: hidden;
+            }
+          }
+
+          @media (hover: hover) {
+            &:hover {
+              .img-swap {
+                .img-hover { 
+                  opacity: 1; 
+                  visibility: visible;
+                }
+                .img-base { 
+                  opacity: 0; 
+                  visibility: hidden;
+                }
+              }
+            }
+          }
+
+          img {
+              height: rem(42);
+              object-fit: contain;
+              @include tablet {
+                height: auto;
+              }
+            }
         }
       }
     }
   }
 
-  .overview-section {
+  .office-section {
     background-color: $d-black;
-    padding: rem(324) 0 rem(250);
-    &-content {
-      &-list {
-        display: flex;
-        &-item {
-          display: inline-flex;
-          img {
-            object-fit: cover;
-          }
-          & + .overview-section-content-list-item {
-            &::before {
-              content: ',';
-              display: inline-block;
-              font-weight: 600;
-              font-size: rem(84);
-              color: $d-white;
-              align-self: flex-end;
-              margin-right: rem(16);
-            }
-          }
-        }
+    padding: 0 0 rem(100);
+    @include desktop {
+      padding: rem(100) 0 rem(200);
+    }
+    .inner {
+      max-width: rem(1568);
+    }
+
+    :deep(.app-title) {
+      h2 {
+        color: $d-white;
+      }
+    }
+
+    :deep(.app-swiper-container) {
+      .swiper-pagination-bullet {
+        margin: 0;
+      }
+    }
+  }
+
+  .works-section {
+    padding: rem(100) 0;
+    .app-title {
+      @include tablet {
+        padding: rem(97) 0;
       }
     }
   }
