@@ -240,16 +240,65 @@
             </li>
           </ul>
         </div>
-      </div>
+      </div> 
     </section>
     <!-- E : overview-section -->
 
+    <section class="office-section">
+      <div class="inner">
+        <AppTitle 
+          title="CiX Office"
+          text="우리는 팀원들의 몰입과 탄탄한 팀워크를 위해서 일하는 환경도 생각합니다."
+        >
+        </AppTitle>
+        <AppSwiper 
+          :effect="'fade'" 
+          :autoplay="5000"
+          :lightMode="true"  
+        >
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01_t.jpg" alt="office_01" />
+          </picture>
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_02.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_02_t.jpg" alt="office_02" />
+          </picture>
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_03.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_03_t.jpg" alt="office_03" />
+          </picture>
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_04.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_04_t.jpg" alt="office_04" />
+          </picture>
+          <picture>
+            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_05.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_05_t.jpg" alt="office_05" />
+          </picture>
+        </AppSwiper> 
+      </div>
+    </section>
+
+    <!-- S : works-section -->
+    <section class="works-section">
+      <div class="inner">
+        <AppTitle 
+          class="works-app-title"
+          title="CiX Works"
+          text="CiX의 사업영역은 UX/BX 컨설팅, 디지털 채널의 구축/운영, <br>디지털마케팅 콘텐츠 제작으로 나누어집니다."
+        >
+        </AppTitle>
+      </div>
+    </section>
+    <!-- E : works-section -->
   </div>
 </template>
 
 <script setup>
 import AppTitle from '~/components/cnx/AppTitle.vue';
 import AppButton from '~/components/cnx/AppButton.vue';
+import AppSwiper from '~/components/cnx/AppSwiper.vue';
 import { nextTick } from 'vue';
 
 // Import Swiper Vue.js components
@@ -455,7 +504,7 @@ const initBannerScrollAnimation = () => {
     // 기존 것이 있으면 제거하고 진행도 저장
     const prevProgress = killScrollAnimation();
 
-  const containerWidth = (container).offsetWidth;
+    const containerWidth = (container).offsetWidth;
     const wrapperWidth = getWrapperWidth();
 
     // wrapper가 컨테이너보다 같거나 작으면 애니메이션 불필요
@@ -489,7 +538,9 @@ const initBannerScrollAnimation = () => {
       try { horizontalObserver.kill(); } catch (_) { /* ignore */ }
       horizontalObserver = null;
     }
+
     const st = bannerScroll.scrollTrigger;
+
     if (st) {
       horizontalObserver = Observer.create({
         target: container,
@@ -862,8 +913,6 @@ const initIntroHoverTilt = () => {
   });
 };
 
-// JS 없는 CSS-only 전환 방식으로 대체했으므로 JS 스왑 로직 제거
-
 // onMounted에서 intro 관련 초기화 함수 호출 및 일괄 cleanup 처리
 onMounted(() => {
   initBannerScrollAnimation();
@@ -889,10 +938,12 @@ const a11yOptions = {
   // Swiper는 문자열 템플릿을 사용합니다. {{index}}, {{slidesLength}} 사용
   slideLabelMessage: '슬라이드 {{index}} / {{slidesLength}}',
 };
+
 const keyboardOptions = {
   enabled: true,
   onlyInViewport: true,
 };
+
 const paginationOptions = {
   el: '.banner-slide-controller-pagination',
   clickable: true,
@@ -1144,8 +1195,6 @@ const getBorderClass = (slide, index) => {
         &.black-text {
           color: $d-black;
           .banner-slide-item-button {
-            // 버튼 color는 :color 바인딩으로 처리되지만,
-            // 텍스트 영역 전체 색 변경을 위해 명시적으로 유지
             border-color: $d-black;
           }
         }
@@ -1184,7 +1233,7 @@ const getBorderClass = (slide, index) => {
           display: flex;
           gap: rem(16);
           flex: 1 1 auto;
-          min-height: 0; // flex 자식의 overflow 계산을 위해 필요
+          min-height: 0;
           text-align: left;
           margin-top: rem(36);
         }
@@ -1233,7 +1282,7 @@ const getBorderClass = (slide, index) => {
       &-description {
         @include body-02;
         line-height: 1.6; 
-        overflow-wrap: anywhere; // text-wrap: balance 대체 (지원성 고려)
+        overflow-wrap: anywhere;
         word-break: keep-all;
         margin-bottom: rem(30);
       }
@@ -1562,6 +1611,38 @@ const getBorderClass = (slide, index) => {
               }
             }
         }
+      }
+    }
+  }
+
+  .office-section {
+    background-color: $d-black;
+    padding: 0 0 rem(100);
+    @include desktop {
+      padding: rem(100) 0 rem(200);
+    }
+    .inner {
+      max-width: rem(1568);
+    }
+
+    :deep(.app-title) {
+      h2 {
+        color: $d-white;
+      }
+    }
+
+    :deep(.app-swiper-container) {
+      .swiper-pagination-bullet {
+        margin: 0;
+      }
+    }
+  }
+
+  .works-section {
+    padding: rem(100) 0;
+    .app-title {
+      @include tablet {
+        padding: rem(97) 0;
       }
     }
   }
