@@ -92,10 +92,10 @@ const initAnimation = () => {
     }, titleRef.value ? '-=0.3' : 0) // 타이틀이 있으면 0.3초 겹침
   }
 
-  // 만약 현재 이미 뷰포트 안이라면 즉시 보이도록 보정
+  // 초기 렌더 시 이미 뷰포트 안이라면 즉시 애니메이션 재생
   try {
     if (ScrollTrigger.isInViewport(containerRef.value, 0.2)) {
-      gsap.set(elementsToAnimate, { opacity: 1, y: 0 });
+      tl.play(0)
     }
   } catch (_) { /* noop */ }
 }
@@ -104,6 +104,8 @@ const initAnimation = () => {
 onMounted(async () => {
   await nextTick()
   initAnimation()
+  // 레이아웃 확정 후 트리거 위치 재계산
+  try { ScrollTrigger.refresh() } catch (_) { /* noop */ }
 })
 </script>
 
