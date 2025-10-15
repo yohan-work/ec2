@@ -135,13 +135,7 @@
 </script>
 
 <style lang="scss" scoped>
-
-  @use '~/layouts/scss/cnx' as *;
-  @use '~/layouts/scss/cnx/_variables' as *;
-  @use '~/layouts/scss/cnx/_mixins' as *;
-  @use '~/layouts/scss/cnx/_functions' as *;
-
-  .careers-qna {
+.careers-qna {
 
     &__title {
       transform: translateY(30px);

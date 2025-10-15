@@ -20,10 +20,6 @@ defineOptions({
 </script>
 
 <style lang="scss" scoped>
-@use './scss/cnx/_variables' as *;
-@use './scss/cnx/_mixins' as *;
-@use './scss/cnx/_functions' as *;
-
 .cnx-layout {
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;

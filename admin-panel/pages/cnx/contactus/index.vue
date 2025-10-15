@@ -297,11 +297,6 @@ useHead({
 </script>
 
 <style scoped lang="scss">
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-
 .container {
     display: flex;
     flex-direction: column;

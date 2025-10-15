@@ -71,12 +71,6 @@ watch(() => props.modelValue, (newValue) => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_base' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-
 .app-tab-container {
   width: 100%;
   .tab-list {

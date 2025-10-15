@@ -125,13 +125,7 @@
 </script>
 
 <style lang="scss" scoped>
-
-  @use '~/layouts/scss/cnx' as *;
-  @use '~/layouts/scss/cnx/_variables' as *;
-  @use '~/layouts/scss/cnx/_mixins' as *;
-  @use '~/layouts/scss/cnx/_functions' as *;
-
-  .careers-benefit {
+.careers-benefit {
 
     &__title {
       padding-bottom: rem(24);

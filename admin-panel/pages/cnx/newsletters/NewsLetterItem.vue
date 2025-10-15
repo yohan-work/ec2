@@ -66,10 +66,6 @@ const handleNewsletterClick = (newsletterId) => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-
 .newsletter-item {
   &:first-child {
     border-top: rem(1) solid $d-gray;

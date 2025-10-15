@@ -104,5 +104,24 @@ export default defineNuxtConfig({
   // Vite 설정
   vite: {
     assetsInclude: ['**/*.svg'],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: (content, filename) => {
+            // CNX 컴포넌트만 SCSS 변수 주입
+            if (filename.includes('/cnx/')) {
+              return `
+                @use "~/layouts/scss/cnx/_variables" as *;
+                @use "~/layouts/scss/cnx/_mixins" as *;
+                @use "~/layouts/scss/cnx/_functions" as *;
+                @use "~/layouts/scss/cnx/_base" as *;
+                ${content}
+              `
+            }
+            return content
+          }
+        }
+      }
+    }
   },
 })

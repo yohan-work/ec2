@@ -226,11 +226,6 @@ useHead({
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-
 .newsletter {
   .inner {
     width: min(calc(100% - rem(48)), rem(1320));

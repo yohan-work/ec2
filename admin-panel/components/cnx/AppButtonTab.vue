@@ -73,12 +73,6 @@ const selectTab = (index: number) => {
 };
 </script>
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx.scss' as *;
-@use '~/layouts/scss/cnx/_base' as *;
-@use '~/layouts/scss/cnx/_functions' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-
 .app-button-tab-container {
     width: 100%;
     height: auto;
