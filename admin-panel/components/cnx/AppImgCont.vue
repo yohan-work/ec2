@@ -17,6 +17,19 @@
           <p v-if="item.text" class="sub-text" v-html="item.text"></p>
         </div>
       </div>
+      
+      <!-- 리스트 아이템들 -->
+      <div v-if="listItems && listItems.length > 0" class="list-items" ref="listItemsRef">
+        <ul class="list-content">
+          <li 
+            v-for="(item, index) in listItems" 
+            :key="index" 
+            class="list-item"
+            :ref="el => listItemRefs[index] = el"
+            v-html="item"
+          ></li>
+        </ul>
+      </div>
     </div>
     
     <!-- 이미지 컨텐츠 -->
@@ -81,6 +94,10 @@ const props = defineProps({
   subItems: {
     type: Array,
     default: () => []
+  },
+  listItems: {
+    type: Array,
+    default: () => []
   }
 })
 
@@ -97,6 +114,8 @@ const titleRef = ref(null)
 const textRef = ref(null)
 const subItemsRef = ref(null)
 const subItemRefs = ref([])
+const listItemsRef = ref(null)
+const listItemRefs = ref([])
 
 const route = useRoute()
 // imagePath가 제공되면 사용, 아니면 현재 페이지 경로 사용
@@ -132,6 +151,18 @@ const initAnimation = () => {
         gsap.set(subItemRef, { 
           opacity: 0, 
           y: 20 
+        })
+      }
+    })
+  }
+  
+  // 리스트 아이템들 초기 상태 설정 (가까이에서 시작)
+  if (listItemRefs.value && listItemRefs.value.length > 0) {
+    listItemRefs.value.forEach(listItemRef => {
+      if (listItemRef) {
+        gsap.set(listItemRef, { 
+          opacity: 0, 
+          y: 15 // 더 가까이에서 시작
         })
       }
     })
@@ -177,6 +208,17 @@ const initAnimation = () => {
       stagger: 0.1 // 각 서브 아이템 간 0.1초 간격
     }, '-=0.2') // 텍스트 애니메이션과 0.2초 겹침
   }
+  
+  // 리스트 아이템들 애니메이션 추가 (아래에서 위로, 순차적으로)
+  if (listItemRefs.value && listItemRefs.value.length > 0) {
+    tl.to(listItemRefs.value, {
+      duration: 0.5,
+      opacity: 1,
+      y: 0, // 아래에서 위로 올라옴
+      ease: 'power2.out',
+      stagger: 0.2 // 각 리스트 아이템 간 0.2초 간격으로 순차적 나타남
+    }, '-=0.2') // 이전 애니메이션과 0.2초 겹침
+  }
 
   // 역재생 애니메이션 (사라질 때) - 더 빠르게
   const reverseTl = gsap.timeline({
@@ -196,13 +238,25 @@ const initAnimation = () => {
     elementsToReverse.unshift(...subItemRefs.value)
   }
   
+  // 일반 요소들은 아래로 사라짐
   reverseTl.to(elementsToReverse, {
     duration: 0.3, // 더 빠른 속도
     opacity: 0,
-    y: -20, // 위로 사라짐
+    y: 20, // 아래로 사라짐
     ease: 'power2.in',
     stagger: 0.05 // 약간의 간격
   })
+  
+  // 리스트 아이템들은 아래로 사라짐 (순차적으로)
+  if (listItemRefs.value && listItemRefs.value.length > 0) {
+    reverseTl.to(listItemRefs.value, {
+      duration: 0.25,
+      opacity: 0,
+      y: 15, // 더 가까이로 사라짐
+      ease: 'power2.in',
+      stagger: 0.1 // 순차적으로 사라짐
+    }, 0) // 동시에 시작
+  }
 }
 
 // 이미지 경로 초기화 및 애니메이션 설정
@@ -345,6 +399,31 @@ onMounted(async () => {
           color: $gray-1;
           margin: 0;
           line-height: 1.6;
+        }
+      }
+    }
+
+    .list-items {
+      .list-content {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        .list-item {
+          @include body-02;
+          color: $gray-4;
+          margin: 0;
+          line-height: 1.6;
+          position: relative;
+          padding-left: rem(16);
+
+          &::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: $gray-4;
+            font-weight: bold;
+          }
         }
       }
     }

@@ -29,7 +29,7 @@ export const useNavigation = () => {
           title: 'Technology Platforms',
           path: null,
           items: [
-            { text: 'Commerce Platform', path: '' },
+            { text: 'Commerce Platform', path: '/whatwedo/technologyplatforms/commerceplatform' },
             { text: 'Customer eXperience Platform', path: '' },
             { text: 'Digital eXperience Platform', path: '' },
             { text: 'AI Platform', path: '' }

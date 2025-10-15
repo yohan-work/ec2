@@ -167,7 +167,7 @@
     <div class="component-section">
       <h3 class="section-title">AppImgCont</h3>
       <p class="section-description">
-        텍스트와 이미지를 함께 표시하는 컨텐츠 컴포넌트입니다. 반응형 레이아웃, reverse 옵션, 그리고 서브 아이템 기능을 지원합니다. 서브 아이템이 있을 때는 이미지와 텍스트박스의 정렬이 자동으로 top으로 변경됩니다.
+        텍스트와 이미지를 함께 표시하는 컨텐츠 컴포넌트입니다. 반응형 레이아웃, reverse 옵션, 리스트 아이템 기능, 그리고 서브 아이템 기능을 지원합니다. 서브 아이템이 있을 때는 이미지와 텍스트박스의 정렬이 자동으로 top으로 변경됩니다.
       </p>
       
       <div class="component-demo">
@@ -213,6 +213,40 @@
   imageName="DA02"
   imageAlt="Reverse Layout Image"
   :reverse="true"
+  imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+/&gt;</code></pre>
+        </div>
+        
+        <h4 class="demo-title">리스트 아이템 기능</h4>
+        <div class="demo-content">
+          <AppImgCont 
+            title="리스트 아이템이 있는 레이아웃"
+            text="listItems 옵션을 사용하면 설명 텍스트와 함께 불릿 포인트 리스트를 표시할 수 있습니다. 각 아이템은 순차적으로 애니메이션됩니다. text 옵션 없이 단독으로도 사용 가능합니다."
+            imageName="DA01"
+            imageAlt="List Items Layout Image"
+            :listItems="[
+              '첫 번째 리스트 아이템입니다.',
+              '두 번째 리스트 아이템입니다.',
+              '세 번째 리스트 아이템입니다.',
+              '네 번째 리스트 아이템입니다.'
+            ]"
+            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppImgCont 
+  title="리스트 아이템이 있는 레이아웃"
+  text="listItems 옵션을 사용하면 설명 텍스트와 함께 불릿 포인트 리스트를 표시할 수 있습니다. 각 아이템은 순차적으로 애니메이션됩니다. text 옵션 없이 단독으로도 사용 가능합니다."
+  imageName="DA01"
+  imageAlt="List Items Layout Image"
+  :listItems="[
+    '첫 번째 리스트 아이템입니다.',
+    '두 번째 리스트 아이템입니다.',
+    '세 번째 리스트 아이템입니다.',
+    '네 번째 리스트 아이템입니다.'
+  ]"
   imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
 /&gt;</code></pre>
         </div>
@@ -296,6 +330,12 @@
                 <td>String</td>
                 <td>''</td>
                 <td>이미지 경로 (지정하지 않으면 현재 페이지 경로 사용)</td>
+              </tr>
+              <tr>
+                <td>listItems</td>
+                <td>Array</td>
+                <td>[]</td>
+                <td>리스트 아이템 배열 (문자열 배열, 불릿 포인트로 표시)</td>
               </tr>
               <tr>
                 <td>subItems</td>
