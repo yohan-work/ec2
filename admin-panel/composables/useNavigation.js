@@ -19,7 +19,7 @@ export const useNavigation = () => {
           path: null,
           items: [
             { text: 'Marketing & Sales Analytics', path: '' },
-            { text: 'Digital Channel Analytics', path: '' },
+            { text: 'Digital Channel Analytics', path: '/whatwedo/datananalytics/digitalchannelanalytics' },
             { text: 'Data Engineering', path: '' },
             { text: 'Analytics Solution', path: '' },
             { text: 'Enterprise Intelligence', path: '' }

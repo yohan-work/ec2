@@ -386,6 +386,82 @@
         </div>
       </div>
     </div>
+
+    
+    <!-- AppCardList 컴포넌트 -->
+    <div class="component-section">
+      <h3 class="section-title">AppCardList</h3>
+      <p class="section-description">
+        제목과 설명으로 이루어진 카드 목록을 가로/반응형 레이아웃으로 표시합니다. 스크롤 애니메이션이 적용됩니다.
+      </p>
+      
+      <div class="component-demo">
+        <h4 class="demo-title">기본 사용법</h4>
+        <div class="demo-content">
+          <AppCardList
+            title="AppCardList 컴포넌트 데모"
+            :items="[
+              { id: 1, title: '카드 1', description: 'pc에서는 카드의 개수만큼 width / 개수 값이 적용됩니다.' },
+              { id: 2, title: '카드 2', description: 'tablet 에서는 width 100% / 3 값이 적용되며 가운대로 정렬이 됩니다.' },
+              { id: 3, title: '카드 3', description: 'Mobile에서는 width 100% 값이 적용됩니다.' }
+            ]"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppCardList
+  title="AppCardList 컴포넌트 데모"
+  :items="[
+  { id: 1, title: '카드 1', description: 'pc에서는 카드의 개수만큼 width / 개수 값이 적용됩니다.' },
+  { id: 2, title: '카드 2', description: 'tablet 에서는 width 100% / 3 값이 적용되며 가운대로 정렬이 됩니다.' },
+  { id: 3, title: '카드 3', description: 'Mobile에서는 width 100% 값이 적용됩니다.' }
+  ]"
+/&gt;</code></pre>
+        </div>
+        
+        <div class="props-table">
+          <h4 class="props-title">Props</h4>
+          <table class="props-table-content">
+            <thead>
+              <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>title</td>
+                <td>String</td>
+                <td>''</td>
+                <td>리스트 상단 제목 텍스트</td>
+              </tr>
+              <tr>
+                <td>items</td>
+                <td>Array</td>
+                <td>[]</td>
+                <td>카드 아이템 배열. 각 아이템은 { id, title, description } 형태</td>
+              </tr>
+              <tr>
+                <td>noMarginBottom</td>
+                <td>Boolean</td>
+                <td>false</td>
+                <td>하단 여백 제거</td>
+              </tr>
+              <tr>
+                <td>noMb</td>
+                <td>Boolean</td>
+                <td>false</td>
+                <td>하단 여백 제거 (동일 옵션)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
   </div>
 </template>
 
@@ -394,6 +470,7 @@ import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AppSubCont from '~/components/cnx/AppSubCont.vue'
 import AppSwiper from '~/components/cnx/AppSwiper.vue'
+import AppCardList from '~/components/cnx/AppCardList.vue'
 </script>
 
 <style lang="scss" scoped>
