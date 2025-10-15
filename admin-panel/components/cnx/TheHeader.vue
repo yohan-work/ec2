@@ -37,8 +37,9 @@
       <button
         class="the-header__hamburger"
         type="button"
+        @click="toggleSideNav"
         v-html="hamburgerIcon"
-      >      </button>
+      ></button>
     </div>
 
     <!-- 동적 드롭다운 메뉴들 -->
@@ -75,6 +76,12 @@
         </div>
       </div>
     </div>
+
+    <!-- 사이드 네비게이션 -->
+    <TheSideNav 
+      :is-open="isSideNavOpen" 
+      @close="closeSideNav" 
+    />
   </header>
 </template>
 
@@ -83,6 +90,7 @@ import { onMounted, onUnmounted } from 'vue'
 import concentrixLogo from '~/components/assets/cnx/concentrix-logo.svg?raw'
 import hamburgerIcon from '~/components/assets/cnx/hamburger.svg?raw'
 import dropdownIcon from '~/components/assets/cnx/dropdown.svg?raw'
+import TheSideNav from '~/components/cnx/TheSideNav.vue'
 
 // 네비게이션 composable 사용
 const { getMenuData, menuStructure } = useNavigation()
@@ -90,12 +98,24 @@ const { getMenuData, menuStructure } = useNavigation()
 // 드롭다운 상태 관리
 const activeDropdown = ref(null)
 
+// 사이드 네비게이션 상태 관리
+const isSideNavOpen = ref(false)
+
 // 라우터 기반 메뉴 데이터
 const dropdownMenus = computed(() => getMenuData())
 
 // 드롭다운 토글 함수
 const toggleDropdown = (dropdownName) => {
   activeDropdown.value = activeDropdown.value === dropdownName ? null : dropdownName
+}
+
+// 사이드 네비게이션 토글 함수들
+const toggleSideNav = () => {
+  isSideNavOpen.value = !isSideNavOpen.value
+}
+
+const closeSideNav = () => {
+  isSideNavOpen.value = false
 }
 
 // 마우스 이벤트 핸들러
@@ -337,7 +357,7 @@ onUnmounted(() => {
       }
       
       &:hover .dropdown-arrow {
-        transform: rotate(180deg);
+        transform: rotate(-180deg);
       }
       
       // 드롭다운이 활성화될 때 아래쪽에 굵은 라인 표시
