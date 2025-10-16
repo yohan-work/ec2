@@ -1,12 +1,19 @@
 <template>
   <div class="app-title" :class="`text-${align}`" ref="containerRef">
-    <h2 v-if="title" v-html="title" ref="titleRef"></h2>
-    <p v-if="text" v-html="text" ref="textRef"></p>
+    <component :is="headingTag" v-if="title" ref="titleRef" class="app-title-heading">
+      <template v-if="isHtmlTitle">
+        <span class="app-title-html" v-html="title"></span>
+      </template>
+      <template v-else>
+        {{ title }}
+      </template>
+    </component>
+    <p v-if="text" v-html="text" ref="textRef" class="app-title-text"></p>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, computed } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -26,6 +33,11 @@ const props = defineProps({
     type: String,
     default: 'center',
     validator: (value) => ['left', 'center', 'right'].includes(value)
+  },
+  headingTag: {
+    type: String,
+    default: 'h1',
+    validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'].includes(value)
   }
 })
 
@@ -33,6 +45,12 @@ const props = defineProps({
 const containerRef = ref(null)
 const titleRef = ref(null)
 const textRef = ref(null)
+
+// 제목이 HTML을 포함하는지 자동 감지 (간단 검출)
+const isHtmlTitle = computed(() => {
+  const value = props.title || ''
+  return /<\s*[a-zA-Z][\s\S]*>/i.test(value)
+})
 
 // GSAP 애니메이션 초기화
 const initAnimation = () => {
@@ -59,17 +77,13 @@ const initAnimation = () => {
     })
   })
 
-  // ScrollTrigger 애니메이션 설정
+  // AppImgCont 패턴: 타임라인 내부에 ScrollTrigger 사용
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: containerRef.value,
       start: 'top 80%',
       end: 'bottom 20%',
-      toggleActions: 'play none none none',
-      once: true,
-      anticipatePin: 1,
-      refreshPriority: -10,
-      invalidateOnRefresh: true
+      toggleActions: 'play none none reverse'
     }
   })
 
@@ -92,7 +106,8 @@ const initAnimation = () => {
     }, titleRef.value ? '-=0.3' : 0) // 타이틀이 있으면 0.3초 겹침
   }
 
-  // 초기 렌더 시 이미 뷰포트 안이라면 즉시 애니메이션 재생
+  // AppTitle은 역재생만 사용, 추가 로직 불필요
+  // 새로고침 시 이미 가시 상태면 즉시 재생
   try {
     if (ScrollTrigger.isInViewport(containerRef.value, 0.2)) {
       tl.play(0)
@@ -104,7 +119,7 @@ const initAnimation = () => {
 onMounted(async () => {
   await nextTick()
   initAnimation()
-  // 레이아웃 확정 후 트리거 위치 재계산
+  // 새로고침/레이아웃 확정 후 트리거 재계산
   try { ScrollTrigger.refresh() } catch (_) { /* noop */ }
 })
 </script>
@@ -122,9 +137,9 @@ onMounted(async () => {
     padding: rem(120) 0;
   }
 
-  h2 {
+  &-heading {
     @include headline-01;
-    & + p {
+    & + .app-title-text {
       margin-top: rem(8);
 
       @include tablet {
@@ -137,9 +152,14 @@ onMounted(async () => {
     }
   }
 
-  p {
+  &-text {
     @include body-01;
     color: #86868B;
+  }
+
+  // HTML 제목을 감싸는 스팬은 레이아웃에 영향 없도록 처리
+  .app-title-html {
+    display: contents;
   }
 
   // 정렬 옵션

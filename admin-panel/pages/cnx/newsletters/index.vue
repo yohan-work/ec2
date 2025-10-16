@@ -279,9 +279,12 @@ useHead({
 
 <style lang="scss" scoped>
 .newsletter {
-  .inner {
-    width: min(calc(100% - rem(48)), rem(1320));
-    margin: 0 auto rem(200);
+  margin-bottom: rem(100);
+  @include tablet {
+    margin-bottom: rem(160);
+  }
+  @include desktop {
+    margin-bottom: rem(200);
   }
   .newsletter-load-more {
     text-align: center;
