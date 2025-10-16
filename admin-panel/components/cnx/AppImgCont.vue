@@ -130,19 +130,36 @@ const tabletImage = ref('')
 const initAnimation = () => {
   if (!containerRef.value) return
 
+  // DOM 요소들이 실제로 존재하는지 확인
+  const actualListItems = listItemsRef.value?.querySelectorAll('.list-item')
+  const actualSubItems = subItemsRef.value?.querySelectorAll('.sub-item')
+  
+  // 리스트 아이템들이 DOM에 존재하지 않으면 재시도
+  if (props.listItems && props.listItems.length > 0 && (!actualListItems || actualListItems.length === 0)) {
+    console.warn('List items not found in DOM, retrying in 100ms...')
+    setTimeout(initAnimation, 100)
+    return
+  }
+
   // 초기 상태 설정 (애니메이션 전 상태)
-  gsap.set(imageContentRef.value, { 
-    opacity: 0, 
-    y: 50 
-  })
-  gsap.set(titleRef.value, { 
-    opacity: 0, 
-    y: 30 
-  })
-  gsap.set(textRef.value, { 
-    opacity: 0, 
-    y: 30 
-  })
+  if (imageContentRef.value) {
+    gsap.set(imageContentRef.value, { 
+      opacity: 0, 
+      y: 50 
+    })
+  }
+  if (titleRef.value) {
+    gsap.set(titleRef.value, { 
+      opacity: 0, 
+      y: 30 
+    })
+  }
+  if (textRef.value) {
+    gsap.set(textRef.value, { 
+      opacity: 0, 
+      y: 30 
+    })
+  }
   
   // 서브 아이템들 초기 상태 설정
   if (subItemRefs.value && subItemRefs.value.length > 0) {
@@ -179,24 +196,30 @@ const initAnimation = () => {
   })
 
   // 순차적 애니메이션: 이미지 → 타이틀 → 텍스트 → 서브 아이템들 (나타날 때)
-  tl.to(imageContentRef.value, {
-    duration: 0.8,
-    opacity: 1,
-    y: 0,
-    ease: 'power2.out'
-  })
-  .to(titleRef.value, {
-    duration: 0.6,
-    opacity: 1,
-    y: 0,
-    ease: 'power2.out'
-  }, '-=0.4') // 이미지 애니메이션과 0.4초 겹침
-  .to(textRef.value, {
-    duration: 0.6,
-    opacity: 1,
-    y: 0,
-    ease: 'power2.out'
-  }, '-=0.3') // 타이틀 애니메이션과 0.3초 겹침
+  if (imageContentRef.value) {
+    tl.to(imageContentRef.value, {
+      duration: 0.8,
+      opacity: 1,
+      y: 0,
+      ease: 'power2.out'
+    })
+  }
+  if (titleRef.value) {
+    tl.to(titleRef.value, {
+      duration: 0.6,
+      opacity: 1,
+      y: 0,
+      ease: 'power2.out'
+    }, '-=0.4') // 이미지 애니메이션과 0.4초 겹침
+  }
+  if (textRef.value) {
+    tl.to(textRef.value, {
+      duration: 0.6,
+      opacity: 1,
+      y: 0,
+      ease: 'power2.out'
+    }, '-=0.3') // 타이틀 애니메이션과 0.3초 겹침
+  }
   
   // 서브 아이템들 애니메이션 추가
   if (subItemRefs.value && subItemRefs.value.length > 0) {
@@ -231,31 +254,41 @@ const initAnimation = () => {
   })
 
   // 빠른 역재생: 서브 아이템들 → 텍스트 → 타이틀 → 이미지 (동시에 사라짐)
-  const elementsToReverse = [textRef.value, titleRef.value, imageContentRef.value]
+  const elementsToReverse = []
+  
+  // 존재하는 요소들만 배열에 추가
+  if (textRef.value) elementsToReverse.push(textRef.value)
+  if (titleRef.value) elementsToReverse.push(titleRef.value)
+  if (imageContentRef.value) elementsToReverse.push(imageContentRef.value)
   
   // 서브 아이템들도 역재생에 포함
   if (subItemRefs.value && subItemRefs.value.length > 0) {
-    elementsToReverse.unshift(...subItemRefs.value)
+    elementsToReverse.unshift(...subItemRefs.value.filter(item => item))
   }
   
   // 일반 요소들은 아래로 사라짐
-  reverseTl.to(elementsToReverse, {
-    duration: 0.3, // 더 빠른 속도
-    opacity: 0,
-    y: 20, // 아래로 사라짐
-    ease: 'power2.in',
-    stagger: 0.05 // 약간의 간격
-  })
+  if (elementsToReverse.length > 0) {
+    reverseTl.to(elementsToReverse, {
+      duration: 0.3, // 더 빠른 속도
+      opacity: 0,
+      y: 20, // 아래로 사라짐
+      ease: 'power2.in',
+      stagger: 0.05 // 약간의 간격
+    })
+  }
   
   // 리스트 아이템들은 아래로 사라짐 (순차적으로)
   if (listItemRefs.value && listItemRefs.value.length > 0) {
-    reverseTl.to(listItemRefs.value, {
-      duration: 0.25,
-      opacity: 0,
-      y: 15, // 더 가까이로 사라짐
-      ease: 'power2.in',
-      stagger: 0.1 // 순차적으로 사라짐
-    }, 0) // 동시에 시작
+    const validListItems = listItemRefs.value.filter(item => item)
+    if (validListItems.length > 0) {
+      reverseTl.to(validListItems, {
+        duration: 0.25,
+        opacity: 0,
+        y: 15, // 더 가까이로 사라짐
+        ease: 'power2.in',
+        stagger: 0.1 // 순차적으로 사라짐
+      }, 0) // 동시에 시작
+    }
   }
 }
 
@@ -271,7 +304,10 @@ onMounted(async () => {
 
   // DOM이 완전히 렌더링된 후 애니메이션 초기화
   await nextTick()
-  initAnimation()
+  // requestAnimationFrame을 사용하여 실제 DOM 렌더링 완료 후 실행
+  requestAnimationFrame(() => {
+    initAnimation()
+  })
 
   // 미디어 쿼리 테스트 코드
   console.log('=== AppImgCont 미디어 쿼리 테스트 ===')
