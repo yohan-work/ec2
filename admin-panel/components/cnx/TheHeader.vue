@@ -398,7 +398,7 @@ onUnmounted(() => {
     }
     
     .inner {
-      padding: rem(32);
+      padding: rem(32) rem(80 + 32);
       display: flex;
       align-items: flex-start;
       gap: rem(40);

@@ -249,16 +249,16 @@ defineOptions({
   width: 100%;
 
   .inner {
-    max-width: rem(1320);
+    max-width: rem(1480);
     margin: 0 auto;
     padding: rem(0);
-    
+
     @include tablet {
       padding: rem(80) rem(80) rem(0);
     }
-    
+
     @include desktop {
-      padding: rem(49) rem(0) rem(0);
+      padding: rem(49) rem(80) rem(0);
     }
   }
 
