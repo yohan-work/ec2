@@ -94,7 +94,7 @@
           <div class="careers__group">
 
             <div class="careers__title">
-              <h3 class="careers__title-headline">Digital & Technology Business</h3>
+              <h2 class="careers__title-headline">Digital & Technology Business</h2>
             </div>
 
             <CareersVisualTitle title="Digital & Technology<br>Business에서 하는 일" />
@@ -126,7 +126,7 @@
           <div class="careers__group">
 
             <div class="careers__title">
-              <h3 class="careers__title-headline">Customer Service</h3> 
+              <h2 class="careers__title-headline">Customer Service</h2> 
             </div>
 
             <AppButtonTab 
@@ -141,12 +141,14 @@
             >
               <template #tab-0>
                 <!-- 상담직 탭 내용 -->
+                <h3 class="a11y-hidden">상담직</h3>
 
                 <!-- Benefit -->
-                <CareersBenefit title="Attractive Benefits" :items="agentBenefits" />
+                <CareersBenefit headingLevel="h4" title="Attractive Benefits" :items="agentBenefits" />
 
                 <!-- banner -->
                 <CareersBanner 
+                  headingLevel="h4"
                   title="고객과 기업을 잇는 소통의 전문가를 모십니다" 
                   content="콘센트릭스의 CS팀은 다양한 기업의 고객센터 운영을 맡아 정확하고 친절한 상담 서비스를 제공합니다.<br>고객 응대에 대한 책임감과 따뜻한 마음을 가진 분들의 많은 지원을 기다립니다." 
                   buttonText="채용 바로가기기" 
@@ -157,21 +159,23 @@
 
               <template #tab-1>
                 <!-- 비상담직 탭 내용 -->
+                <h3 class="a11y-hidden">비상담직</h3>
 
                 <div class="careers__group">
                   <!-- What we do work -->
-                  <CareersVisualTitle title="Customer Service<br>비상담직에서 하는 일" />
+                  <CareersVisualTitle headingLevel="h4" title="Customer Service<br>비상담직에서 하는 일" />
 
-                  <CareersNonAgent :items="nonAgentItems" />
+                  <CareersNonAgent headingLevel="h4" :items="nonAgentItems" />
                 </div>
 
                 <!-- Benefit -->
-                <CareersBenefit title="Attractive Benefits" :items="nonAgentBenefits" :isVisible="activeButtonTab === 1" />
+                <CareersBenefit headingLevel="h4" title="Attractive Benefits" :items="nonAgentBenefits" :isVisible="activeButtonTab === 1" />
 
                 <!-- banner -->
                 <CareersBanner 
-                  title="콘센트릭스 Catalyst에서 당신의 잠재력을 마음껏 펼쳐보세요." 
-                  content="전략, 기술, 크리에이티브를 아우르는 전문성을 바탕으로<br>최고의 디지털 마케팅 솔루션을 제공하는 우리와 함께 성장할 인재를 찾습니다." 
+                  headingLevel="h4"
+                  title="디지털 마케팅의 미래를 함께 만들어갈 전문가를 모십니다." 
+                  content="데이터와 기술, 크리에이티브를 결합한 솔루션으로 고객사의 성장을 이끌고, 디지털 혁신을 주도할 당신의 합류를 기다립니다." 
                   buttonText="지원하기" 
                   href="mailto:KR.CS.TA-NONAGENT@concentrix.com" 
                 />

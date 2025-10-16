@@ -2,7 +2,7 @@
   <!-- Benefit -->
   <div class="careers-benefit" ref="containerRef">
 
-    <h4 class="careers-benefit__title" ref="titleRef">{{ title }}</h4> 
+    <component :is="headingLevel" class="careers-benefit__title" ref="titleRef">{{ title }}</component> 
 
     <ul class="careers-benefit__content">
       <li class="careers-benefit__item" v-for="(item, index) in items" :key="item.title" :ref="el => setItemRef(el, index)">
@@ -26,6 +26,11 @@
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
   const props = defineProps({
+    headingLevel: {
+      type: String,
+      default: 'h3',
+      validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
+    },
     title: {
       type: String,
       required: true

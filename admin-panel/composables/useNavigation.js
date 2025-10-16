@@ -61,7 +61,7 @@ export const useNavigation = () => {
           title: '',
           path: null,
           items: [
-            { text: 'About Us', path: '' }
+            { text: 'About Us', path: '/aboutus' }
           ]
         },
         {

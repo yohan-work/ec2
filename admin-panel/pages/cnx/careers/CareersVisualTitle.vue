@@ -6,7 +6,7 @@
       <source srcset="/assets/cnx/careers/visual-work_t.png" media="(min-width: 768px)" />
       <img src="/assets/cnx/careers/visual-work_m.png" alt="What we do work" ref="imageRef" />
     </picture>
-    <h4 class="careers-visual-title__title" v-html="title" ref="titleRef"></h4>
+    <component :is="headingLevel" class="careers-visual-title__title" v-html="title" ref="titleRef"></component>
   </div>
 </template>
 
@@ -17,6 +17,11 @@
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
   const props = defineProps({
+    headingLevel: {
+      type: String,
+      default: 'h3',
+      validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
+    },
     title: {
       type: String,
       required: true
