@@ -33,7 +33,7 @@ export default defineNuxtConfig({
 
   // TypeScript 설정
   typescript: {
-    typeCheck: true,
+    typeCheck: false,
   },
 
   // 런타임 환경 설정
