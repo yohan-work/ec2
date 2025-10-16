@@ -1,10 +1,10 @@
 <template>
-  <div class="digital-advertising-page">
+  <div class="digital-channel-analytics-page">
 
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="Digital Advertising Key Visual"
+        imageAlt="Digital Channel Analytics Key Visual"
         :animationDuration="1200"
         imagePath="/assets/cnx/whatwedo/datananalytics/digitalchannelanalytics"
       />
@@ -109,7 +109,7 @@ definePageMeta({
 </script>
 
 <style lang="scss" scoped>
-  .digital-advertising-page {
+  .digital-channel-analytics-page {
 
   }
 </style>

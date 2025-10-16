@@ -139,7 +139,6 @@ $button-colors: (
   padding: 0;
   width: rem(36);
   height: rem(36);
-  border-radius: 50%;
   @include tablet {
     width: rem(54);
     height: rem(54);
@@ -362,6 +361,22 @@ a {
     &.hover-left:hover,
     &.hover-right:hover {
       color: $d-black;
+    }
+  }
+
+  // Hover 애니메이션(0.35s) 종료 후 배경 채우기 지연 적용
+  &.hover-left:hover,
+  &.hover-right:hover {
+    background-color: $d-black;
+    transition: color 0.35s, background-color 0.15s 0.2s;
+  }
+
+  // 색상별 Hover 종료 후 배경 채우기 (지연 동일 적용)
+  @each $name, $color in $button-colors {
+    &.#{$name}.hover-left:hover,
+    &.#{$name}.hover-right:hover {
+      background-color: $color;
+      transition: color 0.35s, background-color 0.15s 0.2s;
     }
   }
 

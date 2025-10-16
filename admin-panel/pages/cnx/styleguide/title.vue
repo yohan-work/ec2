@@ -51,6 +51,32 @@
         </div>
       </div>
 
+      <!-- 제목 태그 변경 (h2 예시) -->
+      <div class="title-category">
+        <h3 class="category-title">제목 태그 변경 (h2 예시)</h3>
+        <div class="title-item">
+          <div class="title-preview">
+            <AppTitle 
+              title="h2 태그로 렌더링된 제목입니다"
+              text="headingTag로 원하는 제목 태그를 지정할 수 있습니다."
+              headingTag="h2"
+            />
+          </div>
+          <div class="title-info">
+            <span class="title-name">h2 제목</span>
+            <span class="title-code">headingTag="h2"</span>
+            <span class="title-variable" @click="copyVariable('&lt;AppTitle title=&quot;h2 태그로 렌더링된 제목입니다&quot; text=&quot;headingTag로 원하는 제목 태그를 지정할 수 있습니다.&quot; headingTag=&quot;h2&quot; /&gt;')" :title="'클릭하여 복사'">&lt;AppTitle title="h2 태그로 렌더링된 제목입니다" text="headingTag로 원하는 제목 태그를 지정할 수 있습니다." headingTag="h2" /&gt;</span>
+          </div>
+        </div>
+        <div class="code-examples">
+          <pre><code>&lt;AppTitle 
+  title="h2 태그로 렌더링된 제목입니다"
+  text="headingTag로 원하는 제목 태그를 지정할 수 있습니다."
+  headingTag="h2"
+/&gt;</code></pre>
+        </div>
+      </div>
+
       <!-- 설명만 -->
       <div class="title-category">
         <h3 class="category-title">설명만</h3>
