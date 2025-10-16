@@ -12,6 +12,7 @@ export default defineNuxtConfig({
         maxAge: 60 * 60 * 24 * 365, // 1년 캐시
       },
     ],
+    compressPublicAssets: true, // 정적 파일 압축
   },
 
   // Pages 디렉토리 활성화 (Nuxt 3 안정버전)
@@ -52,6 +53,14 @@ export default defineNuxtConfig({
       redirectSignOut: process.env.NUXT_PUBLIC_REDIRECT_SIGN_OUT,
       useDummy: process.env.NUXT_PUBLIC_USE_DUMMY === 'true',
     },
+  },
+
+  // 전역 CSS (FOUC 방지를 위해 CNX 스타일 우선 로드)
+  css: ['~/layouts/scss/cnx.scss'],
+
+  // Features 설정 (FOUC 방지)
+  features: {
+    inlineStyles: true, // SSR 시 CSS를 HTML에 인라인으로 포함
   },
 
   // SSR 설정
@@ -104,10 +113,13 @@ export default defineNuxtConfig({
   // Vite 설정
   vite: {
     assetsInclude: ['**/*.svg'],
+    build: {
+      cssCodeSplit: false, // CSS 코드 분할 비활성화 (FOUC 방지)
+    },
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: (content, filename) => {
+          additionalData: (content: string, filename: string) => {
             // CNX 컴포넌트만 SCSS 변수 주입
             if (filename.includes('/cnx/')) {
               return `
