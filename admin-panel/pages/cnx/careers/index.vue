@@ -628,9 +628,6 @@
         }
       }
       @include desktop {
-        :deep(.tab-list > .inner) {
-          padding: 0;
-        }
         :deep(.tab-panel > .inner) {
           gap: rem(120);
         }
