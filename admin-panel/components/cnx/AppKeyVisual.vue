@@ -8,7 +8,7 @@
           <source 
             v-if="desktopImage"
             :srcset="desktopImage" 
-            media="(min-width: 1320px)"
+            media="(min-width: 1480px)"
           />
           <source 
             v-if="tabletImage"
