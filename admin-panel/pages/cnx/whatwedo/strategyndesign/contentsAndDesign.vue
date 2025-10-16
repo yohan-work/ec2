@@ -1720,16 +1720,11 @@ const getBorderClass = (slide, index) => {
     }
 
     :deep(.app-title) {
-      h2 {
+      .app-title-heading {
         color: $d-white;
       }
     }
 
-    :deep(.app-swiper-container) {
-      .swiper-pagination-bullet {
-        margin: 0;
-      }
-    }
   }
 
   .works-section {
