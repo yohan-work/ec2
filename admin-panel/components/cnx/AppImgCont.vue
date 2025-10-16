@@ -38,7 +38,7 @@
         <source 
           v-if="desktopImage"
           :srcset="desktopImage" 
-          media="(min-width: 1320px)"
+          media="(min-width: 1480px)"
         />
         <source 
           v-if="tabletImage"
@@ -275,7 +275,7 @@ onMounted(async () => {
 
   // 미디어 쿼리 테스트 코드
   console.log('=== AppImgCont 미디어 쿼리 테스트 ===')
-  console.log('Desktop (min-width: 1320px):', window.matchMedia('(min-width: 1320px)').matches)
+  console.log('Desktop (min-width: 1480px):', window.matchMedia('(min-width: 1480px)').matches)
   console.log('Tablet (min-width: 768px):', window.matchMedia('(min-width: 768px)').matches)
   console.log('현재 화면 크기:', window.innerWidth + 'px')
   console.log('이미지 경로들:', {
@@ -285,7 +285,7 @@ onMounted(async () => {
   })
 
   // 미디어 쿼리 변경 감지
-  const desktopMediaQuery = window.matchMedia('(min-width: 1320px)')
+  const desktopMediaQuery = window.matchMedia('(min-width: 1480px)')
   const tabletMediaQuery = window.matchMedia('(min-width: 768px)')
 
   const handleMediaChange = (mediaQuery, name) => {
@@ -299,7 +299,7 @@ onMounted(async () => {
   const handleResize = () => {
     console.log('화면 크기 변경:', window.innerWidth + 'px')
     console.log('미디어 쿼리 상태:', {
-      desktop: window.matchMedia('(min-width: 1320px)').matches,
+      desktop: window.matchMedia('(min-width: 1480px)').matches,
       tablet: window.matchMedia('(min-width: 768px)').matches
     })
   }
