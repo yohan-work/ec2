@@ -1,7 +1,8 @@
 <template>
   <div class="app-title" :class="`text-${align}`" ref="containerRef">
-    <h2 v-if="title" v-html="title" ref="titleRef"></h2>
-    <p v-if="text" v-html="text" ref="textRef"></p>
+    <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
+    <component :is="headingTag" v-if="title" v-html="title" ref="titleRef" class="app-title-heading" />
+    <p v-if="text" v-html="text" ref="textRef" class="app-title-text"></p>
   </div>
 </template>
 
@@ -26,6 +27,11 @@ const props = defineProps({
     type: String,
     default: 'center',
     validator: (value) => ['left', 'center', 'right'].includes(value)
+  },
+  headingTag: {
+    type: String,
+    default: 'h1',
+    validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'].includes(value)
   }
 })
 
@@ -122,9 +128,9 @@ onMounted(async () => {
     padding: rem(120) 0;
   }
 
-  h2 {
+  &-heading {
     @include headline-01;
-    & + p {
+    & + .app-title-text {
       margin-top: rem(8);
 
       @include tablet {
@@ -137,7 +143,7 @@ onMounted(async () => {
     }
   }
 
-  p {
+  &-text {
     @include body-01;
     color: #86868B;
   }
