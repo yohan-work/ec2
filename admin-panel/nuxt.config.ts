@@ -105,10 +105,10 @@ export default defineNuxtConfig({
   vite: {
     assetsInclude: ['**/*.svg'],
     css: {
-      devSourcemap: true,  // 개발 시 소스맵 활성화
+      devSourcemap: true, // 개발 시 소스맵 활성화
       preprocessorOptions: {
         scss: {
-          charset: false,  // 문자셋 문제 해결
+          charset: false, // 문자셋 문제 해결
           additionalData: (content, filename) => {
             // CNX 컴포넌트만 SCSS 변수 주입
             if (filename.includes('/cnx/')) {
@@ -121,22 +121,22 @@ export default defineNuxtConfig({
               `
             }
             return content
-          }
-        }
-      }
+          },
+        },
+      },
     },
     build: {
-      cssCodeSplit: true,  // CSS 코드 분할 활성화
+      cssCodeSplit: false, // CSS 코드 분할 활성화
       rollupOptions: {
         output: {
-          assetFileNames: (assetInfo) => {
+          assetFileNames: assetInfo => {
             if (assetInfo.name && assetInfo.name.endsWith('.css')) {
               return 'css/[name].[hash][extname]'
             }
             return 'assets/[name].[hash][extname]'
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   },
 })
