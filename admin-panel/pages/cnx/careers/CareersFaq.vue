@@ -10,7 +10,7 @@
       <picture class="careers-faq__image" ref="imageRef">
         <source srcset="/assets/cnx/careers/careers_kit.png" media="(min-width: 1024px)">
         <source srcset="/assets/cnx/careers/careers_kit_t.png" media="(min-width: 768px)">
-        <img src="/assets/cnx/careers/careers_kit_m.png" alt="welcome kit"/>
+        <img src="/assets/cnx/careers/careers_kit_m.png" alt="welcome kit" loading="lazy" />
       </picture>
     </div>
   </div>

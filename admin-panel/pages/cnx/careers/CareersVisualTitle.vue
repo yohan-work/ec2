@@ -4,7 +4,7 @@
     <picture>
       <source srcset="/assets/cnx/careers/visual-work.png" media="(min-width: 1024px)" />
       <source srcset="/assets/cnx/careers/visual-work_t.png" media="(min-width: 768px)" />
-      <img src="/assets/cnx/careers/visual-work_m.png" alt="What we do work" ref="imageRef" />
+      <img src="/assets/cnx/careers/visual-work_m.png" alt="What we do work" ref="imageRef" loading="lazy" />
     </picture>
     <HeadingComponent />
   </div>
