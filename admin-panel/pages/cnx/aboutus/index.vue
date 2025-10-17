@@ -329,7 +329,8 @@
             toggleActions: 'play none none reverse',
             // markers: true,
             invalidateOnRefresh: true,
-            onEnter: () => {
+            onEnter: (self) => {
+              console.log(index, historyPointRefs.value.length - 1,self)
               item.classList.add('active');
               if (index === historyPointRefs.value.length - 1) {
                 historyIconRef.value.classList.add('hide');
@@ -347,6 +348,10 @@
 
     })
   }
+
+  onBeforeUpdate(() => {
+    historyPointRefs.value = []
+  })
 
   onMounted(() => {
     initAnimation()
