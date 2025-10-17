@@ -15,10 +15,10 @@
       <!-- intro video -->
       <div class="aboutus-intro">
         <video muted autoplay playsinline loop class="aboutus-intro__video pc">
-          <source src="/assets/cnx/aboutus/aboutus.mp4" type="video/mp4">
+          <source src="/assets/cnx/about-us/overview/aboutus.mp4" type="video/mp4">
         </video>
         <video muted autoplay playsinline loop class="aboutus-intro__video mo">
-          <source src="/assets/cnx/aboutus/aboutus_m.mp4" type="video/mp4">
+          <source src="/assets/cnx/about-us/overview/aboutus_m.mp4" type="video/mp4">
         </video>
         <div class="aboutus-intro__content">
           <h2 class="aboutus-intro__title">We're Concentrix.</h2>
@@ -142,28 +142,28 @@
   // history list
   const historyList = ref([
     {
-      thumb: '/assets/cnx/aboutus/2014.png',
+      thumb: '/assets/cnx/about-us/overview/2014.png',
       year: '2014',
       detail: [
         { title: 'IBM CRM BPO 인수', content: 'CRM & Digital Marketing ($1.2B)' },
       ]
     },
     {
-      thumb: '/assets/cnx/aboutus/2016.png',
+      thumb: '/assets/cnx/about-us/overview/2016.png',
       year: '2016',
       detail: [
         { title: 'Minacs 인수', content: 'Global CRM & Marketing Optimization Company ($420M)' }
       ]
     },
     {
-      thumb: '/assets/cnx/aboutus/2017.png',
+      thumb: '/assets/cnx/about-us/overview/2017.png',
       year: '2017',
       detail: [
         { title: 'Tigerspike 인수', content: 'Digital Product & Strategy Company ($120M)' }
       ]
     },
     {
-      thumb: '/assets/cnx/aboutus/2018.png',
+      thumb: '/assets/cnx/about-us/overview/2018.png',
       year: '2018',
       detail: [
         { title: 'Convergys 인수', content: 'Global Customer Care Company ($2.2B)' },
@@ -171,7 +171,7 @@
       ]
     },
     {
-      thumb: '/assets/cnx/aboutus/2020.png',
+      thumb: '/assets/cnx/about-us/overview/2020.png',
       year: '2020',
       detail: [
         { title: 'Nasdaq 상장', content: '글로벌 CX & Tech 기업으로 상장 (Nasdaq : CNXC)' },
@@ -179,7 +179,7 @@
       ]
     },
     {
-      thumb: '/assets/cnx/aboutus/2021.png',
+      thumb: '/assets/cnx/about-us/overview/2021.png',
       year: '2021',
       detail: [
         { title: 'Value Factory 인수', content: 'eCommerce Solution Company' },
@@ -187,28 +187,28 @@
       ]
     },
     {
-      thumb: '/assets/cnx/aboutus/2022.png',
+      thumb: '/assets/cnx/about-us/overview/2022.png',
       year: '2022',
       detail: [
         { title: 'ServiceSource 인수', content: 'B2B Digital Sales Company ($131M)' }
       ]
     },
     {
-      thumb: '/assets/cnx/aboutus/2023.png',
+      thumb: '/assets/cnx/about-us/overview/2023.png',
       year: '2023.09',
       detail: [
         { title: 'Webhelp 합병', content: 'Global \'tech-powered\' company ($4B)' }
       ]
     },
     {
-      thumb: '/assets/cnx/aboutus/2024.png',
+      thumb: '/assets/cnx/about-us/overview/2024.png',
       year: '2024.04',
       detail: [
         { title: 'ReBranding', content: 'CI & Culture Statement Renewal' }
       ]
     },
     {
-      thumb: '/assets/cnx/aboutus/2025.png',
+      thumb: '/assets/cnx/about-us/overview/2025.png',
       year: '2025.09',
       detail: [
         { title: '‘SAI Digital’ 인수합병', content: 'E2E 이커머스 솔루션 서비스 및 자체 AI 솔루션 보유,<br>한국형 베트남 오프쇼어 개발 운영 모델 완성' }
@@ -329,7 +329,6 @@
             // markers: true,
             invalidateOnRefresh: true,
             onEnter: (self) => {
-              console.log(index, historyPointRefs.value.length - 1,self)
               item.classList.add('active');
               if (index === historyPointRefs.value.length - 1) {
                 historyIconRef.value.classList.add('hide');
