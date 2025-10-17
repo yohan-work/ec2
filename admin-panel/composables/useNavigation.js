@@ -10,16 +10,16 @@ export const useNavigation = () => {
           title: 'Strategy & Design',
           path: null,
           items: [
-            { text: 'Contents and Design', path: '/whatwedo/strategyndesign/contentsAndDesign' },
-            { text: 'Digital Advertising', path: '/whatwedo/strategyndesign/digitaladvertising' }
+            { text: 'Contents and Design', path: '/what-we-do/strategy-and-design/contents-and-design' },
+            { text: 'Digital Advertising', path: '/what-we-do/strategy-and-design/digital-advertising' }
           ]
         },
         {
           title: 'Data & Analytics',
           path: null,
           items: [
-            { text: 'Marketing & Sales Analytics', path: '/whatwedo/datananalytics/marketingnSalesAnalytics' },
-            { text: 'Digital Channel Analytics', path: '/whatwedo/datananalytics/digitalchannelanalytics' },
+            { text: 'Marketing & Sales Analytics', path: '/what-we-do/data-and-analytics/marketing-ann-sales-analytics' },
+            { text: 'Digital Channel Analytics', path: '/what-we-do/data-and-analytics/digital-channel-analytics' },
             { text: 'Data Engineering', path: '' },
             { text: 'Analytics Solution', path: '' },
             { text: 'Enterprise Intelligence', path: '' }
@@ -29,8 +29,8 @@ export const useNavigation = () => {
           title: 'Technology Platforms',
           path: null,
           items: [
-            { text: 'Commerce Platform', path: '/whatwedo/technologyplatforms/commerceplatform' },
-            { text: 'Customer eXperience Platform', path: '' },
+            { text: 'Commerce Platform', path: '/what-we-do/technology-platforms/commerce-platform' },
+            { text: 'Customer eXperience Platform', path: '/what-we-do/technology-platforms/customer-experience-platform' },
             { text: 'Digital eXperience Platform', path: '' },
             { text: 'AI Platform', path: '' }
           ]
@@ -61,14 +61,14 @@ export const useNavigation = () => {
           title: '',
           path: null,
           items: [
-            { text: 'About Us', path: '/aboutus' }
+            { text: 'About Us', path: '/about-us/overview' }
           ]
         },
         {
           title: '',
           path: null,
           items: [
-            { text: 'Newsroom', path: '/newsletters' }
+            { text: 'Newsroom', path: '/about-us/newsroom' }
           ]
         }
       ]

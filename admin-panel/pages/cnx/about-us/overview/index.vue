@@ -98,7 +98,7 @@
 
             <li class="aboutus-history__item" v-for="item in historyList" :key="item.year"> 
               <div class="aboutus-history__item-thumb">
-                <img :src="item.thumb" alt="history thumb">
+                <img :src="item.thumb" alt="history thumb" loading="lazy">
               </div>
               <div class="aboutus-history__item-content">
                 <em class="aboutus-history__item-year">{{ item.year }}</em>
@@ -329,7 +329,8 @@
             toggleActions: 'play none none reverse',
             // markers: true,
             invalidateOnRefresh: true,
-            onEnter: () => {
+            onEnter: (self) => {
+              console.log(index, historyPointRefs.value.length - 1,self)
               item.classList.add('active');
               if (index === historyPointRefs.value.length - 1) {
                 historyIconRef.value.classList.add('hide');
@@ -347,6 +348,10 @@
 
     })
   }
+
+  onBeforeUpdate(() => {
+    historyPointRefs.value = []
+  })
 
   onMounted(() => {
     initAnimation()
@@ -796,9 +801,12 @@
         }
 
         &-thumb {
+          aspect-ratio: 289 / 145;
           @include translate;
           img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
         }
 

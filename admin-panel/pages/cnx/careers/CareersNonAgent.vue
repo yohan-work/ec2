@@ -2,7 +2,7 @@
   <ul class="careers-non-agent" ref="containerRef">
     <li class="careers-non-agent__item" v-for="item in items" :key="item.title" :ref="el => setItemRef(el)">
       <i class="careers-non-agent__icon">
-        <img :src="`/assets/cnx/careers/${item.icon}`" :alt="`${item.title} icon`" />
+        <img :src="`/assets/cnx/careers/${item.icon}`" :alt="`${item.title} icon`" loading="lazy" />
       </i>
       <div class="careers-non-agent__content">
         <strong v-html="item.title"></strong>
@@ -62,6 +62,10 @@
       })
     })
   }
+
+  onBeforeUpdate(() => {
+    itemRefs.value = []
+  })
 
   onMounted(() => {
     observer = new IntersectionObserver(
