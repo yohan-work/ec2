@@ -80,7 +80,7 @@ export const useNavigation = () => {
     },
     contactus: {
       title: 'Contact Us',
-      path: '/contactus',
+      path: '/contact-us',
       sections: []
     }
   }
