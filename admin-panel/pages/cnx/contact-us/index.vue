@@ -188,8 +188,8 @@ import AppTab from '~/components/cnx/AppTab.vue'
 import AppButtonTab from '~/components/cnx/AppButtonTab.vue'
 
 // SVG Icons
-import locationSvg from '~/public/assets/cnx/contactus/location.svg?raw'
-import phoneSvg from '~/public/assets/cnx/contactus/phone.svg?raw'
+import locationSvg from '~/public/assets/cnx/contact-us/location.svg?raw'
+import phoneSvg from '~/public/assets/cnx/contact-us/phone.svg?raw'
 
 const activeTab = ref(0)
 

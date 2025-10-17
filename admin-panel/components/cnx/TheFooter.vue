@@ -265,7 +265,7 @@ const arrowIcon = arrowHamburgerDown
 const legalLinks = [
   { text: 'Legal Information', path: 'https://www.concentrix.com/legal/', external: true },
   { text: 'Privacy Policy', path: 'https://catalyst.concentrix.com/privacy-policy/', external: true },
-  { text: 'Contact Us', path: '/cnx/contactus', external: false },
+  { text: 'Contact Us', path: '/cnx/contact-us', external: false },
 ]
 
 defineOptions({
