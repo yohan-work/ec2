@@ -4,7 +4,6 @@
     <AppKeyVisual 
       imageAlt="Style Guide Key Visual"
       :animationDuration="1500"
-      imagePath="/assets/cnx/aboutus"
     />
 
     <div class="inner">
