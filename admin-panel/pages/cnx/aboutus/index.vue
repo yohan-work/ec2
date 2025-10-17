@@ -98,7 +98,7 @@
 
             <li class="aboutus-history__item" v-for="item in historyList" :key="item.year"> 
               <div class="aboutus-history__item-thumb">
-                <img :src="item.thumb" alt="history thumb">
+                <img :src="item.thumb" alt="history thumb" loading="lazy">
               </div>
               <div class="aboutus-history__item-content">
                 <em class="aboutus-history__item-year">{{ item.year }}</em>
@@ -796,9 +796,12 @@
         }
 
         &-thumb {
+          aspect-ratio: 289 / 145;
           @include translate;
           img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
         }
 
