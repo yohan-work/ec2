@@ -36,7 +36,7 @@
                 <picture>
                   <source :srcset="getImageSrc(index + 1)" media="(min-width: 768px)">
                   <source :srcset="getImageSrc(index + 1)" media="(min-width: 1024px)">
-                  <img :src="getImageSrc(index + 1)" :alt="getSlideAltText(slide)">
+                  <img :src="getImageSrc(index + 1)" :alt="getSlideAltText(slide)" loading="lazy" fetchpriority="low" width="880" height="360">
                 </picture>
               </figure>
             </ClientOnly>

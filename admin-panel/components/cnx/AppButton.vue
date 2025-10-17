@@ -15,8 +15,8 @@
     :href="href"
     v-bind="$attrs"
     :class="buttonClasses"
-    target="_blank"
-    rel="noopener noreferrer"
+    :target="linkTarget"
+    :rel="linkRel"
   >
     {{ text }}
   </a>
@@ -97,6 +97,15 @@ const buttonClasses = computed(() => {
   
   return classes.join(' ')
 })
+
+// http(s) 링크에만 새 창 및 rel 적용
+const isHttpUrl = computed(() => {
+  if (!props.href) return false
+  return /^https?:\/\//i.test(props.href)
+})
+
+const linkTarget = computed(() => (isHttpUrl.value ? '_blank' : undefined))
+const linkRel = computed(() => (isHttpUrl.value ? 'noopener noreferrer' : undefined))
 
 const handleButtonClick = () => {
   if (props.disabled) {

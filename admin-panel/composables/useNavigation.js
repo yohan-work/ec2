@@ -18,11 +18,11 @@ export const useNavigation = () => {
           title: 'Data & Analytics',
           path: null,
           items: [
-            { text: 'Marketing & Sales Analytics', path: '/what-we-do/data-and-analytics/marketing-ann-sales-analytics' },
+            { text: 'Marketing & Sales Analytics', path: '/what-we-do/data-and-analytics/marketing-and-sales-analytics' },
             { text: 'Digital Channel Analytics', path: '/what-we-do/data-and-analytics/digital-channel-analytics' },
-            { text: 'Data Engineering', path: '' },
-            { text: 'Analytics Solution', path: '' },
-            { text: 'Enterprise Intelligence', path: '' }
+            { text: 'Data Engineering', path: '/what-we-do/data-and-analytics/data-engineering' },
+            { text: 'Analytics Solution', path: '/what-we-do/data-and-analytics/analytics-solution' },
+            { text: 'Enterprise Intelligence', path: '/what-we-do/data-and-analytics/enterprise-intelligence' }
           ]
         },
         {

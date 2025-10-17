@@ -1,0 +1,63 @@
+<template>
+  <div class="data-engineering-page">
+
+    <!-- 키 비주얼 섹션 -->
+    <section class="key-visual-section">
+      <AppKeyVisual 
+        imageAlt="Data Engineering Key Visual"
+        :animationDuration="1200"
+      />
+    </section>
+
+    <div class="inner">
+      <!-- 타이틀 섹션 -->
+      <section class="title-section">
+        <AppTitle 
+          title="Data Engineering"
+        />
+      </section>
+
+      <!-- 콘텐츠 섹션 -->
+      <section class="content-section">
+        <AppImgCont 
+          title="Digital Content Crawling"
+          text="Digital Content Crawling은 인터넷에 존재하는 다양한 웹사이트, 뉴스, 소셜미디어, 블로그 등에서 데이터를 자동으로 수집·저장·갱신하는 기술입니다. 이를 통해 인터넷상의 다양한 온라인 채널에서 실시간으로 콘텐츠를 자동 수집하여, 기업이 시장 동향을 빠르게 파악하고, 경쟁사 분석, 트렌드 예측 등에 활용할 수 있도록 도와줍니다."
+          imageName="de01"
+        />
+      </section>
+
+      <!-- 콘텐츠 섹션 -->
+      <section class="content-section">
+        <AppImgCont 
+          title="Data Pipeline & Engineering"
+          text="SEO 구축 이후 운영 단계에서 지속적인 성과를 모니터링하고 분석하기 위한 클라우드 기반의 SEO 자동화 솔루션입니다. <br>SEO의 Healthiness 모니터링(On-Page, Off-Page, Technical SEO)과 주요 KPI 및 Keyword 트렌드를 분석하여 장기적인 SEO 성과 유지를 지원합니다.<br><br>※솔루션 : Airflow, BigQuery, Snowflake 등"
+          imageName="de02"
+          :reverse="true"
+        />
+      </section>
+
+      <!-- 콘텐츠 섹션 -->
+      <section class="content-section">
+        <AppImgCont 
+          title="Cloud Platform Operation​"
+          text="Cloud Platform Operation은 클라우드 기반 IT 인프라와 서비스를 안정적이고 효율적으로 운영하는 전문적인 관리 프로세스입니다. 기업은 다양한 클라우드 환경에서 애플리케이션과 데이터, 네트워크 자원을 자동화와 모니터링, 보안 관리의 결합으로 최적화하여 비즈니스 연속성을 확보합니다. <br>콘센트릭스는 AWS와 GCP의 Qualified Official Partner for Platform Operation로서 전문적 서비스를 제공합니다."
+          imageName="de03"
+        />
+      </section>
+
+    </div>
+    
+  </div>
+</template>
+
+<script setup>
+import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
+import AppTitle from '~/components/cnx/AppTitle.vue'
+import AppImgCont from '~/components/cnx/AppImgCont.vue' 
+
+// 레이아웃 설정
+definePageMeta({
+  layout: 'concentrix'
+})
+
+</script>
