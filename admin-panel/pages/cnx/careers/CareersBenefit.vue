@@ -21,7 +21,7 @@
 
 <script setup>
 
-  import { ref, onMounted, onUnmounted } from 'vue'
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
   import { gsap } from 'gsap'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -36,44 +36,26 @@
     }
   })
 
+  
   const containerRef = ref(null)
   const titleRef = ref(null)
   const itemRefs = ref([])
-
+  
   // 템플릿 ref 설정 함수
   const setItemRef = (el, index) => {
     if (el) {
       itemRefs.value[index] = el
     }
   }
-
+  
+  let ctx = null
+  let observer = null
   gsap.registerPlugin(ScrollTrigger)
 
-  let observer = null
-
   const initAnimation = () => {
-    if (!titleRef.value) return
-    gsap.fromTo(titleRef.value, {
-      y: 30,
-      opacity: 0
-    }, {
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: titleRef.value,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none none'
-      }
-    })
-
-    if (itemRefs.value.length === 0) return
-    itemRefs.value.forEach(item => {
-      if (!item) return
-
-      gsap.fromTo(item, {
+    ctx = gsap.context(() => {
+      if (!titleRef.value) return
+      gsap.fromTo(titleRef.value, {
         y: 30,
         opacity: 0
       }, {
@@ -82,11 +64,32 @@
         duration: 1,
         ease: 'power2.out',
         scrollTrigger: {
-          trigger: item,
+          trigger: titleRef.value,
           start: 'top 80%',
           end: 'bottom 20%',
           toggleActions: 'play none none none'
         }
+      })
+
+      if (itemRefs.value.length === 0) return
+      itemRefs.value.forEach(item => {
+        if (!item) return
+
+        gsap.fromTo(item, {
+          y: 30,
+          opacity: 0
+        }, {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none none'
+          }
+        })
       })
     })
   }
@@ -116,10 +119,12 @@
     }
   })
   
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     if (observer) {
       observer.disconnect()
     }
+    ctx?.revert()
+    ctx = null
   })
 
 </script>

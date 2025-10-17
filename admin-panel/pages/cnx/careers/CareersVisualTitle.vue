@@ -6,13 +6,13 @@
       <source srcset="/assets/cnx/careers/visual-work_t.png" media="(min-width: 768px)" />
       <img src="/assets/cnx/careers/visual-work_m.png" alt="What we do work" ref="imageRef" />
     </picture>
-    <h4 class="careers-visual-title__title" v-html="title" ref="titleRef"></h4>
+    <HeadingComponent />
   </div>
 </template>
 
 <script setup>
 
-  import { ref, onMounted, onUnmounted } from 'vue'
+  import { ref, onMounted, onBeforeUnmount, h } from 'vue'
   import { gsap } from 'gsap'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -23,41 +23,52 @@
     }
   })
 
+  const HeadingComponent = () => h(
+    props.headingLevel,
+    {
+      class: 'careers-visual-title__title',
+      ref: titleRef,
+      innerHTML: props.title
+    }
+  )
+
   const imageRef = ref(null)
   const titleRef = ref(null)
   const containerRef = ref(null)
 
+  let ctx = null
+  let observer = null
   gsap.registerPlugin(ScrollTrigger)
 
-  let observer = null
-
   const initAnimation = () => {
-    if (!imageRef.value && !titleRef.value) return
+    ctx = gsap.context(() => {
+      if (!imageRef.value && !titleRef.value) return
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.value,
-        start: 'top 90%',
-        toggleActions: 'play none none none',
-      }
-    })
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.value,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+        }
+      })
 
-    tl.fromTo(imageRef.value, {
-      scale: 1.2,
-    }, {
-      scale: 1,
-      ease: 'power2.out',
-      duration: 1
+      tl.fromTo(imageRef.value, {
+        scale: 1.2,
+      }, {
+        scale: 1,
+        ease: 'power2.out',
+        duration: 1
+      })
+      .fromTo(titleRef.value, {
+        y: 30,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out',
+        duration: 1
+      }, 0)
     })
-    .fromTo(titleRef.value, {
-      y: 30,
-      opacity: 0,
-    }, {
-      y: 0,
-      opacity: 1,
-      ease: 'power2.out',
-      duration: 1
-    }, 0)
   }
 
   onMounted(() => {
@@ -85,10 +96,12 @@
     }
   })
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     if (observer) {
       observer.disconnect()
     }
+    ctx?.revert()
+    ctx = null
   })
 
 </script>

@@ -123,7 +123,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, onUnmounted } from 'vue'
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
   import gsap from 'gsap'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -217,8 +217,6 @@
     }
   ])
 
-  gsap.registerPlugin(ScrollTrigger)
-
   const informationHeadRef = ref(null)
   const informationHeadTitleRef = ref(null)
   const informationHeadTextRef = ref(null)
@@ -240,6 +238,8 @@
 
   let ctx = null
 
+  gsap.registerPlugin(ScrollTrigger)
+
   const createHeadAnimation = (triggerElement, titleElement, textElement) => {
     if (!triggerElement || !titleElement || !textElement) return
 
@@ -248,8 +248,6 @@
         trigger: triggerElement,
         start: 'top 80%',
         end: 'bottom 20%',
-        duration: 1,
-        ease: 'power2.out',
         toggleActions: 'play none none none'
       }
     })
@@ -259,6 +257,7 @@
     }, {
       y: 0,
       opacity: 1,
+      ease: 'power2.out',
     })
     .fromTo(textElement, {
       y: 30,
@@ -266,12 +265,13 @@
     }, {
       y: 0,
       opacity: 1,
+      ease: 'power2.out',
     }, '-=0.2') // 0.2초 전에 시작하여 부드러운 연속 애니메이션
   }
 
   const createHistoryIconAnimation = (start, end) => {
-    return gsap.to(historyIconRef.value, {
-      y: 1,
+    if (!historyIconRef.value) return
+    gsap.to(historyIconRef.value, {
       ease: 'none',
       scrollTrigger: {
         trigger: historyContainerRef.value,
@@ -352,7 +352,7 @@
     initAnimation()
   })
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     ctx?.revert()
     ctx = null
   })

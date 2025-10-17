@@ -65,41 +65,43 @@
     qaOpenRef.value = newSet
   }
 
+  let ctx = null
+  let observer = null
   gsap.registerPlugin(ScrollTrigger)
 
-  let observer = null
-
   const initAnimation = () => {
-    if (!containerRef.value) return
-    gsap.fromTo(titleRef.value, {
-      y: 30,
-      opacity: 0
-    }, {
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: titleRef.value,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none none'
-      }
-    })
-    gsap.fromTo(listRef.value, {
-      y: 30,
-      opacity: 0
-    }, {
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: listRef.value,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none none'
-      }
+    ctx = gsap.context(() => {
+      if (!containerRef.value) return
+      gsap.fromTo(titleRef.value, {
+        y: 30,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: titleRef.value,
+          start: 'top 80%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none none'
+        }
+      })
+      gsap.fromTo(listRef.value, {
+        y: 30,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: listRef.value,
+          start: 'top 80%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none none'
+        }
+      })
     })
   }
 
@@ -127,10 +129,12 @@
     }
   })
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     if (observer) {
       observer.disconnect()
     }
+    ctx?.revert()
+    ctx = null
   })
 </script>
 
