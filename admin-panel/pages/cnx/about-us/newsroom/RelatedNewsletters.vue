@@ -1,7 +1,6 @@
 <template>
   <div v-if="newsletters.length > 0" class="related-newsletters">
     <div class="related-newsletters-container">
-
       <!-- 제목 -->
       <h2 class="related-newsletters-title">더 많은 뉴스 보기</h2>
 
@@ -13,7 +12,7 @@
           class="related-newsletters-item"
         >
           <NuxtLink
-            :to="`/newsletters/${item.id}`"
+            :to="`/about-us/newsroom/${item.id}`"
             @click="handleNewsletterClick(item.id)"
             class="related-newsletters-link"
           >
@@ -48,7 +47,7 @@ const props = defineProps({
 const emit = defineEmits(['newsletter-click'])
 
 // 날짜 포맷 (한국 시간대로 표시)
-const formatDate = (dateString) => {
+const formatDate = dateString => {
   if (!dateString) return ''
   const date = new Date(dateString)
   const year = date.getFullYear()
@@ -58,15 +57,12 @@ const formatDate = (dateString) => {
 }
 
 // 뉴스레터 클릭 핸들러
-const handleNewsletterClick = (newsletterId) => {
+const handleNewsletterClick = newsletterId => {
   // 현재 스크롤 위치 저장
   const scrollPosition = window.scrollY
 
   // 세션 스토리지에 저장 (목록 페이지로 돌아갔을 때 사용)
-  sessionStorage.setItem(
-    'newsletterScrollPosition',
-    scrollPosition.toString()
-  )
+  sessionStorage.setItem('newsletterScrollPosition', scrollPosition.toString())
   sessionStorage.setItem('lastClickedNewsletterId', newsletterId.toString())
   sessionStorage.setItem('fromDetailPage', 'true')
 
@@ -131,7 +127,7 @@ const handleNewsletterClick = (newsletterId) => {
   &-date {
     flex-shrink: 0;
     font-size: $font-size-body2-mobile;
-    color: #A2A2A2;
+    color: #a2a2a2;
     @include tablet {
       font-size: $font-size-body2-tablet;
     }

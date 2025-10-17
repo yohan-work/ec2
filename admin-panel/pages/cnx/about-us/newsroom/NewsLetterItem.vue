@@ -1,14 +1,10 @@
 <template>
-  <li
-    :id="`newsletter-${newsletter.id}`"
-    class="newsletter-item"
-  >
+  <li :id="`newsletter-${newsletter.id}`" class="newsletter-item">
     <NuxtLink
-      :to="`/newsletters/${newsletter.id}`"
+      :to="`/about-us/newsroom/${newsletter.id}`"
       @click="handleNewsletterClick(newsletter.id)"
       class="newsletter-link"
     >
-      
       <!-- 뉴스레터 정보 -->
       <div class="newsletter-content">
         <h2 class="newsletter-title">
@@ -22,12 +18,14 @@
       <!-- 썸네일 이미지 -->
       <figure class="newsletter-thumbnail">
         <img
-          :src="newsletter.thumbnail_image || '/images/default-newsletter-thumbnail.jpg'"
+          :src="
+            newsletter.thumbnail_image ||
+            '/images/default-newsletter-thumbnail.jpg'
+          "
           :alt="newsletter.title"
           @error="handleImageError"
         />
       </figure>
-
     </NuxtLink>
   </li>
 </template>
@@ -37,30 +35,30 @@
 const props = defineProps({
   newsletter: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 // Emits 정의
 const emit = defineEmits(['newsletter-click'])
 
 // 이미지 로딩 실패 시 기본 이미지 표시됩니다.
-const handleImageError = (event) => {
+const handleImageError = event => {
   event.target.src = '/images/default-newsletter-thumbnail.jpg'
 }
 
 // 날짜 포맷 (YYYY.MM.DD 형태로 출력합니다.)
-const formatDate = (dateString) => {
+const formatDate = dateString => {
   if (!dateString) return ''
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}.${month}.${day}`;
+  const date = new Date(dateString)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}.${month}.${day}`
 }
 
 // 게시글 클릭 핸들러
-const handleNewsletterClick = (newsletterId) => {
+const handleNewsletterClick = newsletterId => {
   emit('newsletter-click', newsletterId)
 }
 </script>
@@ -133,14 +131,14 @@ const handleNewsletterClick = (newsletterId) => {
 
     .newsletter-date {
       font-size: $font-size-body2-mobile;
-      color: #A2A2A2;
+      color: #a2a2a2;
       margin-top: rem(8);
-      
+
       @include tablet {
         font-size: $font-size-body2-tablet;
         margin-top: rem(16);
       }
-      
+
       @include desktop {
         font-size: $font-size-body3-desktop;
         margin-top: rem(24);

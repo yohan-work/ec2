@@ -4,7 +4,6 @@
     <main>
       <div class="newsletter">
         <div class="inner">
-
           <!-- 뉴스레터 내용 -->
           <NewsletterContent v-if="newsletter" :newsletter="newsletter" />
 
@@ -17,7 +16,7 @@
 
           <!-- 더보기 버튼 -->
           <div class="newsletter-load-more">
-            <AppButton effect="left" to="/newsletters" text="목록 보기">
+            <AppButton effect="left" to="/about-us/newsroom" text="목록 보기">
             </AppButton>
           </div>
         </div>
