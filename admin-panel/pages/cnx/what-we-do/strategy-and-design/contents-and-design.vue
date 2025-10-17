@@ -106,13 +106,13 @@
           <span class="intro-section-content-line"></span>
           <div class="intro-section-content-item" role="img" aria-label="CiX">
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/c.svg" alt="C" aria-hidden="true">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/c.svg" alt="C" aria-hidden="true">
             </div>
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/i.svg" alt="I" aria-hidden="true">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/i.svg" alt="I" aria-hidden="true">
             </div>
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/x.svg" alt="X" aria-hidden="true">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/x.svg" alt="X" aria-hidden="true">
             </div>
           </div>
         </div>
@@ -127,117 +127,117 @@
           <!-- PC -->
           <ul class="overview-section-content-list" v-if="!isMobile">
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/wedelivercreative.png" alt="wedelivercreative">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedelivercreative.png" alt="wedelivercreative">
             </li>
           </ul>
           <!-- Mobile -->
           <ul class="overview-section-content-list" v-else>
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/wedeliver.png" alt="wedeliver">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedeliver.png" alt="wedeliver">
             </li>
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/creative.png" alt="creative">
-            </li>
-          </ul>
-          <ul class="overview-section-content-list">
-            <li class="overview-section-content-list-item">
-              <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/report.gif" alt="report">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/report_hover.gif" alt="report" aria-hidden="true" loading="lazy" fetchpriority="low">
-              </div>
-              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
-            </li>
-            <li class="overview-section-content-list-item">
-              <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/planning.gif" alt="planning">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/planning_hover.gif" alt="planning" aria-hidden="true" loading="lazy" fetchpriority="low">
-              </div>
-              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
-            </li>
-            <li class="overview-section-content-list-item">
-              <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/service.gif" alt="service">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/service_hover.gif" alt="service" aria-hidden="true" loading="lazy" fetchpriority="low">
-              </div>
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/creative.png" alt="creative">
             </li>
           </ul>
           <ul class="overview-section-content-list">
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/graphics.gif" alt="graphics">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/graphics_hover.gif" alt="graphics" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/report.gif" alt="report">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/report_hover.gif" alt="report" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/color.gif" alt="color">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/color_hover.gif" alt="color" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/planning.gif" alt="planning">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/planning_hover.gif" alt="planning" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/typography.gif" alt="typography">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/typography_hover.gif" alt="typography" aria-hidden="true" loading="lazy" fetchpriority="low">
-              </div>
-              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
-            </li>
-            <li class="overview-section-content-list-item">
-              <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/logo.gif" alt="logo">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/logo_hover.gif" alt="logo" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/service.gif" alt="service">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/service_hover.gif" alt="service" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
           </ul>
           <ul class="overview-section-content-list">
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/icon.gif" alt="icon">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/icon_hover.gif" alt="icon" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/graphics.gif" alt="graphics">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/graphics_hover.gif" alt="graphics" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/guide.gif" alt="guide">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/guide_hover.gif" alt="guide" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/color.gif" alt="color">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/color_hover.gif" alt="color" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/image.gif" alt="image">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/image_hover.gif" alt="image" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/typography.gif" alt="typography">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/typography_hover.gif" alt="typography" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/interaction.gif" alt="interaction">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/interaction_hover.gif" alt="interaction" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/logo.gif" alt="logo">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/logo_hover.gif" alt="logo" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
           </ul>
           <ul class="overview-section-content-list">
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/motion.gif" alt="motion">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/motion_hover.gif" alt="motion" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/icon.gif" alt="icon">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/icon_hover.gif" alt="icon" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/sound.gif" alt="sound">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/sound_hover.gif" alt="sound" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/guide.gif" alt="guide">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/guide_hover.gif" alt="guide" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/illustration.gif" alt="illustration">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/illustration_hover.gif" alt="illustration" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/image.gif" alt="image">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/image_hover.gif" alt="image" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/interaction.gif" alt="interaction">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/interaction_hover.gif" alt="interaction" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+            </li>
+          </ul>
+          <ul class="overview-section-content-list">
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/motion.gif" alt="motion">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/motion_hover.gif" alt="motion" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/sound.gif" alt="sound">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/sound_hover.gif" alt="sound" aria-hidden="true" loading="lazy" fetchpriority="low">
+              </div>
+              <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
+            </li>
+            <li class="overview-section-content-list-item">
+              <div class="img-swap">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/illustration.gif" alt="illustration">
+                <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/illustration_hover.gif" alt="illustration" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
           </ul>
@@ -260,24 +260,24 @@
           :darkMode="true"  
         >
           <picture>
-            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01_t.jpg" alt="A modern conference room with a long wooden table, hanging light bulbs, and glass walls covered with whiteboard notes and sticky memos." />
+            <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01_t.jpg" alt="A modern conference room with a long wooden table, hanging light bulbs, and glass walls covered with whiteboard notes and sticky memos." />
           </picture>
           <picture>
-            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_02.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_02_t.jpg" alt="An open lounge area with grey sofas, wooden cubicle desks, bookshelves, and hanging plants creating a relaxing workspace atmosphere." />
+            <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02_t.jpg" alt="An open lounge area with grey sofas, wooden cubicle desks, bookshelves, and hanging plants creating a relaxing workspace atmosphere." />
           </picture>
           <picture>
-            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_03.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_03_t.jpg" alt="A professional photo studio with lighting equipment, tripods, monitors, and a white cyclorama backdrop." />
+            <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03_t.jpg" alt="A professional photo studio with lighting equipment, tripods, monitors, and a white cyclorama backdrop." />
           </picture>
           <picture>
-            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_04.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_04_t.jpg" alt="A cozy office lounge with grey couches, wooden floors, circular ceiling lights, and the Concentrix Catalyst logo on the wall." />
+            <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04_t.jpg" alt="A cozy office lounge with grey couches, wooden floors, circular ceiling lights, and the Concentrix Catalyst logo on the wall." />
           </picture>
           <picture>
-            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_05.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_05_t.jpg" alt="A bright office kitchen and lounge area with hanging lights, bookshelves, and greenery providing a natural atmosphere." />
+            <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05_t.jpg" alt="A bright office kitchen and lounge area with hanging lights, bookshelves, and greenery providing a natural atmosphere." />
           </picture>
         </AppSwiper> 
       </div>
@@ -295,9 +295,9 @@
         </AppTitle>
         <div class="works-section-diagram">
           <picture>
-            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram.jpg" media="(min-width: 1024px)" />
-            <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram_t.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram_m.jpg" alt="Business model diagram illustrating various types of business models and their interconnections." />
+            <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram.jpg" media="(min-width: 1024px)" />
+            <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_t.jpg" media="(min-width: 768px)" />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_m.jpg" alt="Business model diagram illustrating various types of business models and their interconnections." />
           </picture>
         </div>
         <div class="works-section-content">
@@ -307,7 +307,7 @@
               text="다양한 디지털 채널에서의 KPI 달성을 위한 채널운영, 프로모션 기획, 이벤트 제작, 그외 브랜드 활동 등을 적극적이고 선제적으로 지원합니다. <br>또한 채널 내 UX/UI 개선 활동이나 추가 서비스개발을 수행하여 장기적인 관점에서의 채널 고도화를 지원합니다."
               imageName="works01"
               imageAlt="A man and woman sit at a table, focused on a laptop in front of them."
-              imagePath="/assets/cnx/whatwedo/strategyndesign/contentsndesign"
+              imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
               :subItems="[
                 { title: 'Operation', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Advanced Operational Services <br>Producing Production Content <br>Create/Operate Events, Promotions <br>Digital Contents Monitoring' },
@@ -320,7 +320,7 @@
               text="데이터 분석 기반의 플랫폼, 서비스, 시스템 개발을 지원합니다. Concentrix 만의 UX/UI Framework과 Process를 통해 안정적으로 프로젝트를 수행합니다. 또한 전략컨설팅, UX컨설팅 프로젝트의 기획, 디자인, 퍼블리싱 업무를 지원합니다."
               imageName="works02"
               imageAlt="A collection of four iPhones, each featuring distinct apps, highlighting diverse mobile applications and user interfaces."
-              imagePath="/assets/cnx/whatwedo/strategyndesign/contentsndesign"
+              imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :subItems="[
                 { title: 'UX/UI Design', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Strategy/UX Consulting' },
               ]"
@@ -332,7 +332,7 @@
               text="글로벌 플랫폼 내 콘텐츠 제작 및 확산을 수행하며, 대형 온라인 전시 및 포럼 등의 행사기획부터 영상 콘텐츠 제작, 마이크로사이트 구축까지 지원합니다. 또한 소셜미디어 콘텐츠 전략, 기획, 촬영, 제작, 운영 등을 서비스하고 있으며 라이브 커머스, 메타버스와 같은 최신 트렌드를 반영한 서비스의 전략, 기획, 콘텐츠 제작, 촬영 지원 등의 업무를 지원합니다."
               imageName="works03"
               imageAlt="A woman working at a desk, looking at her computer screen, with office supplies arranged around her."
-              imagePath="/assets/cnx/whatwedo/strategyndesign/contentsndesign"
+              imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
               :subItems="[
                 { title: 'Digital Contents Creation', text: 'Global Platform Product Details Page <br>Contents Migration <br>Social Channel Contents <br>Online Exhibition Planning and Production <br>Microsite Development <br>Live Commerce , Metaverse <br>Brand Content Creation' },
@@ -1315,7 +1315,7 @@ const isPaginationBlack = computed(() => {
 // 이미지 경로 생성 함수
 const getImageSrc = (index) => {
   const paddedIndex = index < 10 ? `0${index}` : `${index}`;
-  return `/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_inner${paddedIndex}.jpg`;
+  return `/assets/cnx/what-we-do/strategy-and-design/contents-and-design/banner_inner${paddedIndex}.jpg`;
 };
 
 // 슬라이드 데이터
@@ -1476,20 +1476,20 @@ const getBorderClass = (slide, index) => {
         &:nth-child(#{$i}) {
           .banner-slide-item-content {
             @if $i < 10 {
-              background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg0#{$i}_m.jpg');
+              background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/banner_bg0#{$i}_m.jpg');
               @include tablet {
-                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg0#{$i}_t.jpg');
+                background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/banner_bg0#{$i}_t.jpg');
               }
               @include desktop {
-                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg0#{$i}.jpg');
+                background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/banner_bg0#{$i}.jpg');
               }
             } @else {
-              background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg#{$i}_m.jpg');
+              background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/banner_bg#{$i}_m.jpg');
               @include tablet {
-                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg#{$i}_t.jpg');
+                background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/banner_bg#{$i}_t.jpg');
               }
               @include desktop {
-                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_bg#{$i}.jpg');
+                background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/banner_bg#{$i}.jpg');
               }
             }
           }
@@ -1655,9 +1655,9 @@ const getBorderClass = (slide, index) => {
           &:nth-child(#{$i}) {
             .banner-slide-item-content {
               @if $i < 10 {
-                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_active_bg0#{$i}.jpg');
+                background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/banner_active_bg0#{$i}.jpg');
               } @else {
-                background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/banner_active_bg#{$i}.jpg');
+                background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/banner_active_bg#{$i}.jpg');
               }
             }
           }
@@ -1686,7 +1686,7 @@ const getBorderClass = (slide, index) => {
       display: none;
       width: rem(68);
       height: rem(68);
-      background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/btn_down.svg');
+      background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/btn_down.svg');
       position: absolute;
       bottom: rem(70);
       left: 50%;
@@ -1728,7 +1728,7 @@ const getBorderClass = (slide, index) => {
       &-button {
         width: rem(12);
         height: rem(12);
-        background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_play.svg');
+        background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/ic_play.svg');
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center center;
@@ -1736,7 +1736,7 @@ const getBorderClass = (slide, index) => {
 
         //재생중일때
         &[aria-pressed="true"] {
-          background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_pause.svg');
+          background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/ic_pause.svg');
         }
         // 모바일 전용으로 표시, 태블릿 이상에서는 숨김
         @include tablet {
@@ -1750,9 +1750,9 @@ const getBorderClass = (slide, index) => {
           background: $d-black;
         }
         .banner-slide-controller-button {
-          background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_play_black.svg');
+          background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/ic_play_black.svg');
           &[aria-pressed="true"] {
-            background-image: url('/assets/cnx/whatwedo/strategyndesign/contentsndesign/ic_pause_black.svg');
+            background-image: url('/assets/cnx/what-we-do/strategy-and-design/contents-and-design/ic_pause_black.svg');
           }
         }
       }

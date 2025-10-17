@@ -5,7 +5,6 @@
       <AppKeyVisual 
         imageAlt="Commerce Platform Key Visual"
         :animationDuration="1200"
-        imagePath="/assets/cnx/whatwedo/technologyplatforms/commerceplatform"
       />
     </section>
 
