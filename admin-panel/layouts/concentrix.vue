@@ -18,6 +18,32 @@ import TheFooter from '~/components/cnx/TheFooter.vue'
 
 const route = useRoute()
 
+// 전역 메타 태그 설정
+const headers = useRequestHeaders()
+
+useHead({
+  htmlAttrs: {
+    lang: 'ko',
+  },
+  link: [
+    {
+      rel: 'canonical',
+      href: () => {
+        // 현재 도메인과 경로를 기반으로 canonical URL 생성
+        if (process.client) {
+          return `${window.location.origin}${route.fullPath}`
+        }
+        // SSR 시에는 요청 헤더에서 호스트 정보 가져오기
+        const host = headers.host || 'localhost:3000'
+        const protocol =
+          headers['x-forwarded-proto'] ||
+          (host.includes('localhost') ? 'http' : 'https')
+        return `${protocol}://${host}${route.fullPath}`
+      },
+    },
+  ],
+})
+
 watch(
   () => route.fullPath,
   () => {
