@@ -228,7 +228,7 @@ const swiperSlides = ref([
 
 // 이미지 경로 처리
 const processedSwiperSlides = computed(() => {
-  const imagePath = "/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+  const imagePath = "/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
   return swiperSlides.value.map(slide => {
     if (slide.imageName) {
       const imagePaths = findResponsiveImagePaths(slide.imageName, imagePath)
