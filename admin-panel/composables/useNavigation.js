@@ -32,7 +32,7 @@ export const useNavigation = () => {
             { text: 'Commerce Platform', path: '/what-we-do/technology-platforms/commerce-platform' },
             { text: 'Customer eXperience Platform', path: '/what-we-do/technology-platforms/customer-experience-platform' },
             { text: 'Digital eXperience Platform', path: '/what-we-do/technology-platforms/digital-experience-platform' },
-            { text: 'AI Platform', path: '' }
+            { text: 'AI Platform', path: '/what-we-do/technology-platforms/ai-platform' }
           ]
         },
         {

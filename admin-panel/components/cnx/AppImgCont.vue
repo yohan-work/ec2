@@ -394,7 +394,7 @@ onMounted(async () => {
 
     .description {
       @include body-02;
-      color: $gray-4;
+      color: $d-black;
       margin: 0;
       line-height: 1.6;
     }
