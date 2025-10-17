@@ -488,6 +488,8 @@ defineOptions({
       li {
         margin: 0;
         padding: rem(8) 0;
+        display:flex;
+        align-items:center;
         
         // 태블릿 이상에서는 패딩 제거
         @include tablet {

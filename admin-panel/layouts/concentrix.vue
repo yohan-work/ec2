@@ -23,6 +23,9 @@ watch(
   () => {
     // 스크롤과 포커스 초기화
     window.scrollTo(0, 0)
+    // 메뉴 호버 상태 초기화
+    const activeDropdown = document.querySelector('.gnb-menu-item.active')
+    if (activeDropdown) activeDropdown.classList.remove('active')
     // GNB 닫기
     const openedGNBLayer = document.querySelector('.gnb-dropdown-menu.active')
     if (openedGNBLayer) openedGNBLayer.classList.remove('active')
