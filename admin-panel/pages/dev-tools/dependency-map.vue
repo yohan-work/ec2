@@ -89,6 +89,24 @@
           <span>순환 참조만 보기</span>
         </label>
       </div>
+
+      <div class="layout-options">
+        <label class="filter-label">레이아웃:</label>
+        <label
+          v-for="layout in ['force', 'cluster']"
+          :key="layout"
+          class="filter-item"
+        >
+          <input
+            type="radio"
+            name="layout"
+            :value="layout"
+            v-model="layoutType"
+            @change="renderGraph"
+          />
+          <span>{{ formatLayoutName(layout) }}</span>
+        </label>
+      </div>
     </div>
 
     <!-- 경고 표시 -->
@@ -242,6 +260,9 @@ const fileTypes = ref<string[]>([])
 const showUnusedOnly = ref(false)
 const showCircularOnly = ref(false)
 
+// 레이아웃
+const layoutType = ref<'force' | 'cluster'>('force')
+
 // 색상 매핑
 const typeColors: Record<string, string> = {
   'component-ui': '#3b82f6',
@@ -276,6 +297,17 @@ function formatType(type: string): string {
     utils: 'Utils',
   }
   return typeNames[type] || type
+}
+
+/**
+ * 레이아웃 이름 포맷팅
+ */
+function formatLayoutName(layout: string): string {
+  const layoutNames: Record<string, string> = {
+    force: 'Force (자유 배치)',
+    cluster: 'Cluster (타입별 그룹)',
+  }
+  return layoutNames[layout] || layout
 }
 
 /**
@@ -335,13 +367,10 @@ function handleFilterChange() {
 }
 
 /**
- * 그래프 렌더링 (D3.js)
+ * 노드 및 엣지 필터링 (공통)
  */
-function renderGraph() {
-  if (!analysisData.value || !svgRef.value) return
-
-  const svg = d3.select(svgRef.value)
-  svg.selectAll('*').remove()
+function getFilteredData() {
+  if (!analysisData.value) return { nodes: [], edges: [] }
 
   // 필터링된 노드 및 엣지
   let nodes = [...analysisData.value.graph.nodes]
@@ -391,9 +420,43 @@ function renderGraph() {
       nodeIds.has(typeof e.target === 'string' ? e.target : e.target.id)
   )
 
+  return { nodes, edges }
+}
+
+/**
+ * 그래프 렌더링 (D3.js)
+ */
+function renderGraph() {
+  if (!analysisData.value || !svgRef.value) return
+
+  const { nodes, edges } = getFilteredData()
+
   if (nodes.length === 0) {
+    const svg = d3.select(svgRef.value)
+    svg.selectAll('*').remove()
     return
   }
+
+  // 레이아웃 타입에 따라 다른 렌더링 함수 호출
+  switch (layoutType.value) {
+    case 'cluster':
+      renderClusterLayout(nodes, edges)
+      break
+    case 'force':
+    default:
+      renderForceLayout(nodes, edges)
+      break
+  }
+}
+
+/**
+ * Force Layout 렌더링 (기존 방식)
+ */
+function renderForceLayout(nodes: FileNode[], edges: Edge[]) {
+  if (!svgRef.value) return
+
+  const svg = d3.select(svgRef.value)
+  svg.selectAll('*').remove()
 
   // SVG 크기
   const container = svgRef.value.parentElement
@@ -401,6 +464,10 @@ function renderGraph() {
   const height = container?.clientHeight || 800
 
   svg.attr('width', width).attr('height', height)
+
+  // 노드와 엣지 복사 (시뮬레이션이 원본을 수정하지 않도록)
+  const simulationNodes = nodes.map(n => ({ ...n }))
+  const simulationEdges = edges.map(e => ({ ...e }))
 
   // 줌/팬 기능
   const g = svg.append('g')
@@ -416,11 +483,11 @@ function renderGraph() {
 
   // Force simulation
   const simulation = d3
-    .forceSimulation(nodes as any)
+    .forceSimulation(simulationNodes as any)
     .force(
       'link',
       d3
-        .forceLink(edges as any)
+        .forceLink(simulationEdges as any)
         .id((d: any) => d.id)
         .distance(100)
     )
@@ -447,7 +514,7 @@ function renderGraph() {
   const link = g
     .append('g')
     .selectAll('line')
-    .data(edges)
+    .data(simulationEdges)
     .join('line')
     .attr('stroke', '#999')
     .attr('stroke-opacity', 0.6)
@@ -458,7 +525,7 @@ function renderGraph() {
   const node = g
     .append('g')
     .selectAll('circle')
-    .data(nodes)
+    .data(simulationNodes)
     .join('circle')
     .attr('r', d => {
       // 크기는 의존하는 파일 수에 비례
@@ -496,12 +563,218 @@ function renderGraph() {
   const label = g
     .append('g')
     .selectAll('text')
-    .data(nodes)
+    .data(simulationNodes)
     .join('text')
     .text(d => d.fileName)
     .attr('font-size', 10)
     .attr('dx', 15)
     .attr('dy', 4)
+    .style('pointer-events', 'none')
+    .style('user-select', 'none')
+
+  // Simulation tick
+  simulation.on('tick', () => {
+    link
+      .attr('x1', (d: any) => d.source.x)
+      .attr('y1', (d: any) => d.source.y)
+      .attr('x2', (d: any) => d.target.x)
+      .attr('y2', (d: any) => d.target.y)
+
+    node.attr('cx', (d: any) => d.x).attr('cy', (d: any) => d.y)
+
+    label.attr('x', (d: any) => d.x).attr('y', (d: any) => d.y)
+  })
+
+  // Drag functions
+  function dragstarted(event: any, d: any) {
+    if (!event.active) simulation.alphaTarget(0.3).restart()
+    d.fx = d.x
+    d.fy = d.y
+  }
+
+  function dragged(event: any, d: any) {
+    d.fx = event.x
+    d.fy = event.y
+  }
+
+  function dragended(event: any, d: any) {
+    if (!event.active) simulation.alphaTarget(0)
+    d.fx = null
+    d.fy = null
+  }
+}
+
+/**
+ * Cluster Layout 렌더링 (타입별 그룹)
+ */
+function renderClusterLayout(nodes: FileNode[], edges: Edge[]) {
+  if (!svgRef.value) return
+
+  const svg = d3.select(svgRef.value)
+  svg.selectAll('*').remove()
+
+  // SVG 크기
+  const container = svgRef.value.parentElement
+  const width = container?.clientWidth || 1200
+  const height = container?.clientHeight || 800
+
+  svg.attr('width', width).attr('height', height)
+
+  // 노드와 엣지 복사 (시뮬레이션이 원본을 수정하지 않도록)
+  const simulationNodes = nodes.map(n => ({ ...n }))
+  const simulationEdges = edges.map(e => ({ ...e }))
+
+  // 줌/팬 기능
+  const g = svg.append('g')
+
+  const zoom = d3
+    .zoom<SVGSVGElement, unknown>()
+    .scaleExtent([0.1, 4])
+    .on('zoom', event => {
+      g.attr('transform', event.transform)
+    })
+
+  svg.call(zoom as any)
+
+  // 타입별 중심 위치 계산 (3x3 그리드)
+  const types = Array.from(new Set(nodes.map(n => n.type)))
+  const cols = Math.ceil(Math.sqrt(types.length))
+  const cellWidth = width / cols
+  const cellHeight = height / Math.ceil(types.length / cols)
+
+  const typePositions: Record<string, { x: number; y: number }> = {}
+  types.forEach((type, i) => {
+    const col = i % cols
+    const row = Math.floor(i / cols)
+    typePositions[type] = {
+      x: cellWidth * col + cellWidth / 2,
+      y: cellHeight * row + cellHeight / 2,
+    }
+  })
+
+  // Force simulation with type clustering
+  const simulation = d3
+    .forceSimulation(simulationNodes as any)
+    .force(
+      'link',
+      d3
+        .forceLink(simulationEdges as any)
+        .id((d: any) => d.id)
+        .distance(50)
+        .strength(0.5)
+    )
+    .force('charge', d3.forceManyBody().strength(-100))
+    .force('collision', d3.forceCollide().radius(20))
+    .force(
+      'x',
+      d3.forceX<any>(d => typePositions[d.type]?.x || width / 2).strength(0.5)
+    )
+    .force(
+      'y',
+      d3.forceY<any>(d => typePositions[d.type]?.y || height / 2).strength(0.5)
+    )
+
+  // 타입별 배경 영역 표시
+  g.append('g')
+    .selectAll('rect')
+    .data(types)
+    .join('rect')
+    .attr('x', (d, i) => cellWidth * (i % cols))
+    .attr('y', (d, i) => cellHeight * Math.floor(i / cols))
+    .attr('width', cellWidth)
+    .attr('height', cellHeight)
+    .attr('fill', d => getTypeColor(d))
+    .attr('fill-opacity', 0.05)
+    .attr('stroke', d => getTypeColor(d))
+    .attr('stroke-opacity', 0.2)
+    .attr('stroke-width', 2)
+    .attr('stroke-dasharray', '5,5')
+
+  // 타입 레이블
+  g.append('g')
+    .selectAll('text')
+    .data(types)
+    .join('text')
+    .attr('x', (d, i) => cellWidth * (i % cols) + 10)
+    .attr('y', (d, i) => cellHeight * Math.floor(i / cols) + 20)
+    .text(d => formatType(d))
+    .attr('font-size', 14)
+    .attr('font-weight', 600)
+    .attr('fill', d => getTypeColor(d))
+    .style('pointer-events', 'none')
+
+  // 화살표 마커 정의
+  svg
+    .append('defs')
+    .append('marker')
+    .attr('id', 'arrowhead-cluster')
+    .attr('viewBox', '0 -5 10 10')
+    .attr('refX', 20)
+    .attr('refY', 0)
+    .attr('orient', 'auto')
+    .attr('markerWidth', 6)
+    .attr('markerHeight', 6)
+    .append('path')
+    .attr('d', 'M0,-5L10,0L0,5')
+    .attr('fill', '#999')
+
+  // 엣지 그리기
+  const link = g
+    .append('g')
+    .selectAll('line')
+    .data(simulationEdges)
+    .join('line')
+    .attr('stroke', '#999')
+    .attr('stroke-opacity', 0.3)
+    .attr('stroke-width', 1)
+    .attr('marker-end', 'url(#arrowhead-cluster)')
+
+  // 노드 그리기
+  const node = g
+    .append('g')
+    .selectAll('circle')
+    .data(simulationNodes)
+    .join('circle')
+    .attr('r', d => {
+      const size = Math.max(6, Math.min(15, 6 + d.importedBy.length))
+      return size
+    })
+    .attr('fill', d => {
+      if (d.importedBy.length === 0 && d.type !== 'page') {
+        return '#9ca3af'
+      }
+      return getTypeColor(d.type)
+    })
+    .attr('stroke', '#fff')
+    .attr('stroke-width', 2)
+    .style('cursor', 'pointer')
+    .call(
+      d3
+        .drag<any, FileNode>()
+        .on('start', dragstarted)
+        .on('drag', dragged)
+        .on('end', dragended) as any
+    )
+    .on('click', (event, d) => {
+      selectedNode.value = d
+    })
+    .on('mouseover', function () {
+      d3.select(this).attr('stroke', '#000').attr('stroke-width', 3)
+    })
+    .on('mouseout', function () {
+      d3.select(this).attr('stroke', '#fff').attr('stroke-width', 2)
+    })
+
+  // 레이블 그리기
+  const label = g
+    .append('g')
+    .selectAll('text')
+    .data(simulationNodes)
+    .join('text')
+    .text(d => d.fileName)
+    .attr('font-size', 9)
+    .attr('dx', 10)
+    .attr('dy', 3)
     .style('pointer-events', 'none')
     .style('user-select', 'none')
 
@@ -766,6 +1039,15 @@ onMounted(() => {
   flex-wrap: wrap;
   padding-top: 12px;
   border-top: 1px solid #e5e7eb;
+}
+
+.layout-options {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 12px;
 }
 
 .warnings {
