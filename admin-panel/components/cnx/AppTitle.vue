@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, computed } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -45,6 +45,9 @@ const props = defineProps({
 const containerRef = ref(null)
 const titleRef = ref(null)
 const textRef = ref(null)
+
+// gsap.context 관리를 위한 컨텍스트 핸들 보관
+let gsapCtx = null
 
 // 제목이 HTML을 포함하는지 자동 감지 (간단 검출)
 const isHtmlTitle = computed(() => {
@@ -118,9 +121,23 @@ const initAnimation = () => {
 // DOM이 완전히 렌더링된 후 애니메이션 초기화
 onMounted(async () => {
   await nextTick()
-  initAnimation()
-  // 새로고침/레이아웃 확정 후 트리거 재계산
-  try { ScrollTrigger.refresh() } catch (_) { /* noop */ }
+  // gsap.context로 이 컴포넌트에서 생성한 애니메이션/트리거를 스코프에 묶음
+  gsapCtx = gsap.context(() => {
+    initAnimation()
+  }, containerRef.value)
+  // 새로고침/레이아웃 확정 후 트리거 재계산 (프레임에 태워 충돌 완화)
+  try {
+    requestAnimationFrame(() => {
+      try { ScrollTrigger.refresh() } catch (_) { /* noop */ }
+    })
+  } catch (_) { /* noop */ }
+})
+
+// 언마운트 시 이 컴포넌트 범위에서 생성된 GSAP 리소스 정리
+onUnmounted(() => {
+  try {
+    if (gsapCtx) gsapCtx.revert()
+  } catch (_) { /* noop */ }
 })
 </script>
 
