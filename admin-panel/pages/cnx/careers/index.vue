@@ -4,7 +4,6 @@
     <AppKeyVisual 
       imageAlt="Careers Key Visual"
       :animationDuration="1500"
-      imagePath="/assets/cnx/careers"
     />
 
     <AppTitle 
