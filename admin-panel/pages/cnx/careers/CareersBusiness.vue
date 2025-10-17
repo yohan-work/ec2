@@ -17,7 +17,7 @@
 
 <script setup>
 
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
   import { gsap } from 'gsap'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -48,33 +48,42 @@
     }
   }
 
+  let ctx = null
+
   gsap.registerPlugin(ScrollTrigger)
 
   const initAnimation = () => {
-    if (itemRefs.value.length === 0) return
-    itemRefs.value.forEach(item => {
-      if (!item) return
+    ctx = gsap.context(() => {
+      if (itemRefs.value.length === 0) return
+      itemRefs.value.forEach(item => {
+        if (!item) return
 
-      gsap.fromTo(item, {
-        y: 30,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none none'
-        }
+        gsap.fromTo(item, {
+          y: 30,
+          opacity: 0
+        }, {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none none'
+          }
+        })
       })
     })
   }
 
   onMounted(() => {
     initAnimation()
+  })
+
+  onBeforeUnmount(() => {
+    ctx?.revert()
+    ctx = null
   })
 </script>
 

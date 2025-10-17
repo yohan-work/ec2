@@ -34,29 +34,31 @@
     }
   }
 
+  let ctx = null
+  let observer = null
   gsap.registerPlugin(ScrollTrigger)
 
-  let observer = null
-
   const initAnimation = () => {
-    if (itemRefs.value.length === 0) return
-    itemRefs.value.forEach(item => {
-      if (!item) return
+    ctx = gsap.context(() => {
+      if (itemRefs.value.length === 0) return
+      itemRefs.value.forEach(item => {
+        if (!item) return
 
-      gsap.fromTo(item, {
-        y: 30,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none none'
-        }
+        gsap.fromTo(item, {
+          y: 30,
+          opacity: 0
+        }, {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none none'
+          }
+        })
       })
     })
   }
@@ -86,10 +88,12 @@
     }
   })
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     if (observer) {
       observer.disconnect()
     }
+    ctx?.revert()
+    ctx = null
   })  
 </script>
 

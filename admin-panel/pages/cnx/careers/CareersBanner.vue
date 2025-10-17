@@ -46,43 +46,46 @@
   const contentRef = ref(null)
   const buttonRef = ref(null)
 
-  gsap.registerPlugin(ScrollTrigger)
-
+  let ctx = null
   let observer = null
 
+  gsap.registerPlugin(ScrollTrigger)
+
   const initAnimation = () => {
-    if (!titleRef.value && !contentRef.value && !buttonRef.value) return
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.value,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        duration: 1,
-        ease: 'power2.out',
-        toggleActions: 'play none none none'
-      }
+    ctx = gsap.context(() => {
+      if (!titleRef.value && !contentRef.value && !buttonRef.value) return
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.value,
+          start: 'top 80%',
+          end: 'bottom 20%',
+          duration: 1,
+          ease: 'power2.out',
+          toggleActions: 'play none none none'
+        }
+      })
+      .fromTo(titleRef.value, {
+        y: 30,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+      })
+      .fromTo(contentRef.value, {
+        y: 30,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+      }, '-=0.2')
+      .fromTo(buttonRef.value, {
+        y: 30,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+      }, '-=0.2')
     })
-    .fromTo(titleRef.value, {
-      y: 30,
-      opacity: 0
-    }, {
-      y: 0,
-      opacity: 1,
-    })
-    .fromTo(contentRef.value, {
-      y: 30,
-      opacity: 0
-    }, {
-      y: 0,
-      opacity: 1,
-    }, '-=0.2')
-    .fromTo(buttonRef.value, {
-      y: 30,
-      opacity: 0
-    }, {
-      y: 0,
-      opacity: 1,
-    }, '-=0.2')
   }
 
   onMounted(() => {
@@ -109,10 +112,12 @@
     }
   })
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     if (observer) {
       observer.disconnect()
     }
+    ctx?.revert()
+    ctx = null
   })
 </script>
 

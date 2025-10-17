@@ -18,7 +18,7 @@
 
 <script setup>
 
-  import { ref, onMounted, onUnmounted } from 'vue'
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
   import { gsap } from 'gsap'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -30,9 +30,11 @@
   const buttonRef = ref(null)
   const containerRef = ref(null)
 
+  let ctx = null
   gsap.registerPlugin(ScrollTrigger)
 
   const initAnimation = () => {
+    ctx = gsap.context(() => {
     if (!imageRef.value && !titleRef_1.value && !titleRef_2.value && !buttonRef.value) return
 
     gsap.timeline({
@@ -43,42 +45,48 @@
         ease: 'power2.out',
         toggleActions: 'play none none none'
       }
-    }).fromTo(imageRef.value, {
-      scale: 1.2,
-      opacity: 0,
-    }, {
-      scale: 1,
-      opacity: 1,
-      ease: 'power2.out',
+      }).fromTo(imageRef.value, {
+        scale: 1.2,
+        opacity: 0,
+      }, {
+        scale: 1,
+        opacity: 1,
+        ease: 'power2.out',
+      })
+      .fromTo(titleRef_1.value, {
+        y: 30,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out',
+      }, 0)
+      .fromTo(titleRef_2.value, {
+        y: 30,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out',
+      }, '-=0.2')
+      .fromTo(buttonRef.value, {
+        y: 30,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out',
+      }, '-=0.2')
     })
-    .fromTo(titleRef_1.value, {
-      y: 30,
-      opacity: 0,
-    }, {
-      y: 0,
-      opacity: 1,
-      ease: 'power2.out',
-    }, 0)
-    .fromTo(titleRef_2.value, {
-      y: 30,
-      opacity: 0,
-    }, {
-      y: 0,
-      opacity: 1,
-      ease: 'power2.out',
-    }, '-=0.2')
-    .fromTo(buttonRef.value, {
-      y: 30,
-      opacity: 0,
-    }, {
-      y: 0,
-      opacity: 1,
-      ease: 'power2.out',
-    }, '-=0.2')
   }
 
   onMounted(() => {
     initAnimation()
+  })
+
+  onBeforeUnmount(() => {
+    ctx?.revert()
+    ctx = null
   })
 
 </script>
