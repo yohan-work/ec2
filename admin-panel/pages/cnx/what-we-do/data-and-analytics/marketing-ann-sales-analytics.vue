@@ -6,7 +6,6 @@
       <AppKeyVisual 
         imageAlt="Marketing & Sales Analytics Key Visual"
         :animationDuration="1200"
-        imagePath="/assets/cnx/whatwedo/datananalytics/marketingnsalesanalytics"
       />
     </section>
 

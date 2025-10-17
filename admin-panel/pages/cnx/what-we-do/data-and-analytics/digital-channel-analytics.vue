@@ -6,7 +6,6 @@
       <AppKeyVisual 
         imageAlt="Digital Channel Analytics Key Visual"
         :animationDuration="1200"
-        imagePath="/assets/cnx/whatwedo/datananalytics/digitalchannelanalytics"
       />
     </section>
 
