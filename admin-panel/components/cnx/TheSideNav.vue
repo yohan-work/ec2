@@ -7,7 +7,7 @@
       <!-- 헤더 영역 -->
       <div class="side-nav-header">
         <div class="side-nav-logo">
-          <div class="logo" v-html="footerLogo"></div>
+          <div class="side-nav-logo__image" v-html="footerLogo"></div>
         </div>
         <button 
           class="side-nav-close"
@@ -70,11 +70,12 @@
                   v-if="section.items && section.items.length > 0" 
                   class="side-nav-list"
                 >
-                  <li v-for="item in section.items" :key="item.text">
+                  <li v-for="item in section.items" :key="item.text" class="side-nav-list__item">
                     <NuxtLink 
                       v-if="item.path" 
                       :to="item.path" 
                       @click="closeSideNav"
+                      class="side-nav-list__link"
                     >
                       {{ item.text }}
                     </NuxtLink>
@@ -92,6 +93,7 @@
                 v-if="menu.path" 
                 :to="menu.path" 
                 @click="closeSideNav"
+                class="side-nav-menu-title__link"
               >
                 {{ menu.title }}
               </NuxtLink>
@@ -133,9 +135,9 @@ const accordionState = ref({
 // 아이콘들
 const arrowIcon = arrowHamburgerDown
 const closeIcon = computed(() => {
-  // X 아이콘 SVG (간단한 형태)
-  return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  // X 아이콘 SVG (박스를 가득 채우는 형태)
+  return `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 2L16 16M2 16L16 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`
 })
 
@@ -248,11 +250,11 @@ defineOptions({
 .side-nav-logo {
   width: rem(110);
   
-  .logo {
+  .side-nav-logo__image {
     width: rem(110);
     color: $d-white;
     
-    :deep(svg) {
+    :deep(.side-nav-logo__svg) {
       width: rem(110);
       height: auto;
     }
@@ -263,8 +265,8 @@ defineOptions({
   display: flex;
   align-items: center;
   justify-content: center;
-  width: rem(24);
-  height: rem(24);
+  width: rem(40);
+  height: rem(40);
   background: none;
   border: none;
   cursor: pointer;
@@ -275,7 +277,7 @@ defineOptions({
     opacity: 0.7;
   }
   
-  :deep(svg) {
+  :deep(.side-nav-close__svg) {
     width: rem(24);
     height: rem(24);
   }
@@ -287,7 +289,6 @@ defineOptions({
   padding: 0;
 }
 
-// 푸터와 동일한 메뉴 스타일
 .side-nav-menu-group {
   width: 100%;
   display: flex;
@@ -303,33 +304,32 @@ defineOptions({
   margin: 0;
   width: 100%;
   flex-shrink: 0;
-  padding: rem(24);
+  padding: rem(15) rem(24);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: rem(1) solid #021326;
   
-  // 액티브 상태 (열림)에서 teal 색상
   &.is-active {
     color: $s-teal;
   }
+}
+
+.side-nav-menu-title__link {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
   
-  
-  a {
-    color: inherit;
-    text-decoration: none;
-    transition: opacity 0.2s ease;
-    
-    &:hover {
-      opacity: 0.8;
-      text-decoration: underline;
-    }
+  &:hover {
+    opacity: 0.8;
+    text-decoration: underline;
   }
 }
 
 .side-nav-icon {
-  width: rem(16);
-  height: rem(16);
+  width: rem(20);
+  height: rem(20);
   transition: transform 0.3s ease;
   opacity: 0.8;
   
@@ -337,8 +337,7 @@ defineOptions({
     transform: rotate(-180deg);
   }
   
-  // 태블릿에서도 아이콘 표시 유지
-  svg {
+  :deep(.side-nav-icon__svg) {
     width: 100%;
     height: 100%;
     fill: currentColor;
@@ -346,16 +345,10 @@ defineOptions({
 }
 
 .side-nav-content-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: rem(40);
+  display: block;
   width: 100%;
   background-color: #021326;
   padding: 0 rem(24);
-  
-  display: block;
-  width: 100%;
-  gap: 0;
 }
 
 .side-nav-section {
@@ -365,7 +358,7 @@ defineOptions({
 
 // 첫 번째 메뉴 그룹의 섹션들 사이에만 border-top 적용
 .side-nav-menu-group:first-child .side-nav-section:not(:first-child) {
-  border-top: rem(1) solid $gray-4;
+  border-top: rem(1) solid #333;
 }
 
 .side-nav-subtitle {
@@ -373,8 +366,6 @@ defineOptions({
   font-weight: 400;
   line-height: 140%;
   color: $gray-4;
-  margin: 0 0 rem(16) 0;
-  
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -387,31 +378,30 @@ defineOptions({
   list-style: none;
   margin: 0;
   padding-left: rem(16);
-  
-  padding-left: rem(16);
   margin-bottom: 0;
+}
+
+.side-nav-list__item {
+  margin: 0;
+  padding: rem(24) 0;
+  color: $d-white;
+  font-size: rem(14);
+  font-weight: 600;
+  line-height: 140%;
+}
+
+.side-nav-list__link {
+  color: inherit;
+  text-decoration: none;
+  transition: text-decoration 0.2s ease;
   
-  li {
-    margin-bottom: rem(4);
+  &:hover {
+    text-decoration: underline;
   }
-  
-  li {
-    margin: 0;
-    padding: rem(24) 0;
-    color: $d-white;
-    font-size: rem(14);
-    font-weight: 600;
-    line-height: 140%;
-    
-    a {
-      color: inherit;
-      text-decoration: none;
-      transition: text-decoration 0.2s ease;
-      
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
+}
+
+.menu-item-disabled {
+  color: inherit;
+  opacity: 0.6;
 }
 </style>

@@ -59,8 +59,19 @@
                     class="footer-nav__list"
                     :class="{ 'footer-nav__list--mobile-accordion': true }"
                   >
-                    <li v-for="item in section.items" :key="item.text">
-                      <NuxtLink v-if="item.path" :to="item.path">{{ item.text }}</NuxtLink>
+                    <li 
+                      v-for="item in section.items" 
+                      :key="item.text"
+                      class="footer-nav__list-item"
+                      :class="{ 'footer-nav__list-item--mobile-accordion': true }"
+                    >
+                      <NuxtLink 
+                        v-if="item.path" 
+                        :to="item.path"
+                        class="footer-nav__list-link"
+                      >
+                        {{ item.text }}
+                      </NuxtLink>
                       <span v-else class="menu-item-disabled">{{ item.text }}</span>
                     </li>
                   </ul>
@@ -71,7 +82,13 @@
             <!-- 하위 섹션이 없는 경우 (Careers, Contact Us) -->
             <template v-else>
               <h3 class="footer-nav__title">
-                <NuxtLink v-if="menu.path" :to="menu.path">{{ menu.title }}</NuxtLink>
+                <NuxtLink 
+                  v-if="menu.path" 
+                  :to="menu.path"
+                  class="footer-nav__title-link"
+                >
+                  {{ menu.title }}
+                </NuxtLink>
                 <span v-else class="menu-item-disabled">{{ menu.title }}</span>
               </h3>
             </template>
@@ -84,7 +101,7 @@
         <div class="footer-branding__row">
           <div class="footer-branding__left">
             <div class="footer-logo">
-              <div class="logo" v-html="footerLogo"></div>
+              <div class="footer-logo__image" v-html="footerLogo"></div>
             </div>
             <div class="footer-company-info">
               <p class="footer-company-name">
@@ -130,8 +147,22 @@
             <!-- 법적 정책 링크들 -->
             <div class="footer-legal">
               <div v-for="(link, index) in legalLinks" :key="link.text" class="footer-legal__item">
-                <NuxtLink v-if="!link.external" :to="link.path">{{ link.text }}</NuxtLink>
-                <a v-else :href="link.path" target="_blank" rel="noopener noreferrer">{{ link.text }}</a>
+                <NuxtLink 
+                  v-if="!link.external" 
+                  :to="link.path"
+                  class="footer-legal__link"
+                >
+                  {{ link.text }}
+                </NuxtLink>
+                <a 
+                  v-else 
+                  :href="link.path" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="footer-legal__link"
+                >
+                  {{ link.text }}
+                </a>
                 <!-- 태블릿 이상에서 링크들 사이 구분선 -->
                 <span 
                   v-if="index < legalLinks.length - 1"
@@ -319,12 +350,12 @@ defineOptions({
         
         @include desktop {
           .footer-nav__section {
-            width: rem(180);
+            width: rem(192);
           }
         }
       }
       
-      h3 {
+      .footer-nav__title {
         @include body-02;
         font-weight: $font-weight-bold;
         color: $d-white;
@@ -333,7 +364,7 @@ defineOptions({
         flex-shrink: 0;
         padding: rem(18) rem(24);
         
-        &.footer-nav__title--mobile-clickable {
+        &--mobile-clickable {
           cursor: pointer;
           display: flex;
           justify-content: space-between;
@@ -357,16 +388,16 @@ defineOptions({
           width: rem(180);
           padding: 0;
         }
+      }
+      
+      .footer-nav__title-link {
+        color: inherit;
+        text-decoration: none;
+        transition: opacity 0.2s ease;
         
-        a {
-          color: inherit;
-          text-decoration: none;
-          transition: opacity 0.2s ease;
-          
-          &:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-          }
+        &:hover {
+          opacity: 0.8;
+          text-decoration: underline;
         }
       }
     }
@@ -384,7 +415,7 @@ defineOptions({
         display: none;
       }
       
-      svg {
+      :deep(.footer-nav__icon-svg) {
         width: 100%;
         height: 100%;
         fill: currentColor;
@@ -416,6 +447,7 @@ defineOptions({
       
       @include desktop {
         flex: 1;
+        gap: rem(25);
       }
     }
     
@@ -471,53 +503,53 @@ defineOptions({
         padding-left: rem(8);
         margin-bottom: 0;
         
-        li {
-          margin-bottom: rem(4);
-        }
-        
         @include tablet {
           padding-left: 0;
           margin-bottom: 0;
-          
-          li {
-            margin-bottom: 0;
-          }
         }
+      }
+    }
+    
+    &__list-item {
+      margin: 0;
+      padding: rem(8) 0;
+      display: flex;
+      align-items: center;
+      
+      // 태블릿 이상에서는 패딩 제거
+      @include tablet {
+        padding: 0;
       }
       
-      li {
-        margin: 0;
-        padding: rem(8) 0;
-        display:flex;
-        align-items:center;
+      &--mobile-accordion {
+        margin-bottom: rem(4);
         
-        // 태블릿 이상에서는 패딩 제거
         @include tablet {
-          padding: 0;
-        }
-        
-        a {
-          color: $d-white;
-          text-decoration: none;
-          font-size: rem(12);
-          font-weight: $font-weight-regular;
-          line-height: rem(24);
-          transition: opacity 0.2s ease;
-          
-          &:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-          }
-        }
-        
-        .menu-item-disabled {
-          color: $d-white;
-          font-size: rem(12);
-          font-weight: $font-weight-regular;
-          line-height: rem(24);
-          cursor: not-allowed;
+          margin-bottom: 0;
         }
       }
+    }
+    
+    &__list-link {
+      color: $d-white;
+      text-decoration: none;
+      font-size: rem(12);
+      font-weight: $font-weight-regular;
+      line-height: rem(24);
+      transition: opacity 0.2s ease;
+      
+      &:hover {
+        opacity: 0.8;
+        text-decoration: underline;
+      }
+    }
+    
+    .menu-item-disabled {
+      color: $d-white;
+      font-size: rem(12);
+      font-weight: $font-weight-regular;
+      line-height: rem(24);
+      cursor: not-allowed;
     }
   }
 
@@ -599,8 +631,8 @@ defineOptions({
     }
 
     .footer-logo {
-      .logo {        
-        :deep(svg) {
+      .footer-logo__image {        
+        :deep(.footer-logo__svg) {
           width: rem(182);
           height: auto;
         }
@@ -717,24 +749,25 @@ defineOptions({
         align-items: center;
       }
 
-      a {
-        color: $gray-4;
-        text-decoration: none;
-        font-size: rem(12);
+    }
+    
+    &__link {
+      color: $gray-4;
+      text-decoration: none;
+      font-size: rem(12);
+      font-weight: $font-weight-regular;
+      line-height: 140%;
+      transition: opacity 0.2s ease;
+      
+      @include tablet {
+        font-size: rem(8);
         font-weight: $font-weight-regular;
-        line-height: 140%;
-        transition: opacity 0.2s ease;
-        
-        @include tablet {
-          font-size: rem(8);
-          font-weight: $font-weight-regular;
-          line-height: normal;
-          text-transform: uppercase;
-        }
-        
-        &:hover {
-          text-decoration: underline;
-        }
+        line-height: normal;
+        text-transform: uppercase;
+      }
+      
+      &:hover {
+        text-decoration: underline;
       }
       
       &__divider {
