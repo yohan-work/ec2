@@ -30,7 +30,7 @@ useHead({
       rel: 'canonical',
       href: () => {
         // 현재 도메인과 경로를 기반으로 canonical URL 생성
-        if (process.client) {
+        if (import.meta.client) {
           return `${window.location.origin}${route.fullPath}`
         }
         // SSR 시에는 요청 헤더에서 호스트 정보 가져오기
