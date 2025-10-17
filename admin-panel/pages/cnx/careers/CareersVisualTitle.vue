@@ -17,6 +17,11 @@
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
   const props = defineProps({
+    headingLevel: {
+      type: String,
+      default: 'h3',
+      validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
+    },
     title: {
       type: String,
       required: true

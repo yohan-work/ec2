@@ -22,7 +22,7 @@
           <source src="/assets/cnx/aboutus/aboutus_m.mp4" type="video/mp4">
         </video>
         <div class="aboutus-intro__content">
-          <h3 class="aboutus-intro__title">We're Concentrix.</h3>
+          <h2 class="aboutus-intro__title">We're Concentrix.</h2>
           <p class="aboutus-intro__text">
             솔루션과 테크놀로지 중심으로 넓고 깊게 고민합니다.<br>
             마음을 움직이고 시장을 변화시킬 수 있도록 기업의<br>서비스를 설계하고 구축, 운영합니다
@@ -34,7 +34,7 @@
       <div class="aboutus-information">
 
         <div class="aboutus-information__head" ref="informationHeadRef">
-          <h3 class="aboutus-information__head-title" ref="informationHeadTitleRef">Concentrix Information</h3>
+          <h2 class="aboutus-information__head-title" ref="informationHeadTitleRef">Concentrix Information</h2>
           <p class="aboutus-information__head-text" ref="informationHeadTextRef">콘센트릭스서비스 코리아는 글로벌 최고 수준의 고객 경험을 위한 디지털 마케팅 및 e-Commerce 서비스 및 CS 경험을 제공합니다.</p>
         </div>
 
@@ -88,7 +88,7 @@
       <div class="aboutus-history">
 
         <div class="aboutus-history__head" ref="historyHeadRef">
-          <h3 class="aboutus-history__head-title" ref="historyHeadTitleRef">History</h3>
+          <h2 class="aboutus-history__head-title" ref="historyHeadTitleRef">History</h2>
           <p class="aboutus-history__head-text" ref="historyHeadTextRef">콘센트릭스서비스 코리아는 2014년 출범이후 지속적인 성장을 하고 있습니다.</p>
         </div>
 

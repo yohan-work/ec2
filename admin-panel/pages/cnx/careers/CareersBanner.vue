@@ -1,7 +1,7 @@
 <template>
   <!-- Banner -->
   <div class="careers-banner" ref="containerRef">
-    <h4 class="careers-banner__title" ref="titleRef">{{ title }}</h4>
+    <component :is="headingLevel" class="careers-banner__title" ref="titleRef">{{ title }}</component>
     <p class="careers-banner__content" v-html="content" ref="contentRef"></p>
     <div class="careers-banner__button" ref="buttonRef">
       <AppButton :text="buttonText" color="green" :href="href" />
@@ -18,6 +18,11 @@
   import AppButton from '~/components/cnx/AppButton'
 
   const props = defineProps({
+    headingLevel: {
+      type: String,
+      default: 'h3',
+      validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
+    },
     title: {
       type: String,
       required: true

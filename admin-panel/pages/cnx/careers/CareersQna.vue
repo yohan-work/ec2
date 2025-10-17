@@ -1,7 +1,7 @@
 <template>
   <!-- Q&A -->
   <div class="careers-qna" ref="containerRef">
-    <h4 class="careers-qna__title" ref="titleRef">{{ title }}</h4>
+    <component :is="headingLevel" class="careers-qna__title" ref="titleRef">{{ title }}</component>
     <ul class="careers-qna__list" ref="listRef">
       <li class="careers-qna__item" v-for="(item, index) in items" :key="`qa-${refName}-${index}`">
         <button class="careers-qna__question" :aria-expanded="qaOpenRef.has(`qa-${refName}-${index}-ref`)" :aria-controls="`qa-${refName}-${index}-region`" :id="`qa-${refName}-${index}-label`" @click="toggleQaItem(`qa-${refName}-${index}-ref`)">
@@ -24,6 +24,11 @@
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
   const props = defineProps({
+    headingLevel: {
+      type: String,
+      default: 'h3',
+      validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
+    },
     title: {
       type: String,
       required: true
