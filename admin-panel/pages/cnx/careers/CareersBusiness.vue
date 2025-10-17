@@ -34,7 +34,7 @@
     const groupSize = 3 
     
     for (let i = 0; i < items.length; i += groupSize) {
-        grouped.push(items.slice(i, i + groupSize))
+      grouped.push(items.slice(i, i + groupSize))
     }
     
     return grouped
@@ -76,6 +76,10 @@
       })
     })
   }
+
+  onBeforeUpdate(() => {
+    itemRefs.value = []
+  })
 
   onMounted(() => {
     initAnimation()

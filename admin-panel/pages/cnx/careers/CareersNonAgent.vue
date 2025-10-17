@@ -63,6 +63,10 @@
     })
   }
 
+  onBeforeUpdate(() => {
+    itemRefs.value = []
+  })
+
   onMounted(() => {
     observer = new IntersectionObserver(
       (entries) => {
