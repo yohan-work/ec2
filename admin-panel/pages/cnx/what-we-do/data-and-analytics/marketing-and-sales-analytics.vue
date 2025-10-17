@@ -79,9 +79,3 @@ definePageMeta({
 })
 
 </script>
-
-<style lang="scss" scoped>
-  .marketing-sales-analytics-page {
-
-  }
-</style>

@@ -106,9 +106,3 @@ definePageMeta({
 })
 
 </script>
-
-<style lang="scss" scoped>
-  .digital-channel-analytics-page {
-
-  }
-</style>
