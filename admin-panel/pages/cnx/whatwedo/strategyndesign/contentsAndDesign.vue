@@ -8,7 +8,7 @@
         :pagination="paginationOptions"
         :autoplay="{
           delay: 3000,
-          disableOnInteraction: false,
+          disableOnInteraction: false,  
           pauseOnMouseEnter: true
         }"
         :breakpoints="{
@@ -44,7 +44,7 @@
             <div
               class="banner-slide-item-title-container"
             >
-                <h2 class="banner-slide-item-title" v-html="slide.title"></h2>
+                <p class="banner-slide-item-title" v-html="slide.title"></p>
               <AppButton  
                 v-if="!isMobile"
                   :text="activeSlideIndex === index ? 'Close' : 'Learn More'"
@@ -55,6 +55,7 @@
                   :aria-controls="'slide-details-' + index"
                   :aria-expanded="activeSlideIndex === index ? 'true' : 'false'"
                   @click="toggleSlide(index)"
+                  @focus="onBannerButtonFocus(index)"
                 />
               </div>
             <div
@@ -105,13 +106,13 @@
           <span class="intro-section-content-line"></span>
           <div class="intro-section-content-item" role="img" aria-label="CiX">
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/c.svg" alt="" aria-hidden="true">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/c.svg" alt="C" aria-hidden="true">
             </div>
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/i.svg" alt="" aria-hidden="true">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/i.svg" alt="I" aria-hidden="true">
             </div>
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/x.svg" alt="" aria-hidden="true">
+              <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/x.svg" alt="X" aria-hidden="true">
             </div>
           </div>
         </div>
@@ -142,21 +143,21 @@
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/report.gif" alt="report">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/report_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/report_hover.gif" alt="report" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/planning.gif" alt="planning">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/planning_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/planning_hover.gif" alt="planning" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/service.gif" alt="service">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/service_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/service_hover.gif" alt="service" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
           </ul>
@@ -164,28 +165,28 @@
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/graphics.gif" alt="graphics">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/graphics_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/graphics_hover.gif" alt="graphics" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/color.gif" alt="color">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/color_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/color_hover.gif" alt="color" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/typography.gif" alt="typography">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/typography_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/typography_hover.gif" alt="typography" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/logo.gif" alt="logo">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/logo_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/logo_hover.gif" alt="logo" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
           </ul>
@@ -193,28 +194,28 @@
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/icon.gif" alt="icon">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/icon_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/icon_hover.gif" alt="icon" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/guide.gif" alt="guide">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/guide_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/guide_hover.gif" alt="guide" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/image.gif" alt="image">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/image_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/image_hover.gif" alt="image" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/interaction.gif" alt="interaction">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/interaction_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/interaction_hover.gif" alt="interaction" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
           </ul>
@@ -222,21 +223,21 @@
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/motion.gif" alt="motion">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/motion_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/motion_hover.gif" alt="motion" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/sound.gif" alt="sound">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/sound_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/sound_hover.gif" alt="sound" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
                 <img class="img-base" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/illustration.gif" alt="illustration">
-                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/illustration_hover.gif" alt="" aria-hidden="true" loading="lazy" fetchpriority="low">
+                <img class="img-hover" src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/illustration_hover.gif" alt="illustration" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
           </ul>
@@ -250,6 +251,7 @@
         <AppTitle 
           title="CiX Office"
           text="우리는 팀원들의 몰입과 탄탄한 팀워크를 위해서 일하는 환경도 생각합니다."
+          headingTag="h2"
         >
         </AppTitle>
         <AppSwiper 
@@ -259,23 +261,23 @@
         >
           <picture>
             <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01_t.jpg" alt="office_01" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_01_t.jpg" alt="A modern conference room with a long wooden table, hanging light bulbs, and glass walls covered with whiteboard notes and sticky memos." />
           </picture>
           <picture>
             <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_02.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_02_t.jpg" alt="office_02" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_02_t.jpg" alt="An open lounge area with grey sofas, wooden cubicle desks, bookshelves, and hanging plants creating a relaxing workspace atmosphere." />
           </picture>
           <picture>
             <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_03.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_03_t.jpg" alt="office_03" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_03_t.jpg" alt="A professional photo studio with lighting equipment, tripods, monitors, and a white cyclorama backdrop." />
           </picture>
           <picture>
             <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_04.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_04_t.jpg" alt="office_04" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_04_t.jpg" alt="A cozy office lounge with grey couches, wooden floors, circular ceiling lights, and the Concentrix Catalyst logo on the wall." />
           </picture>
           <picture>
             <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_05.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_05_t.jpg" alt="office_05" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/office_05_t.jpg" alt="A bright office kitchen and lounge area with hanging lights, bookshelves, and greenery providing a natural atmosphere." />
           </picture>
         </AppSwiper> 
       </div>
@@ -288,13 +290,14 @@
           class="works-app-title"
           title="CiX Works"
           text="CiX의 사업영역은 UX/BX 컨설팅, 디지털 채널의 구축/운영, <br>디지털마케팅 콘텐츠 제작으로 나누어집니다."
+          headingTag="h2"
         >
         </AppTitle>
         <div class="works-section-diagram">
           <picture>
             <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram.jpg" media="(min-width: 1024px)" />
             <source srcset="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram_t.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram_m.jpg" alt="works_diagram" />
+            <img src="/assets/cnx/whatwedo/strategyndesign/contentsndesign/works_diagram_m.jpg" alt="Business model diagram illustrating various types of business models and their interconnections." />
           </picture>
         </div>
         <div class="works-section-content">
@@ -303,7 +306,7 @@
               title="Operation"
               text="다양한 디지털 채널에서의 KPI 달성을 위한 채널운영, 프로모션 기획, 이벤트 제작, 그외 브랜드 활동 등을 적극적이고 선제적으로 지원합니다. <br>또한 채널 내 UX/UI 개선 활동이나 추가 서비스개발을 수행하여 장기적인 관점에서의 채널 고도화를 지원합니다."
               imageName="works01"
-              imageAlt="Operation"
+              imageAlt="A man and woman sit at a table, focused on a laptop in front of them."
               imagePath="/assets/cnx/whatwedo/strategyndesign/contentsndesign"
               :reverse="true"
               :subItems="[
@@ -316,7 +319,7 @@
               title="UX/UI Design"
               text="데이터 분석 기반의 플랫폼, 서비스, 시스템 개발을 지원합니다. Concentrix 만의 UX/UI Framework과 Process를 통해 안정적으로 프로젝트를 수행합니다. 또한 전략컨설팅, UX컨설팅 프로젝트의 기획, 디자인, 퍼블리싱 업무를 지원합니다."
               imageName="works02"
-              imageAlt="UX/UI Design"
+              imageAlt="A collection of four iPhones, each featuring distinct apps, highlighting diverse mobile applications and user interfaces."
               imagePath="/assets/cnx/whatwedo/strategyndesign/contentsndesign"
               :subItems="[
                 { title: 'UX/UI Design', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Strategy/UX Consulting' },
@@ -328,7 +331,7 @@
               title="Digital Contents Creation"
               text="글로벌 플랫폼 내 콘텐츠 제작 및 확산을 수행하며, 대형 온라인 전시 및 포럼 등의 행사기획부터 영상 콘텐츠 제작, 마이크로사이트 구축까지 지원합니다. 또한 소셜미디어 콘텐츠 전략, 기획, 촬영, 제작, 운영 등을 서비스하고 있으며 라이브 커머스, 메타버스와 같은 최신 트렌드를 반영한 서비스의 전략, 기획, 콘텐츠 제작, 촬영 지원 등의 업무를 지원합니다."
               imageName="works03"
-              imageAlt="Digital Contents Creation"
+              imageAlt="A woman working at a desk, looking at her computer screen, with office supplies arranged around her."
               imagePath="/assets/cnx/whatwedo/strategyndesign/contentsndesign"
               :reverse="true"
               :subItems="[
@@ -426,6 +429,114 @@ const isMobile = ref(false);
 // 폭 변화 안정화 감지를 외부에서 호출하기 위한 함수 (onMounted에서 주입)
 let startWidthStabilizeWatch = () => {};
 
+// ScrollTrigger refresh 후에 포커스를 복구하기 위한 인덱스 기억 및 포커스 헬퍼
+let pendingFocusSlideIndex = null;
+const focusButtonByIndex = (index) => {
+  try {
+    if (window.innerWidth < 768) return; // 데스크톱/태블릿에서만 버튼 표시
+    const slides = document.querySelectorAll('.banner-slide .swiper-slide');
+    const slideEl = slides && slides[index] ? slides[index] : null;
+    if (!slideEl) return;
+    const btn = slideEl.querySelector('.banner-slide-item-button');
+    if (btn instanceof HTMLElement) {
+      try { btn.focus({ preventScroll: true }); } catch (_) { btn.focus(); }
+    }
+  } catch (_) { /* ignore */ }
+};
+
+// 부드러운 중앙 정렬 제어용 상태
+let isCentering = false;
+let centeringTween = null;
+let pendingCenterIndex = null;
+let isRebuildCenteringActive = false; // 클릭→폭변화→재빌드 동안 포커스 정렬 억제
+
+// 요청된 슬라이드를 컨테이너 중앙에 부드럽게 정렬
+const requestCenterSlide = (index) => {
+  if (typeof index !== 'number') return;
+  pendingCenterIndex = index;
+  if (isCentering) return; // 진행 중이면 완료 후 처리
+
+  const run = (idx) => {
+    try {
+      if (window.innerWidth < 768) return;
+      const container = document.querySelector('.banner-slide');
+      const wrapper = document.querySelector('.banner-slide .swiper-wrapper');
+      if (!container || !wrapper) return;
+      const slides = wrapper.querySelectorAll(':scope > .swiper-slide');
+      const target = slides && slides[idx] ? slides[idx] : null;
+      if (!target) return;
+
+      const containerWidth = (container).offsetWidth;
+      const wrapperWidth = (wrapper).scrollWidth;
+      if (!containerWidth || !wrapperWidth || wrapperWidth <= containerWidth) return;
+
+      const slideLeft = (target).offsetLeft;
+      const slideWidth = (target).offsetWidth;
+      const targetCenter = slideLeft + slideWidth / 2;
+      const containerCenter = containerWidth / 2;
+      let desiredX = -(targetCenter - containerCenter);
+      const minX = -(wrapperWidth - containerWidth);
+      const maxX = 0;
+      if (desiredX < minX) desiredX = minX;
+      if (desiredX > maxX) desiredX = maxX;
+
+      const totalShift = wrapperWidth - containerWidth;
+      const progress = Math.min(1, Math.max(0, -desiredX / totalShift));
+
+      // 현재 배너의 ScrollTrigger 찾기
+      const st = ScrollTrigger.getAll().find((t) => {
+        try { return t && t.vars && t.vars.trigger === container; } catch (_) { return false; }
+      });
+
+      // 진행 중 트윈이 있으면 취소
+      try { if (centeringTween) centeringTween.kill(); } catch (_) { /* ignore */ }
+
+      if (st && Number.isFinite(st.start) && Number.isFinite(st.end)) {
+        const current = st.scroll();
+        const targetScroll = st.start + progress * (st.end - st.start);
+        const proxy = { s: current };
+        isCentering = true;
+        centeringTween = gsap.to(proxy, {
+          s: targetScroll,
+          duration: 0.55,
+          ease: 'power3.inOut',
+          onUpdate: () => { try { st.scroll(proxy.s); } catch (_) { /* ignore */ } },
+          onComplete: () => {
+            isCentering = false;
+            centeringTween = null;
+            const next = pendingCenterIndex;
+            pendingCenterIndex = null;
+            if (typeof next === 'number' && next !== idx) {
+              // 연속 요청이 있었다면 한 번 더 최신 대상으로 정렬
+              requestCenterSlide(next);
+            }
+          }
+        });
+      } else {
+        // fallback: 직접 transform 보간
+        isCentering = true;
+        centeringTween = gsap.to(wrapper, {
+          x: desiredX,
+          duration: 0.5,
+          ease: 'power3.inOut',
+          onComplete: () => {
+            isCentering = false;
+            centeringTween = null;
+            const next = pendingCenterIndex;
+            pendingCenterIndex = null;
+            if (typeof next === 'number' && next !== idx) {
+              requestCenterSlide(next);
+            }
+          }
+        });
+      }
+    } catch (_) { /* ignore */ }
+  };
+
+  // DOM 안정화 후 한 프레임 뒤 실행 (중간 반동 방지)
+  requestAnimationFrame(() => run(index));
+};
+
 // 슬라이드용 대체 텍스트 생성 (title의 HTML 태그 제거)
 const getSlideAltText = (slide) => {
   try {
@@ -440,19 +551,34 @@ const getSlideAltText = (slide) => {
 
 // 슬라이드 토글 함수
 const toggleSlide = (index) => {
-  if (activeSlideIndex.value === index) {
+  const wasActive = activeSlideIndex.value === index;
+  if (wasActive) {
     // 같은 슬라이드를 클릭하면 비활성화
     activeSlideIndex.value = null;
   } else {
     // 다른 슬라이드를 클릭하면 활성화
     activeSlideIndex.value = index;
   }
+  const activatedNow = !wasActive;
 
   // 폭 변화가 반영된 뒤 스크롤 타임라인 재계산
   nextTick(() => {
     if (window.innerWidth >= 768) {
       // 실제 길이 변경이 안정화될 때까지 감시 후, 한 번만 초기화/refresh
+      // refresh 완료 후 클릭했던 버튼으로 포커스 복구
+      pendingFocusSlideIndex = index;
+      // 중앙 정렬은 폭 안정화 이후에 1회만 수행 (중복 이동 방지)
       startWidthStabilizeWatch();
+      if (activatedNow) {
+        // 활성화된 슬라이드가 가운데로 오도록 중앙정렬 요청을 미리 큐잉
+        pendingCenterIndex = index;
+        // 잠재적인 폭 변화가 시작되도록 약간의 여유를 둔 뒤, 재빌드 중이 아니면 바로 정렬
+        setTimeout(() => {
+          if (!isRebuildCenteringActive) {
+            requestCenterSlide(index);
+          }
+        }, 200);
+      }
     }
   });
 };
@@ -472,9 +598,11 @@ const initBannerScrollAnimation = () => {
   let resizeTimeout = null;
   let onLoadHandler = null;
   let onPageShowHandler = null;
+  let onStRefreshHandler = null;
   let widthWatchRaf = null;
   let widthStableTimer = null;
   let lastWrapperWidth = (swiperWrapper) ? swiperWrapper.scrollWidth : 0;
+  let deferNextRefresh = false; // 다음 init 시점의 refresh를 지연 실행하기 위한 플래그
   let horizontalObserver = null;
   let isRebuilding = false; // 재초기화 중복 가드
 
@@ -576,7 +704,8 @@ const initBannerScrollAnimation = () => {
         scrub: 1,
         pin: true,
         anticipatePin: 1, // pin 관련 layout jump 줄여줌
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
+        refreshPriority: 100
       }
     });
 
@@ -625,7 +754,12 @@ const initBannerScrollAnimation = () => {
     }
 
     // 새 세팅 반영 후 동일 진행도로 스크롤 위치 복원
-    ScrollTrigger.refresh();
+    if (!deferNextRefresh) {
+      ScrollTrigger.refresh();
+    } else {
+      // 요청된 경우 한 번만 건너뛰고 이후 자동 복귀
+      deferNextRefresh = false;
+    }
     if (typeof prevProgress === 'number') {
       // 목표 위치 계산 (progress 비례)
       const targetX = -((wrapperWidth - containerWidth) * prevProgress);
@@ -666,6 +800,75 @@ const initBannerScrollAnimation = () => {
     widthStableTimer = null;
   };
 
+  // 폭 안정화 후 재빌드하고, 대상 슬라이드를 중앙으로 부드럽게 이동한 다음 마지막에 refresh
+  const rebuildAndSmoothCenter = () => {
+    try {
+      deferNextRefresh = true; // init에서 즉시 refresh 하지 않도록
+      isRebuildCenteringActive = true;
+      initScrollAnimation();
+      const st = (bannerScroll && bannerScroll.scrollTrigger) ? bannerScroll.scrollTrigger : null;
+      if (!st) { ScrollTrigger.refresh(); return; }
+
+      // pendingFocusSlideIndex가 우선, 없으면 현재 인덱스 사용 시도
+      const idx = (typeof pendingFocusSlideIndex === 'number')
+        ? pendingFocusSlideIndex
+        : (typeof currentSlideIndex?.value === 'number' ? currentSlideIndex.value : null);
+      if (idx == null) { ScrollTrigger.refresh(); return; }
+
+      const wrapper = document.querySelector('.banner-slide .swiper-wrapper');
+      const container = document.querySelector('.banner-slide');
+      if (!wrapper || !container) { ScrollTrigger.refresh(); return; }
+      const slides = wrapper.querySelectorAll(':scope > .swiper-slide');
+      const target = slides && slides[idx] ? slides[idx] : null;
+      if (!target) { ScrollTrigger.refresh(); return; }
+
+      const containerWidth = (container).offsetWidth;
+      const wrapperWidth = (wrapper).scrollWidth;
+      if (!(containerWidth && wrapperWidth) || wrapperWidth <= containerWidth) { ScrollTrigger.refresh(); return; }
+
+      const slideLeft = (target).offsetLeft;
+      const slideWidth = (target).offsetWidth;
+      const targetCenter = slideLeft + slideWidth / 2;
+      const containerCenter = containerWidth / 2;
+      let desiredX = -(targetCenter - containerCenter);
+      const minX = -(wrapperWidth - containerWidth);
+      const maxX = 0;
+      if (desiredX < minX) desiredX = minX;
+      if (desiredX > maxX) desiredX = maxX;
+      const totalShift = wrapperWidth - containerWidth;
+      const progress = Math.min(1, Math.max(0, -desiredX / totalShift));
+      const newScroll = (typeof st.start === 'number' && typeof st.end === 'number')
+        ? st.start + progress * (st.end - st.start)
+        : null;
+      if (!Number.isFinite(newScroll)) { ScrollTrigger.refresh(); return; }
+
+      const proxy = { s: st.scroll() };
+      gsap.to(proxy, {
+        s: newScroll,
+        duration: 0.65,
+        ease: 'power3.out',
+        onUpdate: () => { try { st.scroll(proxy.s); } catch (_) { /* ignore */ } },
+        onComplete: () => {
+          try { ScrollTrigger.refresh(); } catch (_) { /* ignore */ }
+          // 포커스 복구도 마지막에 보장
+          if (typeof pendingFocusSlideIndex === 'number') {
+            try { focusButtonByIndex(pendingFocusSlideIndex); } catch (_) { /* ignore */ }
+            pendingFocusSlideIndex = null;
+          }
+          // 재빌드 중 보류된 중앙정렬 요청이 있으면 마지막에 한 번만 실행
+          if (typeof pendingCenterIndex === 'number') {
+            const idx2 = pendingCenterIndex; pendingCenterIndex = null;
+            requestCenterSlide(idx2);
+          }
+          isRebuildCenteringActive = false;
+        }
+      });
+    } catch (_) {
+      try { ScrollTrigger.refresh(); } catch (_) { /* ignore */ }
+      isRebuildCenteringActive = false;
+    }
+  };
+
   startWidthStabilizeWatch = () => {
     if (!swiperWrapper) return;
     stopWidthStabilizeWatch();
@@ -676,8 +879,8 @@ const initBannerScrollAnimation = () => {
       // 폭 변동이 280ms 동안 없으면 안정화로 간주
       widthStableTimer = setTimeout(() => {
         stopWidthStabilizeWatch();
-        // 안정화 시점에 한 번만 초기화/refresh
-        initScrollAnimation();
+        // 안정화 시점에 재빌드 후 부드럽게 중앙 이동 → 마지막에 refresh
+        rebuildAndSmoothCenter();
       }, 280);
     };
 
@@ -742,6 +945,32 @@ const initBannerScrollAnimation = () => {
   };
   window.addEventListener('pageshow', onPageShowHandler);
 
+  // ScrollTrigger 전역 refresh 이벤트에서, 대기 중인 포커스를 복구
+  onStRefreshHandler = () => {
+    if (typeof pendingFocusSlideIndex === 'number') {
+      const idx = pendingFocusSlideIndex;
+      // DOM/레이아웃 안정화를 위해 두 번의 rAF 후 포커스 적용
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          focusButtonByIndex(idx);
+        });
+      });
+      pendingFocusSlideIndex = null;
+    }
+    if (typeof pendingCenterIndex === 'number') {
+      const cidx = pendingCenterIndex;
+      pendingCenterIndex = null;
+      // refresh 직후 레이아웃 안정화를 위해 지연을 더 준 뒤에 중앙 정렬
+      // 2×rAF + 120ms setTimeout으로 완충
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => requestCenterSlide(cidx), 120);
+        });
+      });
+    }
+  };
+  try { ScrollTrigger.addEventListener('refresh', onStRefreshHandler); } catch (_) { /* ignore */ }
+
   // 초기 1회 적용 (레이아웃 안정화 후 적용)
   requestAnimationFrame(() => applyBannerSlideTitleMinHeight());
 
@@ -750,6 +979,9 @@ const initBannerScrollAnimation = () => {
     window.removeEventListener('resize', onResize);
     if (onLoadHandler) window.removeEventListener('load', onLoadHandler);
     if (onPageShowHandler) window.removeEventListener('pageshow', onPageShowHandler);
+    if (onStRefreshHandler) {
+      try { ScrollTrigger.removeEventListener('refresh', onStRefreshHandler); } catch (_) { /* ignore */ }
+    }
     stopWidthStabilizeWatch();
     killScrollAnimation();
     ScrollTrigger.refresh();
@@ -766,9 +998,12 @@ const initIntroCixClassToggle = () => {
       const img = wrap.querySelector('img');
       if (!(img instanceof HTMLElement)) return;
       const st = ScrollTrigger.create({
-        trigger: img,
+        trigger: wrap,
         start: 'top 90%',
+        end: 'bottom 10%',
         toggleClass: { targets: wrap, className: 'active' },
+        invalidateOnRefresh: true,
+        refreshPriority: 10
       });
       // cleanup 등록
       introCleanupCallbacks.push(() => { try { st.kill(); } catch (_) { /* ignore */ } });
@@ -1053,6 +1288,18 @@ const onSlideChange = (swiper) => {
   try {
     currentSlideIndex.value = typeof swiper?.realIndex === 'number' ? swiper.realIndex : (swiper?.activeIndex ?? 0);
   } catch (_) { /* ignore */ }
+};
+
+// 탭 포커스로 버튼에 초점이 이동했을 때 해당 슬라이드가 보이도록 스크롤 X 조정
+const onBannerButtonFocus = (index) => {
+  // 재빌드-중앙정렬 플로우 중에는 포커스 정렬을 억제하여 왕복 이동 방지
+  if (isRebuildCenteringActive) {
+    // 재빌드 완료 후 수행될 수 있도록 보류
+    pendingCenterIndex = index;
+    return;
+  }
+  // 포커스 시 중앙 정렬 요청 (중복 호출은 내부에서 흡수)
+  requestCenterSlide(index);
 };
 
 // 현재 슬라이드의 paginationColor가 black인지 여부
@@ -1725,6 +1972,11 @@ const getBorderClass = (slide, index) => {
       }
     }
 
+    :deep(.app-swiper-container) {
+      .swiper-pagination-bullet {
+        margin: 0;
+      }
+    }
   }
 
   .works-section {
