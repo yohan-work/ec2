@@ -63,7 +63,7 @@
           :modules="swiperModules"
           :slides-per-view="1"
           :space-between="0"
-          :pagination="{ clickable: true }"
+          :pagination="paginationConfig"
           :loop="false"
           :direction="'horizontal'"
           :auto-height="false"
@@ -127,6 +127,7 @@ import AppSubCont from '~/components/cnx/AppSubCont.vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination } from 'swiper/modules'
 import { findResponsiveImagePaths } from '~/utils/cnx/image-utils'
+import { nextTick } from 'vue'
 
 // 레이아웃 설정
 definePageMeta({
@@ -136,18 +137,68 @@ definePageMeta({
 // Swiper 모듈
 const swiperModules = [Pagination]
 
+// 페이지네이션 설정
+const paginationConfig = computed(() => ({
+  clickable: true,
+  bulletClass: 'swiper-pagination-bullet',
+  bulletActiveClass: 'swiper-pagination-bullet-active'
+}))
+
 // Swiper 인스턴스 ref
 const swiperInstance = ref(null)
 
-// Swiper 초기화 완료 시 인스턴스 저장
+// 페이지네이션 접근성 설정 함수
+const setupPaginationAccessibility = () => {
+  nextTick(() => {
+    const paginationBullets = document.querySelectorAll('.swiper-pagination-bullet')
+    paginationBullets.forEach((bullet, index) => {
+      bullet.setAttribute('tabindex', '0')
+      bullet.setAttribute('role', 'button')
+      bullet.setAttribute('aria-label', `슬라이드 ${index + 1}로 이동`)
+      bullet.setAttribute('aria-pressed', bullet.classList.contains('swiper-pagination-bullet-active') ? 'true' : 'false')
+      
+      // 키보드 이벤트 리스너 추가 (중복 방지)
+      bullet.removeEventListener('keydown', handlePaginationKeydown)
+      bullet.addEventListener('keydown', handlePaginationKeydown)
+    })
+  })
+}
+
+// 페이지네이션 키보드 이벤트 핸들러
+const handlePaginationKeydown = (event) => {
+  const bullets = document.querySelectorAll('.swiper-pagination-bullet')
+  const currentIndex = Array.from(bullets).indexOf(event.target)
+  
+  switch (event.key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault()
+      event.target.click()
+      break
+    case 'ArrowLeft':
+      event.preventDefault()
+      const prevIndex = currentIndex === 0 ? bullets.length - 1 : currentIndex - 1
+      bullets[prevIndex]?.focus()
+      break
+    case 'ArrowRight':
+      event.preventDefault()
+      const nextIndex = (currentIndex + 1) % bullets.length
+      bullets[nextIndex]?.focus()
+      break
+  }
+}
+
+// Swiper 초기화 완료 시 인스턴스 저장 및 접근성 설정
 const onSwiperInit = (swiper) => {
   swiperInstance.value = swiper
+  setupPaginationAccessibility()
 }
 
 // 화면 크기 변경 감지 및 Swiper 업데이트
 const handleResize = () => {
   if (swiperInstance.value) {
     swiperInstance.value.update()
+    setupPaginationAccessibility()
   }
 }
 
@@ -159,6 +210,12 @@ onMounted(() => {
 // 컴포넌트 언마운트 시 이벤트 리스너 제거
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
+  
+  // 페이지네이션 키보드 이벤트 리스너 제거
+  const paginationBullets = document.querySelectorAll('.swiper-pagination-bullet')
+  paginationBullets.forEach(bullet => {
+    bullet.removeEventListener('keydown', handlePaginationKeydown)
+  })
 })
 
 
@@ -505,6 +562,7 @@ const processedSwiperSlides = computed(() => {
     box-sizing: border-box;
     vertical-align: middle;
     cursor: pointer;
+    outline: none;
 
     @include tablet {
       width: rem(12);
@@ -516,6 +574,11 @@ const processedSwiperSlides = computed(() => {
       width: rem(12);
       height: rem(12);
       margin: 0 rem(8);
+    }
+
+    &:focus {
+      outline: 2px solid $d-black;
+      outline-offset: 2px;
     }
 
     &.swiper-pagination-bullet-active {
