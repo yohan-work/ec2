@@ -49,8 +49,14 @@
           :src="mobileImage || desktopImage" 
           :alt="imageAlt || title || 'Image'"
           class="content-image"
+          @load="onImageLoad"
         />
       </picture>
+      <!-- 스켈레톤 오버레이 -->
+      <div 
+        class="skeleton-overlay"
+        :class="{ 'hidden': isImageLoaded }"
+      ></div>
     </div>
   </div>
 </template>
@@ -125,6 +131,14 @@ const baseImagePath = props.imagePath || `/assets/cnx${route.path}`
 const desktopImage = ref('')
 const mobileImage = ref('')
 const tabletImage = ref('')
+
+// 이미지 로드 상태
+const isImageLoaded = ref(false)
+
+// 이미지 로드 완료 핸들러
+const onImageLoad = () => {
+  isImageLoaded.value = true
+}
 
 // GSAP 애니메이션 초기화
 const initAnimation = () => {
@@ -485,6 +499,7 @@ onMounted(async () => {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    position: relative;
     order: 1; // 모바일에서 이미지를 위로
 
     picture {
@@ -497,6 +512,23 @@ onMounted(async () => {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    // 스켈레톤 오버레이
+    .skeleton-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $gray-3;
+      z-index: 1;
+      transition: opacity 0.3s ease-out;
+      
+      &.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
     }
 
     // 모바일: 312/210 비율
