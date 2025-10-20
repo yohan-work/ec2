@@ -267,7 +267,7 @@ onMounted(() => {
   fetchNewsletters()
 
   // 뒤로가기 시 스크롤 위치 복원
-  //   restoreScrollPosition()
+  restoreScrollPosition()
 })
 
 // 메타 태그
