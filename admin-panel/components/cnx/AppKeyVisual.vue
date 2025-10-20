@@ -18,9 +18,14 @@
           <img 
             :src="mobileImage || desktopImage" 
             :alt="imageAlt || 'Key Visual'"
-            @load="startAnimation"
+            @load="onImageLoad"
           />
         </picture>
+        <!-- 스켈레톤 오버레이 -->
+        <div 
+          class="skeleton-overlay"
+          :class="{ 'hidden': isImageLoaded }"
+        ></div>
     </div>
   </div>
 </template>
@@ -61,6 +66,14 @@ const tabletImage = ref('')
 
 // 애니메이션 상태
 const isAnimating = ref(false)
+// 이미지 로드 상태
+const isImageLoaded = ref(false)
+
+// 이미지 로드 완료 핸들러
+const onImageLoad = () => {
+  isImageLoaded.value = true
+  startAnimation()
+}
 
 // 애니메이션 시작 함수
 const startAnimation = () => {
@@ -72,18 +85,13 @@ const startAnimation = () => {
   }, props.animationDuration)
 }
 
-// 이미지 경로 초기화 및 애니메이션 시작
+// 이미지 경로 초기화
 onMounted(() => {
   // 유틸 함수를 사용하여 반응형 이미지 경로들 생성
   const imagePaths = findResponsiveImagePaths('kv', baseImagePath)
   desktopImage.value = imagePaths.desktopImage
   mobileImage.value = imagePaths.mobileImage
   tabletImage.value = imagePaths.tabletImage
-  
-  // 이미지가 로드된 후 애니메이션 시작
-  setTimeout(() => {
-    startAnimation()
-  }, 100)
 })
 </script>
 
@@ -111,6 +119,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   
   picture {
     width: 100%;
@@ -123,6 +132,23 @@ onMounted(() => {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease-out;
+  }
+  
+  // 스켈레톤 오버레이
+  .skeleton-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $gray-3;
+    z-index: 1;
+    transition: opacity 0.3s ease-out;
+    
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
   
   // 애니메이션 상태
