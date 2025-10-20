@@ -37,6 +37,7 @@
 import AppButton from '~/components/cnx/AppButton.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import NewsletterList from './NewsletterList.vue'
+import { _0 } from '#tailwind-config/theme/backdropBlur'
 
 // 레이아웃 설정
 definePageMeta({
@@ -66,9 +67,6 @@ const pagination = ref({
 })
 const displayedCount = ref(0)
 
-// 스크롤 위치 관리
-const scrollPosition = ref(0)
-const lastClickedNewsletterId = ref(null)
 
 // 환경 설정
 const config = useRuntimeConfig()
@@ -140,6 +138,21 @@ const loadMoreNewsletters = async () => {
         total: filteredData.length,
         pages: Math.ceil(filteredData.length / pagination.value.limit),
       }
+
+      // 새로 로드된 첫 번째 뉴스레터로 스크롤 이동
+      if (nextPageData.length > 0) {
+        nextTick(() => {
+          const firstNewNewsletterId = nextPageData[0].id
+          const targetElement = document.getElementById(`newsletter-${firstNewNewsletterId}`)
+          if (targetElement) {
+            // 스크롤만 이동 (포커스 제거)
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            })
+          }
+        })
+      }
     } else {
       // === DB 연결 로직 ===
       const nextPage =
@@ -162,6 +175,21 @@ const loadMoreNewsletters = async () => {
 
       // pagination 정보 업데이트
       pagination.value = response.pagination
+
+      // 새로 로드된 첫 번째 뉴스레터로 스크롤 이동
+      if (response.data.length > 0) {
+        nextTick(() => {
+          const firstNewNewsletterId = response.data[0].id
+          const targetElement = document.getElementById(`newsletter-${firstNewNewsletterId}`)
+          if (targetElement) {
+            // 스크롤만 이동 (포커스 제거)
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            })
+          }
+        })
+      }
     }
   } catch (error) {
     console.error('추가 뉴스레터 로드 실패:', error)
@@ -187,7 +215,7 @@ const debouncedSearch = () => {
   clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
     pagination.value.page = 1
-    displayedCount.value = 0
+    displayedCount.value = _0
     fetchNewsletters()
   }, 500)
 }
@@ -218,56 +246,13 @@ const getPageNumbers = () => {
 
 // 게시글 클릭 핸들러
 const handleNewsletterClick = newsletterId => {
-  scrollPosition.value = window.scrollY
-  lastClickedNewsletterId.value = newsletterId
-
-  sessionStorage.setItem(
-    'newsletterScrollPosition',
-    scrollPosition.value.toString()
-  )
-  sessionStorage.setItem('lastClickedNewsletterId', newsletterId.toString())
-  sessionStorage.setItem('fromDetailPage', 'false')
+  // 포커스 이동 제거 - 단순 클릭만 처리
 }
 
-// 스크롤 위치 복원
-const restoreScrollPosition = () => {
-  const savedPosition = sessionStorage.getItem('newsletterScrollPosition')
-  const savedNewsletterId = sessionStorage.getItem('lastClickedNewsletterId')
-  const fromDetailPage = sessionStorage.getItem('fromDetailPage')
-
-  if (savedPosition && savedNewsletterId) {
-    nextTick(() => {
-      setTimeout(() => {
-        const targetElement = document.getElementById(
-          `newsletter-${savedNewsletterId}`
-        )
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-          })
-
-          setTimeout(() => {
-            targetElement.style.boxShadow = ''
-          }, 2000)
-        } else {
-          window.scrollTo(0, parseInt(savedPosition))
-        }
-
-        sessionStorage.removeItem('newsletterScrollPosition')
-        sessionStorage.removeItem('lastClickedNewsletterId')
-        sessionStorage.removeItem('fromDetailPage')
-      }, 100)
-    })
-  }
-}
 
 // 컴포넌트 마운트 시 데이터 로드
 onMounted(() => {
   fetchNewsletters()
-
-  // 뒤로가기 시 스크롤 위치 복원
-  restoreScrollPosition()
 })
 
 // 메타 태그

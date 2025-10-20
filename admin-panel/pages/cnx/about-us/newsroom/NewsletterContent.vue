@@ -3,9 +3,9 @@
     <!-- 헤더 -->
     <div class="newsletter-header">
       <!-- 제목 -->
-      <h2 class="newsletter-title">
+      <h1 class="newsletter-title">
         {{ newsletter.title }}
-      </h2>
+      </h1>
 
       <!-- 작성일 -->
       <p class="newsletter-date">
@@ -123,7 +123,7 @@ const handleImageError = event => {
 
   &-date {
     font-size: $font-size-body2-mobile;
-    color: #a2a2a2;
+    color: $gray-1;
     @include tablet {
       font-weight: $font-weight-bold;
       font-size: $font-size-body1-tablet;
