@@ -2,7 +2,7 @@
   <div class="app-img-cont" :class="{ 'reverse': reverse, 'has-sub-items': subItems && subItems.length > 0 }" ref="containerRef">
     <!-- 텍스트 컨텐츠 -->
     <div class="text-content" ref="textContentRef">
-      <h3 v-if="title" class="subtitle" ref="titleRef" v-html="title"></h3>
+      <h2 v-if="title" class="subtitle" ref="titleRef" v-html="title"></h2>
       <p v-if="text" class="description" ref="textRef" v-html="text"></p>
       
       <!-- 서브 아이템들 -->
