@@ -20,7 +20,6 @@ definePageMeta({
 // 현재 요청 URL 가져오기
 const requestUrl = useRequestURL()
 const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`
-const currentUrl = `${baseUrl}${requestUrl.pathname}`
 
 // 페이지별 메타데이터
 const pageTitle = 'Concentrix - A Global Technology and Service Leader'
@@ -38,7 +37,6 @@ useHead({
     // 페이지별 Open Graph 태그
     { property: 'og:title', content: pageTitle },
     { property: 'og:description', content: pageDescription },
-    { property: 'og:url', content: currentUrl },
     { property: 'og:image', content: ogImage },
 
     // 페이지별 Twitter Card 태그

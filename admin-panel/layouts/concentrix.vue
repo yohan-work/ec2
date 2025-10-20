@@ -26,6 +26,19 @@ const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`
 // 공통 메타데이터 상수
 const siteName = 'Concentrix'
 
+// 현재 페이지 URL 생성 함수
+const getCurrentUrl = () => {
+  if (import.meta.client) {
+    return `${window.location.origin}${route.fullPath}`
+  }
+  // SSR 시에는 요청 헤더에서 호스트 정보 가져오기
+  const host = headers.host || 'localhost:3000'
+  const protocol =
+    headers['x-forwarded-proto'] ||
+    (host.includes('localhost') ? 'http' : 'https')
+  return `${protocol}://${host}${route.fullPath}`
+}
+
 useHead({
   htmlAttrs: {
     lang: 'ko',
@@ -40,6 +53,7 @@ useHead({
     // Open Graph 기본 설정
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: siteName },
+    { property: 'og:url', content: getCurrentUrl },
 
     // Twitter Card 기본 설정
     { name: 'twitter:card', content: 'summary_large_image' },
@@ -47,18 +61,7 @@ useHead({
   link: [
     {
       rel: 'canonical',
-      href: () => {
-        // 현재 도메인과 경로를 기반으로 canonical URL 생성
-        if (import.meta.client) {
-          return `${window.location.origin}${route.fullPath}`
-        }
-        // SSR 시에는 요청 헤더에서 호스트 정보 가져오기
-        const host = headers.host || 'localhost:3000'
-        const protocol =
-          headers['x-forwarded-proto'] ||
-          (host.includes('localhost') ? 'http' : 'https')
-        return `${protocol}://${host}${route.fullPath}`
-      },
+      href: getCurrentUrl,
     },
   ],
 })
