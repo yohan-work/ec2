@@ -3,9 +3,9 @@
     <!-- 헤더 -->
     <div class="newsletter-header">
       <!-- 제목 -->
-      <h2 class="newsletter-title">
+      <h1 class="newsletter-title">
         {{ newsletter.title }}
-      </h2>
+      </h1>
 
       <!-- 작성일 -->
       <p class="newsletter-date">
