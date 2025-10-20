@@ -1,34 +1,42 @@
 <template>
-  <div class="app-img-cont" :class="{ 'reverse': reverse, 'has-sub-items': subItems && subItems.length > 0 }" ref="containerRef">
+  <div class="app-img-cont" :class="{ 'reverse': reverse, 'align-top': alignTop }" ref="containerRef">
     <!-- 텍스트 컨텐츠 -->
     <div class="text-content" ref="textContentRef">
-      <h2 v-if="title" class="subtitle" ref="titleRef" v-html="title"></h2>
+      <div 
+        v-if="title" 
+        class="subtitle" 
+        ref="titleRef"
+        v-html="`<${headingLevel}>${title}</${headingLevel}>`"
+      ></div>
       <p v-if="text" class="description" ref="textRef" v-html="text"></p>
       
-      <!-- 서브 아이템들 -->
-      <div v-if="subItems && subItems.length > 0" class="sub-items" ref="subItemsRef">
-        <div 
-          v-for="(item, index) in subItems" 
-          :key="index" 
-          class="sub-item"
-          :ref="el => subItemRefs[index] = el"
-        >
-          <h4 v-if="item.title" class="sub-title" v-html="item.title"></h4>
-          <p v-if="item.text" class="sub-text" v-html="item.text"></p>
+      <!-- 통합 아이템들 -->
+      <div v-if="subItems && subItems.length > 0" class="unified-items" ref="unifiedItemsRef">
+        <!-- 서브 아이템들 -->
+        <div v-if="subItems && subItems.length > 0" class="sub-items" ref="subItemsRef">
+          <div 
+            v-for="(item, index) in subItems" 
+            :key="`sub-${index}`" 
+            class="sub-item"
+            :ref="el => subItemRefs[index] = el"
+          >
+            <!-- 타이틀 영역 (타이틀이 있을 때만 표시) -->
+            <div 
+              v-if="item.title" 
+              class="sub-title"
+              v-html="`<${subHeadingLevel}>${item.title}</${subHeadingLevel}>`"
+            ></div>
+            <!-- 통합 리스트 -->
+            <ul v-if="item.listItems && item.listItems.length > 0" class="unified-list">
+              <li 
+                v-for="(listItem, listIndex) in item.listItems" 
+                :key="`sub-list-${index}-${listIndex}`" 
+                class="unified-list-item"
+                v-html="listItem"
+              ></li>
+            </ul>
+          </div>
         </div>
-      </div>
-      
-      <!-- 리스트 아이템들 -->
-      <div v-if="listItems && listItems.length > 0" class="list-items" ref="listItemsRef">
-        <ul class="list-content">
-          <li 
-            v-for="(item, index) in listItems" 
-            :key="index" 
-            class="list-item"
-            :ref="el => listItemRefs[index] = el"
-            v-html="item"
-          ></li>
-        </ul>
       </div>
     </div>
     
@@ -49,6 +57,7 @@
           :src="mobileImage || desktopImage" 
           :alt="imageAlt || title || 'Image'"
           class="content-image"
+          loading="lazy"
           @load="onImageLoad"
         />
       </picture>
@@ -62,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { findResponsiveImagePaths } from '~/utils/cnx/image-utils'
 import { gsap } from 'gsap'
@@ -101,9 +110,14 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
-  listItems: {
-    type: Array,
-    default: () => []
+  headingLevel: {
+    type: String,
+    default: 'h2',
+    validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
+  },
+  alignTop: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -112,6 +126,14 @@ const title = props.title
 const text = props.text
 const imageAlt = props.imageAlt
 const reverse = props.reverse
+const headingLevel = props.headingLevel
+
+// 서브 헤딩 레벨 계산 (메인 헤딩의 다음 레벨)
+const subHeadingLevel = computed(() => {
+  const level = parseInt(headingLevel.charAt(1))
+  const nextLevel = Math.min(level + 1, 6) // 최대 h6까지
+  return `h${nextLevel}`
+})
 
 // refs for GSAP animation
 const containerRef = ref(null)
@@ -120,8 +142,7 @@ const titleRef = ref(null)
 const textRef = ref(null)
 const subItemsRef = ref(null)
 const subItemRefs = ref([])
-const listItemsRef = ref(null)
-const listItemRefs = ref([])
+const unifiedItemsRef = ref(null)
 
 const route = useRoute()
 // imagePath가 제공되면 사용, 아니면 현재 페이지 경로 사용
@@ -144,15 +165,6 @@ const onImageLoad = () => {
 const initAnimation = () => {
   if (!containerRef.value) return
 
-  // DOM 요소들이 실제로 존재하는지 확인
-  const actualListItems = listItemsRef.value?.querySelectorAll('.list-item')
-  
-  // 리스트 아이템들이 DOM에 존재하지 않으면 재시도
-  if (props.listItems && props.listItems.length > 0 && (!actualListItems || actualListItems.length === 0)) {
-    setTimeout(initAnimation, 100)
-    return
-  }
-
   // 초기 상태 설정
   if (imageContentRef.value) {
     gsap.set(imageContentRef.value, { opacity: 0, y: 50 })
@@ -168,14 +180,6 @@ const initAnimation = () => {
     subItemRefs.value.forEach(subItemRef => {
       if (subItemRef) {
         gsap.set(subItemRef, { opacity: 0, y: 20 })
-      }
-    })
-  }
-  
-  if (listItemRefs.value && listItemRefs.value.length > 0) {
-    listItemRefs.value.forEach(listItemRef => {
-      if (listItemRef) {
-        gsap.set(listItemRef, { opacity: 0, y: 15 })
       }
     })
   }
@@ -225,16 +229,6 @@ const initAnimation = () => {
       stagger: 0.1
     }, '-=0.2')
   }
-  
-  if (listItemRefs.value && listItemRefs.value.length > 0) {
-    tl.to(listItemRefs.value, {
-      duration: 0.5,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out',
-      stagger: 0.2
-    }, '-=0.2')
-  }
 }
 
 // 이미지 경로 초기화 및 애니메이션 설정
@@ -251,6 +245,15 @@ onMounted(async () => {
   await nextTick()
   requestAnimationFrame(() => {
     initAnimation()
+  })
+})
+
+// 컴포넌트 언마운트 시 ScrollTrigger 정리
+onUnmounted(() => {
+  ScrollTrigger.getAll().forEach(trigger => {
+    if (trigger.trigger === containerRef.value) {
+      trigger.kill()
+    }
   })
 })
 </script>
@@ -270,8 +273,12 @@ onMounted(async () => {
     margin-bottom: rem(60);
   }
 
-  // 서브 아이템이 있을 때 정렬을 top으로 변경
-  &.has-sub-items {
+  // 정렬 옵션 (기본값: center)
+  @include tablet {
+    align-items: center;
+  }
+
+  &.align-top {
     @include tablet {
       align-items: flex-start;
     }
@@ -310,8 +317,11 @@ onMounted(async () => {
       line-height: 1.6;
     }
 
+    .unified-items {
+      margin-top: rem(24);
+    }
+
     .sub-items {
-      margin-top: rem(18);
       display: flex;
       flex-direction: column;
       gap: rem(24);
@@ -321,18 +331,9 @@ onMounted(async () => {
         gap: 0;
       }
 
-      @include tablet {
-        margin-top: rem(30);
-      }
-
-      @include desktop {
-        margin-top: rem(65);
-      }
-
       .sub-item {
         display: flex;
         flex-direction: column;
-        gap: rem(8);
 
         .sub-title {
           @include body-03;
@@ -341,39 +342,47 @@ onMounted(async () => {
           font-weight: 700;
         }
 
-        .sub-text {
-          @include body-03;
-          color: $gray-1;
+        .unified-list {
           margin: 0;
-          line-height: 1.6;
-        }
-      }
-    }
+          padding: 0;
+          list-style: none;
 
-    .list-items {
-      .list-content {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+          // 제목이 있는 subItem 안의 리스트만 margin-top 적용
+          .sub-item:has(.sub-title) & {
+            margin-top: rem(12);
+          }
 
-        .list-item {
-          @include body-02;
-          color: $gray-4;
-          margin: 0;
-          line-height: 1.6;
-          position: relative;
-          padding-left: rem(16);
+          .unified-list-item {
+            @include body-03;
+            color: $gray-1;
+            margin: 0;
+            line-height: 1.6;
+            position: relative;
+            padding-left: rem(16);
 
-          &::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: $gray-4;
-            font-weight: bold;
+            &::before {
+              content: '•';
+              position: absolute;
+              left: 0;
+              color: $gray-1;
+              font-weight: bold;
+            }
           }
         }
       }
     }
+
+    // 제목이 있는 subItems - bullet 제거
+    .sub-items .sub-item:has(.sub-title) {
+      .unified-list-item {
+        padding-left: 0;
+
+        &::before {
+          display: none;
+        }
+      }
+    }
+
   }
 
   // 리버스 옵션일 때 padding 방향 변경
@@ -428,19 +437,12 @@ onMounted(async () => {
       }
     }
 
-    // 모바일: 312/210 비율
-    aspect-ratio: 312 / 210;
-
     @include tablet {
-      // 태블릿: 308/231 비율
-      aspect-ratio: 308 / 231;
       flex: 1;
       order: 2; // 태블릿 이상에서 이미지를 우측으로
     }
 
     @include desktop {
-      // PC: 644/400 비율
-      aspect-ratio: 644 / 400;
       flex: 1;
     }
   }

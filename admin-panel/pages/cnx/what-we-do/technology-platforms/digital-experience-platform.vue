@@ -45,12 +45,7 @@
           title="Adobe Experience Manager"
           imageName="aem"
           :reverse="true"
-          :listItems="[
-            '글로벌 선도 기업들이 선택하는 프리미엄 디지털 경험 플랫폼',
-            '멀티사이트·현지화·자동화 Workflow로 브랜드 일관성과 운영 효율성 강화',
-            'Headless·Microservice Architecture로 빠른 서비스 확장과 옴니채널 경험 제공',
-            '자사 SI 전문성과 글로벌 법인 GDC 협업으로 복잡한 글로벌 사이트 구축·운영을 안정적으로 지원'
-          ]"
+          :subItems="aemSubItems"
         />
       </section>
 
@@ -59,12 +54,7 @@
         <AppImgCont 
           title="IONACT (국내 CMS 솔루션)"
           imageName="ionact"
-          :listItems="[
-            '국내 기업과 공공기관에 최적화된 고성능 CMS 플랫폼',
-            '안정성과 보안성이 검증되어 금융·공공·대기업 포털 구축에 강점',
-            '표준 컴포넌트·Design System 기반으로 신속한 구축 및 유지보수 지원',
-            '고객 맞춤형 CMS 통합과 현지화 프로젝트 수행 지원'
-          ]"
+          :subItems="ionactSubItems"
         />
       </section>
 
@@ -74,12 +64,7 @@
           title="OutSystems (Low-Code Development Platform)"
           imageName="outsystems"
           :reverse="true"
-          :listItems="[
-            'Low-code 기반으로 복잡한 비즈니스 애플리케이션을 빠르고 효율적으로 개발',
-            '웹·모바일·Enterprise 시스템까지 아우르는 광범위한 디지털 경험 구현 가능',
-            'Microservice·API 연동으로 기존 시스템 확장 및 신기술 접목에 강점',
-            '본사 SI 역량과 글로벌 법인 GDC 인력을 통한 Agile 기반 대규모 DX 프로젝트 수행'
-          ]"
+          :subItems="outsystemsSubItems"
         />
       </section>
     </div>
@@ -91,11 +76,48 @@ import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AppCardList from '~/components/cnx/AppCardList.vue'
+import { computed } from 'vue'
 
 // 레이아웃 설정
 definePageMeta({
   layout: 'concentrix'
 })
+
+// Adobe Experience Manager 서브 아이템들
+const aemSubItems = computed(() => [
+  {
+    listItems: [
+      '글로벌 선도 기업들이 선택하는 프리미엄 디지털 경험 플랫폼',
+      '멀티사이트·현지화·자동화 Workflow로 브랜드 일관성과 운영 효율성 강화',
+      'Headless·Microservice Architecture로 빠른 서비스 확장과 옴니채널 경험 제공',
+      '자사 SI 전문성과 글로벌 법인 GDC 협업으로 복잡한 글로벌 사이트 구축·운영을 안정적으로 지원'
+    ]
+  }
+])
+
+// IONACT 서브 아이템들
+const ionactSubItems = computed(() => [
+  {
+    listItems: [
+      '국내 기업과 공공기관에 최적화된 고성능 CMS 플랫폼',
+      '안정성과 보안성이 검증되어 금융·공공·대기업 포털 구축에 강점',
+      '표준 컴포넌트·Design System 기반으로 신속한 구축 및 유지보수 지원',
+      '고객 맞춤형 CMS 통합과 현지화 프로젝트 수행 지원'
+    ]
+  }
+])
+
+// OutSystems 서브 아이템들
+const outsystemsSubItems = computed(() => [
+  {
+    listItems: [
+      'Low-code 기반으로 복잡한 비즈니스 애플리케이션을 빠르고 효율적으로 개발',
+      '웹·모바일·Enterprise 시스템까지 아우르는 광범위한 디지털 경험 구현 가능',
+      'Microservice·API 연동으로 기존 시스템 확장 및 신기술 접목에 강점',
+      '본사 SI 역량과 글로벌 법인 GDC 인력을 통한 Agile 기반 대규모 DX 프로젝트 수행'
+    ]
+  }
+])
 
 </script>
 

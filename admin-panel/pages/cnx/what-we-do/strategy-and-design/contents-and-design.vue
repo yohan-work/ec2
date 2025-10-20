@@ -307,12 +307,11 @@
               text="다양한 디지털 채널에서의 KPI 달성을 위한 채널운영, 프로모션 기획, 이벤트 제작, 그외 브랜드 활동 등을 적극적이고 선제적으로 지원합니다. <br>또한 채널 내 UX/UI 개선 활동이나 추가 서비스개발을 수행하여 장기적인 관점에서의 채널 고도화를 지원합니다."
               imageName="works01"
               imageAlt="남성과 여성이 테이블에 앉아 노트북을 보며 이야기하고 있습니다."
-              imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
-              :subItems="[
-                { title: 'Operation', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Advanced Operational Services <br>Producing Production Content <br>Create/Operate Events, Promotions <br>Digital Contents Monitoring' },
-              ]"
-            />  
+              headingLevel="h3"
+              :alignTop="true"
+              :subItems="operationSubItems"
+            />
           </div>
           <div class="works-section-content-item">
             <AppImgCont 
@@ -320,10 +319,9 @@
               text="데이터 분석 기반의 플랫폼, 서비스, 시스템 개발을 지원합니다. Concentrix 만의 UX/UI Framework과 Process를 통해 안정적으로 프로젝트를 수행합니다. 또한 전략컨설팅, UX컨설팅 프로젝트의 기획, 디자인, 퍼블리싱 업무를 지원합니다."
               imageName="works02"
               imageAlt="다양한 앱이 실행된 네 대의 아이폰이 나란히 놓여 있습니다."
-              imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
-              :subItems="[
-                { title: 'UX/UI Design', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Strategy/UX Consulting' },
-              ]"
+              headingLevel="h3"
+              :alignTop="true"
+              :subItems="uxDesignSubItems"
             />  
           </div>
           <div class="works-section-content-item">
@@ -332,11 +330,10 @@
               text="글로벌 플랫폼 내 콘텐츠 제작 및 확산을 수행하며, 대형 온라인 전시 및 포럼 등의 행사기획부터 영상 콘텐츠 제작, 마이크로사이트 구축까지 지원합니다. 또한 소셜미디어 콘텐츠 전략, 기획, 촬영, 제작, 운영 등을 서비스하고 있으며 라이브 커머스, 메타버스와 같은 최신 트렌드를 반영한 서비스의 전략, 기획, 콘텐츠 제작, 촬영 지원 등의 업무를 지원합니다."
               imageName="works03"
               imageAlt="책상에서 컴퓨터를 사용하고 있는 여성의 모습입니다."
-              imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
-              :subItems="[
-                { title: 'Digital Contents Creation', text: 'Global Platform Product Details Page <br>Contents Migration <br>Social Channel Contents <br>Online Exhibition Planning and Production <br>Microsite Development <br>Live Commerce , Metaverse <br>Brand Content Creation' },
-              ]"
+              headingLevel="h3"
+              :alignTop="true"
+              :subItems="digitalContentsSubItems"
             />  
           </div>
         </div>
@@ -351,7 +348,50 @@ import AppTitle from '~/components/cnx/AppTitle.vue';
 import AppButton from '~/components/cnx/AppButton.vue';
 import AppSwiper from '~/components/cnx/AppSwiper.vue';
 import AppImgCont from '~/components/cnx/AppImgCont.vue';
-import { nextTick } from 'vue';
+import { nextTick, computed } from 'vue';
+
+// AppImgCont subItems 데이터
+const operationSubItems = computed(() => [
+  { 
+    title: 'Operation', 
+    listItems: [
+      'Brand Website',
+      'eCommerce Platform', 
+      'App Service',
+      'Advanced Operational Services',
+      'Producing Production Content',
+      'Create/Operate Events, Promotions',
+      'Digital Contents Monitoring'
+    ]
+  }
+]);
+
+const uxDesignSubItems = computed(() => [
+  { 
+    title: 'UX/UI Design', 
+    listItems: [
+      'Brand Website',
+      'eCommerce Platform',
+      'App Service',
+      'Strategy/UX Consulting'
+    ]
+  }
+]);
+
+const digitalContentsSubItems = computed(() => [
+  { 
+    title: 'Digital Contents Creation', 
+    listItems: [
+      'Global Platform Product Details Page',
+      'Contents Migration',
+      'Social Channel Contents',
+      'Online Exhibition Planning and Production',
+      'Microsite Development',
+      'Live Commerce , Metaverse',
+      'Brand Content Creation'
+    ]
+  }
+]);
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';

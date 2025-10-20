@@ -59,10 +59,7 @@
           imageName="sales"
           text="<b>콘센트릭스는 세일즈포스 공식 컨설팅 파트너</b>로서,<br>다년간의 Sales cloud, Service cloud 프로젝트 경험과 AI 기반 고객 경험 혁신 역량을 보유하고 있으며. 다양한 산업의 특수성을 이해하고, 고객 여정을 중심으로 한 디지털 전환을 성공적으로 이끌어가고 있습니다."
           :reverse="true"
-          :listItems="[
-            'Sales Cloud를 통해 영업 파이프라인 관리, 리드 추적, 성과 분석을 자동화하여 영업팀의 생산성을 극대화합니다.',
-            'Service Cloud를 통해 옴니채널 고객 지원, 상담원 생산성 향상, 셀프 서비스 포털 구축 등을 지원하여 고객 만족도를 높이고 효율적인 고객 서비스를 가능하게 합니다.'
-          ]"
+          :subItems="salesServiceSubItems"
         />
       </section>
 
@@ -71,12 +68,7 @@
           title="SF CREAM"
           imageName="sf"
           text="SF CREAM(Salesforce Customer Relationship Engagement Application Module)은 세일즈포스닷컴 솔루션을 기반으로 한 컨택센터 운영솔루션입니다. 콘센트릭스의 글로벌 컨택센터 운영 노하우가 집대성 되어 상담 관리자와 상담원의 업무 생산성 증대 및 관리 효율성에 초점이 맞춰진 모듈형 솔루션 입니다."
-          :listItems="[
-            '상담업무에 필요한 CTI (Computer Telephony Integration)',
-            '문자와 카카오톡 등 메세징',
-            '이메일',
-            'Chat Bot 고객 셀프서비스'
-          ]"
+          :subItems="sfCreamSubItems"
         />
       </section>
     </div>
@@ -88,11 +80,34 @@ import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AppCardList from '~/components/cnx/AppCardList.vue'
+import { computed } from 'vue'
 
 // 레이아웃 설정
 definePageMeta({
   layout: 'concentrix'
 })
+
+// Sales Cloud, Service Cloud 서브 아이템들
+const salesServiceSubItems = computed(() => [
+  {
+    listItems: [
+      'Sales Cloud를 통해 영업 파이프라인 관리, 리드 추적, 성과 분석을 자동화하여 영업팀의 생산성을 극대화합니다.',
+      'Service Cloud를 통해 옴니채널 고객 지원, 상담원 생산성 향상, 셀프 서비스 포털 구축 등을 지원하여 고객 만족도를 높이고 효율적인 고객 서비스를 가능하게 합니다.'
+    ]
+  }
+])
+
+// SF CREAM 서브 아이템들
+const sfCreamSubItems = computed(() => [
+  {
+    listItems: [
+      '상담업무에 필요한 CTI (Computer Telephony Integration)',
+      '문자와 카카오톡 등 메세징',
+      '이메일',
+      'Chat Bot 고객 셀프서비스'
+    ]
+  }
+])
 
 </script>
 

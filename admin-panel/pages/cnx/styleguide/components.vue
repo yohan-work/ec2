@@ -114,7 +114,7 @@
           <AppKeyVisual 
             imageAlt="Style Guide Key Visual"
             :animationDuration="1500"
-            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+            imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
           />
         </div>
         
@@ -167,7 +167,7 @@
     <div class="component-section">
       <h3 class="section-title">AppImgCont</h3>
       <p class="section-description">
-        텍스트와 이미지를 함께 표시하는 컨텐츠 컴포넌트입니다. 반응형 레이아웃, reverse 옵션, 리스트 아이템 기능, 그리고 서브 아이템 기능을 지원합니다. 서브 아이템이 있을 때는 이미지와 텍스트박스의 정렬이 자동으로 top으로 변경됩니다.
+        텍스트와 이미지를 함께 표시하는 컨텐츠 컴포넌트입니다. 반응형 레이아웃, reverse 옵션, 서브 아이템 기능을 지원합니다. 서브 아이템은 제목이 있는 경우와 없는 경우 모두 지원하며, 제목이 없는 경우 불릿 포인트로 표시됩니다.
       </p>
       
       <div class="component-demo">
@@ -178,7 +178,7 @@
             text="이것은 AppImgCont 컴포넌트의 기본 사용 예시입니다. 텍스트와 이미지가 함께 표시됩니다."
             imageName="DA01"
             imageAlt="Sample Image"
-            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+            imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
           />
         </div>
         
@@ -201,7 +201,7 @@
             imageName="DA02"
             imageAlt="Reverse Layout Image"
             :reverse="true"
-            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+            imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
           />
         </div>
         
@@ -217,70 +217,129 @@
 /&gt;</code></pre>
         </div>
         
-        <h4 class="demo-title">리스트 아이템 기능</h4>
+        <h4 class="demo-title">Heading Level 옵션</h4>
         <div class="demo-content">
           <AppImgCont 
-            title="리스트 아이템이 있는 레이아웃"
-            text="listItems 옵션을 사용하면 설명 텍스트와 함께 불릿 포인트 리스트를 표시할 수 있습니다. 각 아이템은 순차적으로 애니메이션됩니다. text 옵션 없이 단독으로도 사용 가능합니다."
+            title="Heading Level h3"
+            text="headingLevel 옵션을 사용하여 제목의 HTML 태그 레벨을 설정할 수 있습니다. 서브 아이템의 제목은 자동으로 다음 레벨로 설정됩니다."
             imageName="DA01"
-            imageAlt="List Items Layout Image"
-            :listItems="[
-              '첫 번째 리스트 아이템입니다.',
-              '두 번째 리스트 아이템입니다.',
-              '세 번째 리스트 아이템입니다.',
-              '네 번째 리스트 아이템입니다.'
-            ]"
-            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+            imageAlt="Heading Level Image"
+            headingLevel="h3"
+            imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
           />
         </div>
         
         <div class="code-example">
           <h4 class="code-title">코드 예시</h4>
           <pre class="code-block"><code>&lt;AppImgCont 
-  title="리스트 아이템이 있는 레이아웃"
-  text="listItems 옵션을 사용하면 설명 텍스트와 함께 불릿 포인트 리스트를 표시할 수 있습니다. 각 아이템은 순차적으로 애니메이션됩니다. text 옵션 없이 단독으로도 사용 가능합니다."
+  title="Heading Level h3"
+  text="headingLevel 옵션을 사용하여..."
   imageName="DA01"
-  imageAlt="List Items Layout Image"
-  :listItems="[
-    '첫 번째 리스트 아이템입니다.',
-    '두 번째 리스트 아이템입니다.',
-    '세 번째 리스트 아이템입니다.',
-    '네 번째 리스트 아이템입니다.'
-  ]"
+  imageAlt="Heading Level Image"
+  headingLevel="h3"
   imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
 /&gt;</code></pre>
         </div>
         
-        <h4 class="demo-title">서브 아이템 기능</h4>
+        <h4 class="demo-title">Align Top 옵션</h4>
+        <div class="demo-content">
+          <AppImgCont 
+            title="Align Top Layout"
+            text="alignTop 옵션을 true로 설정하면 태블릿 이상에서 이미지와 텍스트박스가 상단 정렬됩니다."
+            imageName="DA01"
+            imageAlt="Align Top Image"
+            :alignTop="true"
+            imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppImgCont 
+  title="Align Top Layout"
+  text="alignTop 옵션을 true로 설정하면..."
+  imageName="DA01"
+  imageAlt="Align Top Image"
+  :alignTop="true"
+  imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+/&gt;</code></pre>
+        </div>
+        
+        <h4 class="demo-title">서브 아이템 기능 (제목 있음)</h4>
         <div class="demo-content">
           <AppImgCont 
             title="서브 아이템이 있는 레이아웃"
-            text="서브 아이템이 있을 때는 이미지와 텍스트박스의 정렬이 자동으로 top으로 변경됩니다."
+            text="서브 아이템에 제목이 있는 경우, 제목과 리스트가 함께 표시되며 불릿 포인트는 제거됩니다."
             imageName="DA01"
             imageAlt="Sub Items Layout Image"
-            :subItems="[
-              { title: '서브타이틀 1', text: '첫 번째 서브 아이템의 설명 텍스트입니다.' },
-              { title: '서브타이틀 2', text: '두 번째 서브 아이템의 설명 텍스트입니다.' },
-              { title: '서브타이틀 3', text: '세 번째 서브 아이템의 설명 텍스트입니다.' }
-            ]"
-            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+            :subItems="subItemsWithTitles"
+            imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
           />
         </div>
         
         <div class="code-example">
           <h4 class="code-title">코드 예시</h4>
-          <pre class="code-block"><code>&lt;AppImgCont 
-  title="서브 아이템이 있는 레이아웃"
-  text="서브 아이템이 있을 때는..."
-  imageName="DA01"
-  imageAlt="Sub Items Layout Image"
-  :subItems="[
-    { title: '서브타이틀 1', text: '첫 번째 서브 아이템의 설명 텍스트입니다.' },
-    { title: '서브타이틀 2', text: '두 번째 서브 아이템의 설명 텍스트입니다.' },
-    { title: '서브타이틀 3', text: '세 번째 서브 아이템의 설명 텍스트입니다.' }
-  ]"
-  imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
-/&gt;</code></pre>
+          <pre class="code-block"><code>&lt;script setup&gt;
+import { computed } from 'vue'
+
+const subItemsWithTitles = computed(() => [
+  { 
+    title: '서브타이틀 1', 
+    listItems: ['첫 번째 서브 아이템의 설명입니다.', '추가 설명 텍스트입니다.'] 
+  },
+  { 
+    title: '서브타이틀 2', 
+    listItems: ['두 번째 서브 아이템의 설명입니다.'] 
+  }
+])
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;AppImgCont 
+    title="서브 아이템이 있는 레이아웃"
+    text="서브 아이템에 제목이 있는 경우..."
+    imageName="DA01"
+    imageAlt="Sub Items Layout Image"
+    :subItems="subItemsWithTitles"
+    imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
+  /&gt;
+&lt;/template&gt;</code></pre>
+        </div>
+        
+        <h4 class="demo-title">서브 아이템 기능 (제목 없음)</h4>
+        <div class="demo-content">
+          <AppImgCont 
+            title="불릿 포인트 리스트"
+            text="서브 아이템에 제목이 없는 경우, 불릿 포인트로 표시됩니다."
+            imageName="DA01"
+            imageAlt="Bullet Points Image"
+            :subItems="subItemsWithoutTitles"
+            imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;script setup&gt;
+import { computed } from 'vue'
+
+const subItemsWithoutTitles = computed(() => [
+  { listItems: ['첫 번째 불릿 포인트입니다.'] },
+  { listItems: ['두 번째 불릿 포인트입니다.'] },
+  { listItems: ['세 번째 불릿 포인트입니다.'] }
+])
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;AppImgCont 
+    title="불릿 포인트 리스트"
+    text="서브 아이템에 제목이 없는 경우..."
+    imageName="DA01"
+    imageAlt="Bullet Points Image"
+    :subItems="subItemsWithoutTitles"
+    imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
+  /&gt;
+&lt;/template&gt;</code></pre>
         </div>
         
         <div class="props-table">
@@ -299,13 +358,13 @@
                 <td>title</td>
                 <td>String</td>
                 <td>''</td>
-                <td>제목 텍스트</td>
+                <td>제목 텍스트 (HTML 태그 지원)</td>
               </tr>
               <tr>
                 <td>text</td>
                 <td>String</td>
                 <td>''</td>
-                <td>설명 텍스트</td>
+                <td>설명 텍스트 (HTML 태그 지원)</td>
               </tr>
               <tr>
                 <td>imageName</td>
@@ -332,16 +391,22 @@
                 <td>이미지 경로 (지정하지 않으면 현재 페이지 경로 사용)</td>
               </tr>
               <tr>
-                <td>listItems</td>
-                <td>Array</td>
-                <td>[]</td>
-                <td>리스트 아이템 배열 (문자열 배열, 불릿 포인트로 표시)</td>
+                <td>headingLevel</td>
+                <td>String</td>
+                <td>'h2'</td>
+                <td>제목의 HTML 태그 레벨 (h1~h6)</td>
+              </tr>
+              <tr>
+                <td>alignTop</td>
+                <td>Boolean</td>
+                <td>false</td>
+                <td>태블릿 이상에서 상단 정렬</td>
               </tr>
               <tr>
                 <td>subItems</td>
                 <td>Array</td>
                 <td>[]</td>
-                <td>서브 아이템 배열 (title, text 속성을 가진 객체들의 배열)</td>
+                <td>서브 아이템 배열. 각 아이템은 { title?, listItems } 형태. title이 있으면 제목+리스트, 없으면 불릿 포인트</td>
               </tr>
             </tbody>
           </table>
@@ -364,7 +429,7 @@
             description="상단 타이틀 영역과 하단 이미지 영역으로 구성된<br>서브 컨텐츠 컴포넌트입니다.<br>스크롤 애니메이션과 반응형 이미지 처리를 지원합니다."
             imageName="subContImg"
             imageAlt="AppSubCont 데모 이미지"
-            imagePath="/assets/cnx/whatwedo/strategyndesign/digitaladvertising"
+            imagePath="/assets/cnx/what-we-do/strategy-and-design/digital-advertising"
           />
         </div>
         
@@ -506,11 +571,31 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AppSubCont from '~/components/cnx/AppSubCont.vue'
 import AppSwiper from '~/components/cnx/AppSwiper.vue'
 import AppCardList from '~/components/cnx/AppCardList.vue'
+
+// AppImgCont 서브 아이템 데이터 (제목 있음)
+const subItemsWithTitles = computed(() => [
+  { 
+    title: '서브타이틀 1', 
+    listItems: ['첫 번째 서브 아이템의 설명입니다.', '추가 설명 텍스트입니다.'] 
+  },
+  { 
+    title: '서브타이틀 2', 
+    listItems: ['두 번째 서브 아이템의 설명입니다.'] 
+  }
+])
+
+// AppImgCont 서브 아이템 데이터 (제목 없음)
+const subItemsWithoutTitles = computed(() => [
+  { listItems: ['첫 번째 불릿 포인트입니다.'] },
+  { listItems: ['두 번째 불릿 포인트입니다.'] },
+  { listItems: ['세 번째 불릿 포인트입니다.'] }
+])
 </script>
 
 <style lang="scss" scoped>
