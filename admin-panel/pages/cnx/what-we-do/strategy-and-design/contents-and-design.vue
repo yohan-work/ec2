@@ -106,13 +106,13 @@
           <span class="intro-section-content-line"></span>
           <div class="intro-section-content-item" role="img" aria-label="CiX">
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/c.svg" alt="C" aria-hidden="true">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/c.svg" alt="C" aria-hidden="true" width="632" height="619">
             </div>
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/i.svg" alt="I" aria-hidden="true">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/i.svg" alt="I" aria-hidden="true" width="409" height="87">
             </div>
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/x.svg" alt="X" aria-hidden="true">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/x.svg" alt="X" aria-hidden="true" width="563" height="564">
             </div>
           </div>
         </div>
@@ -127,16 +127,16 @@
           <!-- PC -->
           <ul class="overview-section-content-list" v-if="!isMobile">
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedelivercreative.png" alt="wedelivercreative">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedelivercreative.png" alt="we deliver creative" loading="lazy" fetchpriority="low">
             </li>
           </ul>
           <!-- Mobile -->
           <ul class="overview-section-content-list" v-else>
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedeliver.png" alt="wedeliver">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedeliver.png" alt="we deliver" loading="lazy" fetchpriority="low">
             </li>
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/creative.png" alt="creative">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/creative.png" alt="creative" loading="lazy" fetchpriority="low">
             </li>
           </ul>
           <ul class="overview-section-content-list">
@@ -261,23 +261,23 @@
         >
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01_t.jpg" alt="A modern conference room with a long wooden table, hanging light bulbs, and glass walls covered with whiteboard notes and sticky memos." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01_t.jpg" alt="A modern conference room with a long wooden table, hanging light bulbs, and glass walls covered with whiteboard notes and sticky memos." loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02_t.jpg" alt="An open lounge area with grey sofas, wooden cubicle desks, bookshelves, and hanging plants creating a relaxing workspace atmosphere." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02_t.jpg" alt="An open lounge area with grey sofas, wooden cubicle desks, bookshelves, and hanging plants creating a relaxing workspace atmosphere." loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03_t.jpg" alt="A professional photo studio with lighting equipment, tripods, monitors, and a white cyclorama backdrop." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03_t.jpg" alt="A professional photo studio with lighting equipment, tripods, monitors, and a white cyclorama backdrop." loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04_t.jpg" alt="A cozy office lounge with grey couches, wooden floors, circular ceiling lights, and the Concentrix Catalyst logo on the wall." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04_t.jpg" alt="A cozy office lounge with grey couches, wooden floors, circular ceiling lights, and the Concentrix Catalyst logo on the wall." loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05_t.jpg" alt="A bright office kitchen and lounge area with hanging lights, bookshelves, and greenery providing a natural atmosphere." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05_t.jpg" alt="A bright office kitchen and lounge area with hanging lights, bookshelves, and greenery providing a natural atmosphere." loading="lazy" fetchpriority="low">
           </picture>
         </AppSwiper> 
       </div>
@@ -297,7 +297,7 @@
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram.jpg" media="(min-width: 1024px)" />
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_t.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_m.jpg" alt="Business model diagram illustrating various types of business models and their interconnections." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_m.jpg" alt="Business model diagram illustrating various types of business models and their interconnections." loading="lazy" fetchpriority="low" width="1320" height="660">
           </picture>
         </div>
         <div class="works-section-content">
@@ -306,7 +306,7 @@
               title="Operation"
               text="다양한 디지털 채널에서의 KPI 달성을 위한 채널운영, 프로모션 기획, 이벤트 제작, 그외 브랜드 활동 등을 적극적이고 선제적으로 지원합니다. <br>또한 채널 내 UX/UI 개선 활동이나 추가 서비스개발을 수행하여 장기적인 관점에서의 채널 고도화를 지원합니다."
               imageName="works01"
-              imageAlt="A man and woman sit at a table, focused on a laptop in front of them."
+              imageAlt="남성과 여성이 테이블에 앉아 노트북을 보며 이야기하고 있습니다."
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
               :subItems="[
@@ -319,7 +319,7 @@
               title="UX/UI Design"
               text="데이터 분석 기반의 플랫폼, 서비스, 시스템 개발을 지원합니다. Concentrix 만의 UX/UI Framework과 Process를 통해 안정적으로 프로젝트를 수행합니다. 또한 전략컨설팅, UX컨설팅 프로젝트의 기획, 디자인, 퍼블리싱 업무를 지원합니다."
               imageName="works02"
-              imageAlt="A collection of four iPhones, each featuring distinct apps, highlighting diverse mobile applications and user interfaces."
+              imageAlt="다양한 앱이 실행된 네 대의 아이폰이 나란히 놓여 있습니다."
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :subItems="[
                 { title: 'UX/UI Design', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Strategy/UX Consulting' },
@@ -331,7 +331,7 @@
               title="Digital Contents Creation"
               text="글로벌 플랫폼 내 콘텐츠 제작 및 확산을 수행하며, 대형 온라인 전시 및 포럼 등의 행사기획부터 영상 콘텐츠 제작, 마이크로사이트 구축까지 지원합니다. 또한 소셜미디어 콘텐츠 전략, 기획, 촬영, 제작, 운영 등을 서비스하고 있으며 라이브 커머스, 메타버스와 같은 최신 트렌드를 반영한 서비스의 전략, 기획, 콘텐츠 제작, 촬영 지원 등의 업무를 지원합니다."
               imageName="works03"
-              imageAlt="A woman working at a desk, looking at her computer screen, with office supplies arranged around her."
+              imageAlt="책상에서 컴퓨터를 사용하고 있는 여성의 모습입니다."
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
               :subItems="[
@@ -705,7 +705,7 @@ const initBannerScrollAnimation = () => {
         pin: true,
         anticipatePin: 1, // pin 관련 layout jump 줄여줌
         invalidateOnRefresh: true,
-        refreshPriority: 100
+        refreshPriority: 10
       }
     });
 
@@ -1627,10 +1627,14 @@ const getBorderClass = (slide, index) => {
           visibility: hidden;
           opacity: 0;
           border-left: 1px solid;
-          padding-left: rem(40);
-          margin-left: rem(40);
+          padding-left: rem(18);
+          margin-left: rem(18);
           position: relative;
           transform: translateX(rem(20));
+        }
+        @include desktop {
+          padding-left: rem(40);
+          margin-left: rem(40);
         }
         &.border-black {
           border-color: rgba($d-black, 0.2);
@@ -1897,22 +1901,23 @@ const getBorderClass = (slide, index) => {
 
         @include tablet {
           flex-direction: row;
-          flex-wrap: wrap;
           gap: 0;
         }
         &-item {
           margin-top: rem(8);
           @include tablet {
             display: inline-flex;
+            align-items: center;
             margin-top: 0;
           }
           &-comma {
             display: none;
             font-weight: 600;
-            font-size: rem(84);
+            font-size: rem(36);
             color: $d-white;
             flex-shrink: 0;
             @include tablet {
+              font-size: rem(84);
               display: inline-block;
             }
           }

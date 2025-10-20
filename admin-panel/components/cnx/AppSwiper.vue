@@ -25,18 +25,38 @@
 
     <!-- Custom Navigation Buttons -->
     <div class="swiper-button-prev-custom" ref="prevElRef">
-      <AppButton variant="circle" arrow="reverse" :class="{ 'white': darkMode }" text=""/>
+      <AppButton 
+        variant="circle" 
+        arrow="reverse" 
+        :class="{ 'white': darkMode }" 
+        text=""
+        aria-label="이전 슬라이드로 이동"
+      />
     </div>
     <div class="swiper-button-next-custom" ref="nextElRef">
-      <AppButton variant="circle" arrow :class="{ 'white': darkMode }" text=""/>
+      <AppButton 
+        variant="circle" 
+        arrow 
+        :class="{ 'white': darkMode }" 
+        text=""
+        aria-label="다음 슬라이드로 이동"
+      />
     </div> 
 
     <div class="swiper-navigation-wrap" :class="{ 'dark-mode': darkMode }">
       <!-- Custom Pagination -->
       <div class="swiper-pagination-custom" ref="paginationElRef"></div>
-      <!-- play / pause button -->
-      <button type="button" class="swiper-button-play-custom" ref="playElRef" :class="{ 'pause': !isPlaying }" @click="toggleAutoplay" v-if="props.autoplay">
-        <span class="a11y-hidden">pause</span>
+      <!-- play / pause button -->                
+      <button 
+        type="button" 
+        class="swiper-button-play-custom" 
+        ref="playElRef" 
+        :class="{ 'pause': !isPlaying }" 
+        @click="toggleAutoplay" 
+        v-if="props.autoplay"
+        :aria-label="isPlaying ? '자동재생 일시정지' : '자동재생 재생'"
+      >
+        <span class="a11y-hidden">{{ isPlaying ? '일시정지' : '재생' }}</span>
       </button>
     </div>
   </div>
@@ -225,9 +245,23 @@
     .swiper-button-play-custom {
       width: rem(12);
       height: rem(12);
-      background-color: var(--swiper-sub-color);
-      mask: center / 9px auto no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='24' viewBox='0 0 18 24' fill='none'%3E%3Cg opacity='1'%3E%3Cpath d='M6 1H0V23H6V1Z' fill='white'/%3E%3Cpath d='M18 1H12V23H18V1Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
-      &.pause {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--swiper-sub-color);
+        mask: center / 9px auto no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='24' viewBox='0 0 18 24' fill='none'%3E%3Cg opacity='1'%3E%3Cpath d='M6 1H0V23H6V1Z' fill='white'/%3E%3Cpath d='M18 1H12V23H18V1Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
+      }
+      
+      &.pause::after {
         mask: center / 9px auto no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='22' viewBox='0 0 18 22' fill='none'%3E%3Cpath d='M18 11L0 22V0L18 11Z' fill='white'/%3E%3C/svg%3E");
       }
     }
