@@ -139,6 +139,20 @@ const loadMoreNewsletters = async () => {
         pages: Math.ceil(filteredData.length / pagination.value.limit),
       }
 
+      // 새로 로드된 첫 번째 뉴스레터로 스크롤 이동
+      if (nextPageData.length > 0) {
+        nextTick(() => {
+          const firstNewNewsletterId = nextPageData[0].id
+          const targetElement = document.getElementById(`newsletter-${firstNewNewsletterId}`)
+          if (targetElement) {
+            // 스크롤만 이동 (포커스 제거)
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            })
+          }
+        })
+      }
     } else {
       // === DB 연결 로직 ===
       const nextPage =
@@ -162,6 +176,20 @@ const loadMoreNewsletters = async () => {
       // pagination 정보 업데이트
       pagination.value = response.pagination
 
+      // 새로 로드된 첫 번째 뉴스레터로 스크롤 이동
+      if (response.data.length > 0) {
+        nextTick(() => {
+          const firstNewNewsletterId = response.data[0].id
+          const targetElement = document.getElementById(`newsletter-${firstNewNewsletterId}`)
+          if (targetElement) {
+            // 스크롤만 이동 (포커스 제거)
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            })
+          }
+        })
+      }
     }
   } catch (error) {
     console.error('추가 뉴스레터 로드 실패:', error)
