@@ -20,11 +20,30 @@ const route = useRoute()
 
 // 전역 메타 태그 설정
 const headers = useRequestHeaders()
+const requestUrl = useRequestURL()
+const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`
+
+// 공통 메타데이터 상수
+const siteName = 'Concentrix'
 
 useHead({
   htmlAttrs: {
     lang: 'ko',
   },
+  meta: [
+    // 기본 메타 태그
+    { name: 'robots', content: 'index, follow' },
+    { name: 'author', content: siteName },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+    { 'http-equiv': 'Content-Type', content: 'text/html; charset=utf-8' },
+
+    // Open Graph 기본 설정
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: siteName },
+
+    // Twitter Card 기본 설정
+    { name: 'twitter:card', content: 'summary_large_image' },
+  ],
   link: [
     {
       rel: 'canonical',
