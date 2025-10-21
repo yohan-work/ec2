@@ -2,7 +2,7 @@
   <header class="the-header">
     <div class="inner">
       <div class="the-header__logo">
-        <NuxtLink to="/" class="text-xl font-bold text-gray-900">
+        <NuxtLink to="/" aria-label="Concentrix 홈페이지로 이동">
           <div class="logo" v-html="concentrixLogo"></div>
         </NuxtLink>
       </div>
@@ -14,6 +14,7 @@
           <button 
             v-if="menu.sections && menu.sections.length > 0"
             :key="`dropdown-${key}`"
+            :id="`dropdown-${key}`"
             class="gnb-menu-item gnb-dropdown-trigger" 
             :data-dropdown="key"
             :aria-expanded="activeDropdown === key ? 'true' : 'false'"
@@ -47,7 +48,9 @@
         type="button"
         :aria-expanded="isSideNavOpen"
         :aria-label="isSideNavOpen ? '메뉴 닫기' : '메뉴 열기'"
+        :aria-controls="isSideNavOpen ? 'side-nav-panel' : null"
         @click="toggleSideNav"
+        @keydown="handleHamburgerKeydown"
         v-html="hamburgerIcon"
       ></button>
     </div>
@@ -72,7 +75,7 @@
             class="dropdown-section"
           >
             <!-- 2depth: 빈 title이 아닌 경우만 표시 -->
-            <h3 v-if="section.title && !section.path">{{ section.title }}</h3>
+            <div v-if="section.title && !section.path" class="section-title">{{ section.title }}</div>
             <NuxtLink 
               v-else-if="section.title && section.path" 
               :to="section.path" 
@@ -171,10 +174,42 @@ watch(activeDropdown, (newValue, oldValue) => {
 // 사이드 네비게이션 토글 함수들
 const toggleSideNav = () => {
   isSideNavOpen.value = !isSideNavOpen.value
+  
+  // 사이드 네비게이션이 열렸을 때 닫기 버튼으로 포커스 이동
+  if (isSideNavOpen.value) {
+    nextTick(() => {
+      setTimeout(() => {
+        const closeButton = document.querySelector('.side-nav-close')
+        if (closeButton) {
+          closeButton.focus()
+        }
+      }, 100)
+    })
+  }
 }
 
 const closeSideNav = () => {
   isSideNavOpen.value = false
+}
+
+const handleHamburgerKeydown = (event) => {
+  const { key } = event
+  
+  isKeyboardNavigation.value = true
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault()
+      toggleSideNav()
+      break
+    case 'Escape':
+      if (isSideNavOpen.value) {
+        event.preventDefault()
+        closeSideNav()
+      }
+      break
+  }
 }
 
 // 키보드 이벤트 핸들러들
@@ -623,27 +658,26 @@ onUnmounted(() => {
         }
         
         .dropdown-section {
-          h3 {
+          .section-title {
             font-size: rem(12);
             font-weight: $font-weight-regular;
             color: $gray-1;
             margin: 0 0 rem(16) 0;
             line-height: rem(20);
-          }
-          
-          .section-title {
-            font-size: rem(16);
-            font-weight: 700;
-            color: #333;
-            margin: 0 0 rem(16) 0;
-            line-height: rem(20);
-            text-decoration: none;
             display: block;
-            transition: text-decoration 0.2s ease, text-shadow 0.2s ease;
             
-            &:hover {
-              text-decoration: underline;
-              text-shadow: 0.5px 0 0 currentColor;
+            // 링크인 경우에만 추가 스타일 적용
+            &:is(a) {
+              font-size: rem(16);
+              font-weight: 700;
+              color: #333;
+              text-decoration: none;
+              transition: text-decoration 0.2s ease, text-shadow 0.2s ease;
+              
+              &:hover {
+                text-decoration: underline;
+                text-shadow: 0.5px 0 0 currentColor;
+              }
             }
           }
           

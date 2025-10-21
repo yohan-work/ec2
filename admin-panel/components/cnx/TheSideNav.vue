@@ -3,15 +3,23 @@
   <div 
     class="side-nav-panel" 
     :class="{ 'is-open': isOpen }"
+    id="side-nav-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="side-nav-title"
   >
       <!-- 헤더 영역 -->
       <div class="side-nav-header">
+        <h2 id="side-nav-title" class="a11y-hidden">사이드 네비게이션 메뉴</h2>
         <div class="side-nav-logo">
           <div class="side-nav-logo__image" v-html="footerLogo"></div>
         </div>
         <button 
           class="side-nav-close"
+          tabindex="0"
+          aria-label="사이드 네비게이션 닫기"
           @click="closeSideNav"
+          @keydown="handleCloseKeydown"
           v-html="closeIcon"
         ></button>
       </div>
@@ -22,14 +30,20 @@
           v-for="(menu, key) in menuStructure" 
           :key="key"
           class="side-nav-menu-group"
+          :data-menu="key"
         >
           <!-- 하위 섹션이 있는 경우 (아코디언) -->
           <template v-if="menu.sections && menu.sections.length > 0">
             <!-- 1뎁스 메뉴 타이틀 -->
-            <h3 
+            <div 
               class="side-nav-menu-title"
               :class="{ 'is-active': accordionState.openMenu === key }"
+              tabindex="0"
+              role="button"
+              :aria-expanded="accordionState.openMenu === key ? 'true' : 'false'"
+              :aria-controls="`side-nav-menu-${key}`"
               @click="toggleMenu(key)"
+              @keydown="handleMenuKeydown($event, key)"
             >
               <span>{{ menu.title }}</span>
               <span 
@@ -37,12 +51,13 @@
                 :class="{ 'side-nav-icon--rotated': accordionState.openMenu === key }"
                 v-html="arrowIcon"
               ></span>
-            </h3>
+            </div>
             
             <!-- 2뎁스 섹션들 -->
             <div 
               class="side-nav-content-section"
               v-show="accordionState.openMenu === key"
+              :id="`side-nav-menu-${key}`"
             >
               <div 
                 v-for="(section, sectionIndex) in menu.sections" 
@@ -50,10 +65,15 @@
                 class="side-nav-section"
               >
                 <!-- 2뎁스 섹션 타이틀 -->
-                <h4 
+                <div 
                   v-if="section.title" 
                   class="side-nav-subtitle"
+                  tabindex="0"
+                  role="button"
+                  :aria-expanded="accordionState.openSection === `${key}-${sectionIndex}` ? 'true' : 'false'"
+                  :aria-controls="`side-nav-section-${key}-${sectionIndex}`"
                   @click="toggleSection(`${key}-${sectionIndex}`)"
+                  @keydown="handleSectionKeydown($event, `${key}-${sectionIndex}`)"
                 >
                   <span>{{ section.title }}</span>
                   <span 
@@ -62,20 +82,23 @@
                     :class="{ 'side-nav-icon--rotated': accordionState.openSection === `${key}-${sectionIndex}` }"
                     v-html="arrowIcon"
                   ></span>
-                </h4>
+                </div>
                 
                 <!-- 3뎁스 메뉴들 -->
                 <ul 
                   v-show="accordionState.openAllSections || accordionState.openSection === `${key}-${sectionIndex}`"
                   v-if="section.items && section.items.length > 0" 
                   class="side-nav-list"
+                  :id="`side-nav-section-${key}-${sectionIndex}`"
                 >
                   <li v-for="item in section.items" :key="item.text" class="side-nav-list__item">
                     <NuxtLink 
                       v-if="item.path" 
                       :to="item.path" 
                       @click="closeSideNav"
+                      @keydown="handleLinkKeydown"
                       class="side-nav-list__link"
+                      tabindex="0"
                     >
                       {{ item.text }}
                     </NuxtLink>
@@ -88,17 +111,19 @@
           
           <!-- 하위 섹션이 없는 경우 (일반 링크) -->
           <template v-else>
-            <h3 class="side-nav-menu-title">
+            <div class="side-nav-menu-title">
               <NuxtLink 
                 v-if="menu.path" 
                 :to="menu.path" 
                 @click="closeSideNav"
+                @keydown="handleLinkKeydown"
                 class="side-nav-menu-title__link"
+                tabindex="0"
               >
                 {{ menu.title }}
               </NuxtLink>
               <span v-else class="menu-item-disabled">{{ menu.title }}</span>
-            </h3>
+            </div>
           </template>
         </div>
       </nav>
@@ -106,7 +131,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import footerLogo from '~/components/assets/cnx/footer-logo.svg?raw'
 import arrowHamburgerDown from '~/components/assets/cnx/arrow-hamburger-down.svg?raw'
 
@@ -181,15 +206,284 @@ const toggleSection = (sectionKey) => {
   }
 }
 
+// 포커스 관리 유틸리티 함수들
+const getAllFocusableElements = () => {
+  // 논리적인 순서로 요소들을 가져오기 (아코디언 상태 실시간 반영)
+  const elements = []
+  
+  // X 버튼
+  const closeButton = document.querySelector('.side-nav-close')
+  if (closeButton) elements.push(closeButton)
+  
+  // What We Do 메뉴 타이틀
+  const whatWeDoTitle = document.querySelector('[data-menu="whatwedo"] .side-nav-menu-title')
+  if (whatWeDoTitle) elements.push(whatWeDoTitle)
+  
+  // What We Do가 열려있다면 하위 요소들 추가
+  if (accordionState.value.openMenu === 'whatwedo') {
+    const whatWeDoSections = document.querySelectorAll('[data-menu="whatwedo"] .side-nav-subtitle')
+    whatWeDoSections.forEach(section => {
+      elements.push(section)
+      
+      // 해당 섹션이 열려있다면 그 섹션의 링크들도 추가
+      const sectionKey = `whatwedo-${Array.from(whatWeDoSections).indexOf(section)}`
+      if (accordionState.value.openSection === sectionKey || accordionState.value.openAllSections) {
+        const sectionLinks = document.querySelectorAll(`[data-menu="whatwedo"] .side-nav-section:nth-child(${Array.from(whatWeDoSections).indexOf(section) + 1}) .side-nav-list__link`)
+        sectionLinks.forEach(link => elements.push(link))
+      }
+    })
+  }
+  
+  // About Us 메뉴 타이틀
+  const aboutUsTitle = document.querySelector('[data-menu="aboutus"] .side-nav-menu-title')
+  if (aboutUsTitle) elements.push(aboutUsTitle)
+  
+  // About Us가 열려있다면 하위 요소들 추가
+  if (accordionState.value.openMenu === 'aboutus') {
+    const aboutUsSections = document.querySelectorAll('[data-menu="aboutus"] .side-nav-subtitle')
+    aboutUsSections.forEach(section => {
+      elements.push(section)
+      
+      // 해당 섹션이 열려있다면 그 섹션의 링크들도 추가
+      const sectionKey = `aboutus-${Array.from(aboutUsSections).indexOf(section)}`
+      if (accordionState.value.openSection === sectionKey || accordionState.value.openAllSections) {
+        const sectionLinks = document.querySelectorAll(`[data-menu="aboutus"] .side-nav-section:nth-child(${Array.from(aboutUsSections).indexOf(section) + 1}) .side-nav-list__link`)
+        sectionLinks.forEach(link => elements.push(link))
+      }
+    })
+  }
+  
+  // Careers 링크
+  const careersLink = document.querySelector('[data-menu="careers"] .side-nav-menu-title__link')
+  if (careersLink) elements.push(careersLink)
+  
+  // Contact Us 링크
+  const contactUsLink = document.querySelector('[data-menu="contactus"] .side-nav-menu-title__link')
+  if (contactUsLink) elements.push(contactUsLink)
+  
+  return elements
+}
+
+const getCurrentFocusIndex = () => {
+  const focusableElements = getAllFocusableElements()
+  return Array.from(focusableElements).indexOf(document.activeElement)
+}
+
+const focusElementByIndex = (index) => {
+  const focusableElements = getAllFocusableElements()
+  if (focusableElements[index]) {
+    focusableElements[index].focus()
+  }
+}
+
+const focusNextElement = () => {
+  const currentIndex = getCurrentFocusIndex()
+  const focusableElements = getAllFocusableElements()
+  const nextIndex = (currentIndex + 1) % focusableElements.length
+  focusElementByIndex(nextIndex)
+}
+
+const focusPreviousElement = () => {
+  const currentIndex = getCurrentFocusIndex()
+  const focusableElements = getAllFocusableElements()
+  const prevIndex = currentIndex === 0 ? focusableElements.length - 1 : currentIndex - 1
+  focusElementByIndex(prevIndex)
+}
+
+// 키보드 이벤트 핸들러들
+const handleMenuKeydown = (event, menuKey) => {
+  const { key } = event
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault()
+      toggleMenu(menuKey)
+      
+      // 아코디언이 열렸을 때 첫 번째 하위 요소로 포커스 이동
+      if (accordionState.value.openMenu === menuKey) {
+        nextTick(() => {
+          const menuContent = document.getElementById(`side-nav-menu-${menuKey}`)
+          const firstFocusable = menuContent?.querySelector('[tabindex="0"]')
+          if (firstFocusable) {
+            firstFocusable.focus()
+          }
+        })
+      }
+      break
+    case 'ArrowDown':
+      event.preventDefault()
+      focusNextElement()
+      break
+    case 'ArrowUp':
+      event.preventDefault()
+      focusPreviousElement()
+      break
+    case 'ArrowRight':
+      event.preventDefault()
+      // 아코디언이 열려있으면 첫 번째 하위 요소로 이동
+      if (accordionState.value.openMenu === menuKey) {
+        const menuContent = document.getElementById(`side-nav-menu-${menuKey}`)
+        const firstFocusable = menuContent?.querySelector('[tabindex="0"]')
+        if (firstFocusable) {
+          firstFocusable.focus()
+        }
+      }
+      break
+  }
+}
+
+const handleSectionKeydown = (event, sectionKey) => {
+  const { key } = event
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault()
+      toggleSection(sectionKey)
+      
+      // 섹션이 열렸을 때 첫 번째 하위 요소로 포커스 이동
+      if (accordionState.value.openSection === sectionKey) {
+        nextTick(() => {
+          const sectionContent = document.getElementById(`side-nav-section-${sectionKey}`)
+          const firstFocusable = sectionContent?.querySelector('a')
+          if (firstFocusable) {
+            firstFocusable.focus()
+          }
+        })
+      }
+      break
+    case 'ArrowDown':
+      event.preventDefault()
+      focusNextElement()
+      break
+    case 'ArrowUp':
+      event.preventDefault()
+      focusPreviousElement()
+      break
+    case 'ArrowRight':
+      event.preventDefault()
+      // 섹션이 열려있으면 첫 번째 링크로 이동
+      if (accordionState.value.openSection === sectionKey) {
+        const sectionContent = document.getElementById(`side-nav-section-${sectionKey}`)
+        const firstLink = sectionContent?.querySelector('a')
+        if (firstLink) {
+          firstLink.focus()
+        }
+      }
+      break
+    case 'ArrowLeft':
+      event.preventDefault()
+      // 부모 메뉴로 포커스 이동
+      const parentMenu = event.target.closest('.side-nav-menu-group')
+      const parentTitle = parentMenu?.querySelector('.side-nav-menu-title')
+      if (parentTitle) {
+        parentTitle.focus()
+      }
+      break
+  }
+}
+
+// 링크 키보드 핸들러
+const handleLinkKeydown = (event) => {
+  const { key } = event
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+      // 링크 클릭은 기본 동작 허용
+      break
+    case 'ArrowDown':
+      event.preventDefault()
+      focusNextElement()
+      break
+    case 'ArrowUp':
+      event.preventDefault()
+      focusPreviousElement()
+      break
+    case 'ArrowLeft':
+      event.preventDefault()
+      // 정확한 부모 섹션으로 포커스 이동
+      const linkElement = event.target
+      const listItem = linkElement.closest('.side-nav-list__item')
+      const list = listItem?.closest('.side-nav-list')
+      const sectionId = list?.getAttribute('id')
+      
+      if (sectionId) {
+        // sectionId에서 메뉴 키와 섹션 인덱스 추출 (예: "side-nav-section-whatwedo-0")
+        const parts = sectionId.split('-')
+        const menuKey = parts[3] // "whatwedo"
+        const sectionIndex = parts[4] // "0"
+        
+        // 해당 섹션 타이틀 찾기
+        const sectionTitle = document.querySelector(`[data-menu="${menuKey}"] .side-nav-subtitle:nth-child(${parseInt(sectionIndex) + 1})`)
+        if (sectionTitle) {
+          sectionTitle.focus()
+        }
+      }
+      break
+  }
+}
+
+// X 버튼 키보드 핸들러
+const handleCloseKeydown = (event) => {
+  const { key } = event
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault()
+      closeSideNav()
+      
+      // 사이드 네비게이션 닫은 후 햄버거 메뉴로 포커스 이동
+      nextTick(() => {
+        const hamburgerButton = document.querySelector('.the-header__hamburger')
+        if (hamburgerButton) {
+          hamburgerButton.focus()
+        }
+      })
+      break
+    case 'ArrowDown':
+      event.preventDefault()
+      focusNextElement()
+      break
+    case 'ArrowUp':
+      event.preventDefault()
+      focusPreviousElement()
+      break
+  }
+}
+
 // 사이드 네비게이션 닫기
 const closeSideNav = () => {
   emit('close')
 }
 
-// ESC 키로 닫기
+// ESC 키로 닫기 및 Tab 키 트랩
 const handleKeydown = (event) => {
   if (event.key === 'Escape' && props.isOpen) {
     closeSideNav()
+  }
+  
+  // Tab 키 트랩: 사이드 네비게이션 내부에서만 포커스 순환
+  if (event.key === 'Tab' && props.isOpen) {
+    const focusableElements = getAllFocusableElements()
+    const firstElement = focusableElements[0]
+    const lastElement = focusableElements[focusableElements.length - 1]
+    
+    if (event.shiftKey) {
+      // Shift + Tab: 첫 번째 요소에서 마지막 요소로 이동
+      if (document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement.focus()
+      }
+    } else {
+      // Tab: 마지막 요소에서 첫 번째 요소로 이동
+      if (document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement.focus()
+      }
+    }
   }
 }
 
