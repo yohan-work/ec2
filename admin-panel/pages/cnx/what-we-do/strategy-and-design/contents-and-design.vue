@@ -621,6 +621,11 @@ const toggleSlide = (index) => {
             requestCenterSlide(index);
           }
         }, 200);
+        // 최종 안전 포커스 복구: 모든 레이아웃/애니메이션이 끝난 뒤 한 번 더 보장
+        setTimeout(() => { try { focusButtonByIndex(index); } catch (_) { /* ignore */ } }, 800);
+      } else {
+        // 닫힘(비활성화) 시에도 버튼 포커스를 최종 보장
+        setTimeout(() => { try { focusButtonByIndex(index); } catch (_) { /* ignore */ } }, 800);
       }
     }
   });
@@ -950,7 +955,6 @@ const initBannerScrollAnimation = () => {
       if (window.innerWidth >= 768) {
         // init 내부에서 refresh를 수행하므로 여기서 중복 호출하지 않음
         initScrollAnimation();
-        alert('refresh');
       } else {
         // 모바일로 내려가면 반드시 제거 후 한 번만 refresh
         killScrollAnimation();
