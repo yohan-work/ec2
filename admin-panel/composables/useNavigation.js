@@ -39,8 +39,8 @@ export const useNavigation = () => {
           title: 'Technology Services',
           path: null,
           items: [
-            { text: 'System Integration & Architecting', path: '' },
-            { text: 'AX Consulting & Implementation', path: '' }
+            { text: 'System Integration & Architecting', path: '/what-we-do/technology-services/system-intergration-and-architecting' },
+            { text: 'AX Consulting & Implementation', path: '/what-we-do/technology-services/ax-consulting-and-implementation' }
           ]
         },
         {
