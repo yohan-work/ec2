@@ -137,8 +137,8 @@
               <a href="https://www.linkedin.com/company/concentrix" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                 <div class="social-icon" v-html="linkedinIcon"></div>
               </a>
-              <a href="https://x.com/concentrix" class="social-link" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
-                <div class="social-icon" v-html="twitterIcon"></div>
+              <a href="https://x.com/concentrix" class="social-link" aria-label="X" target="_blank" rel="noopener noreferrer">
+                <div class="social-icon" v-html="xIcon"></div>
               </a>
               <a href="https://www.instagram.com/concentrix/" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
                 <div class="social-icon" v-html="instagramIcon"></div>
@@ -198,7 +198,7 @@ import arrowHamburgerDown from '~/components/assets/cnx/arrow-hamburger-down.svg
 import facebookIcon from '~/public/assets/cnx/layouts/ico-sns-facebook.svg?raw'
 import instagramIcon from '~/public/assets/cnx/layouts/ico-sns-instargram.svg?raw'
 import linkedinIcon from '~/public/assets/cnx/layouts/ico-sns-linkedin.svg?raw'
-import twitterIcon from '~/public/assets/cnx/layouts/ico-sns-twitter.svg?raw'
+import xIcon from '~/public/assets/cnx/layouts/ico-sns-x.svg?raw'
 import youtubeIcon from '~/public/assets/cnx/layouts/ico-sns-youtube.svg?raw'
 
 // 네비게이션 composable 사용
