@@ -25,9 +25,9 @@
       </figure>
 
       <!-- 소제목(Optional)-->
-      <h3 v-if="newsletter.subtitle" class="newsletter-subtitle">
+      <h2 v-if="newsletter.subtitle" class="newsletter-subtitle">
         {{ newsletter.subtitle }}
-      </h3>
+      </h2>
 
       <!-- 본문 내용 -->
       <div v-html="newsletter.body_html"></div>
