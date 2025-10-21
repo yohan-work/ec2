@@ -3,9 +3,9 @@
     <!-- 헤더 -->
     <div class="newsletter-header">
       <!-- 제목 -->
-      <h2 class="newsletter-title">
+      <h1 class="newsletter-title">
         {{ newsletter.title }}
-      </h2>
+      </h1>
 
       <!-- 작성일 -->
       <p class="newsletter-date">
@@ -25,9 +25,9 @@
       </figure>
 
       <!-- 소제목(Optional)-->
-      <h3 v-if="newsletter.subtitle" class="newsletter-subtitle">
+      <h2 v-if="newsletter.subtitle" class="newsletter-subtitle">
         {{ newsletter.subtitle }}
-      </h3>
+      </h2>
 
       <!-- 본문 내용 -->
       <div v-html="newsletter.body_html"></div>
@@ -123,7 +123,7 @@ const handleImageError = event => {
 
   &-date {
     font-size: $font-size-body2-mobile;
-    color: #a2a2a2;
+    color: $gray-1;
     @include tablet {
       font-weight: $font-weight-bold;
       font-size: $font-size-body1-tablet;

@@ -1,34 +1,42 @@
 <template>
-  <div class="app-img-cont" :class="{ 'reverse': reverse, 'has-sub-items': subItems && subItems.length > 0 }" ref="containerRef">
+  <div class="app-img-cont" :class="{ 'reverse': reverse, 'align-top': alignTop }" ref="containerRef">
     <!-- 텍스트 컨텐츠 -->
     <div class="text-content" ref="textContentRef">
-      <h3 v-if="title" class="subtitle" ref="titleRef" v-html="title"></h3>
+      <div 
+        v-if="title" 
+        class="subtitle" 
+        ref="titleRef"
+        v-html="`<${headingLevel}>${title}</${headingLevel}>`"
+      ></div>
       <p v-if="text" class="description" ref="textRef" v-html="text"></p>
       
-      <!-- 서브 아이템들 -->
-      <div v-if="subItems && subItems.length > 0" class="sub-items" ref="subItemsRef">
-        <div 
-          v-for="(item, index) in subItems" 
-          :key="index" 
-          class="sub-item"
-          :ref="el => subItemRefs[index] = el"
-        >
-          <h4 v-if="item.title" class="sub-title" v-html="item.title"></h4>
-          <p v-if="item.text" class="sub-text" v-html="item.text"></p>
+      <!-- 통합 아이템들 -->
+      <div v-if="subItems && subItems.length > 0" class="unified-items" ref="unifiedItemsRef">
+        <!-- 서브 아이템들 -->
+        <div v-if="subItems && subItems.length > 0" class="sub-items" ref="subItemsRef">
+          <div 
+            v-for="(item, index) in subItems" 
+            :key="`sub-${index}`" 
+            class="sub-item"
+            :ref="el => subItemRefs[index] = el"
+          >
+            <!-- 타이틀 영역 (타이틀이 있을 때만 표시) -->
+            <div 
+              v-if="item.title" 
+              class="sub-title"
+              v-html="`<${subHeadingLevel}>${item.title}</${subHeadingLevel}>`"
+            ></div>
+            <!-- 통합 리스트 -->
+            <ul v-if="item.listItems && item.listItems.length > 0" class="unified-list">
+              <li 
+                v-for="(listItem, listIndex) in item.listItems" 
+                :key="`sub-list-${index}-${listIndex}`" 
+                class="unified-list-item"
+                v-html="listItem"
+              ></li>
+            </ul>
+          </div>
         </div>
-      </div>
-      
-      <!-- 리스트 아이템들 -->
-      <div v-if="listItems && listItems.length > 0" class="list-items" ref="listItemsRef">
-        <ul class="list-content">
-          <li 
-            v-for="(item, index) in listItems" 
-            :key="index" 
-            class="list-item"
-            :ref="el => listItemRefs[index] = el"
-            v-html="item"
-          ></li>
-        </ul>
       </div>
     </div>
     
@@ -49,14 +57,21 @@
           :src="mobileImage || desktopImage" 
           :alt="imageAlt || title || 'Image'"
           class="content-image"
+          loading="lazy"
+          @load="onImageLoad"
         />
       </picture>
+      <!-- 스켈레톤 오버레이 -->
+      <div 
+        class="skeleton-overlay"
+        :class="{ 'hidden': isImageLoaded }"
+      ></div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { findResponsiveImagePaths } from '~/utils/cnx/image-utils'
 import { gsap } from 'gsap'
@@ -95,9 +110,14 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
-  listItems: {
-    type: Array,
-    default: () => []
+  headingLevel: {
+    type: String,
+    default: 'h2',
+    validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
+  },
+  alignTop: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -106,6 +126,14 @@ const title = props.title
 const text = props.text
 const imageAlt = props.imageAlt
 const reverse = props.reverse
+const headingLevel = props.headingLevel
+
+// 서브 헤딩 레벨 계산 (메인 헤딩의 다음 레벨)
+const subHeadingLevel = computed(() => {
+  const level = parseInt(headingLevel.charAt(1))
+  const nextLevel = Math.min(level + 1, 6) // 최대 h6까지
+  return `h${nextLevel}`
+})
 
 // refs for GSAP animation
 const containerRef = ref(null)
@@ -114,8 +142,7 @@ const titleRef = ref(null)
 const textRef = ref(null)
 const subItemsRef = ref(null)
 const subItemRefs = ref([])
-const listItemsRef = ref(null)
-const listItemRefs = ref([])
+const unifiedItemsRef = ref(null)
 
 const route = useRoute()
 // imagePath가 제공되면 사용, 아니면 현재 페이지 경로 사용
@@ -126,61 +153,33 @@ const desktopImage = ref('')
 const mobileImage = ref('')
 const tabletImage = ref('')
 
+// 이미지 로드 상태
+const isImageLoaded = ref(false)
+
+// 이미지 로드 완료 핸들러
+const onImageLoad = () => {
+  isImageLoaded.value = true
+}
+
 // GSAP 애니메이션 초기화
 const initAnimation = () => {
   if (!containerRef.value) return
 
-  // DOM 요소들이 실제로 존재하는지 확인
-  const actualListItems = listItemsRef.value?.querySelectorAll('.list-item')
-  const actualSubItems = subItemsRef.value?.querySelectorAll('.sub-item')
-  
-  // 리스트 아이템들이 DOM에 존재하지 않으면 재시도
-  if (props.listItems && props.listItems.length > 0 && (!actualListItems || actualListItems.length === 0)) {
-    console.warn('List items not found in DOM, retrying in 100ms...')
-    setTimeout(initAnimation, 100)
-    return
-  }
-
-  // 초기 상태 설정 (애니메이션 전 상태)
+  // 초기 상태 설정
   if (imageContentRef.value) {
-    gsap.set(imageContentRef.value, { 
-      opacity: 0, 
-      y: 50 
-    })
+    gsap.set(imageContentRef.value, { opacity: 0, y: 50 })
   }
   if (titleRef.value) {
-    gsap.set(titleRef.value, { 
-      opacity: 0, 
-      y: 30 
-    })
+    gsap.set(titleRef.value, { opacity: 0, y: 30 })
   }
   if (textRef.value) {
-    gsap.set(textRef.value, { 
-      opacity: 0, 
-      y: 30 
-    })
+    gsap.set(textRef.value, { opacity: 0, y: 30 })
   }
   
-  // 서브 아이템들 초기 상태 설정
   if (subItemRefs.value && subItemRefs.value.length > 0) {
     subItemRefs.value.forEach(subItemRef => {
       if (subItemRef) {
-        gsap.set(subItemRef, { 
-          opacity: 0, 
-          y: 20 
-        })
-      }
-    })
-  }
-  
-  // 리스트 아이템들 초기 상태 설정 (가까이에서 시작)
-  if (listItemRefs.value && listItemRefs.value.length > 0) {
-    listItemRefs.value.forEach(listItemRef => {
-      if (listItemRef) {
-        gsap.set(listItemRef, { 
-          opacity: 0, 
-          y: 15 // 더 가까이에서 시작
-        })
+        gsap.set(subItemRef, { opacity: 0, y: 20 })
       }
     })
   }
@@ -195,7 +194,7 @@ const initAnimation = () => {
     }
   })
 
-  // 순차적 애니메이션: 이미지 → 타이틀 → 텍스트 → 서브 아이템들 (나타날 때)
+  // 순차적 애니메이션
   if (imageContentRef.value) {
     tl.to(imageContentRef.value, {
       duration: 0.8,
@@ -210,7 +209,7 @@ const initAnimation = () => {
       opacity: 1,
       y: 0,
       ease: 'power2.out'
-    }, '-=0.4') // 이미지 애니메이션과 0.4초 겹침
+    }, '-=0.4')
   }
   if (textRef.value) {
     tl.to(textRef.value, {
@@ -218,77 +217,17 @@ const initAnimation = () => {
       opacity: 1,
       y: 0,
       ease: 'power2.out'
-    }, '-=0.3') // 타이틀 애니메이션과 0.3초 겹침
+    }, '-=0.3')
   }
   
-  // 서브 아이템들 애니메이션 추가
   if (subItemRefs.value && subItemRefs.value.length > 0) {
     tl.to(subItemRefs.value, {
       duration: 0.5,
       opacity: 1,
       y: 0,
       ease: 'power2.out',
-      stagger: 0.1 // 각 서브 아이템 간 0.1초 간격
-    }, '-=0.2') // 텍스트 애니메이션과 0.2초 겹침
-  }
-  
-  // 리스트 아이템들 애니메이션 추가 (아래에서 위로, 순차적으로)
-  if (listItemRefs.value && listItemRefs.value.length > 0) {
-    tl.to(listItemRefs.value, {
-      duration: 0.5,
-      opacity: 1,
-      y: 0, // 아래에서 위로 올라옴
-      ease: 'power2.out',
-      stagger: 0.2 // 각 리스트 아이템 간 0.2초 간격으로 순차적 나타남
-    }, '-=0.2') // 이전 애니메이션과 0.2초 겹침
-  }
-
-  // 역재생 애니메이션 (사라질 때) - 더 빠르게
-  const reverseTl = gsap.timeline({
-    scrollTrigger: {
-      trigger: containerRef.value,
-      start: 'top 80%',
-      end: 'bottom 20%',
-      toggleActions: 'none none none play'
-    }
-  })
-
-  // 빠른 역재생: 서브 아이템들 → 텍스트 → 타이틀 → 이미지 (동시에 사라짐)
-  const elementsToReverse = []
-  
-  // 존재하는 요소들만 배열에 추가
-  if (textRef.value) elementsToReverse.push(textRef.value)
-  if (titleRef.value) elementsToReverse.push(titleRef.value)
-  if (imageContentRef.value) elementsToReverse.push(imageContentRef.value)
-  
-  // 서브 아이템들도 역재생에 포함
-  if (subItemRefs.value && subItemRefs.value.length > 0) {
-    elementsToReverse.unshift(...subItemRefs.value.filter(item => item))
-  }
-  
-  // 일반 요소들은 아래로 사라짐
-  if (elementsToReverse.length > 0) {
-    reverseTl.to(elementsToReverse, {
-      duration: 0.3, // 더 빠른 속도
-      opacity: 0,
-      y: 20, // 아래로 사라짐
-      ease: 'power2.in',
-      stagger: 0.05 // 약간의 간격
-    })
-  }
-  
-  // 리스트 아이템들은 아래로 사라짐 (순차적으로)
-  if (listItemRefs.value && listItemRefs.value.length > 0) {
-    const validListItems = listItemRefs.value.filter(item => item)
-    if (validListItems.length > 0) {
-      reverseTl.to(validListItems, {
-        duration: 0.25,
-        opacity: 0,
-        y: 15, // 더 가까이로 사라짐
-        ease: 'power2.in',
-        stagger: 0.1 // 순차적으로 사라짐
-      }, 0) // 동시에 시작
-    }
+      stagger: 0.1
+    }, '-=0.2')
   }
 }
 
@@ -304,43 +243,18 @@ onMounted(async () => {
 
   // DOM이 완전히 렌더링된 후 애니메이션 초기화
   await nextTick()
-  // requestAnimationFrame을 사용하여 실제 DOM 렌더링 완료 후 실행
   requestAnimationFrame(() => {
     initAnimation()
   })
+})
 
-  // 미디어 쿼리 테스트 코드
-  console.log('=== AppImgCont 미디어 쿼리 테스트 ===')
-  console.log('Desktop (min-width: 1480px):', window.matchMedia('(min-width: 1480px)').matches)
-  console.log('Tablet (min-width: 768px):', window.matchMedia('(min-width: 768px)').matches)
-  console.log('현재 화면 크기:', window.innerWidth + 'px')
-  console.log('이미지 경로들:', {
-    desktop: desktopImage.value,
-    tablet: tabletImage.value,
-    mobile: mobileImage.value
+// 컴포넌트 언마운트 시 ScrollTrigger 정리
+onUnmounted(() => {
+  ScrollTrigger.getAll().forEach(trigger => {
+    if (trigger.trigger === containerRef.value) {
+      trigger.kill()
+    }
   })
-
-  // 미디어 쿼리 변경 감지
-  const desktopMediaQuery = window.matchMedia('(min-width: 1480px)')
-  const tabletMediaQuery = window.matchMedia('(min-width: 768px)')
-
-  const handleMediaChange = (mediaQuery, name) => {
-    console.log(`${name} 미디어 쿼리 변경:`, mediaQuery.matches, `(현재 화면: ${window.innerWidth}px)`)
-  }
-
-  desktopMediaQuery.addEventListener('change', (e) => handleMediaChange(e, 'Desktop'))
-  tabletMediaQuery.addEventListener('change', (e) => handleMediaChange(e, 'Tablet'))
-
-  // 리사이즈 이벤트도 추가
-  const handleResize = () => {
-    console.log('화면 크기 변경:', window.innerWidth + 'px')
-    console.log('미디어 쿼리 상태:', {
-      desktop: window.matchMedia('(min-width: 1480px)').matches,
-      tablet: window.matchMedia('(min-width: 768px)').matches
-    })
-  }
-
-  window.addEventListener('resize', handleResize)
 })
 </script>
 
@@ -359,8 +273,12 @@ onMounted(async () => {
     margin-bottom: rem(60);
   }
 
-  // 서브 아이템이 있을 때 정렬을 top으로 변경
-  &.has-sub-items {
+  // 정렬 옵션 (기본값: center)
+  @include tablet {
+    align-items: center;
+  }
+
+  &.align-top {
     @include tablet {
       align-items: flex-start;
     }
@@ -394,13 +312,16 @@ onMounted(async () => {
 
     .description {
       @include body-02;
-      color: $gray-4;
+      color: $d-black;
       margin: 0;
       line-height: 1.6;
     }
 
+    .unified-items {
+      margin-top: rem(24);
+    }
+
     .sub-items {
-      margin-top: rem(18);
       display: flex;
       flex-direction: column;
       gap: rem(24);
@@ -410,18 +331,9 @@ onMounted(async () => {
         gap: 0;
       }
 
-      @include tablet {
-        margin-top: rem(30);
-      }
-
-      @include desktop {
-        margin-top: rem(65);
-      }
-
       .sub-item {
         display: flex;
         flex-direction: column;
-        gap: rem(8);
 
         .sub-title {
           @include body-03;
@@ -430,39 +342,47 @@ onMounted(async () => {
           font-weight: 700;
         }
 
-        .sub-text {
-          @include body-03;
-          color: $gray-1;
+        .unified-list {
           margin: 0;
-          line-height: 1.6;
-        }
-      }
-    }
+          padding: 0;
+          list-style: none;
 
-    .list-items {
-      .list-content {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+          // 제목이 있는 subItem 안의 리스트만 margin-top 적용
+          .sub-item:has(.sub-title) & {
+            margin-top: rem(12);
+          }
 
-        .list-item {
-          @include body-02;
-          color: $gray-4;
-          margin: 0;
-          line-height: 1.6;
-          position: relative;
-          padding-left: rem(16);
+          .unified-list-item {
+            @include body-03;
+            color: $gray-1;
+            margin: 0;
+            line-height: 1.6;
+            position: relative;
+            padding-left: rem(16);
 
-          &::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: $gray-4;
-            font-weight: bold;
+            &::before {
+              content: '•';
+              position: absolute;
+              left: 0;
+              color: $gray-1;
+              font-weight: bold;
+            }
           }
         }
       }
     }
+
+    // 제목이 있는 subItems - bullet 제거
+    .sub-items .sub-item:has(.sub-title) {
+      .unified-list-item {
+        padding-left: 0;
+
+        &::before {
+          display: none;
+        }
+      }
+    }
+
   }
 
   // 리버스 옵션일 때 padding 방향 변경
@@ -485,7 +405,11 @@ onMounted(async () => {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    position: relative;
     order: 1; // 모바일에서 이미지를 위로
+
+    // 모바일: 312/210 비율
+    aspect-ratio: 312 / 210;
 
     picture {
       width: 100%;
@@ -495,12 +419,26 @@ onMounted(async () => {
 
     .content-image {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      /* height: 100%; */
+      object-fit: contain;
     }
 
-    // 모바일: 312/210 비율
-    aspect-ratio: 312 / 210;
+    // 스켈레톤 오버레이
+    .skeleton-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $gray-3;
+      z-index: 1;
+      transition: opacity 0.3s ease-out;
+      
+      &.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
 
     @include tablet {
       // 태블릿: 308/231 비율

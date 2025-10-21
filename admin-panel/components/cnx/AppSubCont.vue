@@ -31,6 +31,7 @@
         <img 
           :src="mobileImage || desktopImage" 
           :alt="imageAlt || '이미지'"
+          loading="lazy"
         />
       </picture>
     </div>

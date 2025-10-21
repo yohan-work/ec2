@@ -31,16 +31,16 @@ export const useNavigation = () => {
           items: [
             { text: 'Commerce Platform', path: '/what-we-do/technology-platforms/commerce-platform' },
             { text: 'Customer eXperience Platform', path: '/what-we-do/technology-platforms/customer-experience-platform' },
-            { text: 'Digital eXperience Platform', path: '' },
-            { text: 'AI Platform', path: '' }
+            { text: 'Digital eXperience Platform', path: '/what-we-do/technology-platforms/digital-experience-platform' },
+            { text: 'AI Platform', path: '/what-we-do/technology-platforms/ai-platform' }
           ]
         },
         {
           title: 'Technology Services',
           path: null,
           items: [
-            { text: 'System Integration & Architecting', path: '' },
-            { text: 'AX Consulting & Implementation', path: '' }
+            { text: 'System Integration & Architecting', path: '/what-we-do/technology-services/system-intergration-and-architecting' },
+            { text: 'AX Consulting & Implementation', path: '/what-we-do/technology-services/ax-consulting-and-implementation' }
           ]
         },
         {

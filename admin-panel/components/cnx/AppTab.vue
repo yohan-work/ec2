@@ -105,7 +105,7 @@ watch(() => props.modelValue, (newValue) => {
       }
       &:not(.is-active) {
         background:rgba(0, 0, 0, 0.10);
-        color: #86868B;
+        color: $gray-1;
         opacity: 0.5;
         border: none;
       }

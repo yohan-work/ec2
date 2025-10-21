@@ -106,13 +106,13 @@
           <span class="intro-section-content-line"></span>
           <div class="intro-section-content-item" role="img" aria-label="CiX">
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/c.svg" alt="C" aria-hidden="true">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/c.svg" alt="C" aria-hidden="true" width="632" height="619">
             </div>
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/i.svg" alt="I" aria-hidden="true">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/i.svg" alt="I" aria-hidden="true" width="409" height="87">
             </div>
             <div aria-hidden="true" class="intro-section-content-item-wrap">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/x.svg" alt="X" aria-hidden="true">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/x.svg" alt="X" aria-hidden="true" width="563" height="564">
             </div>
           </div>
         </div>
@@ -127,16 +127,16 @@
           <!-- PC -->
           <ul class="overview-section-content-list" v-if="!isMobile">
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedelivercreative.png" alt="wedelivercreative">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedelivercreative.png" alt="we deliver creative" loading="lazy" fetchpriority="low">
             </li>
           </ul>
           <!-- Mobile -->
           <ul class="overview-section-content-list" v-else>
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedeliver.png" alt="wedeliver">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/wedeliver.png" alt="we deliver" loading="lazy" fetchpriority="low">
             </li>
             <li class="overview-section-content-list-item">
-              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/creative.png" alt="creative">
+              <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/creative.png" alt="creative" loading="lazy" fetchpriority="low">
             </li>
           </ul>
           <ul class="overview-section-content-list">
@@ -261,23 +261,23 @@
         >
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01_t.jpg" alt="A modern conference room with a long wooden table, hanging light bulbs, and glass walls covered with whiteboard notes and sticky memos." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01_t.jpg" alt="A modern conference room with a long wooden table, hanging light bulbs, and glass walls covered with whiteboard notes and sticky memos." loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02_t.jpg" alt="An open lounge area with grey sofas, wooden cubicle desks, bookshelves, and hanging plants creating a relaxing workspace atmosphere." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02_t.jpg" alt="An open lounge area with grey sofas, wooden cubicle desks, bookshelves, and hanging plants creating a relaxing workspace atmosphere." loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03_t.jpg" alt="A professional photo studio with lighting equipment, tripods, monitors, and a white cyclorama backdrop." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03_t.jpg" alt="A professional photo studio with lighting equipment, tripods, monitors, and a white cyclorama backdrop." loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04_t.jpg" alt="A cozy office lounge with grey couches, wooden floors, circular ceiling lights, and the Concentrix Catalyst logo on the wall." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04_t.jpg" alt="A cozy office lounge with grey couches, wooden floors, circular ceiling lights, and the Concentrix Catalyst logo on the wall." loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05_t.jpg" alt="A bright office kitchen and lounge area with hanging lights, bookshelves, and greenery providing a natural atmosphere." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05_t.jpg" alt="A bright office kitchen and lounge area with hanging lights, bookshelves, and greenery providing a natural atmosphere." loading="lazy" fetchpriority="low">
           </picture>
         </AppSwiper> 
       </div>
@@ -297,7 +297,7 @@
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram.jpg" media="(min-width: 1024px)" />
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_t.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_m.jpg" alt="Business model diagram illustrating various types of business models and their interconnections." />
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_m.jpg" alt="Business model diagram illustrating various types of business models and their interconnections." loading="lazy" fetchpriority="low" width="1320" height="660">
           </picture>
         </div>
         <div class="works-section-content">
@@ -306,12 +306,12 @@
               title="Operation"
               text="다양한 디지털 채널에서의 KPI 달성을 위한 채널운영, 프로모션 기획, 이벤트 제작, 그외 브랜드 활동 등을 적극적이고 선제적으로 지원합니다. <br>또한 채널 내 UX/UI 개선 활동이나 추가 서비스개발을 수행하여 장기적인 관점에서의 채널 고도화를 지원합니다."
               imageName="works01"
-              imageAlt="A man and woman sit at a table, focused on a laptop in front of them."
+              imageAlt="남성과 여성이 테이블에 앉아 노트북을 보며 이야기하고 있습니다."
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
-              :subItems="[
-                { title: 'Operation', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Advanced Operational Services <br>Producing Production Content <br>Create/Operate Events, Promotions <br>Digital Contents Monitoring' },
-              ]"
+              headingLevel="h3"
+              :alignTop="true"
+              :subItems="operationSubItems"
             />  
           </div>
           <div class="works-section-content-item">
@@ -319,11 +319,11 @@
               title="UX/UI Design"
               text="데이터 분석 기반의 플랫폼, 서비스, 시스템 개발을 지원합니다. Concentrix 만의 UX/UI Framework과 Process를 통해 안정적으로 프로젝트를 수행합니다. 또한 전략컨설팅, UX컨설팅 프로젝트의 기획, 디자인, 퍼블리싱 업무를 지원합니다."
               imageName="works02"
-              imageAlt="A collection of four iPhones, each featuring distinct apps, highlighting diverse mobile applications and user interfaces."
+              imageAlt="다양한 앱이 실행된 네 대의 아이폰이 나란히 놓여 있습니다."
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
-              :subItems="[
-                { title: 'UX/UI Design', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Strategy/UX Consulting' },
-              ]"
+              headingLevel="h3"
+              :alignTop="true"
+              :subItems="uxDesignSubItems"
             />  
           </div>
           <div class="works-section-content-item">
@@ -331,12 +331,12 @@
               title="Digital Contents Creation"
               text="글로벌 플랫폼 내 콘텐츠 제작 및 확산을 수행하며, 대형 온라인 전시 및 포럼 등의 행사기획부터 영상 콘텐츠 제작, 마이크로사이트 구축까지 지원합니다. 또한 소셜미디어 콘텐츠 전략, 기획, 촬영, 제작, 운영 등을 서비스하고 있으며 라이브 커머스, 메타버스와 같은 최신 트렌드를 반영한 서비스의 전략, 기획, 콘텐츠 제작, 촬영 지원 등의 업무를 지원합니다."
               imageName="works03"
-              imageAlt="A woman working at a desk, looking at her computer screen, with office supplies arranged around her."
+              imageAlt="책상에서 컴퓨터를 사용하고 있는 여성의 모습입니다."
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
-              :subItems="[
-                { title: 'Digital Contents Creation', text: 'Global Platform Product Details Page <br>Contents Migration <br>Social Channel Contents <br>Online Exhibition Planning and Production <br>Microsite Development <br>Live Commerce , Metaverse <br>Brand Content Creation' },
-              ]"
+              headingLevel="h3"
+              :alignTop="true"
+              :subItems="digitalContentsSubItems"
             />  
           </div>
         </div>
@@ -351,7 +351,50 @@ import AppTitle from '~/components/cnx/AppTitle.vue';
 import AppButton from '~/components/cnx/AppButton.vue';
 import AppSwiper from '~/components/cnx/AppSwiper.vue';
 import AppImgCont from '~/components/cnx/AppImgCont.vue';
-import { nextTick } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, computed } from 'vue';
+
+// AppImgCont subItems 데이터
+const operationSubItems = computed(() => [
+  { 
+    title: 'Operation', 
+    listItems: [
+      'Brand Website',
+      'eCommerce Platform', 
+      'App Service',
+      'Advanced Operational Services',
+      'Producing Production Content',
+      'Create/Operate Events, Promotions',
+      'Digital Contents Monitoring'
+    ]
+  }
+]);
+
+const uxDesignSubItems = computed(() => [
+  { 
+    title: 'UX/UI Design', 
+    listItems: [
+      'Brand Website',
+      'eCommerce Platform',
+      'App Service',
+      'Strategy/UX Consulting'
+    ]
+  }
+]);
+
+const digitalContentsSubItems = computed(() => [
+  { 
+    title: 'Digital Contents Creation', 
+    listItems: [
+      'Global Platform Product Details Page',
+      'Contents Migration',
+      'Social Channel Contents',
+      'Online Exhibition Planning and Production',
+      'Microsite Development',
+      'Live Commerce , Metaverse',
+      'Brand Content Creation'
+    ]
+  }
+]);
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -578,6 +621,11 @@ const toggleSlide = (index) => {
             requestCenterSlide(index);
           }
         }, 200);
+        // 최종 안전 포커스 복구: 모든 레이아웃/애니메이션이 끝난 뒤 한 번 더 보장
+        setTimeout(() => { try { focusButtonByIndex(index); } catch (_) { /* ignore */ } }, 800);
+      } else {
+        // 닫힘(비활성화) 시에도 버튼 포커스를 최종 보장
+        setTimeout(() => { try { focusButtonByIndex(index); } catch (_) { /* ignore */ } }, 800);
       }
     }
   });
@@ -705,7 +753,7 @@ const initBannerScrollAnimation = () => {
         pin: true,
         anticipatePin: 1, // pin 관련 layout jump 줄여줌
         invalidateOnRefresh: true,
-        refreshPriority: 100
+        refreshPriority: 10
       }
     });
 
@@ -943,6 +991,7 @@ const initBannerScrollAnimation = () => {
     // BFCache 복원 포함하여 레이아웃/스크롤 상태 재계산
     initialSetup();
   };
+  
   window.addEventListener('pageshow', onPageShowHandler);
 
   // ScrollTrigger 전역 refresh 이벤트에서, 대기 중인 포커스를 복구
@@ -1206,12 +1255,26 @@ const initIntroHoverTilt = () => {
 
 // onMounted에서 intro 관련 초기화 함수 호출 및 일괄 cleanup 처리
 onMounted(() => {
-  initBannerScrollAnimation();
+  // initBannerScrollAnimation()은 onSwiperInit에서 호출
   initIntroCixClassToggle();
   initIntroLineHeightLinkage();
   initIntroHoverTilt();
-
+  
   onBeforeUnmount(() => {
+    // 새로고침 시 생성된 전역 Observer 정리
+    if (window.horizontalObserver) {
+      try { window.horizontalObserver.kill(); } catch (_) { /* ignore */ }
+      window.horizontalObserver = null;
+    }
+    
+    // 전역 함수 정리
+    if (window.startWidthStabilizeWatch) {
+      window.startWidthStabilizeWatch = null;
+    }
+    
+    // 초기화 플래그 리셋
+    window.bannerSlideInitialized = false;
+    
     introCleanupCallbacks.forEach((fn) => {
       try { fn(); } catch (_) { /* ignore */ }
     });
@@ -1265,6 +1328,314 @@ const onSwiperInit = (swiper) => {
       } catch (_) { /* ignore */ }
     });
   } catch (_) { /* ignore */ }
+  
+  // Swiper 초기화 완료 후 ScrollTrigger 적용
+  setTimeout(() => {
+    // 새로고침 시에는 버튼 클릭과 동일한 로직 사용
+    const navType = performance.getEntriesByType('navigation')[0].type;
+    if (navType === 'reload') {
+      // 새로고침 시에는 rebuildAndSmoothCenter 로직 사용
+      setTimeout(() => {
+        // 기존 ScrollTrigger 제거
+        ScrollTrigger.getAll().forEach(trigger => {
+          if (trigger.trigger && trigger.trigger.closest('.banner-slide')) {
+            trigger.kill();
+          }
+        });
+        
+        // rebuildAndSmoothCenter와 동일한 로직 실행
+        const swiperWrapper = document.querySelector('.banner-slide .swiper-wrapper');
+        const container = document.querySelector('.banner-slide');
+        
+        if (swiperWrapper && container && window.innerWidth >= 768) {
+          // initScrollAnimation 실행
+          const containerWidth = container.offsetWidth;
+          const wrapperWidth = swiperWrapper.scrollWidth;
+          
+          if (wrapperWidth > containerWidth) {
+            const getHeaderOffset = () => {
+              const header = document.querySelector('.the-header');
+              if (!header) return 0;
+              try {
+                return Math.round(header.getBoundingClientRect().height) || 0;
+              } catch (_) {
+                return header.offsetHeight || 0;
+              }
+            };
+            
+            const bannerScroll = gsap.timeline({
+              scrollTrigger: {
+                trigger: container,
+                start: () => `top-=${getHeaderOffset()} top`,
+                end: '+=200%',
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1,
+                invalidateOnRefresh: true,
+                refreshPriority: 10
+              }
+            });
+            
+            bannerScroll.to(swiperWrapper, {
+              x: `-${wrapperWidth - containerWidth}px`,
+              ease: 'none'
+            });
+            
+            // 좌우 제스처로 수평 이동도 지원 (데스크톱/태블릿 전용)
+            const st = bannerScroll.scrollTrigger;
+            if (st) {
+              const horizontalObserver = Observer.create({
+                target: container,
+                type: 'touch,wheel,pointer',
+                lockAxis: true,
+                dragMinimum: 5,
+                tolerance: 8,
+                preventDefault: false,
+                onChangeX(self) {
+                  // 터치/드래그 좌우 이동을 스크롤로 변환
+                  try {
+                    const factor = 0.5; // 터치 스크럽 강도 (자연 스크롤과 동일하게)
+                    // 진행 방향 반전: deltaX 부호 반전 적용
+                    st.scroll(st.scroll() - self.deltaX * factor);
+                  } catch (_) { /* ignore */ }
+                },
+                onWheel(self) {
+                  // 수평 휠(또는 트랙패드 수평 제스처) 우선 처리
+                  if (!st) return;
+                  if (Math.abs(self.deltaX) > Math.abs(self.deltaY)) {
+                    try {
+                      const wheelFactor = 1; // 휠 스크럽 강도 (자연 스크롤과 동일하게)
+                      // 진행 방향 반전: deltaX 부호 반전 적용
+                      st.scroll(st.scroll() - self.deltaX * wheelFactor);
+                    } catch (_) { /* ignore */ }
+                  }
+                }
+              });
+            }
+          }
+          
+          ScrollTrigger.refresh();
+          
+          // applyBannerSlideTitleMinHeight도 호출
+          applyBannerSlideTitleMinHeight();
+          
+          // 새로고침 시에도 widthStabilizeWatch 함수들을 전역에서 접근 가능하도록 설정
+          // 이는 버튼 클릭 시 동일한 동작을 보장하기 위함
+          window.startWidthStabilizeWatch = () => {
+            if (!swiperWrapper) return;
+            
+            let widthWatchRaf = null;
+            let widthStableTimer = null;
+            let lastWrapperWidth = swiperWrapper.scrollWidth;
+            
+            const getWrapperWidth = () => {
+              return swiperWrapper ? swiperWrapper.scrollWidth : 0;
+            };
+            
+            const stopWidthStabilizeWatch = () => {
+              if (widthWatchRaf) cancelAnimationFrame(widthWatchRaf);
+              widthWatchRaf = null;
+              if (widthStableTimer) clearTimeout(widthStableTimer);
+              widthStableTimer = null;
+            };
+            
+            const scheduleStableCheck = () => {
+              if (widthStableTimer) clearTimeout(widthStableTimer);
+              widthStableTimer = setTimeout(() => {
+                stopWidthStabilizeWatch();
+                // 안정화 시점에 ScrollTrigger 완전 재생성 (부드러운 전환 포함)
+                const containerWidth = container.offsetWidth;
+                const wrapperWidth = swiperWrapper.scrollWidth;
+                
+                if (wrapperWidth > containerWidth) {
+                  // 이전 위치와 진행도 저장 (부드러운 전환을 위해)
+                  const getCurrentTranslateX = (el) => {
+                    try {
+                      const style = window.getComputedStyle(el);
+                      const transform = style.transform || style.webkitTransform;
+                      if (!transform || transform === 'none') return 0;
+                      if (transform.startsWith('matrix3d(')) {
+                        const values = transform.slice(9, -1).split(',').map(parseFloat);
+                        return values[12] || 0;
+                      }
+                      if (transform.startsWith('matrix(')) {
+                        const values = transform.slice(7, -1).split(',').map(parseFloat);
+                        return values[4] || 0;
+                      }
+                    } catch (_) { /* ignore */ }
+                    return 0;
+                  };
+                  
+                  const prevTranslateX = getCurrentTranslateX(swiperWrapper);
+                  const prevProgress = prevTranslateX !== 0 ? Math.abs(prevTranslateX) / (wrapperWidth - containerWidth) : 0;
+                  
+                  // 기존 ScrollTrigger 제거
+                  ScrollTrigger.getAll().forEach(trigger => {
+                    if (trigger.trigger && trigger.trigger.closest('.banner-slide')) {
+                      trigger.kill();
+                    }
+                  });
+                  
+                  // ScrollTrigger 재생성
+                  const getHeaderOffset = () => {
+                    const header = document.querySelector('.the-header');
+                    if (!header) return 0;
+                    try {
+                      return Math.round(header.getBoundingClientRect().height) || 0;
+                    } catch (_) {
+                      return header.offsetHeight || 0;
+                    }
+                  };
+                  
+                  const bannerScroll = gsap.timeline({
+                    scrollTrigger: {
+                      trigger: container,
+                      start: () => `top-=${getHeaderOffset()} top`,
+                      end: '+=200%',
+                      scrub: 1,
+                      pin: true,
+                      anticipatePin: 1,
+                      invalidateOnRefresh: true,
+                      refreshPriority: 10
+                    }
+                  });
+                  
+                  bannerScroll.to(swiperWrapper, {
+                    x: `-${wrapperWidth - containerWidth}px`,
+                    ease: 'none'
+                  });
+                  
+                  // 부드러운 전환 적용
+                  if (typeof prevProgress === 'number' && prevProgress > 0) {
+                    const targetX = -((wrapperWidth - containerWidth) * prevProgress);
+                    try {
+                      if (Number.isFinite(prevTranslateX)) {
+                        swiperWrapper.style.transform = `translate3d(${prevTranslateX}px, 0px, 0px)`;
+                        swiperWrapper.getBoundingClientRect();
+                        swiperWrapper.style.transition = 'transform 0.45s ease';
+                      }
+                    } catch (_) { /* ignore */ }
+                    
+                    requestAnimationFrame(() => {
+                      const st = bannerScroll.scrollTrigger;
+                      bannerScroll.progress(prevProgress, false);
+                      st && st.update();
+                      
+                      const clearTransition = () => {
+                        try { swiperWrapper.style.transition = ''; } catch (_) { /* ignore */ }
+                      };
+                      swiperWrapper.addEventListener('transitionend', clearTransition, { once: true });
+                      setTimeout(clearTransition, 600);
+                    });
+                  }
+                  
+                  // Observer도 재생성 (기존 Observer 정리 후)
+                  const st = bannerScroll.scrollTrigger;
+                  if (st) {
+                    // 기존 Observer 정리
+                    if (window.horizontalObserver) {
+                      try { window.horizontalObserver.kill(); } catch (_) { /* ignore */ }
+                      window.horizontalObserver = null;
+                    }
+                    
+                    window.horizontalObserver = Observer.create({
+                      target: container,
+                      type: 'touch,wheel,pointer',
+                      lockAxis: true,
+                      dragMinimum: 5,
+                      tolerance: 8,
+                      preventDefault: false,
+                      onChangeX(self) {
+                        try {
+                          const factor = 0.5;
+                          st.scroll(st.scroll() - self.deltaX * factor);
+                        } catch (_) { /* ignore */ }
+                      },
+                      onWheel(self) {
+                        if (!st) return;
+                        if (Math.abs(self.deltaX) > Math.abs(self.deltaY)) {
+                          try {
+                            const wheelFactor = 1;
+                            st.scroll(st.scroll() - self.deltaX * wheelFactor);
+                          } catch (_) { /* ignore */ }
+                        }
+                      }
+                    });
+                  }
+                }
+                
+                ScrollTrigger.refresh();
+              }, 280);
+            };
+            
+            const tick = () => {
+              const current = getWrapperWidth();
+              if (current !== lastWrapperWidth) {
+                lastWrapperWidth = current;
+                scheduleStableCheck();
+              }
+              widthWatchRaf = requestAnimationFrame(tick);
+            };
+            
+            scheduleStableCheck();
+            tick();
+          };
+          
+          // 전역 변수로 startWidthStabilizeWatch 함수 등록
+          startWidthStabilizeWatch = window.startWidthStabilizeWatch;
+          
+          // 새로고침 시 이벤트 리스너 중복 등록 방지
+          if (window.bannerSlideInitialized) {
+            // 이미 초기화된 경우 이벤트 리스너 중복 등록 방지
+            return;
+          }
+          window.bannerSlideInitialized = true;
+
+          // 리로드 경로에서도 리사이즈 감지 후 폭 안정화→재빌드 플로우 적용
+          const onReloadResize = () => {
+            // 모바일 플래그 업데이트
+            isMobile.value = window.innerWidth < 768;
+            if (window.innerWidth >= 768) {
+              // 총 길이(scrollWidth) 안정화 감시 → 재빌드/중앙정렬
+              try {
+                if (typeof window.startWidthStabilizeWatch === 'function') {
+                  window.startWidthStabilizeWatch();
+                } else {
+                  // fallback: 최소한의 refresh
+                  ScrollTrigger.refresh();
+                }
+              } catch (_) { /* ignore */ }
+              // 제목 높이 동기화
+              applyBannerSlideTitleMinHeight();
+            } else {
+              // 모바일 전환 시 pin/트리거 정리 후 refresh
+              try {
+                ScrollTrigger.getAll().forEach(trigger => {
+                  try { if (trigger.trigger && trigger.trigger.closest('.banner-slide')) trigger.kill(); } catch (_) { /* ignore */ }
+                });
+                // pin-spacer 언랩
+                document.querySelectorAll('.pin-spacer').forEach(sp => {
+                  if (sp.contains(container)) {
+                    const parent = sp.parentNode;
+                    while (sp.firstChild) parent.insertBefore(sp.firstChild, sp);
+                    parent.removeChild(sp);
+                  }
+                });
+                ScrollTrigger.refresh();
+              } catch (_) { /* ignore */ }
+            }
+          };
+          window.addEventListener('resize', onReloadResize);
+          introCleanupCallbacks.push(() => {
+            try { window.removeEventListener('resize', onReloadResize); } catch (_) { /* ignore */ }
+          });
+        }
+      }, 200);
+    } else {
+      // 일반 페이지 이동 시에는 기존 로직 사용
+      initBannerScrollAnimation();
+    }
+  }, 100);
 };
 
 const toggleAutoplay = () => {
@@ -1535,7 +1906,7 @@ const getBorderClass = (slide, index) => {
         visibility: hidden;
         transition: opacity 0.45s ease;
         @include tablet {
-          flex: 0 0 rem(210);
+          flex: 0 0 rem(360);
         }
         @include desktop {
           flex: 0 0 rem(360);
@@ -1627,10 +1998,14 @@ const getBorderClass = (slide, index) => {
           visibility: hidden;
           opacity: 0;
           border-left: 1px solid;
-          padding-left: rem(40);
-          margin-left: rem(40);
+          padding-left: rem(18);
+          margin-left: rem(18);
           position: relative;
           transform: translateX(rem(20));
+        }
+        @include desktop {
+          padding-left: rem(40);
+          margin-left: rem(40);
         }
         &.border-black {
           border-color: rgba($d-black, 0.2);
@@ -1647,10 +2022,16 @@ const getBorderClass = (slide, index) => {
           width: calc(100% / 3 * 2);
           min-width: rem(560);
         }
+        
         @include desktop {
           width: 50%;
           min-width: rem(960);
         }
+
+        .banner-slide-item-content {
+          background-position: center center;
+        }
+
         @for $i from 1 through 11 {
           &:nth-child(#{$i}) {
             .banner-slide-item-content {
@@ -1897,23 +2278,28 @@ const getBorderClass = (slide, index) => {
 
         @include tablet {
           flex-direction: row;
-          flex-wrap: wrap;
           gap: 0;
         }
         &-item {
           margin-top: rem(8);
           @include tablet {
             display: inline-flex;
+            align-items: center;
             margin-top: 0;
           }
           &-comma {
             display: none;
             font-weight: 600;
-            font-size: rem(84);
+            font-size: rem(36);
+            line-height: 1;
             color: $d-white;
             flex-shrink: 0;
             @include tablet {
               display: inline-block;
+              font-size: clamp(rem(33), 6vw, rem(84));
+            }
+            @include desktop {
+              font-size: rem(84);
             }
           }
 
@@ -1948,6 +2334,9 @@ const getBorderClass = (slide, index) => {
               height: rem(42);
               object-fit: contain;
               @include tablet {
+                height: clamp(rem(44), 8.5vw, rem(120));
+              }
+              @include desktop {
                 height: auto;
               }
             }

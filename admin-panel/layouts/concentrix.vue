@@ -20,26 +20,69 @@ const route = useRoute()
 
 // 전역 메타 태그 설정
 const headers = useRequestHeaders()
+const requestUrl = useRequestURL()
+const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`
+
+// 공통 메타데이터 상수
+const siteName = 'Concentrix'
+
+// 현재 페이지 URL 생성 함수
+const getCurrentUrl = () => {
+  if (import.meta.client) {
+    return `${window.location.origin}${route.fullPath}`
+  }
+  // SSR 시에는 요청 헤더에서 호스트 정보 가져오기
+  const host = headers.host || 'localhost:3000'
+  const protocol =
+    headers['x-forwarded-proto'] ||
+    (host.includes('localhost') ? 'http' : 'https')
+  return `${protocol}://${host}${route.fullPath}`
+}
 
 useHead({
   htmlAttrs: {
     lang: 'ko',
   },
+  meta: [
+    // 기본 메타 태그
+    { name: 'robots', content: 'index, follow' },
+    { name: 'author', content: siteName },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+    { 'http-equiv': 'Content-Type', content: 'text/html; charset=utf-8' },
+
+    // Open Graph 기본 설정
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: siteName },
+    { property: 'og:url', content: getCurrentUrl },
+
+    // Twitter Card 기본 설정
+    { name: 'twitter:card', content: 'summary_large_image' },
+
+    // Windows 타일 이미지 설정
+    {
+      name: 'msapplication-TileImage',
+      content: '/assets/favicon/favicon.png',
+    },
+  ],
   link: [
     {
       rel: 'canonical',
-      href: () => {
-        // 현재 도메인과 경로를 기반으로 canonical URL 생성
-        if (import.meta.client) {
-          return `${window.location.origin}${route.fullPath}`
-        }
-        // SSR 시에는 요청 헤더에서 호스트 정보 가져오기
-        const host = headers.host || 'localhost:3000'
-        const protocol =
-          headers['x-forwarded-proto'] ||
-          (host.includes('localhost') ? 'http' : 'https')
-        return `${protocol}://${host}${route.fullPath}`
-      },
+      href: getCurrentUrl,
+    },
+    // 파비콘 설정
+    {
+      rel: 'icon',
+      href: '/assets/favicon/favicon-150x150.png',
+      sizes: '32x32',
+    },
+    {
+      rel: 'icon',
+      href: '/assets/favicon/favicon-195x195.png',
+      sizes: '192x192',
+    },
+    {
+      rel: 'apple-touch-icon',
+      href: '/assets/favicon/favicon-150x150.png',
     },
   ],
 })

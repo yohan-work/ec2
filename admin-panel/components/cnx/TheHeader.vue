@@ -2,34 +2,43 @@
   <header class="the-header">
     <div class="inner">
       <div class="the-header__logo">
-        <NuxtLink to="/" class="text-xl font-bold text-gray-900">
+        <NuxtLink to="/" aria-label="Concentrix 홈페이지로 이동">
           <div class="logo" v-html="concentrixLogo"></div>
         </NuxtLink>
       </div>
       
       <!-- 태블릿 이상에서 보이는 GNB 메뉴 -->
-      <nav class="the-header__gnb">
+      <nav class="the-header__gnb" role="menubar">
         <template v-for="(menu, key) in menuStructure">
           <!-- 드롭다운 메뉴 (sections가 있는 경우) -->
           <button 
             v-if="menu.sections && menu.sections.length > 0"
             :key="`dropdown-${key}`"
+            :id="`dropdown-${key}`"
             class="gnb-menu-item gnb-dropdown-trigger" 
             :data-dropdown="key"
+            :aria-expanded="activeDropdown === key ? 'true' : 'false'"
+            aria-haspopup="true"
+            role="menuitem"
+            tabindex="0"
+            @keydown="handleDropdownKeydown"
           >
             <span>{{ menu.title }}</span>
             <div class="dropdown-arrow" v-html="dropdownIcon"></div>
           </button>
           
           <!-- 일반 링크 메뉴 (sections가 없는 경우) -->
-          <button 
+          <NuxtLink 
             v-else-if="menu.path"
             :key="`link-${key}`"
+            :to="menu.path"
             class="gnb-menu-item" 
-            @click="navigateTo(menu.path)"
+            role="menuitem"
+            tabindex="0"
+            @keydown="handleLinkKeydown"
           >
             <span>{{ menu.title }}</span>
-          </button>
+          </NuxtLink>
         </template>
       </nav>
       
@@ -37,7 +46,11 @@
       <button
         class="the-header__hamburger"
         type="button"
+        :aria-expanded="isSideNavOpen"
+        :aria-label="isSideNavOpen ? '메뉴 닫기' : '메뉴 열기'"
+        :aria-controls="isSideNavOpen ? 'side-nav-panel' : null"
         @click="toggleSideNav"
+        @keydown="handleHamburgerKeydown"
         v-html="hamburgerIcon"
       ></button>
     </div>
@@ -49,6 +62,9 @@
       class="gnb-dropdown-menu" 
       :data-dropdown="key" 
       :class="{ 'active': activeDropdown === key }"
+      role="menu"
+      :aria-labelledby="`dropdown-${key}`"
+      @keydown="handleDropdownMenuKeydown"
     >
       <div class="inner">
         <div class="dropdown-title">{{ menu.title }}</div>
@@ -59,16 +75,31 @@
             class="dropdown-section"
           >
             <!-- 2depth: 빈 title이 아닌 경우만 표시 -->
-            <h3 v-if="section.title && !section.path">{{ section.title }}</h3>
-            <NuxtLink v-else-if="section.title && section.path" :to="section.path" class="section-title">
+            <div v-if="section.title && !section.path" class="section-title">{{ section.title }}</div>
+            <NuxtLink 
+              v-else-if="section.title && section.path" 
+              :to="section.path" 
+              class="section-title"
+              role="menuitem"
+              tabindex="0"
+              @keydown="handleDropdownItemKeydown"
+            >
               {{ section.title }}
             </NuxtLink>
             <span v-else-if="section.title" class="section-title-disabled">{{ section.title }}</span>
             
             <!-- 3depth: What We Do만 아이템이 있음 -->
-            <ul v-if="section.items && section.items.length > 0">
-              <li v-for="item in section.items" :key="item.text">
-                <NuxtLink v-if="item.path" :to="item.path">{{ item.text }}</NuxtLink>
+            <ul v-if="section.items && section.items.length > 0" role="none">
+              <li v-for="item in section.items" :key="item.text" role="none">
+                <NuxtLink 
+                  v-if="item.path" 
+                  :to="item.path"
+                  role="menuitem"
+                  tabindex="0"
+                  @keydown="handleDropdownItemKeydown"
+                >
+                  {{ item.text }}
+                </NuxtLink>
                 <span v-else class="menu-item-disabled">{{ item.text }}</span>
               </li>
             </ul>
@@ -86,7 +117,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, nextTick, watch } from 'vue'
 import concentrixLogo from '~/components/assets/cnx/concentrix-logo.svg?raw'
 import hamburgerIcon from '~/components/assets/cnx/hamburger.svg?raw'
 import dropdownIcon from '~/components/assets/cnx/dropdown.svg?raw'
@@ -101,51 +132,270 @@ const activeDropdown = ref(null)
 // 사이드 네비게이션 상태 관리
 const isSideNavOpen = ref(false)
 
+// 키보드 네비게이션을 위한 상태
+const isKeyboardNavigation = ref(false)
+
 // 라우터 기반 메뉴 데이터
 const dropdownMenus = computed(() => getMenuData())
 
 // 드롭다운 토글 함수
 const toggleDropdown = (dropdownName) => {
   activeDropdown.value = activeDropdown.value === dropdownName ? null : dropdownName
+  updateActiveClasses()
 }
+
+// 드롭다운 상태 변화 감지 및 포커스 관리
+watch(activeDropdown, (newValue, oldValue) => {
+  if (newValue && isKeyboardNavigation.value) {
+    // 드롭다운이 열렸을 때: 드롭다운 내부로 포커스 이동
+    nextTick(() => {
+      setTimeout(() => {
+        const dropdownMenu = document.querySelector(`.gnb-dropdown-menu[data-dropdown="${newValue}"]`)
+        
+        if (dropdownMenu) {
+          const firstFocusable = dropdownMenu.querySelector('[tabindex="0"]')
+          if (firstFocusable) {
+            firstFocusable.focus()
+          } else {
+            // 재시도 메커니즘
+            setTimeout(() => {
+              const retryFocusable = dropdownMenu.querySelector('[tabindex="0"]')
+              if (retryFocusable) {
+                retryFocusable.focus()
+              }
+            }, 100)
+          }
+        }
+      }, 100)
+    })
+  }
+})
 
 // 사이드 네비게이션 토글 함수들
 const toggleSideNav = () => {
   isSideNavOpen.value = !isSideNavOpen.value
+  
+  // 사이드 네비게이션이 열렸을 때 닫기 버튼으로 포커스 이동
+  if (isSideNavOpen.value) {
+    nextTick(() => {
+      setTimeout(() => {
+        const closeButton = document.querySelector('.side-nav-close')
+        if (closeButton) {
+          closeButton.focus()
+        }
+      }, 100)
+    })
+  }
 }
 
 const closeSideNav = () => {
   isSideNavOpen.value = false
 }
 
-// 마우스 이벤트 핸들러
-const handleMouseEnter = (dropdownName) => {
-  activeDropdown.value = dropdownName
+const handleHamburgerKeydown = (event) => {
+  const { key } = event
+  
+  isKeyboardNavigation.value = true
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault()
+      toggleSideNav()
+      break
+    case 'Escape':
+      if (isSideNavOpen.value) {
+        event.preventDefault()
+        closeSideNav()
+      }
+      break
+  }
+}
+
+// 키보드 이벤트 핸들러들
+const handleDropdownKeydown = (event) => {
+  const { key } = event
+  const dropdownName = event.target.getAttribute('data-dropdown')
+  
+  isKeyboardNavigation.value = true
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+    case 'ArrowDown':
+      event.preventDefault()
+      toggleDropdown(dropdownName)
+      break
+    case 'ArrowRight':
+      event.preventDefault()
+      focusNextMenuItem()
+      break
+    case 'ArrowLeft':
+      event.preventDefault()
+      focusPreviousMenuItem()
+      break
+    case 'Escape':
+      event.preventDefault()
+      closeDropdownAndReturnFocus()
+      break
+  }
+}
+
+const handleLinkKeydown = (event) => {
+  const { key } = event
+  
+  isKeyboardNavigation.value = true
+  
+  switch (key) {
+    case 'ArrowRight':
+      event.preventDefault()
+      focusNextMenuItem()
+      break
+    case 'ArrowLeft':
+      event.preventDefault()
+      focusPreviousMenuItem()
+      break
+    case 'Enter':
+    case ' ':
+      // NuxtLink는 기본적으로 Enter와 Space 키를 처리하므로 preventDefault 불필요
+      break
+  }
+}
+
+const handleDropdownMenuKeydown = (event) => {
+  const { key } = event
+  
+  isKeyboardNavigation.value = true
+  
+  switch (key) {
+    case 'Escape':
+      event.preventDefault()
+      closeDropdownAndReturnFocus()
+      break
+    case 'Tab':
+      // Tab 키는 기본 동작을 허용하되, 드롭다운은 닫지 않음
+      break
+  }
+}
+
+const handleDropdownItemKeydown = (event) => {
+  const { key } = event
+  
+  isKeyboardNavigation.value = true
+  
+  switch (key) {
+    case 'Enter':
+      event.preventDefault()
+      event.target.click()
+      closeDropdownAndReturnFocus()
+      break
+    case 'ArrowDown':
+    case 'ArrowRight':
+      event.preventDefault()
+      focusNextDropdownItem(event.target)
+      break
+    case 'ArrowUp':
+    case 'ArrowLeft':
+      event.preventDefault()
+      focusPreviousDropdownItem(event.target)
+      break
+    case 'Escape':
+      event.preventDefault()
+      closeDropdownAndReturnFocus()
+      break
+    case 'Tab':
+      // Tab 키 처리: 마지막 요소에서 다음 요소로 이동 시 드롭다운 닫기
+      event.preventDefault()
+      
+      const dropdownMenu = event.target.closest('.gnb-dropdown-menu')
+      const dropdownName = dropdownMenu?.getAttribute('data-dropdown')
+      const allFocusableItems = dropdownMenu?.querySelectorAll('[tabindex="0"]')
+      const currentIndex = Array.from(allFocusableItems).indexOf(event.target)
+      
+      if (currentIndex === allFocusableItems.length - 1) {
+        // 마지막 요소에서 Tab을 누른 경우: 드롭다운 닫고 다음 요소로 이동
+        closeDropdownAndReturnFocus()
+        focusMainMenuItemFromDropdown(dropdownName, event.shiftKey)
+      } else {
+        // 마지막 요소가 아닌 경우: 드롭다운 내부에서 다음 요소로 이동
+        const nextIndex = (currentIndex + 1) % allFocusableItems.length
+        allFocusableItems[nextIndex]?.focus()
+      }
+      break
+  }
+}
+
+// 포커스 관리 함수들
+const focusNextMenuItem = () => {
+  const menuItems = document.querySelectorAll('.the-header__gnb [tabindex="0"]')
+  const currentIndex = Array.from(menuItems).indexOf(document.activeElement)
+  const nextIndex = (currentIndex + 1) % menuItems.length
+  menuItems[nextIndex]?.focus()
+}
+
+const focusPreviousMenuItem = () => {
+  const menuItems = document.querySelectorAll('.the-header__gnb [tabindex="0"]')
+  const currentIndex = Array.from(menuItems).indexOf(document.activeElement)
+  const prevIndex = currentIndex === 0 ? menuItems.length - 1 : currentIndex - 1
+  menuItems[prevIndex]?.focus()
+}
+
+const focusNextDropdownItem = (currentElement) => {
+  const dropdownMenu = currentElement.closest('.gnb-dropdown-menu')
+  const focusableItems = dropdownMenu?.querySelectorAll('[tabindex="0"]')
+  if (focusableItems) {
+    const currentIndex = Array.from(focusableItems).indexOf(currentElement)
+    const nextIndex = (currentIndex + 1) % focusableItems.length
+    focusableItems[nextIndex]?.focus()
+  }
+}
+
+const focusPreviousDropdownItem = (currentElement) => {
+  const dropdownMenu = currentElement.closest('.gnb-dropdown-menu')
+  const focusableItems = dropdownMenu?.querySelectorAll('[tabindex="0"]')
+  if (focusableItems) {
+    const currentIndex = Array.from(focusableItems).indexOf(currentElement)
+    const prevIndex = currentIndex === 0 ? focusableItems.length - 1 : currentIndex - 1
+    focusableItems[prevIndex]?.focus()
+  }
+}
+
+const focusMainMenuItemFromDropdown = (dropdownName, isShift = false) => {
+  const menuItems = document.querySelectorAll('.the-header__gnb [tabindex="0"]')
+  const triggerIndex = Array.from(menuItems).indexOf(document.querySelector(`[data-dropdown="${dropdownName}"].gnb-dropdown-trigger`))
+  
+  if (isShift) {
+    const prevIndex = triggerIndex === 0 ? menuItems.length - 1 : triggerIndex - 1
+    menuItems[prevIndex]?.focus()
+  } else {
+    const nextIndex = (triggerIndex + 1) % menuItems.length
+    menuItems[nextIndex]?.focus()
+  }
+}
+
+// 드롭다운 닫기 (포커스 복귀은 watch에서 처리)
+const closeDropdownAndReturnFocus = () => {
+  activeDropdown.value = null
   updateActiveClasses()
 }
 
-const handleMouseLeave = () => {
-  // 모든 드롭다운 트리거와 메뉴에서 마우스가 벗어났는지 확인
-  const allTriggers = document.querySelectorAll('.gnb-dropdown-trigger')
-  const allDropdowns = document.querySelectorAll('.gnb-dropdown-menu')
-  
-  let isMouseOverAnyElement = false
-  
-  allTriggers.forEach(trigger => {
-    if (trigger.matches(':hover')) {
-      isMouseOverAnyElement = true
-    }
-  })
-  
-  allDropdowns.forEach(dropdown => {
-    if (dropdown.matches(':hover')) {
-      isMouseOverAnyElement = true
-    }
-  })
-  
-  if (!isMouseOverAnyElement) {
-    activeDropdown.value = null
+// 마우스 이벤트 핸들러
+const handleMouseEnter = (dropdownName) => {
+  if (!isKeyboardNavigation.value) {
+    activeDropdown.value = dropdownName
     updateActiveClasses()
+  }
+}
+
+const handleMouseLeave = () => {
+  if (!isKeyboardNavigation.value) {
+    const allElements = document.querySelectorAll('.gnb-dropdown-trigger, .gnb-dropdown-menu')
+    const isMouseOverAnyElement = Array.from(allElements).some(element => element.matches(':hover'))
+    
+    if (!isMouseOverAnyElement) {
+      activeDropdown.value = null
+      updateActiveClasses()
+    }
   }
 }
 
@@ -163,53 +413,37 @@ const updateActiveClasses = () => {
 }
 
 onMounted(() => {
-  // 각 드롭다운 트리거에 이벤트 리스너 추가
-  const triggers = document.querySelectorAll('.gnb-dropdown-trigger')
-  triggers.forEach(trigger => {
-    const dropdownName = trigger.getAttribute('data-dropdown')
+  const elements = document.querySelectorAll('.gnb-dropdown-trigger, .gnb-dropdown-menu')
+  
+  elements.forEach(element => {
+    const dropdownName = element.getAttribute('data-dropdown')
     
-    trigger.addEventListener('mouseenter', () => {
+    element.addEventListener('mouseenter', () => {
+      isKeyboardNavigation.value = false
       handleMouseEnter(dropdownName)
     })
     
-    trigger.addEventListener('mouseleave', () => {
-      // 트리거에서 벗어나면 잠시 후 확인
+    element.addEventListener('mouseleave', () => {
       setTimeout(() => {
         handleMouseLeave()
       }, 100)
     })
   })
   
-  // 각 드롭다운 메뉴에 이벤트 리스너 추가
-  const dropdowns = document.querySelectorAll('.gnb-dropdown-menu')
-  dropdowns.forEach(dropdown => {
-    const dropdownName = dropdown.getAttribute('data-dropdown')
-    
-    dropdown.addEventListener('mouseenter', () => {
-      handleMouseEnter(dropdownName)
-    })
-    
-    dropdown.addEventListener('mouseleave', () => {
-      // 드롭다운 메뉴에서 벗어나면 잠시 후 확인
-      setTimeout(() => {
-        handleMouseLeave()
-      }, 100)
-    })
+  document.addEventListener('mousedown', () => {
+    isKeyboardNavigation.value = false
   })
 })
 
 onUnmounted(() => {
-  // 이벤트 리스너 정리
-  const triggers = document.querySelectorAll('.gnb-dropdown-trigger')
-  triggers.forEach(trigger => {
-    trigger.removeEventListener('mouseenter', handleMouseEnter)
-    trigger.removeEventListener('mouseleave', handleMouseLeave)
+  const elements = document.querySelectorAll('.gnb-dropdown-trigger, .gnb-dropdown-menu')
+  elements.forEach(element => {
+    element.removeEventListener('mouseenter', handleMouseEnter)
+    element.removeEventListener('mouseleave', handleMouseLeave)
   })
   
-  const dropdowns = document.querySelectorAll('.gnb-dropdown-menu')
-  dropdowns.forEach(dropdown => {
-    dropdown.removeEventListener('mouseenter', handleMouseEnter)
-    dropdown.removeEventListener('mouseleave', handleMouseLeave)
+  document.removeEventListener('mousedown', () => {
+    isKeyboardNavigation.value = false
   })
 })
 </script>
@@ -424,27 +658,26 @@ onUnmounted(() => {
         }
         
         .dropdown-section {
-          h3 {
+          .section-title {
             font-size: rem(12);
             font-weight: $font-weight-regular;
             color: $gray-1;
             margin: 0 0 rem(16) 0;
             line-height: rem(20);
-          }
-          
-          .section-title {
-            font-size: rem(16);
-            font-weight: 700;
-            color: #333;
-            margin: 0 0 rem(16) 0;
-            line-height: rem(20);
-            text-decoration: none;
             display: block;
-            transition: text-decoration 0.2s ease, text-shadow 0.2s ease;
             
-            &:hover {
-              text-decoration: underline;
-              text-shadow: 0.5px 0 0 currentColor;
+            // 링크인 경우에만 추가 스타일 적용
+            &:is(a) {
+              font-size: rem(16);
+              font-weight: 700;
+              color: #333;
+              text-decoration: none;
+              transition: text-decoration 0.2s ease, text-shadow 0.2s ease;
+              
+              &:hover {
+                text-decoration: underline;
+                text-shadow: 0.5px 0 0 currentColor;
+              }
             }
           }
           

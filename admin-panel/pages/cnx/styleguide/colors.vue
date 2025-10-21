@@ -117,7 +117,7 @@
             <div class="color-swatch color-gray-1"></div>
             <div class="color-info">
               <span class="color-name">Gray 1</span>
-              <span class="color-code">#86868B</span>
+              <span class="color-code">#767676</span>
               <span class="color-variable" @click="copyVariable('$gray-1')" :title="'클릭하여 복사: $gray-1'">$gray-1</span>
             </div>
           </div>

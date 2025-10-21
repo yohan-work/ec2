@@ -171,7 +171,7 @@ onUnmounted(() => {
 
   &-text {
     @include body-01;
-    color: #86868B;
+    color: $gray-1;
   }
 
   // HTML 제목을 감싸는 스팬은 레이아웃에 영향 없도록 처리

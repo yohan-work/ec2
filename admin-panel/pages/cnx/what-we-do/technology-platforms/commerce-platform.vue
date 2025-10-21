@@ -45,12 +45,7 @@
           title="SAP Commerce Cloud"
           imageName="sap"
           :reverse="true"
-          :listItems="[
-            '글로벌 B2B·B2C 비즈니스를 위한 Enterprise Commerce 플랫폼',
-            '제품 · 가격 · 주문 · 계정 관리와 ERP · CRM · OMS 연동 지원',
-            'Headless·Composable Architecture 기반 멀티브랜드 · 다국가 확장',
-            '전문 SI 역량과 글로벌 법인 소속 GDC 인력을 통한 맞춤형 구축 · 글로벌 Roll-out 지원'
-          ]"
+          :subItems="sapSubItems"
         />
       </section>
 
@@ -59,12 +54,7 @@
         <AppImgCont 
           title="Adobe Commerce Cloud"
           imageName="adobe"
-          :listItems="[
-            '콘텐츠 관리와 Commerce를 통합한 디지털 경험 플랫폼',
-            '제품 · 프로모션 · 고객 여정 관리 및 마케팅 자동화 지원',
-            'Cloud 기반 Architecture로 유연한 확장성과 빠른 배포 가능',
-            '본사와 글로벌 법인 GDC 협업을 통한 대규모 프로젝트 수행 지원'
-          ]"
+          :subItems="adobeSubItems"
         />
       </section>
 
@@ -74,12 +64,7 @@
           title="Shopify"
           imageName="shopify"
           :reverse="true"
-          :listItems="[
-            'Cloud SaaS 기반의 글로벌 커머스 플랫폼',
-            '빠른 구축, 다양한 앱·마켓플레이스 연동, 다국가 결제 지원',
-            'Headless · API 기반 확장으로 스타트업부터 엔터프라이즈까지 대응',
-            '글로벌 법인 GDC와 협력한 신속 · 효율적 구축 · 운영 지원'
-          ]"
+          :subItems="shopifySubItems"
         />
       </section>
     </div>
@@ -91,11 +76,48 @@ import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AppCardList from '~/components/cnx/AppCardList.vue'
+import { computed } from 'vue'
 
 // 레이아웃 설정
 definePageMeta({
   layout: 'concentrix'
 })
+
+// SAP Commerce Cloud 서브 아이템들
+const sapSubItems = computed(() => [
+  {
+    listItems: [
+      '글로벌 B2B·B2C 비즈니스를 위한 Enterprise Commerce 플랫폼',
+      '제품 · 가격 · 주문 · 계정 관리와 ERP · CRM · OMS 연동 지원',
+      'Headless·Composable Architecture 기반 멀티브랜드 · 다국가 확장',
+      '전문 SI 역량과 글로벌 법인 소속 GDC 인력을 통한 맞춤형 구축 · 글로벌 Roll-out 지원'
+    ]
+  }
+])
+
+// Adobe Commerce Cloud 서브 아이템들
+const adobeSubItems = computed(() => [
+  {
+    listItems: [
+      '콘텐츠 관리와 Commerce를 통합한 디지털 경험 플랫폼',
+      '제품 · 프로모션 · 고객 여정 관리 및 마케팅 자동화 지원',
+      'Cloud 기반 Architecture로 유연한 확장성과 빠른 배포 가능',
+      '본사와 글로벌 법인 GDC 협업을 통한 대규모 프로젝트 수행 지원'
+    ]
+  }
+])
+
+// Shopify 서브 아이템들
+const shopifySubItems = computed(() => [
+  {
+    listItems: [
+      'Cloud SaaS 기반의 글로벌 커머스 플랫폼',
+      '빠른 구축, 다양한 앱·마켓플레이스 연동, 다국가 결제 지원',
+      'Headless · API 기반 확장으로 스타트업부터 엔터프라이즈까지 대응',
+      '글로벌 법인 GDC와 협력한 신속 · 효율적 구축 · 운영 지원'
+    ]
+  }
+])
 
 </script>
 

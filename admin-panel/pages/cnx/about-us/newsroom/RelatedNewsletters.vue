@@ -127,7 +127,8 @@ const handleNewsletterClick = newsletterId => {
   &-date {
     flex-shrink: 0;
     font-size: $font-size-body2-mobile;
-    color: #a2a2a2;
+    color: $gray-1;
+
     @include tablet {
       font-size: $font-size-body2-tablet;
     }
