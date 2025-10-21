@@ -89,6 +89,7 @@
                     :src="slide.mobileImage || slide.desktopImage" 
                     :alt="slide.imageAlt || slide.title || 'Slide Image'"
                     class="slide-image"
+                    loading="lazy"
                   />
                 </picture>
               </div>

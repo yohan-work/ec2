@@ -26,6 +26,7 @@
             src="/assets/cnx/what-we-do/technology-platforms/customer-experience-platform/salesforce_m.png" 
             alt="Sales Cloud, Service Cloud 이미지"
             class="sales-image"
+            loading="lazy"
           />
         </picture>
       </section>
