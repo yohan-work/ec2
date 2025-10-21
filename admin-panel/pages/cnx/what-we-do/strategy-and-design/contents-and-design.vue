@@ -309,9 +309,9 @@
               imageAlt="남성과 여성이 테이블에 앉아 노트북을 보며 이야기하고 있습니다."
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
-              :subItems="[
-                { title: 'Operation', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Advanced Operational Services <br>Producing Production Content <br>Create/Operate Events, Promotions <br>Digital Contents Monitoring' },
-              ]"
+              headingLevel="h3"
+              :alignTop="true"
+              :subItems="operationSubItems"
             />  
           </div>
           <div class="works-section-content-item">
@@ -321,9 +321,9 @@
               imageName="works02"
               imageAlt="다양한 앱이 실행된 네 대의 아이폰이 나란히 놓여 있습니다."
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
-              :subItems="[
-                { title: 'UX/UI Design', text: 'Brand Website <br>eCommerce Platform <br>App Service <br>Strategy/UX Consulting' },
-              ]"
+              headingLevel="h3"
+              :alignTop="true"
+              :subItems="uxDesignSubItems"
             />  
           </div>
           <div class="works-section-content-item">
@@ -334,9 +334,9 @@
               imageAlt="책상에서 컴퓨터를 사용하고 있는 여성의 모습입니다."
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
-              :subItems="[
-                { title: 'Digital Contents Creation', text: 'Global Platform Product Details Page <br>Contents Migration <br>Social Channel Contents <br>Online Exhibition Planning and Production <br>Microsite Development <br>Live Commerce , Metaverse <br>Brand Content Creation' },
-              ]"
+              headingLevel="h3"
+              :alignTop="true"
+              :subItems="digitalContentsSubItems"
             />  
           </div>
         </div>
@@ -351,7 +351,50 @@ import AppTitle from '~/components/cnx/AppTitle.vue';
 import AppButton from '~/components/cnx/AppButton.vue';
 import AppSwiper from '~/components/cnx/AppSwiper.vue';
 import AppImgCont from '~/components/cnx/AppImgCont.vue';
-import { nextTick, onBeforeUnmount, onMounted } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, computed } from 'vue';
+
+// AppImgCont subItems 데이터
+const operationSubItems = computed(() => [
+  { 
+    title: 'Operation', 
+    listItems: [
+      'Brand Website',
+      'eCommerce Platform', 
+      'App Service',
+      'Advanced Operational Services',
+      'Producing Production Content',
+      'Create/Operate Events, Promotions',
+      'Digital Contents Monitoring'
+    ]
+  }
+]);
+
+const uxDesignSubItems = computed(() => [
+  { 
+    title: 'UX/UI Design', 
+    listItems: [
+      'Brand Website',
+      'eCommerce Platform',
+      'App Service',
+      'Strategy/UX Consulting'
+    ]
+  }
+]);
+
+const digitalContentsSubItems = computed(() => [
+  { 
+    title: 'Digital Contents Creation', 
+    listItems: [
+      'Global Platform Product Details Page',
+      'Contents Migration',
+      'Social Channel Contents',
+      'Online Exhibition Planning and Production',
+      'Microsite Development',
+      'Live Commerce , Metaverse',
+      'Brand Content Creation'
+    ]
+  }
+]);
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -907,6 +950,7 @@ const initBannerScrollAnimation = () => {
       if (window.innerWidth >= 768) {
         // init 내부에서 refresh를 수행하므로 여기서 중복 호출하지 않음
         initScrollAnimation();
+        alert('refresh');
       } else {
         // 모바일로 내려가면 반드시 제거 후 한 번만 refresh
         killScrollAnimation();
@@ -943,6 +987,7 @@ const initBannerScrollAnimation = () => {
     // BFCache 복원 포함하여 레이아웃/스크롤 상태 재계산
     initialSetup();
   };
+  
   window.addEventListener('pageshow', onPageShowHandler);
 
   // ScrollTrigger 전역 refresh 이벤트에서, 대기 중인 포커스를 복구
@@ -1541,6 +1586,45 @@ const onSwiperInit = (swiper) => {
             return;
           }
           window.bannerSlideInitialized = true;
+
+          // 리로드 경로에서도 리사이즈 감지 후 폭 안정화→재빌드 플로우 적용
+          const onReloadResize = () => {
+            // 모바일 플래그 업데이트
+            isMobile.value = window.innerWidth < 768;
+            if (window.innerWidth >= 768) {
+              // 총 길이(scrollWidth) 안정화 감시 → 재빌드/중앙정렬
+              try {
+                if (typeof window.startWidthStabilizeWatch === 'function') {
+                  window.startWidthStabilizeWatch();
+                } else {
+                  // fallback: 최소한의 refresh
+                  ScrollTrigger.refresh();
+                }
+              } catch (_) { /* ignore */ }
+              // 제목 높이 동기화
+              applyBannerSlideTitleMinHeight();
+            } else {
+              // 모바일 전환 시 pin/트리거 정리 후 refresh
+              try {
+                ScrollTrigger.getAll().forEach(trigger => {
+                  try { if (trigger.trigger && trigger.trigger.closest('.banner-slide')) trigger.kill(); } catch (_) { /* ignore */ }
+                });
+                // pin-spacer 언랩
+                document.querySelectorAll('.pin-spacer').forEach(sp => {
+                  if (sp.contains(container)) {
+                    const parent = sp.parentNode;
+                    while (sp.firstChild) parent.insertBefore(sp.firstChild, sp);
+                    parent.removeChild(sp);
+                  }
+                });
+                ScrollTrigger.refresh();
+              } catch (_) { /* ignore */ }
+            }
+          };
+          window.addEventListener('resize', onReloadResize);
+          introCleanupCallbacks.push(() => {
+            try { window.removeEventListener('resize', onReloadResize); } catch (_) { /* ignore */ }
+          });
         }
       }, 200);
     } else {
@@ -2203,11 +2287,15 @@ const getBorderClass = (slide, index) => {
             display: none;
             font-weight: 600;
             font-size: rem(36);
+            line-height: 1;
             color: $d-white;
             flex-shrink: 0;
             @include tablet {
-              font-size: rem(84);
               display: inline-block;
+              font-size: clamp(rem(33), 6vw, rem(84));
+            }
+            @include desktop {
+              font-size: rem(84);
             }
           }
 
@@ -2242,6 +2330,9 @@ const getBorderClass = (slide, index) => {
               height: rem(42);
               object-fit: contain;
               @include tablet {
+                height: clamp(rem(44), 8.5vw, rem(120));
+              }
+              @include desktop {
                 height: auto;
               }
             }
