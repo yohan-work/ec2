@@ -666,7 +666,7 @@ defineOptions({
     &__subtitle {
       font-size: rem(12);
       font-weight: $font-weight-regular;
-      color: $gray-1;
+      color: $d-white;
       margin: 0 0 rem(12) 0;
       line-height: rem(20);
       
@@ -884,7 +884,7 @@ defineOptions({
     .footer-copyright {
       font-size: rem(10);
       font-weight: $font-weight-regular;
-      color: $gray-4;
+      color: $d-white;
       margin: 0;
       
       @include tablet {
@@ -948,7 +948,7 @@ defineOptions({
       }
     
       &__link {
-        color: $gray-4;
+        color: $d-white;
         text-decoration: none;
         font-size: rem(12);
         font-weight: $font-weight-regular;
@@ -960,7 +960,7 @@ defineOptions({
           font-weight: $font-weight-regular;
           line-height: normal;
           text-transform: uppercase;
-          color: $gray-1;
+          color: $d-white;
         }
         
         &:hover {
