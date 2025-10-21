@@ -324,7 +324,7 @@ const processedSwiperSlides = computed(() => {
 
   .section-description {
     @include body-02;
-    color: $gray-4;
+    color: $gray-1;
     margin: 0;
     line-height: 1.6;
     max-width: rem(600);
