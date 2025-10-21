@@ -57,11 +57,32 @@ useHead({
 
     // Twitter Card 기본 설정
     { name: 'twitter:card', content: 'summary_large_image' },
+
+    // Windows 타일 이미지 설정
+    {
+      name: 'msapplication-TileImage',
+      content: '/assets/favicon/favicon.png',
+    },
   ],
   link: [
     {
       rel: 'canonical',
       href: getCurrentUrl,
+    },
+    // 파비콘 설정
+    {
+      rel: 'icon',
+      href: '/assets/favicon/favicon-150x150.png',
+      sizes: '32x32',
+    },
+    {
+      rel: 'icon',
+      href: '/assets/favicon/favicon-195x195.png',
+      sizes: '192x192',
+    },
+    {
+      rel: 'apple-touch-icon',
+      href: '/assets/favicon/favicon-150x150.png',
     },
   ],
 })

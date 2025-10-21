@@ -25,7 +25,7 @@ const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`
 const pageTitle = 'Concentrix - A Global Technology and Service Leader'
 const pageDescription = ''
 const pageKeywords = ''
-const ogImage = `${baseUrl}/images/default-newsletter-thumbnail.jpg`
+const ogImage = `${baseUrl}/assets/concentrix-share.png`
 
 // 페이지별 메타 태그 (공통 메타데이터는 레이아웃에서 처리)
 useHead({
