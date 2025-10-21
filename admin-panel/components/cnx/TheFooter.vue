@@ -7,14 +7,20 @@
           v-for="(menu, key) in menuStructure" 
           :key="key"
           :class="['footer-nav__column', { 'footer-nav__column--first': key === 'whatwedo' }]"
+          :data-menu="key"
         >
             <!-- 하위 섹션이 있는 경우 (What We Do, About Us) -->
             <template v-if="menu.sections && menu.sections.length > 0">
               <!-- 1뎁스 메뉴 타이틀 -->
-              <h3 
+              <div 
                 class="footer-nav__title"
                 :class="{ 'footer-nav__title--mobile-clickable': true }"
+                :tabindex="isMobile ? 0 : -1"
+                role="button"
+                :aria-expanded="isMobile && accordionState.openMenu === key ? 'true' : 'false'"
+                :aria-controls="`footer-menu-${key}`"
                 @click="toggleMenu(key)"
+                @keydown="handleMenuKeydown($event, key)"
               >
                 <span>{{ menu.title }}</span>
                     <span 
@@ -23,12 +29,13 @@
                       :class="{ 'footer-nav__icon--rotated': accordionState.openMenu === key }"
                       v-html="arrowIcon"
                     ></span>
-              </h3>
+              </div>
               
               <!-- 2뎁스 섹션들 -->
               <div 
                 class="footer-nav__content"
                 :class="{ 'footer-nav__content--mobile-accordion': true }"
+                :id="`footer-menu-${key}`"
                 v-show="isMobile ? accordionState.openMenu === key : true"
               >
                 <div 
@@ -37,11 +44,16 @@
                   class="footer-nav__section"
                 >
                   <!-- 2뎁스 섹션 타이틀 -->
-                  <h4 
+                  <div 
                     v-if="section.title" 
                     class="footer-nav__subtitle"
                     :class="{ 'footer-nav__subtitle--mobile-clickable': true }"
+                    :tabindex="isMobile ? 0 : -1"
+                    role="button"
+                    :aria-expanded="isMobile && accordionState.openSection === `${key}-${sectionIndex}` ? 'true' : 'false'"
+                    :aria-controls="`footer-section-${key}-${sectionIndex}`"
                     @click="toggleSection(`${key}-${sectionIndex}`)"
+                    @keydown="handleSectionKeydown($event, `${key}-${sectionIndex}`)"
                   >
                     <span>{{ section.title }}</span>
                     <span 
@@ -50,7 +62,7 @@
                       :class="{ 'footer-nav__icon--rotated': accordionState.openSection === `${key}-${sectionIndex}` }"
                       v-html="arrowIcon"
                     ></span>
-                  </h4>
+                  </div>
                   
                   <!-- 3뎁스 메뉴들 -->
                   <ul 
@@ -58,6 +70,7 @@
                     v-if="section.items && section.items.length > 0" 
                     class="footer-nav__list"
                     :class="{ 'footer-nav__list--mobile-accordion': true }"
+                    :id="`footer-section-${key}-${sectionIndex}`"
                   >
                     <li 
                       v-for="item in section.items" 
@@ -81,16 +94,18 @@
             
             <!-- 하위 섹션이 없는 경우 (Careers, Contact Us) -->
             <template v-else>
-              <h3 class="footer-nav__title">
+              <div class="footer-nav__title">
                 <NuxtLink 
                   v-if="menu.path" 
                   :to="menu.path"
                   class="footer-nav__title-link"
+                  tabindex="0"
+                  @keydown="handleSimpleMenuKeydown($event)"
                 >
                   {{ menu.title }}
                 </NuxtLink>
                 <span v-else class="menu-item-disabled">{{ menu.title }}</span>
-              </h3>
+              </div>
             </template>
         </div>
       </div>
@@ -258,6 +273,178 @@ const toggleSection = (sectionKey) => {
   }
 }
 
+// 포커스 관리 유틸리티 함수들
+const getAllFocusableElements = () => {
+  // 논리적인 순서로 요소들을 가져오기
+  const elements = []
+  
+  // What We Do 메뉴 타이틀
+  const whatWeDoTitle = document.querySelector('[data-menu="whatwedo"] .footer-nav__title')
+  if (whatWeDoTitle) elements.push(whatWeDoTitle)
+  
+  // About Us 메뉴 타이틀
+  const aboutUsTitle = document.querySelector('[data-menu="aboutus"] .footer-nav__title')
+  if (aboutUsTitle) elements.push(aboutUsTitle)
+  
+  // Careers 링크
+  const careersLink = document.querySelector('[data-menu="careers"] .footer-nav__title-link')
+  if (careersLink) elements.push(careersLink)
+  
+  // Contact Us 링크
+  const contactUsLink = document.querySelector('[data-menu="contactus"] .footer-nav__title-link')
+  if (contactUsLink) elements.push(contactUsLink)
+  
+  return elements
+}
+
+const getCurrentFocusIndex = () => {
+  const focusableElements = getAllFocusableElements()
+  return Array.from(focusableElements).indexOf(document.activeElement)
+}
+
+const focusElementByIndex = (index) => {
+  const focusableElements = getAllFocusableElements()
+  if (focusableElements[index]) {
+    focusableElements[index].focus()
+  }
+}
+
+const focusNextElement = () => {
+  const currentIndex = getCurrentFocusIndex()
+  const focusableElements = getAllFocusableElements()
+  const nextIndex = (currentIndex + 1) % focusableElements.length
+  focusElementByIndex(nextIndex)
+}
+
+const focusPreviousElement = () => {
+  const currentIndex = getCurrentFocusIndex()
+  const focusableElements = getAllFocusableElements()
+  const prevIndex = currentIndex === 0 ? focusableElements.length - 1 : currentIndex - 1
+  focusElementByIndex(prevIndex)
+}
+
+// 키보드 이벤트 핸들러들
+const handleMenuKeydown = (event, menuKey) => {
+  if (!isMobile.value) return // 모바일이 아니면 동작하지 않음
+  
+  const { key } = event
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault()
+      toggleMenu(menuKey)
+      
+      // 아코디언이 열렸을 때 첫 번째 하위 요소로 포커스 이동
+      if (accordionState.value.openMenu === menuKey) {
+        nextTick(() => {
+          const menuContent = document.getElementById(`footer-menu-${menuKey}`)
+          const firstFocusable = menuContent?.querySelector('[tabindex="0"]')
+          if (firstFocusable) {
+            firstFocusable.focus()
+          }
+        })
+      }
+      break
+    case 'ArrowDown':
+      event.preventDefault()
+      focusPreviousElement()
+      break
+    case 'ArrowUp':
+      event.preventDefault()
+      focusNextElement()
+      break
+    case 'ArrowRight':
+      event.preventDefault()
+      // 아코디언이 열려있으면 첫 번째 하위 요소로 이동
+      if (accordionState.value.openMenu === menuKey) {
+        const menuContent = document.getElementById(`footer-menu-${menuKey}`)
+        const firstFocusable = menuContent?.querySelector('[tabindex="0"]')
+        if (firstFocusable) {
+          firstFocusable.focus()
+        }
+      }
+      break
+  }
+}
+
+const handleSectionKeydown = (event, sectionKey) => {
+  if (!isMobile.value) return // 모바일이 아니면 동작하지 않음
+  
+  const { key } = event
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault()
+      toggleSection(sectionKey)
+      
+      // 섹션이 열렸을 때 첫 번째 하위 요소로 포커스 이동
+      if (accordionState.value.openSection === sectionKey) {
+        nextTick(() => {
+          const sectionContent = document.getElementById(`footer-section-${sectionKey}`)
+          const firstFocusable = sectionContent?.querySelector('a')
+          if (firstFocusable) {
+            firstFocusable.focus()
+          }
+        })
+      }
+      break
+    case 'ArrowDown':
+      event.preventDefault()
+      focusPreviousElement()
+      break
+    case 'ArrowUp':
+      event.preventDefault()
+      focusNextElement()
+      break
+    case 'ArrowRight':
+      event.preventDefault()
+      // 섹션이 열려있으면 첫 번째 링크로 이동
+      if (accordionState.value.openSection === sectionKey) {
+        const sectionContent = document.getElementById(`footer-section-${sectionKey}`)
+        const firstLink = sectionContent?.querySelector('a')
+        if (firstLink) {
+          firstLink.focus()
+        }
+      }
+      break
+    case 'ArrowLeft':
+      event.preventDefault()
+      // 부모 메뉴로 포커스 이동
+      const parentMenu = event.target.closest('.footer-nav__column')
+      const parentTitle = parentMenu?.querySelector('.footer-nav__title')
+      if (parentTitle) {
+        parentTitle.focus()
+      }
+      break
+  }
+}
+
+const handleSimpleMenuKeydown = (event) => {
+  const { key } = event
+  
+  switch (key) {
+    case 'Enter':
+    case ' ':
+      // 링크가 있으면 클릭
+      const link = event.target.querySelector('a') || event.target
+      if (link && link.tagName === 'A') {
+        event.preventDefault()
+        link.click()
+      }
+      break
+    case 'ArrowDown':
+      event.preventDefault()
+      focusPreviousElement()
+      break
+    case 'ArrowUp':
+      event.preventDefault()
+      focusNextElement()
+      break
+  }
+}
+
 // 아코디언 아이콘 (모바일에서만 표시)
 const arrowIcon = arrowHamburgerDown
 
@@ -380,13 +567,24 @@ defineOptions({
         }
         
         @include tablet {
-          width: calc((100% - rem(80)) / 3);
           padding: 0;
         }
         
         @include desktop {
           width: rem(180);
           padding: 0;
+        }
+      }
+      
+      // 2번째 컬럼일 때만 특별한 width 적용
+      &:nth-child(2) {
+        .footer-nav__title{
+          @include tablet {
+            width: calc((100% - rem(80)) / 3);
+          }
+          @include desktop {
+            width: rem(180);
+          }
         }
       }
       
@@ -748,28 +946,28 @@ defineOptions({
         display: flex;
         align-items: center;
       }
-
-    }
     
-    &__link {
-      color: $gray-4;
-      text-decoration: none;
-      font-size: rem(12);
-      font-weight: $font-weight-regular;
-      line-height: 140%;
-      transition: opacity 0.2s ease;
-      
-      @include tablet {
-        font-size: rem(8);
+      &__link {
+        color: $gray-4;
+        text-decoration: none;
+        font-size: rem(12);
         font-weight: $font-weight-regular;
-        line-height: normal;
-        text-transform: uppercase;
+        line-height: 140%;
+        transition: opacity 0.2s ease;
+        
+        @include tablet {
+          font-size: rem(8);
+          font-weight: $font-weight-regular;
+          line-height: normal;
+          text-transform: uppercase;
+          color: $gray-1;
+        }
+        
+        &:hover {
+          text-decoration: underline;
+        }
       }
-      
-      &:hover {
-        text-decoration: underline;
-      }
-      
+    
       &__divider {
         display: none;
         
@@ -781,7 +979,7 @@ defineOptions({
           margin: 0 rem(8);
           vertical-align: middle;
         }
-        
+      
         @include desktop {
           margin: 0 rem(12);
         }
