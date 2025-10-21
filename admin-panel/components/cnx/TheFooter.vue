@@ -491,7 +491,7 @@ defineOptions({
     }
     
     @include desktop {
-      gap: rem(77) rem(40);
+      gap: rem(77) rem(25);
       margin-bottom: rem(70);
     }
     
@@ -537,7 +537,7 @@ defineOptions({
         
         @include desktop {
           .footer-nav__section {
-            width: rem(192);
+            width: rem(180);
           }
         }
       }
