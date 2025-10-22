@@ -45,9 +45,13 @@ definePageMeta({
 import NewsletterContent from './NewsletterContent.vue'
 import RelatedNewsletters from './RelatedNewsletters.vue'
 import AppButton from '~/components/cnx/AppButton.vue'
+import { inject, watch } from 'vue'
 
 const route = useRoute()
 const newsletterId = route.params.id
+
+// 동적 메타데이터 설정 함수 가져오기
+const setPageMeta = inject('setPageMeta')
 
 // 환경 설정
 const config = useRuntimeConfig()
@@ -89,10 +93,16 @@ const fetchNewsletter = async () => {
             ? '2025-09-19T19:35:00+09:00'
             : foundNewsletter.published_at,
       }
+      
+      // 동적 메타데이터 설정
+      setNewsletterMeta(foundNewsletter)
     } else {
       // === DB 연결 로직 ===
       const response = await $fetch(`/api/public/newsletters/${newsletterId}`)
       newsletter.value = response.data
+      
+      // 동적 메타데이터 설정
+      setNewsletterMeta(response.data)
     }
 
     // 뉴스레터 조회 성공 시 관련 뉴스레터도 가져오기
@@ -188,18 +198,47 @@ const handleRelatedNewsletterClick = newsletterId => {
   lastClickedNewsletterId.value = newsletterId
 }
 
-// HTML에서 텍스트 추출하여 요약 생성
-const getTextSummary = htmlContent => {
+// 상수 정의
+const NEWSLETTER_META_CONSTANTS = {
+  OG_IMAGE: '/assets/cnx/about-us/newsroom-share.png',
+  TITLE_SUFFIX: ' - Concentrix',
+  DESCRIPTION_MAX_LENGTH: 160
+}
+
+// HTML에서 첫 번째 문단 추출
+const getFirstParagraph = htmlContent => {
   if (!htmlContent) return ''
 
-  // HTML 태그 제거
+  // 첫 번째 <p> 태그 찾기
+  const pMatch = htmlContent.match(/<p[^>]*>(.*?)<\/p>/i)
+  if (pMatch) {
+    // HTML 태그 제거
+    const textContent = pMatch[1].replace(/<[^>]*>/g, ' ')
+    // 연속된 공백 정리
+    const cleanText = textContent.replace(/\s+/g, ' ').trim()
+    // 상수로 정의된 길이로 제한하고 말줄임표 추가
+    return cleanText.length > NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH
+      ? cleanText.substring(0, NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH) + '...'
+      : cleanText
+  }
+
+  // <p> 태그가 없으면 전체 텍스트에서 첫 번째 문장 추출
   const textContent = htmlContent.replace(/<[^>]*>/g, ' ')
-  // 연속된 공백 정리
   const cleanText = textContent.replace(/\s+/g, ' ').trim()
-  // 120자로 제한하고 말줄임표 추가
-  return cleanText.length > 120
-    ? cleanText.substring(0, 120) + '...'
-    : cleanText
+  const firstSentence = cleanText.split(/[.!?]/)[0]
+  
+  return firstSentence.length > NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH
+    ? firstSentence.substring(0, NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH) + '...'
+    : firstSentence
+}
+
+// 뉴스레터 메타데이터 설정 함수 (중복 제거)
+const setNewsletterMeta = (newsletterData) => {
+  setPageMeta({
+    title: `${newsletterData.title}${NEWSLETTER_META_CONSTANTS.TITLE_SUFFIX}`,
+    description: getFirstParagraph(newsletterData.body_html),
+    ogImage: NEWSLETTER_META_CONSTANTS.OG_IMAGE
+  })
 }
 
 // 컴포넌트 마운트 시 데이터 로드
@@ -207,21 +246,18 @@ onMounted(() => {
   fetchNewsletter()
 })
 
-// 메타 태그
-useHead({
-  title: () => (newsletter.value ? newsletter.value.title : '뉴스레터'),
-  meta: [
-    {
-      name: 'description',
-      content: () =>
-        newsletter.value
-          ? newsletter.value.body_html
-              .replace(/<[^>]*>/g, '')
-              .substring(0, 160) + '...'
-          : '뉴스레터 상세 내용',
-    },
-  ],
-})
+// 라우트 파라미터 변경 감지 (동적 라우트에서 ID 변경 시)
+watch(
+  () => route.params.id,
+  (newId, oldId) => {
+    if (newId !== oldId) {
+      // ID가 변경되면 데이터 재로드
+      fetchNewsletter()
+    }
+  }
+)
+
+// 메타데이터는 레이아웃에서 동적으로 처리됨
 </script>
 
 <style lang="scss" scoped>
