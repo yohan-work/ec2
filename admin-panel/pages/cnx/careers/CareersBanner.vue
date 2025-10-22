@@ -122,7 +122,7 @@
 </script>
 
 <style lang="scss" scoped>
-.careers-banner {
+  .careers-banner {
     padding: rem(24);
     border-radius: rem(20);
     background-color: #f7f7f7;

@@ -102,7 +102,7 @@
 </script>
 
 <style lang="scss" scoped>
-.careers-non-agent { 
+  .careers-non-agent { 
     display: grid;
     grid-template-columns: 1fr; 
     column-gap: rem(32);
