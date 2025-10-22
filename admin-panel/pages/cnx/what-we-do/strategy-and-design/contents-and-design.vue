@@ -595,6 +595,7 @@ const getSlideAltText = (slide) => {
 // 슬라이드 토글 함수
 const toggleSlide = (index) => {
   const wasActive = activeSlideIndex.value === index;
+  
   if (wasActive) {
     // 같은 슬라이드를 클릭하면 비활성화
     activeSlideIndex.value = null;
@@ -602,32 +603,37 @@ const toggleSlide = (index) => {
     // 다른 슬라이드를 클릭하면 활성화
     activeSlideIndex.value = index;
   }
-  const activatedNow = !wasActive;
-
-  // 폭 변화가 반영된 뒤 스크롤 타임라인 재계산
+  
+  // 포커스 저장 (스크롤 조정 후 복구용)
+  pendingFocusSlideIndex = index;
+  
+  // CSS 트랜지션 완료를 정확하게 감지하여 ScrollTrigger 재조정
   nextTick(() => {
-    if (window.innerWidth >= 768) {
-      // 실제 길이 변경이 안정화될 때까지 감시 후, 한 번만 초기화/refresh
-      // refresh 완료 후 클릭했던 버튼으로 포커스 복구
-      pendingFocusSlideIndex = index;
-      // 중앙 정렬은 폭 안정화 이후에 1회만 수행 (중복 이동 방지)
-      startWidthStabilizeWatch();
-      if (activatedNow) {
-        // 활성화된 슬라이드가 가운데로 오도록 중앙정렬 요청을 미리 큐잉
-        pendingCenterIndex = index;
-        // 잠재적인 폭 변화가 시작되도록 약간의 여유를 둔 뒤, 재빌드 중이 아니면 바로 정렬
-        setTimeout(() => {
-          if (!isRebuildCenteringActive) {
-            requestCenterSlide(index);
-          }
-        }, 200);
-        // 최종 안전 포커스 복구: 모든 레이아웃/애니메이션이 끝난 뒤 한 번 더 보장
-        setTimeout(() => { try { focusButtonByIndex(index); } catch (_) { /* ignore */ } }, 800);
-      } else {
-        // 닫힘(비활성화) 시에도 버튼 포커스를 최종 보장
-        setTimeout(() => { try { focusButtonByIndex(index); } catch (_) { /* ignore */ } }, 800);
-      }
-    }
+    const swiperWrapper = document.querySelector('.banner-slide .swiper-wrapper');
+    if (!swiperWrapper) return;
+    
+    const onTransitionEnd = () => {
+      swiperWrapper.removeEventListener('transitionend', onTransitionEnd);
+      
+      try {
+        if (typeof startWidthStabilizeWatch === 'function') {
+          startWidthStabilizeWatch();
+        }
+      } catch (_) { /* ignore */ }
+    };
+    
+    // 트랜지션 완료 이벤트 리스너 등록
+    swiperWrapper.addEventListener('transitionend', onTransitionEnd, { once: true });
+    
+    // 타임아웃 폴백 (트랜지션이 없을 경우 대비)
+    setTimeout(() => {
+      swiperWrapper.removeEventListener('transitionend', onTransitionEnd);
+      try {
+        if (typeof startWidthStabilizeWatch === 'function') {
+          startWidthStabilizeWatch();
+        }
+      } catch (_) { /* ignore */ }
+    }, 600); // 0.45s 트랜지션 + 여유분
   });
 };
 
@@ -848,69 +854,21 @@ const initBannerScrollAnimation = () => {
     widthStableTimer = null;
   };
 
-  // 폭 안정화 후 재빌드하고, 대상 슬라이드를 중앙으로 부드럽게 이동한 다음 마지막에 refresh
+  // 폭 안정화 후 재빌드만 수행 (중앙 정렬 제거)
   const rebuildAndSmoothCenter = () => {
     try {
       deferNextRefresh = true; // init에서 즉시 refresh 하지 않도록
       isRebuildCenteringActive = true;
       initScrollAnimation();
-      const st = (bannerScroll && bannerScroll.scrollTrigger) ? bannerScroll.scrollTrigger : null;
-      if (!st) { ScrollTrigger.refresh(); return; }
-
-      // pendingFocusSlideIndex가 우선, 없으면 현재 인덱스 사용 시도
-      const idx = (typeof pendingFocusSlideIndex === 'number')
-        ? pendingFocusSlideIndex
-        : (typeof currentSlideIndex?.value === 'number' ? currentSlideIndex.value : null);
-      if (idx == null) { ScrollTrigger.refresh(); return; }
-
-      const wrapper = document.querySelector('.banner-slide .swiper-wrapper');
-      const container = document.querySelector('.banner-slide');
-      if (!wrapper || !container) { ScrollTrigger.refresh(); return; }
-      const slides = wrapper.querySelectorAll(':scope > .swiper-slide');
-      const target = slides && slides[idx] ? slides[idx] : null;
-      if (!target) { ScrollTrigger.refresh(); return; }
-
-      const containerWidth = (container).offsetWidth;
-      const wrapperWidth = (wrapper).scrollWidth;
-      if (!(containerWidth && wrapperWidth) || wrapperWidth <= containerWidth) { ScrollTrigger.refresh(); return; }
-
-      const slideLeft = (target).offsetLeft;
-      const slideWidth = (target).offsetWidth;
-      const targetCenter = slideLeft + slideWidth / 2;
-      const containerCenter = containerWidth / 2;
-      let desiredX = -(targetCenter - containerCenter);
-      const minX = -(wrapperWidth - containerWidth);
-      const maxX = 0;
-      if (desiredX < minX) desiredX = minX;
-      if (desiredX > maxX) desiredX = maxX;
-      const totalShift = wrapperWidth - containerWidth;
-      const progress = Math.min(1, Math.max(0, -desiredX / totalShift));
-      const newScroll = (typeof st.start === 'number' && typeof st.end === 'number')
-        ? st.start + progress * (st.end - st.start)
-        : null;
-      if (!Number.isFinite(newScroll)) { ScrollTrigger.refresh(); return; }
-
-      const proxy = { s: st.scroll() };
-      gsap.to(proxy, {
-        s: newScroll,
-        duration: 0.65,
-        ease: 'power3.out',
-        onUpdate: () => { try { st.scroll(proxy.s); } catch (_) { /* ignore */ } },
-        onComplete: () => {
-          try { ScrollTrigger.refresh(); } catch (_) { /* ignore */ }
-          // 포커스 복구도 마지막에 보장
-          if (typeof pendingFocusSlideIndex === 'number') {
-            try { focusButtonByIndex(pendingFocusSlideIndex); } catch (_) { /* ignore */ }
-            pendingFocusSlideIndex = null;
-          }
-          // 재빌드 중 보류된 중앙정렬 요청이 있으면 마지막에 한 번만 실행
-          if (typeof pendingCenterIndex === 'number') {
-            const idx2 = pendingCenterIndex; pendingCenterIndex = null;
-            requestCenterSlide(idx2);
-          }
-          isRebuildCenteringActive = false;
-        }
-      });
+      
+      // 포커스 복구
+      if (typeof pendingFocusSlideIndex === 'number') {
+        try { focusButtonByIndex(pendingFocusSlideIndex); } catch (_) { /* ignore */ }
+        pendingFocusSlideIndex = null;
+      }
+      
+      ScrollTrigger.refresh();
+      isRebuildCenteringActive = false;
     } catch (_) {
       try { ScrollTrigger.refresh(); } catch (_) { /* ignore */ }
       isRebuildCenteringActive = false;
@@ -1005,17 +963,6 @@ const initBannerScrollAnimation = () => {
         });
       });
       pendingFocusSlideIndex = null;
-    }
-    if (typeof pendingCenterIndex === 'number') {
-      const cidx = pendingCenterIndex;
-      pendingCenterIndex = null;
-      // refresh 직후 레이아웃 안정화를 위해 지연을 더 준 뒤에 중앙 정렬
-      // 2×rAF + 120ms setTimeout으로 완충
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setTimeout(() => requestCenterSlide(cidx), 120);
-        });
-      });
     }
   };
   try { ScrollTrigger.addEventListener('refresh', onStRefreshHandler); } catch (_) { /* ignore */ }
