@@ -1,9 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gray-50">
-        <!-- 헤더-->
-        <!-- 메인 콘텐츠 -->
         <main>
-            <!-- 제목 -->
             <AppTitle title="Contact Us" />
             <AppTab v-model="activeTab" :tabs="contactTabs" @tab-change="handleTabChange">
                 <!-- S : Digital & Technology Business 탭-->
@@ -28,15 +24,13 @@
                                                 <span class="svg-icon svg-icon--phone" v-html="phoneSvg"></span>
                                                 <span>전화 문의</span>
                                             </div>
-                                            <span class="detail">{{ center.phone }}</span>
+                                            <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a >
                                         </div>
                                     </div>
                                 </div>
                                 <!-- S : 네이버 지도 영역  -->
                                 <div class="container__map">
-                                    <!-- 네이버 지도 영역 (추후 구현) -->
-                                    <!-- <NaverMap :lat="center.mapLat" :lng="center.mapLng" /> -->
-                                    <div class="contact-map">
+                                    <div :id="`map-digital-${index}`" class="contact-map">
                                     </div>
                                 </div>
                                 <!-- E : 네이버 지도 영역  -->
@@ -53,34 +47,35 @@
                                             <span class="svg-icon svg-icon--mobile" v-html="phoneSvg"></span>
                                             <span>전화 문의</span>
                                         </div>
-                                        <span class="detail">{{ center.phone }}</span>
+                                        <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a >
                                     </div>
                                 </div>
                             </div>
                             <!-- S : 센터 이미지 영역  -->
                             <div class="container__image">
-                                <!-- 이미지 영역 (추후 구현) -->
-                                <!-- <img v-for="(image, imgIndex) in center.images" :key="imgIndex" :src="image" :alt="`${center.name} 이미지 ${imgIndex + 1}`" /> -->
+                                <!-- 첫 번째 이미지 -->
                                 <div class="container__image-item">
                                     <div>
-                                        <!-- <picture>
-                                            <source srcset="image.png" media="(min-width: )" />
-                                            <img src="image.png" alt="센터 이미지">
-                                        </picture> -->
+                                        <picture>
+                                            <source :srcset="center.images.mobile[0]" media="(max-width: 767px)" loading="lazy" />
+                                            <img :src="center.images.pc[0]" :alt="`${center.name} 이미지 1`" loading="lazy" />
+                                        </picture>
                                     </div>
                                 </div>
+                                <!-- 두 번째 이미지 -->
                                 <div class="container__image-item">
                                     <div>
-                                        <!-- <picture>
-                                            <source srcset="image.png" media="(min-width: )" />
-                                            <img src="image.png" alt="센터 이미지">
-                                        </picture> -->
+                                        <picture>
+                                            <source :srcset="center.images.mobile[1]" media="(max-width: 767px)" loading="lazy" />
+                                            <img :src="center.images.pc[1]" :alt="`${center.name} 이미지 2`" loading="lazy" />
+                                        </picture>
                                     </div>
+                                    <!-- 세 번째 이미지 -->
                                     <div>
-                                        <!-- <picture>
-                                            <source srcset="image.png" media="(min-width: )" />
-                                            <img src="image.png" alt="센터 이미지">
-                                        </picture> -->
+                                        <picture>
+                                            <source :srcset="center.images.mobile[2]" media="(max-width: 767px)" loading="lazy" />
+                                            <img :src="center.images.pc[2]" :alt="`${center.name} 이미지 3`" loading="lazy" />
+                                        </picture>
                                     </div>
                                 </div>
                             </div>
@@ -110,14 +105,13 @@
                                                 <span class="svg-icon svg-icon--phone" v-html="phoneSvg"></span>
                                                 <span>전화 문의</span>
                                             </div>
-                                            <span class="detail">{{ center.phone }}</span>
+                                            <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a >
                                         </div>
                                     </div>
                                 </div>
                                 <!-- S : 네이버 지도 영역  -->
                                 <div class="container__map">
-                                    <!-- <NaverMap :lat="center.mapLat" :lng="center.mapLng" /> -->
-                                    <div class="contact-map">
+                                    <div :id="`map-customer-${index}`" class="contact-map">
                                     </div>
                                 </div>
                                 <!-- E : 네이버 지도 영역  -->
@@ -134,34 +128,35 @@
                                             <span class="svg-icon svg-icon--mobile" v-html="phoneSvg"></span>
                                             <span>전화 문의</span>
                                         </div>
-                                        <span class="detail">{{ center.phone }}</span>
+                                        <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a >
                                     </div>
                                 </div>
                             </div>
                             <!-- S : 센터 이미지 영역  -->
                             <div class="container__image">
-                                <!-- 이미지 영역 (추후 구현) -->
-                                <!-- <img v-for="(image, imgIndex) in center.images" :key="imgIndex" :src="image" :alt="`${center.name} 이미지 ${imgIndex + 1}`" /> -->
+                                <!-- 첫 번째 이미지 -->
                                 <div class="container__image-item">
                                     <div>
-                                        <!-- <picture>
-                                            <source srcset="image.png" media="(min-width: )" />
-                                            <img src="image.png" alt="센터 이미지">
-                                        </picture> -->
+                                        <picture>
+                                            <source :srcset="center.images.mobile[0]" media="(max-width: 767px)" loading="lazy" />
+                                            <img :src="center.images.pc[0]" :alt="`${center.name} 이미지 1`" loading="lazy" />
+                                        </picture>
                                     </div>
                                 </div>
+                                <!-- 두 번째 이미지 -->
                                 <div class="container__image-item">
                                     <div>
-                                        <!-- <picture>
-                                            <source srcset="image.png" media="(min-width: )" />
-                                            <img src="image.png" alt="센터 이미지">
-                                        </picture> -->
+                                        <picture>
+                                            <source :srcset="center.images.mobile[1]" media="(max-width: 767px)" loading="lazy" />
+                                            <img :src="center.images.pc[1]" :alt="`${center.name} 이미지 2`" loading="lazy" />
+                                        </picture>
                                     </div>
+                                    <!-- 세 번째 이미지 -->
                                     <div>
-                                        <!-- <picture>
-                                            <source srcset="image.png" media="(min-width: )" />
-                                            <img src="image.png" alt="센터 이미지">
-                                        </picture> -->
+                                        <picture>
+                                            <source :srcset="center.images.mobile[2]" media="(max-width: 767px)" loading="lazy" />
+                                            <img :src="center.images.pc[2]" :alt="`${center.name} 이미지 3`" loading="lazy" />
+                                        </picture>
                                     </div>
                                 </div>
                             </div>
@@ -172,15 +167,14 @@
                 <!-- E : Customer Service 탭-->
             </AppTab>
         </main>
-    </div>
 </template>
 
 <script setup>
 definePageMeta({
-  layout: 'concentrix',
+    layout: 'concentrix',
 })
 
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 // Components
 import AppTitle from '~/components/cnx/AppTitle.vue'
@@ -190,110 +184,286 @@ import AppButtonTab from '~/components/cnx/AppButtonTab.vue'
 // SVG Icons
 import locationSvg from '~/public/assets/cnx/contact-us/location.svg?raw'
 import phoneSvg from '~/public/assets/cnx/contact-us/phone.svg?raw'
+import markerIcon from '~/public/assets/cnx/contact-us/marker.svg'
+import markerIconMo from '~/public/assets/cnx/contact-us/marker-mo.svg'
 
 const activeTab = ref(0)
+const activeTab1 = ref(0)
+const activeTab2 = ref(0)
+const maps = ref({})
+const isMobile = ref(false)
 
 const contactTabs = [
     { label: 'Digital & Technology Business', slot: 'digital-technology-business' },
     { label: 'Customer Service', slot: 'customer-service' }
 ]
 
-// const handleTabChange = (event: Event) => {
-//     console.log('Main tab changed:', event)
-// }
-
-const handleTabChange = (event) => {
-    console.log('Main tab changed:', event)
-}
-
-const activeTab1 = ref(0);
-const activeTab2 = ref(0);
-
-// Digital & Technology Business 데이터
+// Digital & Technology Business 탭 데이터(센터명, 주소, 전화번호, 지도옵션, 이미지)
 const digitalTechCenters = [
     {
         name: '강남센터',
-        location: '서울시 강남구 테헤란로 505, SAC타워 10층, 11층',
-        phone: '010-6328-1900',
-        // mapLat: 37.501234,
-        // mapLng: 127.041234,
-        // images: ['/images/gangnam-1.jpg', '/images/gangnam-2.jpg', '/images/gangnam-3.jpg']
+        location: '서울시 강남구 테헤란로 509, NC타워1, 5층',
+        phone: '02-6328-1900',
+        mapOptions: {
+            lat: 37.5077819,
+            lng: 127.0582386,
+            zoom: 17,
+        },
+        images: {
+            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+        }
     },
     {
         name: '강남2센터',
         location: '서울시 강남구 테헤란로 505, SAC타워 10층, 11층',
-        phone: '010-6328-1900',
-        // mapLat: 37.501234,
-        // mapLng: 127.041234,
-        // images: ['/images/gangnam2-1.jpg', '/images/gangnam2-2.jpg', '/images/gangnam2-3.jpg']
+        phone: '02-6328-1900',
+        mapOptions: {
+            lat: 37.5075889,
+            lng: 127.0574705,
+            zoom: 17,
+        },
+        images: {
+            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+        }
     },
     {
         name: '용산센터',
-        location: '서울시 용산구',
-        phone: '010-6328-1900',
-        // mapLat: 37.501234,
-        // mapLng: 127.041234,
-        // images: ['/images/yongsan-1.jpg', '/images/yongsan-2.jpg', '/images/yongsan-3.jpg']
+        location: '서울시 한강대로 95, 래미안용산 더 센트럴 3층',
+        phone: '02-6328-1900',
+        mapOptions: {
+            lat: 37.5290927,
+            lng: 126.9668857,
+            zoom: 17,
+        },
+        images: {
+            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+        }
     }
-];
+]
 
-// Customer Service 데이터
+// Customer Service 탭 데이터(센터명, 주소, 전화번호, 지도옵션, 이미지)
 const customerServiceCenters = [
     {
         name: '신도림1센터',
-        location: '서울시 강남구 테헤란로 505, SAC타워 10층, 11층',
-        phone: '010-6328-1900',
-        // mapLat: 37.501234,
-        // mapLng: 127.041234,
-        // images: ['/images/sindorim1-1.jpg', '/images/sindorim1-2.jpg', '/images/sindorim1-3.jpg']
+        location: '서울 구로구 새말로 97, 센터포인트웨스트 24층',
+        phone: '02-6741-5110',
+        mapOptions: {
+            lat: 37.5069878,
+            lng: 126.8903511,
+            zoom: 17,
+        },
+        images: {
+            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+        }
     },
     {
         name: '신도림2센터',
-        location: '서울시 강남구 테헤란로 505, SAC타워 10층, 11층',
-        phone: '010-6328-1900',
-        // mapLat: 37.501234,
-        // mapLng: 127.041234,
-        // images: ['/images/sindorim2-1.jpg', '/images/sindorim2-2.jpg', '/images/sindorim2-3.jpg']
+        location: '서울 구로구 신도림동 692 Space K 18층',
+        phone: '02-6741-5104',
+        mapOptions: {
+            lat: 37.5086046,
+            lng: 126.8889310,
+            zoom: 17,
+        },
+        images: {
+            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+        }
     },
     {
         name: '구로센터',
-        location: '서울시 강남구 테헤란로 505, SAC타워 10층, 11층',
-        phone: '010-6328-1900',
-        // mapLat: 37.501234,
-        // mapLng: 127.041234,
-        // images: ['/images/guro-1.jpg', '/images/guro-2.jpg', '/images/guro-3.jpg']
+        location: '서울 디지털로 300, 지밸리 비즈플라자 16층',
+        phone: '02-6342-2300',
+        mapOptions: {
+            lat: 37.4849099,
+            lng: 126.8965595,
+            zoom: 17,
+        },
+        images: {
+            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+        }
     },
     {
         name: '문래센터',
-        location: '서울시 강남구 테헤란로 505, SAC타워 10층, 11층',
-        phone: '010-6328-1900',
-        // mapLat: 37.501234,
-        // mapLng: 127.041234,
-        // images: ['/images/mullae-1.jpg', '/images/mullae-2.jpg', '/images/mullae-3.jpg']
+        location: '서울 영등포구 문래로28길 25, 세미콜론 문래S타워 11층',
+        phone: '02-6677-1160',
+        mapOptions: {
+            lat: 37.5161111,
+            lng: 126.8998023,
+            zoom: 17,
+        },
+        images: {
+            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+        }
     },
     {
         name: '명동센터',
-        location: '서울시 강남구 테헤란로 505, SAC타워 10층, 11층',
-        phone: '010-6328-1900',
-        // mapLat: 37.501234,
-        // mapLng: 127.041234,
-        // images: ['/images/myeongdong-1.jpg', '/images/myeongdong-2.jpg', '/images/myeongdong-3.jpg']
+        location: '서울 중구 남대문로 90 명동N빌딩 8층',
+        phone: '02-6261-2100',
+        mapOptions: {
+            lat: 37.5651103,
+            lng: 126.9828407,
+            zoom: 17,
+        },
+        images: {
+            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+        }
     }
-];
+]
 
-// 탭 데이터 생성
+// 탭 데이터 생성(센터명)
 const tabs1 = digitalTechCenters.map(center => ({ text: center.name }));
 const tabs2 = customerServiceCenters.map(center => ({ text: center.name }));
 
-const onTabChange = (index, tab) => {
-    console.log(`탭 변경: ${index}번째 탭 (${tab.text})`);
-};
+// 네이버 지도 스크립트 로드 함수
+const loadNaverMapScript = () => {
+    return new Promise((resolve, reject) => {
+        if (window.naver && window.naver.maps) {
+            resolve(window.naver.maps)
+            return
+        }
 
-// 메타 태그
-useHead({
-  title: '센터 문의',
-  meta: [{ name: 'description', content: '센터 문의 정보를 확인하세요' }],
+        const script = document.createElement('script')
+        const keyId = useRuntimeConfig().public.naverClientId
+
+        if (!keyId) {
+            reject(new Error('네이버 지도 API가 필요합니다. NUXT_PUBLIC_NAVER_CLIENT_ID 환경 변수를 확인하세요.'))
+            return
+        }
+
+        script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${keyId}`
+        script.onload = () => {
+            if (window.naver && window.naver.maps) {
+                resolve(window.naver.maps)
+            } else {
+                reject(new Error('네이버 지도 API 로드 실패'))
+            }
+        }
+        script.onerror = () => reject(new Error('네이버 지도 스크립트 로드 실패'))
+        document.head.appendChild(script)
+    })
+}
+
+// 화면 크기 체크 함수
+const checkScreenSize = () => {
+    if (process.client) {
+        isMobile.value = window.innerWidth < 768
+    }
+}
+
+// 네이버맵 초기화 함수
+const initializeMap = (mapId, center, title) => {
+    const mapElement = document.getElementById(mapId)
+    if (!mapElement) return null
+
+    // 화면 크기에 따른 마커 아이콘 선택
+    const selectedMarkerIcon = isMobile.value ? markerIconMo : markerIcon
+
+    // 네이버맵 초기화
+    const map = new window.naver.maps.Map(mapElement, {
+        center: new window.naver.maps.LatLng(center.lat, center.lng), // 센터 좌표
+        zoom: center.zoom || 15, // 줌 레벨
+        mapTypeControl: false,  // 일반/위성 선택 탭 
+        zoomControl: false      // 확대/축소 선택 탭
+    })
+
+    // 네이버맵 마커 초기화
+    const marker = new window.naver.maps.Marker({
+        position: new window.naver.maps.LatLng(center.lat, center.lng),
+        map,
+        // 마커 아이콘 
+        icon: {
+            url: selectedMarkerIcon,
+        },
+        title: title
+    })
+
+    // 마커 참조를 맵 객체에 저장 (리사이즈 시 업데이트용)
+    map._marker = marker
+    map._center = center
+    map._title = title
+
+    return map
+}
+
+// 모든 활성 지도의 마커 아이콘 업데이트
+const updateMapMarkers = () => {
+    Object.values(maps.value).forEach(map => {
+        if (map && map._marker) {
+            const selectedMarkerIcon = isMobile.value ? markerIconMo : markerIcon
+            map._marker.setIcon({
+                url: selectedMarkerIcon,
+            })
+        }
+    })
+}
+
+// 현재 활성 탭의 지도 초기화
+const initializeCurrentMap = async () => {
+    try {
+        await loadNaverMapScript()
+        await nextTick()
+
+        if (activeTab.value === 0) {
+            // Digital & Technology Business 
+            const currentCenter = digitalTechCenters[activeTab1.value]
+            const mapId = `map-digital-${activeTab1.value}`
+            maps.value[mapId] = initializeMap(mapId, currentCenter.mapOptions, currentCenter.name)
+        } else {
+            // Customer Service 
+            const currentCenter = customerServiceCenters[activeTab2.value]
+            const mapId = `map-customer-${activeTab2.value}`
+            maps.value[mapId] = initializeMap(mapId, currentCenter.mapOptions, currentCenter.name)
+        }
+    } catch (error) {
+        console.error('지도 초기화 실패:', error)
+    }
+}
+
+const handleTabChange = async () => {
+    await nextTick()
+    initializeCurrentMap()
+}
+
+const onTabChange = async () => {
+    await nextTick()
+    initializeCurrentMap()
+}
+
+// 리사이즈 이벤트 핸들러
+const handleResize = () => {
+    const previousIsMobile = isMobile.value
+    checkScreenSize()
+
+    if (previousIsMobile !== isMobile.value) {
+        updateMapMarkers()
+    }
+}
+
+onMounted(() => {
+    checkScreenSize()
+    initializeCurrentMap()
+
+    // 리사이즈 이벤트 리스너 등록
+    if (process.client) {
+        window.addEventListener('resize', handleResize)
+    }
 })
+
+onUnmounted(() => {
+    // 리사이즈 이벤트 리스너 제거
+    if (process.client) {
+        window.removeEventListener('resize', handleResize)
+    }
+})
+
 </script>
 
 <style scoped lang="scss">
@@ -444,7 +614,6 @@ useHead({
 
         .contact-map {
             width: 100%;
-            // min-height: rem(284);
             max-height: rem(590);
             aspect-ratio: 312/284;
             background-color: $gray-3;
@@ -503,8 +672,9 @@ useHead({
     &__image {
         display: flex;
         flex-direction: column;
+        height: auto;
         gap: rem(8);
-        padding: 0 0 rem(159);
+        padding: 0 0 rem(123);
 
         @include tablet {
             flex-direction: row;
@@ -513,39 +683,46 @@ useHead({
         }
 
         @include desktop {
-            padding: rem(75) 0 rem(86);
+            gap: rem(32);
+            padding: rem(75) 0 rem(80);
         }
 
         &-item {
             width: 100%;
-
-            @include tablet {
-                width: 50%;
-            }
+            height: 100%;
 
             div {
                 width: 100%;
-                max-height: rem(335);
+                height: 100%;
+            }
 
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
+            @include tablet {
+                flex: 1;
             }
         }
 
         &-item:first-child {
             width: 100%;
-
-            @include tablet {
-                width: 50%;
-            }
+            height: 100%;
 
             div {
                 width: 100%;
-                aspect-ratio: 2/1;
+                height: 100%;
+                aspect-ratio: 312/175;
                 background-color: $gray-3;
+
+                @include tablet {
+                    aspect-ratio: 308/142;
+                }
+
+                @include desktop {
+                    aspect-ratio: 644/335;
+                }
+            }
+
+            @include tablet {
+                width: 100%;
+                height: 100%;
             }
         }
 
@@ -553,6 +730,9 @@ useHead({
             display: flex;
             gap: rem(8);
             width: 100%;
+            height: 100%;
+            flex: 1;
+
 
             @include tablet {
                 width: 50%;
@@ -561,8 +741,17 @@ useHead({
 
             div {
                 width: 100%;
-                aspect-ratio: 1/1;
                 background-color: $gray-3;
+                aspect-ratio: 152/115;
+
+                @include tablet {
+                    aspect-ratio: 142/142;
+                }
+
+                @include desktop {
+                    aspect-ratio: 51/56;
+                }
+
             }
         }
     }
@@ -580,7 +769,6 @@ useHead({
     }
 
     .contact-map {
-
         @include tablet {
             aspect-ratio: 308/283;
             margin: rem(-111) 0 0;
