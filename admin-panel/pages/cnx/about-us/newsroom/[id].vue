@@ -200,7 +200,7 @@ const handleRelatedNewsletterClick = newsletterId => {
 
 // 상수 정의
 const NEWSLETTER_META_CONSTANTS = {
-  OG_IMAGE: '/assets/cnx/about-us/newsroom-share.png',
+  OG_IMAGE: '/assets/cnx/share/concentrix-share.png',
   TITLE_SUFFIX: ' - Concentrix',
   DESCRIPTION_MAX_LENGTH: 160
 }

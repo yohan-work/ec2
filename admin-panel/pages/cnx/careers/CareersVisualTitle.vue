@@ -112,7 +112,7 @@
 </script>
 
 <style lang="scss" scoped>
-.careers-visual-title { 
+  .careers-visual-title { 
     position: relative;
     overflow: hidden;
     border-radius: rem(12);

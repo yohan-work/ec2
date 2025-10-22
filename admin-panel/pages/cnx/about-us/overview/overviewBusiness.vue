@@ -1,0 +1,281 @@
+<template>
+  <!-- business -->
+  <div class="aboutus-business">
+    
+    <div class="aboutus-business__head" ref="businessHeadRef">
+      <h2 class="aboutus-business__head-title" ref="businessHeadTitleRef">Business area</h2>
+      <p class="aboutus-business__head-text" ref="businessHeadTextRef">
+        콘센트릭스는 디지털 마케팅/이커머스 전 영역(전략/UX/디자인/운영/구축/분석)에 대한<br>Total End-to-End 서비스를 제공하고 있습니다
+      </p>
+    </div>
+
+    <picture class="aboutus-business__visual">
+      <source srcset="/assets/cnx/about-us/overview/business-visual.png" media="(min-width: 1024px)" />
+      <source srcset="/assets/cnx/about-us/overview/business-visual_t.png" media="(min-width: 768px)" />
+      <img src="/assets/cnx/about-us/overview/business-visual_m.png" alt="Business area" loading="lazy" ref="businessVisualRef" />
+    </picture>
+
+    <div class="aboutus-business__group">
+      <div class="aboutus-business__grid" v-for="(group, groupIndex) in groupedBusinessItems" :key="groupIndex">
+        <div class="aboutus-business__grid-item" v-for="(item, itemIndex) in group" :key="itemIndex" :ref="el => setBusinessItemRef(el)">
+          <strong class="aboutus-business__grid-title" v-html="item.title"></strong>
+          <ul class="aboutus-business__grid-detail">
+            <li v-for="detail in item.detail" :key="detail.strong">
+              <strong v-html="detail.title"></strong>
+              <p v-for="content in detail.content" :key="content">
+                <span v-html="content"></span>
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script setup>
+
+  import { ref, computed, onMounted, onBeforeUnmount, onBeforeUpdate } from 'vue'
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  const props = defineProps({
+    businessItems: {
+      type: Array,
+      required: true
+    },
+    createHeadAnimation: {
+      type: Function
+    }
+  })
+
+  const businessItems = computed(() => props.businessItems)
+  const businessItemRefs = ref([])
+  const businessHeadRef = ref(null)
+  const businessHeadTitleRef = ref(null)
+  const businessHeadTextRef = ref(null)
+  const businessVisualRef = ref(null)
+
+
+  // business item ref 설정 함수
+  const groupedBusinessItems = computed(() => {
+    const grouped = []
+    const items = businessItems.value
+    const groupSize = 3 
+    
+    for (let i = 0; i < items.length; i += groupSize) {
+      grouped.push(items.slice(i, i + groupSize))
+    }
+    
+    return grouped
+  })
+
+  const setBusinessItemRef = (el) => {
+    if (el) {
+      businessItemRefs.value.push(el)
+    }
+  }
+
+  let ctx = null
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const initAnimation = () => {
+    ctx = gsap.context(() => {
+
+      // Business Head 애니메이션
+      props.createHeadAnimation(
+        businessHeadRef.value,
+        businessHeadTitleRef.value,
+        businessHeadTextRef.value
+      )
+
+      if (businessItemRefs.value.length === 0) return
+      businessItemRefs.value.forEach(item => {
+        if (!item) return
+
+        gsap.fromTo(item, {
+          y: 30,
+          opacity: 0
+        }, {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none none'
+          }
+        })
+      })
+
+      gsap.fromTo(businessVisualRef.value, {
+        scale: 1.2,
+      }, {
+        scale: 1,
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: businessVisualRef.value,
+          start: 'top 80%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none none'
+        }
+      })
+
+    })
+  }
+
+  onBeforeUpdate(() => {
+    businessItemRefs.value = []
+  })
+
+  onMounted(() => {
+    initAnimation()
+  })
+
+  onBeforeUnmount(() => {
+    ctx?.revert()
+    ctx = null
+  })
+
+</script>
+
+<style lang="scss" scoped>
+
+  @mixin translate {
+    transform: translate(rem(30), 0);
+    opacity: 0;
+    transition: all 0.6s ease;
+    @include tablet {
+      transform: translate(0, rem(30));
+    }
+  }
+
+  .aboutus-business {
+
+    margin-top: rem(40);
+    @include tablet {
+      margin-top: rem(80);
+    }
+    @include desktop {
+      margin-top: rem(100);
+    }
+
+    &__head {
+      margin-bottom: rem(40);
+      text-align: center;
+      &-title {
+        @include sub-headline-01;
+      }
+      &-text {
+        margin-top: rem(8);
+        word-break: keep-all;
+        overflow-wrap: anywhere;
+        @include body-02;
+      }
+
+      @include tablet {
+        margin-bottom: rem(80);
+        &-text {
+          margin-top: rem(20);
+        }
+      }
+
+      @include desktop {
+        margin-bottom: rem(100);
+        &-text {
+          margin-top: rem(24);
+        }
+      }
+    }
+
+    &__visual {
+      display: block;
+      overflow: hidden;
+      img {
+        transform: scale(1.2);
+      }
+    }
+
+    &__group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: rem(24);
+      margin-top: rem(24);
+
+      @include tablet {
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: rem(32);
+      }
+      @include desktop {
+        gap: rem(32);
+        margin-top: rem(48);
+      }
+    }
+
+    &__grid {
+      display: flex;
+      flex-direction: column;
+      gap: rem(24);
+      @include desktop {
+        gap: rem(32);
+      }
+
+      &-item {
+        padding: rem(24); 
+        background-color: #f7f7f7;
+        border-radius: rem(12);
+        transform: translateY(30px);
+        opacity: 0;
+        @include tablet {
+          border-radius: rem(16);
+        }
+        @include desktop {
+          padding: rem(48);
+          border-radius: rem(20);
+        }
+      }
+
+      &-title {
+        display: block;
+        margin-bottom: rem(24);
+        @include sub-headline-01;
+        @include desktop {
+          margin-bottom: rem(56);
+        } 
+      }
+
+      &-detail {
+        display: flex;
+        flex-direction: column;
+        gap: rem(24);
+        strong {
+          display: block;
+          margin-bottom: rem(8);
+          @include body-01;
+        }
+        p {
+          color: #666;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+          @include body-03;
+          &::before {
+            padding-right: rem(4);
+            content: '•';
+          }
+        }
+        @include tablet {
+          gap: rem(20);
+        }
+        @include desktop {
+          gap: rem(40);
+        }
+      }
+    }
+
+  }
+</style>

@@ -219,11 +219,6 @@
     ssr: false,
   })
 
-  useHead({
-    title: '채용 | 콘센트릭스 Catalyst 코리아',
-    meta: [{ name: 'description', content: '콘센트릭스는 모두가 존중받는 사회를 꿈꾸며 수평적인 조직 문화를 가지고 있습니다. 당신의 새로운 성장을 위한 기회를 확인해보세요.' }],
-  })
-
   const activeTab = ref(0)
   const activeButtonTab = ref(0)
 
@@ -601,12 +596,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-  @use '~/layouts/scss/cnx' as *;
-  @use '~/layouts/scss/cnx/_variables' as *;
-  @use '~/layouts/scss/cnx/_mixins' as *;
-  @use '~/layouts/scss/cnx/_functions' as *;
-  @use '~/layouts/scss/cnx/_base' as *;
 
   .careers {
 

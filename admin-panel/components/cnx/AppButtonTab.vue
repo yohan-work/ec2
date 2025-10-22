@@ -142,10 +142,10 @@ const selectTab = (index: number) => {
 
 .tab-button {
     padding: rem(12) rem(16);
-    border: 1px solid $gray-4;
+    border: 1px solid $gray-1;
     border-radius: 24px;
     background: transparent;
-    color: $gray-4;
+    color: $gray-1;
     font-size: rem(10);
     font-weight: 500;
     cursor: pointer;

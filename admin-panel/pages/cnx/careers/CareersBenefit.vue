@@ -8,7 +8,7 @@
       <li class="careers-benefit__item" v-for="(item, index) in items" :key="item.title" :ref="el => setItemRef(el, index)">
         <strong>
           <span v-html="item.title"></span>
-          <img :src="`/assets/cnx/careers/${item.icon}`" :alt="`${item.title.replace('<br>', '')} icon`" loading="lazy">
+          <img :src="`/assets/cnx/careers/${item.icon}`" alt="" loading="lazy">
         </strong>
         <ul class="careers-benefit__list">
           <li v-for="content in item.content" :key="content" v-html="content"></li>
@@ -135,7 +135,7 @@
 </script>
 
 <style lang="scss" scoped>
-.careers-benefit {
+  .careers-benefit {
 
     &__title {
       padding-bottom: rem(24);

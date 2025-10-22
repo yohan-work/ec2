@@ -92,7 +92,7 @@
 </script>
 
 <style lang="scss" scoped>
-.careers-faq {
+  .careers-faq {
     overflow: hidden;
     margin-block: rem(64) rem(32);
     @include tablet {
