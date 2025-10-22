@@ -92,7 +92,7 @@
 </script>
 
 <style lang="scss" scoped>
-.careers-business {
+  .careers-business {
     display: grid;
     grid-template-columns: 1fr;
     gap: rem(24);

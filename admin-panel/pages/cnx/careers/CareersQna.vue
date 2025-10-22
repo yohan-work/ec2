@@ -144,7 +144,7 @@
 </script>
 
 <style lang="scss" scoped>
-.careers-qna {
+  .careers-qna {
 
     &__title {
       transform: translateY(30px);
@@ -217,11 +217,11 @@
       gap: 24px;
       margin-top: rem(16);
       span {
-        color: $d-gray;
+        color: $gray-1;
         @include sub-headline-02;
       }
       p {
-        color: #666;
+        color: $gray-1;
         word-break: keep-all;
         overflow-wrap: anywhere;
         @include body-03;
