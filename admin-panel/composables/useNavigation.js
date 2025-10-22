@@ -47,8 +47,8 @@ export const useNavigation = () => {
           title: 'Digital Operations',
           path: null,
           items: [
-            { text: 'Global dotcom & e-Commerce', path: '' },
-            { text: 'Customer Service', path: '' }
+            { text: 'Global dotcom & e-Commerce', path: '/what-we-do/digital-operations/global-dotcom-and-e-commerce' },
+            { text: 'Customer Service', path: '/what-we-do/digital-operations/customer-service' }
           ]
         }
       ]
