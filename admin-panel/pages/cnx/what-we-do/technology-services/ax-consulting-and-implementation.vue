@@ -57,6 +57,7 @@
           text="콘센트릭스는 자체 AI 솔루션인 iX Hello와 AI Aura 뿐 아니라, 그외 AI 솔루션을 기반으로 고객사의 업무를 효율화/자동화하기 위한 AI 시스템을 설계, 개발합니다."
           imageName="ai"
           :subItems="aiSubItems"
+          :alignTop="true"
         />
       </section>
 

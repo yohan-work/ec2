@@ -38,12 +38,12 @@
           <p class="text-sm text-muted-foreground mb-4">
             환영합니다, {{ getUserDisplayName() }}님
           </p>
-          <button
+          <!-- <button
             @click="redirectToDashboard"
             class="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             관리자 대시보드로 이동
-          </button>
+          </button> -->
         </div>
 
         <!-- 에러 상태 -->
@@ -188,7 +188,7 @@ const processCallback = async () => {
       setTimeout(() => {
         console.log('대시보드로 자동 리다이렉트')
         redirectToDashboard()
-      }, 3000)
+      }, 1000)
     } else {
       console.error('인증 실패. 상태:', {
         isAuthenticated: isAuthenticated.value,

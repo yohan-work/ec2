@@ -52,6 +52,7 @@ export default defineNuxtConfig({
       redirectSignIn: process.env.NUXT_PUBLIC_REDIRECT_SIGN_IN,
       redirectSignOut: process.env.NUXT_PUBLIC_REDIRECT_SIGN_OUT,
       useDummy: process.env.NUXT_PUBLIC_USE_DUMMY === 'true',
+      naverClientId: process.env.NUXT_PUBLIC_NAVER_CLIENT_ID,
     },
   },
 
