@@ -65,48 +65,6 @@
             뉴스레터
           </NuxtLink>
 
-          <!-- 채용공고 관리 -->
-          <NuxtLink
-            to="/admin/recruits"
-            class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
-          >
-            <svg
-              class="w-4 h-4 mr-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6"
-              />
-            </svg>
-            채용공고
-          </NuxtLink>
-
-          <!-- 관리자 관리 -->
-          <NuxtLink
-            to="/admin/mngr"
-            class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
-          >
-            <svg
-              class="w-4 h-4 mr-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
-            관리자 관리
-          </NuxtLink>
-
           <!-- 시스템 로그 -->
           <NuxtLink
             to="/admin/logs"
@@ -126,27 +84,6 @@
               />
             </svg>
             시스템 로그
-          </NuxtLink>
-
-          <!-- 테스트 페이지 -->
-          <NuxtLink
-            to="/test"
-            class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
-          >
-            <svg
-              class="w-4 h-4 mr-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            테스트
           </NuxtLink>
         </div>
 
@@ -504,7 +441,6 @@
                 </div>
                 <p class="text-xs text-gray-500 mt-1">
                   뉴스레터 {{ metrics?.application.recentNewsletters || 0 }},
-                  채용 {{ metrics?.application.recentRecruits || 0 }}
                 </p>
               </div>
               <div class="p-3 bg-orange-50 rounded-lg">
@@ -631,42 +567,236 @@
             </div>
           </div>
 
-          <!-- 간단한 차트 영역 (실제 차트 라이브러리 대신 SVG로 시뮬레이션) -->
-          <div
-            class="h-64 w-full bg-gray-50 rounded-md flex items-center justify-center mb-4"
-          >
-            <div class="text-center">
-              <svg
-                class="w-16 h-16 text-gray-300 mx-auto mb-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                />
-              </svg>
-              <p class="text-gray-500">시스템 활동 차트</p>
-              <p class="text-xs text-gray-400 mt-1">실시간 데이터 표시 영역</p>
+          <!-- 간단한 차트 영역 (실제 시스템 메트릭 데이터 시각화) -->
+          <div class="h-auto w-full bg-gray-50 rounded-md p-6 mb-4">
+            <!-- 데이터베이스 상세 정보 -->
+            <div v-if="metrics" class="space-y-8">
+              <!-- 전체 데이터 통계 -->
+              <div>
+                <h4 class="text-sm font-semibold text-gray-900 mb-4">
+                  전체 데이터 통계
+                </h4>
+                <div class="grid grid-cols-2 gap-4">
+                  <!-- 뉴스레터 통계 -->
+                  <div class="bg-white rounded-lg p-4 border border-gray-200">
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="text-sm font-medium text-gray-700"
+                        >뉴스레터</span
+                      >
+                      <span class="text-2xl font-bold text-blue-600">{{
+                        metrics.application.totalNewsletters
+                      }}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded h-2">
+                      <div
+                        :style="{
+                          width:
+                            Math.min(
+                              metrics.application.totalNewsletters * 5,
+                              100
+                            ) + '%',
+                        }"
+                        class="h-2 bg-blue-500 rounded transition-all duration-300"
+                      ></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">
+                      총 {{ metrics.application.totalNewsletters }}개 발행됨
+                    </p>
+                  </div>
+
+                  <!-- 채용공고 통계 -->
+                  <div class="bg-white rounded-lg p-4 border border-gray-200">
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="text-sm font-medium text-gray-700"
+                        >채용공고</span
+                      >
+                      <span class="text-2xl font-bold text-purple-600">{{
+                        metrics.application.totalRecruits
+                      }}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded h-2">
+                      <div
+                        :style="{
+                          width:
+                            Math.min(
+                              metrics.application.totalRecruits * 5,
+                              100
+                            ) + '%',
+                        }"
+                        class="h-2 bg-purple-500 rounded transition-all duration-300"
+                      ></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">
+                      총 {{ metrics.application.totalRecruits }}개 등록됨
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 24시간 활동 비교 -->
+              <div>
+                <h4 class="text-sm font-semibold text-gray-900 mb-4">
+                  24시간 활동 비교
+                </h4>
+                <div class="bg-white rounded-lg p-4 border border-gray-200">
+                  <!-- 뉴스레터 24시간 활동 -->
+                  <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm font-medium text-gray-700"
+                        >뉴스레터</span
+                      >
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm font-bold text-blue-600"
+                          >{{ metrics.application.recentNewsletters }}건</span
+                        >
+                        <span
+                          class="text-xs font-semibold"
+                          :class="
+                            getActivityTrendClass(
+                              metrics.application.recentNewsletters,
+                              metrics.application.totalNewsletters
+                            )
+                          "
+                        >
+                          {{
+                            metrics.application.totalNewsletters > 0
+                              ? Math.round(
+                                  (metrics.application.recentNewsletters /
+                                    metrics.application.totalNewsletters) *
+                                    100
+                                )
+                              : 0
+                          }}%
+                        </span>
+                      </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded h-3">
+                      <div
+                        :style="{
+                          width:
+                            Math.min(
+                              metrics.application.recentNewsletters * 20,
+                              100
+                            ) + '%',
+                        }"
+                        class="h-3 bg-blue-500 rounded transition-all duration-300"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- 채용공고 24시간 활동 -->
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm font-medium text-gray-700"
+                        >채용공고</span
+                      >
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm font-bold text-purple-600"
+                          >{{ metrics.application.recentRecruits }}건</span
+                        >
+                        <span
+                          class="text-xs font-semibold"
+                          :class="
+                            getActivityTrendClass(
+                              metrics.application.recentRecruits,
+                              metrics.application.totalRecruits
+                            )
+                          "
+                        >
+                          {{
+                            metrics.application.totalRecruits > 0
+                              ? Math.round(
+                                  (metrics.application.recentRecruits /
+                                    metrics.application.totalRecruits) *
+                                    100
+                                )
+                              : 0
+                          }}%
+                        </span>
+                      </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded h-3">
+                      <div
+                        :style="{
+                          width:
+                            Math.min(
+                              metrics.application.recentRecruits * 20,
+                              100
+                            ) + '%',
+                        }"
+                        class="h-3 bg-purple-500 rounded transition-all duration-300"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 상세 통계 정보 -->
+              <div>
+                <h4 class="text-sm font-semibold text-gray-900 mb-4">
+                  상세 통계
+                </h4>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="bg-white rounded-lg p-4 border border-gray-200">
+                    <p class="text-xs text-gray-600 mb-1">뉴스레터</p>
+                    <p class="text-xl font-bold text-gray-900">
+                      {{
+                        metrics.application.totalNewsletters -
+                        metrics.application.recentNewsletters
+                      }}
+                    </p>
+                    <p class="text-xs text-gray-500">과거 데이터</p>
+                  </div>
+                  <div class="bg-white rounded-lg p-4 border border-gray-200">
+                    <p class="text-xs text-gray-600 mb-1">채용공고</p>
+                    <p class="text-xl font-bold text-gray-900">
+                      {{
+                        metrics.application.totalRecruits -
+                        metrics.application.recentRecruits
+                      }}
+                    </p>
+                    <p class="text-xs text-gray-500">과거 데이터</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 데이터 없을 때 -->
+            <div v-else class="flex items-center justify-center h-48">
+              <div class="text-center">
+                <svg
+                  class="w-12 h-12 text-gray-300 mx-auto mb-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
+                </svg>
+                <p class="text-sm text-gray-500">
+                  데이터베이스 정보를 로드하는 중...
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- 차트 하단 범례 -->
-          <div class="flex items-center justify-center space-x-6 text-sm">
+          <div class="flex items-center justify-center flex-wrap gap-6 text-sm">
             <div class="flex items-center">
               <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
               <span class="text-gray-600">뉴스레터</span>
             </div>
             <div class="flex items-center">
-              <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+              <div class="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
               <span class="text-gray-600">채용공고</span>
             </div>
             <div class="flex items-center">
-              <div class="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
-              <span class="text-gray-600">시스템 로그</span>
+              <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+              <span class="text-gray-600">활성</span>
             </div>
           </div>
         </div>
@@ -687,17 +817,6 @@
                   </div>
                   <span class="text-gray-500"
                     >{{ metrics.application.recentNewsletters }}개</span
-                  >
-                </div>
-                <div
-                  class="flex items-center justify-between py-2 border-b border-gray-100"
-                >
-                  <div class="flex items-center">
-                    <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                    <span class="text-gray-700">새 채용공고 등록</span>
-                  </div>
-                  <span class="text-gray-500"
-                    >{{ metrics.application.recentRecruits }}개</span
                   >
                 </div>
                 <div class="flex items-center justify-between py-2">
@@ -757,58 +876,6 @@
                     새 뉴스레터 작성
                   </p>
                   <p class="text-xs text-gray-500">뉴스레터 콘텐츠 생성</p>
-                </div>
-              </NuxtLink>
-
-              <NuxtLink
-                to="/admin/recruits/new"
-                class="flex items-center w-full px-4 py-3 text-left border border-gray-200 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                <div class="p-2 bg-green-50 rounded-md mr-3">
-                  <svg
-                    class="w-4 h-4 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-sm font-medium text-gray-900">
-                    새 채용공고 등록
-                  </p>
-                  <p class="text-xs text-gray-500">채용공고 생성 및 관리</p>
-                </div>
-              </NuxtLink>
-
-              <NuxtLink
-                to="/test"
-                class="flex items-center w-full px-4 py-3 text-left border border-gray-200 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                <div class="p-2 bg-purple-50 rounded-md mr-3">
-                  <svg
-                    class="w-4 h-4 text-purple-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-sm font-medium text-gray-900">시스템 테스트</p>
-                  <p class="text-xs text-gray-500">기능 테스트 및 검증</p>
                 </div>
               </NuxtLink>
 
@@ -889,8 +956,8 @@ const fetchMetrics = async () => {
     metricsLoading.value = true
     metricsError.value = null
 
-    const { data } = await $fetch('/api/system/metrics')
-    metrics.value = data
+    const response = await $fetch('/api/system/metrics')
+    metrics.value = response.data
     metricsLastUpdated.value = new Date()
   } catch (error) {
     console.error('메트릭 가져오기 실패:', error)
@@ -916,6 +983,19 @@ const formatTime = date => {
     minute: '2-digit',
     second: '2-digit',
   })
+}
+
+// 활동 추이 클래스 (뉴스레터 또는 채용공고 활동이 증가/감소)
+const getActivityTrendClass = (current, total) => {
+  if (total === 0) return 'text-gray-500'
+  const percentageChange = Math.round((current / total) * 100)
+  if (percentageChange > 0) {
+    return 'text-green-500'
+  } else if (percentageChange < 0) {
+    return 'text-red-500'
+  } else {
+    return 'text-gray-500'
+  }
 }
 
 // 페이지 새로고침
