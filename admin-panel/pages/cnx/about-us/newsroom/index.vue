@@ -254,12 +254,6 @@ const handleNewsletterClick = newsletterId => {
 onMounted(() => {
   fetchNewsletters()
 })
-
-// 메타 태그
-useHead({
-  title: '뉴스레터 목록',
-  meta: [{ name: 'description', content: '최신 뉴스레터 목록을 확인하세요' }],
-})
 </script>
 
 <style lang="scss" scoped>
