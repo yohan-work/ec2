@@ -57,8 +57,9 @@
                                 <div class="container__image-item">
                                     <div>
                                         <picture>
-                                            <source :srcset="center.images.mobile[0]" media="(max-width: 767px)" loading="lazy" />
-                                            <img :src="center.images.pc[0]" :alt="`${center.name} 이미지 1`" loading="lazy" />
+                                            <source :srcset="center.images.pc[0]" media="(min-width: 1480px)" loading="lazy" />
+                                            <source :srcset="center.images.tablet[0]" media="(min-width: 768px)" loading="lazy" />
+                                            <img :src="center.images.mobile[0]" :alt="`${center.name} 이미지 1`" loading="lazy" />
                                         </picture>
                                     </div>
                                 </div>
@@ -66,15 +67,17 @@
                                 <div class="container__image-item">
                                     <div>
                                         <picture>
-                                            <source :srcset="center.images.mobile[1]" media="(max-width: 767px)" loading="lazy" />
-                                            <img :src="center.images.pc[1]" :alt="`${center.name} 이미지 2`" loading="lazy" />
+                                            <source :srcset="center.images.pc[1]" media="(min-width: 1480px)" loading="lazy" />
+                                            <source :srcset="center.images.tablet[1]" media="(min-width: 768px)" loading="lazy" />
+                                            <img :src="center.images.mobile[1]" :alt="`${center.name} 이미지 2`" loading="lazy" />
                                         </picture>
                                     </div>
                                     <!-- 세 번째 이미지 -->
                                     <div>
                                         <picture>
-                                            <source :srcset="center.images.mobile[2]" media="(max-width: 767px)" loading="lazy" />
-                                            <img :src="center.images.pc[2]" :alt="`${center.name} 이미지 3`" loading="lazy" />
+                                            <source :srcset="center.images.pc[2]" media="(min-width: 1480px)" loading="lazy" />
+                                            <source :srcset="center.images.tablet[2]" media="(min-width: 768px)" loading="lazy" />
+                                            <img :src="center.images.mobile[2]" :alt="`${center.name} 이미지 3`" loading="lazy" />
                                         </picture>
                                     </div>
                                 </div>
@@ -138,8 +141,9 @@
                                 <div class="container__image-item">
                                     <div>
                                         <picture>
-                                            <source :srcset="center.images.mobile[0]" media="(max-width: 767px)" loading="lazy" />
-                                            <img :src="center.images.pc[0]" :alt="`${center.name} 이미지 1`" loading="lazy" />
+                                            <source :srcset="center.images.pc[0]" media="(min-width: 1480px)" loading="lazy" />
+                                            <source :srcset="center.images.tablet[0]" media="(min-width: 768px)" loading="lazy" />
+                                            <img :src="center.images.mobile[0]" :alt="`${center.name} 이미지 1`" loading="lazy" />
                                         </picture>
                                     </div>
                                 </div>
@@ -147,15 +151,17 @@
                                 <div class="container__image-item">
                                     <div>
                                         <picture>
-                                            <source :srcset="center.images.mobile[1]" media="(max-width: 767px)" loading="lazy" />
-                                            <img :src="center.images.pc[1]" :alt="`${center.name} 이미지 2`" loading="lazy" />
+                                            <source :srcset="center.images.pc[1]" media="(min-width: 1480px)" loading="lazy" />
+                                            <source :srcset="center.images.tablet[1]" media="(min-width: 768px)" loading="lazy" />
+                                            <img :src="center.images.mobile[1]" :alt="`${center.name} 이미지 2`" loading="lazy" />
                                         </picture>
                                     </div>
                                     <!-- 세 번째 이미지 -->
                                     <div>
                                         <picture>
-                                            <source :srcset="center.images.mobile[2]" media="(max-width: 767px)" loading="lazy" />
-                                            <img :src="center.images.pc[2]" :alt="`${center.name} 이미지 3`" loading="lazy" />
+                                            <source :srcset="center.images.pc[2]" media="(min-width: 1480px)" loading="lazy" />
+                                            <source :srcset="center.images.tablet[2]" media="(min-width: 768px)" loading="lazy" />
+                                            <img :src="center.images.mobile[2]" :alt="`${center.name} 이미지 3`" loading="lazy" />
                                         </picture>
                                     </div>
                                 </div>
@@ -211,6 +217,7 @@ const digitalTechCenters = [
         },
         images: {
             pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
         }
     },
@@ -225,6 +232,7 @@ const digitalTechCenters = [
         },
         images: {
             pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
         }
     },
@@ -239,6 +247,7 @@ const digitalTechCenters = [
         },
         images: {
             pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
         }
     }
@@ -257,6 +266,7 @@ const customerServiceCenters = [
         },
         images: {
             pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
         }
     },
@@ -271,6 +281,7 @@ const customerServiceCenters = [
         },
         images: {
             pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
         }
     },
@@ -285,6 +296,7 @@ const customerServiceCenters = [
         },
         images: {
             pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
         }
     },
@@ -299,6 +311,7 @@ const customerServiceCenters = [
         },
         images: {
             pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
         }
     },
@@ -313,6 +326,7 @@ const customerServiceCenters = [
         },
         images: {
             pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
         }
     }
@@ -678,8 +692,9 @@ onUnmounted(() => {
 
         @include tablet {
             flex-direction: row;
+            align-items: center;
             gap: rem(24);
-            padding: rem(48) 0 rem(73);
+            padding: rem(48) 0 rem(54);
         }
 
         @include desktop {
@@ -694,6 +709,12 @@ onUnmounted(() => {
             div {
                 width: 100%;
                 height: 100%;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
             }
 
             @include tablet {
@@ -706,17 +727,14 @@ onUnmounted(() => {
             height: 100%;
 
             div {
-                width: 100%;
-                height: 100%;
                 aspect-ratio: 312/175;
-                background-color: $gray-3;
 
                 @include tablet {
-                    aspect-ratio: 308/142;
+                    aspect-ratio: 308/161;
                 }
 
                 @include desktop {
-                    aspect-ratio: 644/335;
+                    aspect-ratio: 644/336;
                 }
             }
 
@@ -730,26 +748,23 @@ onUnmounted(() => {
             display: flex;
             gap: rem(8);
             width: 100%;
-            height: 100%;
             flex: 1;
 
-
             @include tablet {
-                width: 50%;
+                flex: 1;
                 gap: rem(24);
             }
 
             div {
-                width: 100%;
-                background-color: $gray-3;
                 aspect-ratio: 152/115;
 
                 @include tablet {
-                    aspect-ratio: 142/142;
+                    max-height: rem(338.46);
+                    aspect-ratio: 142/161;
                 }
 
                 @include desktop {
-                    aspect-ratio: 51/56;
+                    aspect-ratio: 306/334;
                 }
 
             }
