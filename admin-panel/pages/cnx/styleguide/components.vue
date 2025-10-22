@@ -517,6 +517,31 @@ const subItemsWithoutTitles = computed(() => [
           <h4 class="code-title">코드 예시</h4>
           <pre class="code-block"><code>&lt;AppCardList
   title="AppCardList 컴포넌트 데모" (입력을 할 경우에만 출력이 됩니다.)
+
+  :items="[
+  { id: 1, title: '카드 1', description: 'pc에서는 카드의 개수만큼 width / 개수 값이 적용됩니다.' },
+  { id: 2, title: '카드 2', description: 'tablet에서는 width 100% / 3 값이 적용되며 가운대로 정렬이 됩니다.' },
+  { id: 3, title: '카드 3', description: 'Mobile에서는 width 100% 값이 적용됩니다.' }
+  ]"
+/&gt;</code></pre>
+        </div>
+
+        <h4 class="demo-title">itemHeadTag 옵션 (title이 없으면 자동으로 h2로 출력되며, 다른 태그로 출력이 필요할 시 itemHeadTag 옵션을 사용하여 원하는 태그로 출력할 수 있습니다.)</h4>
+        <div class="demo-content">
+          <AppCardList
+            itemHeadTag="h2"
+            :items="[
+              { id: 1, title: '카드 1', description: 'pc에서는 카드의 개수만큼 width / 개수 값이 적용됩니다.' },
+              { id: 2, title: '카드 2', description: 'tablet 에서는 width 100% / 3 값이 적용되며 가운대로 정렬이 됩니다.' },
+              { id: 3, title: '카드 3', description: 'Mobile에서는 width 100% 값이 적용됩니다.' }
+            ]"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppCardList
+  itemHeadTag="h2"
   :items="[
   { id: 1, title: '카드 1', description: 'pc에서는 카드의 개수만큼 width / 개수 값이 적용됩니다.' },
   { id: 2, title: '카드 2', description: 'tablet에서는 width 100% / 3 값이 적용되며 가운대로 정렬이 됩니다.' },

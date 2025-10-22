@@ -3,7 +3,9 @@
     <h2 class="app-card-list-title" v-if="title">{{ title }}</h2>
     <ul ref="listRef" class="app-card-list" :style="{ marginBottom: props.noMarginBottom ? '0' : undefined }">
       <li class="app-card-list-item" v-for="item in items" :key="item.id" >
-        <h3 class="app-card-list-item-title" v-html="item.title"></h3>
+        <component :is="itemHeadingLevel" class="app-card-list-item-title">
+          <span v-html="item.title"></span>
+        </component>
         <p class="app-card-list-item-description" v-html="item.description"></p>
       </li>
     </ul>
@@ -11,7 +13,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, computed } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -19,7 +21,16 @@ const props = defineProps({
   title: { type: String, default: '' },
   items: { type: Array, default: () => [] },
   noMarginBottom: { type: Boolean, default: false },
-  
+  itemHeadTag: { type: String, default: undefined },
+})
+
+// title 존재 여부에 따라 아이템 헤딩 레벨 결정
+const itemHeadingLevel = computed(() => {
+  if (props.itemHeadTag !== undefined && props.itemHeadTag !== '') {
+    return props.itemHeadTag
+  }
+  // title이 있으면 h3, 없으면 h2로 자동 조정
+  return props.title ? 'h3' : 'h2'
 })
 
 const listRef = ref(null)
