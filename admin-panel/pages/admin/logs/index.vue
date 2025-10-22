@@ -18,9 +18,8 @@
                 @change="resetAndFetch"
                 class="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 bg-white focus:ring-indigo-500 focus:border-indigo-500"
               >
-                <option value="">전체</option>
-                <option value="newsletters">뉴스레터</option>
-                <option value="recruits">채용공고</option>
+                <option value="">뉴스레터</option>
+                <!-- <option value="recruits">채용공고</option> -->
               </select>
             </div>
 

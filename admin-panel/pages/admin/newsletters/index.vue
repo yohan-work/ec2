@@ -33,7 +33,14 @@
         </button>
         <button
           @click="createNewsletter"
-          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors"
+          :style="{
+            backgroundColor: '#001933',
+            borderColor: '#001933'
+          }"
+          @mouseover="hovering = true"
+          @mouseleave="hovering = false"
+          :class="hovering ? 'opacity-90' : ''"
         >
           <svg
             class="w-4 h-4 mr-2"
