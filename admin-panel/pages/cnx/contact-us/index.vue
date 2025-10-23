@@ -1,178 +1,196 @@
 <template>
-        <main>
-            <AppTitle title="Contact Us" />
-            <AppTab v-model="activeTab" :tabs="contactTabs" @tab-change="handleTabChange">
-                <!-- S : Digital & Technology Business 탭-->
-                <template #digital-technology-business>
-                    <AppButtonTab v-model="activeTab1" :tabs="tabs1" alignment="left" @tab-change="onTabChange">
-                        <!-- eslint-disable vue/no-v-for-template-key -->
-                        <template v-for="(center, index) in digitalTechCenters" :key="index" #[`tab-${index}`]>
-                            <div class="container">
-                                <div class="container__content">
-                                    <h2 class="container__content-title">
-                                        콘센트릭스 <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
-                                    <div class="container__content-info">
-                                        <div class="container__content-info-item">
-                                            <div>
-                                                <span class="svg-icon" v-html="locationSvg"></span>
-                                                <span class="svg-title">위치</span>
-                                            </div>
-                                            <span class="detail">{{ center.location }}</span>
-                                        </div>
-                                        <div class="container__content-info-item">
-                                            <div>
-                                                <span class="svg-icon svg-icon--phone" v-html="phoneSvg"></span>
-                                                <span>전화 문의</span>
-                                            </div>
-                                            <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a >
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- S : 네이버 지도 영역  -->
-                                <div class="container__map">
-                                    <div :id="`map-digital-${index}`" class="contact-map">
-                                    </div>
-                                </div>
-                                <!-- E : 네이버 지도 영역  -->
-                                <div class="container__content-info-mobile">
-                                    <div class="container__content-info-mobile-item">
+    <main>
+        <AppTitle title="Contact Us" />
+        <AppTab v-model="activeTab" :tabs="contactTabs" @tab-change="handleTabChange">
+            <!-- S : Digital & Technology Business 탭-->
+            <template #digital-technology-business>
+                <AppButtonTab v-model="activeTab1" :tabs="tabs1" alignment="left" @tab-change="onTabChange">
+                    <!-- eslint-disable vue/no-v-for-template-key -->
+                    <template v-for="(center, index) in digitalTechCenters" :key="index" #[`tab-${index}`]>
+                        <div class="container">
+                            <div class="container__content">
+                                <h2 class="container__content-title">
+                                    콘센트릭스 <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
+                                <div class="container__content-info">
+                                    <div class="container__content-info-item">
                                         <div>
-                                            <span class="svg-icon svg-icon--mobile" v-html="locationSvg"></span>
-                                            <span>위치</span>
+                                            <span class="svg-icon" v-html="locationSvg"></span>
+                                            <span class="svg-title">위치</span>
                                         </div>
                                         <span class="detail">{{ center.location }}</span>
                                     </div>
-                                    <div class="container__content-info-mobile-item">
+                                    <div class="container__content-info-item">
                                         <div>
-                                            <span class="svg-icon svg-icon--mobile" v-html="phoneSvg"></span>
+                                            <span class="svg-icon svg-icon--phone" v-html="phoneSvg"></span>
                                             <span>전화 문의</span>
                                         </div>
-                                        <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a >
+                                        <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a>
                                     </div>
                                 </div>
                             </div>
-                            <!-- S : 센터 이미지 영역  -->
-                            <div class="container__image">
-                                <!-- 첫 번째 이미지 -->
-                                <div class="container__image-item">
-                                    <div>
-                                        <picture>
-                                            <source :srcset="center.images.pc[0]" media="(min-width: 1480px)" loading="lazy" />
-                                            <source :srcset="center.images.tablet[0]" media="(min-width: 768px)" loading="lazy" />
-                                            <img :src="center.images.mobile[0]" :alt="`${center.name} 이미지 1`" loading="lazy" />
-                                        </picture>
-                                    </div>
-                                </div>
-                                <!-- 두 번째 이미지 -->
-                                <div class="container__image-item">
-                                    <div>
-                                        <picture>
-                                            <source :srcset="center.images.pc[1]" media="(min-width: 1480px)" loading="lazy" />
-                                            <source :srcset="center.images.tablet[1]" media="(min-width: 768px)" loading="lazy" />
-                                            <img :src="center.images.mobile[1]" :alt="`${center.name} 이미지 2`" loading="lazy" />
-                                        </picture>
-                                    </div>
-                                    <!-- 세 번째 이미지 -->
-                                    <div>
-                                        <picture>
-                                            <source :srcset="center.images.pc[2]" media="(min-width: 1480px)" loading="lazy" />
-                                            <source :srcset="center.images.tablet[2]" media="(min-width: 768px)" loading="lazy" />
-                                            <img :src="center.images.mobile[2]" :alt="`${center.name} 이미지 3`" loading="lazy" />
-                                        </picture>
-                                    </div>
+                            <!-- S : 네이버 지도 영역  -->
+                            <div class="container__map">
+                                <div :id="`map-digital-${index}`" class="contact-map">
                                 </div>
                             </div>
-                            <!-- E : 센터 이미지 영역  -->
-                        </template>
-                    </AppButtonTab>
-                </template>
-                <!-- E : Digital & Technology Business 탭-->
-                <!-- S : Customer Service 탭-->
-                <template #customer-service>
-                    <AppButtonTab v-model="activeTab2" :tabs="tabs2" alignment="left" @tab-change="onTabChange">
-                        <template v-for="(center, index) in customerServiceCenters" :key="index" #[`tab-${index}`]>
-                            <div class="container customer-service">
-                                <div class="container__content">
-                                    <h2 class="container__content-title">
-                                        콘센트릭스 <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
-                                    <div class="container__content-info">
-                                        <div class="container__content-info-item">
-                                            <div>
-                                                <span class="svg-icon" v-html="locationSvg"></span>
-                                                <span class="svg-title">위치</span>
-                                            </div>
-                                            <span class="detail">{{ center.location }}</span>
-                                        </div>
-                                        <div class="container__content-info-item">
-                                            <div>
-                                                <span class="svg-icon svg-icon--phone" v-html="phoneSvg"></span>
-                                                <span>전화 문의</span>
-                                            </div>
-                                            <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a >
-                                        </div>
+                            <!-- E : 네이버 지도 영역  -->
+                            <div class="container__content-info-mobile">
+                                <div class="container__content-info-mobile-item">
+                                    <div>
+                                        <span class="svg-icon svg-icon--mobile" v-html="locationSvg"></span>
+                                        <span>위치</span>
                                     </div>
+                                    <span class="detail">{{ center.location }}</span>
                                 </div>
-                                <!-- S : 네이버 지도 영역  -->
-                                <div class="container__map">
-                                    <div :id="`map-customer-${index}`" class="contact-map">
+                                <div class="container__content-info-mobile-item">
+                                    <div>
+                                        <span class="svg-icon svg-icon--mobile" v-html="phoneSvg"></span>
+                                        <span>전화 문의</span>
                                     </div>
+                                    <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a>
                                 </div>
-                                <!-- E : 네이버 지도 영역  -->
-                                <div class="container__content-info-mobile">
-                                    <div class="container__content-info-mobile-item">
+                            </div>
+                        </div>
+                        <!-- S : 센터 이미지 영역  -->
+                        <div class="container__image">
+                            <!-- 첫 번째 이미지 -->
+                            <div class="container__image-item">
+                                <div>
+                                    <picture>
+                                        <source :srcset="center.images.pc[0]" media="(min-width: 1480px)"
+                                            loading="lazy" />
+                                        <source :srcset="center.images.tablet[0]" media="(min-width: 768px)"
+                                            loading="lazy" />
+                                        <img :src="center.images.mobile[0]" :alt="`${center.name} 이미지 1`"
+                                            loading="lazy" />
+                                    </picture>
+                                </div>
+                            </div>
+                            <!-- 두 번째 이미지 -->
+                            <div class="container__image-item">
+                                <div>
+                                    <picture>
+                                        <source :srcset="center.images.pc[1]" media="(min-width: 1480px)"
+                                            loading="lazy" />
+                                        <source :srcset="center.images.tablet[1]" media="(min-width: 768px)"
+                                            loading="lazy" />
+                                        <img :src="center.images.mobile[1]" :alt="`${center.name} 이미지 2`"
+                                            loading="lazy" />
+                                    </picture>
+                                </div>
+                                <!-- 세 번째 이미지 -->
+                                <div>
+                                    <picture>
+                                        <source :srcset="center.images.pc[2]" media="(min-width: 1480px)"
+                                            loading="lazy" />
+                                        <source :srcset="center.images.tablet[2]" media="(min-width: 768px)"
+                                            loading="lazy" />
+                                        <img :src="center.images.mobile[2]" :alt="`${center.name} 이미지 3`"
+                                            loading="lazy" />
+                                    </picture>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- E : 센터 이미지 영역  -->
+                    </template>
+                </AppButtonTab>
+            </template>
+            <!-- E : Digital & Technology Business 탭-->
+            <!-- S : Customer Service 탭-->
+            <template #customer-service>
+                <AppButtonTab v-model="activeTab2" :tabs="tabs2" alignment="left" @tab-change="onTabChange">
+                    <template v-for="(center, index) in customerServiceCenters" :key="index" #[`tab-${index}`]>
+                        <div class="container customer-service">
+                            <div class="container__content">
+                                <h2 class="container__content-title">
+                                    콘센트릭스 <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
+                                <div class="container__content-info">
+                                    <div class="container__content-info-item">
                                         <div>
-                                            <span class="svg-icon svg-icon--mobile" v-html="locationSvg"></span>
-                                            <span>위치</span>
+                                            <span class="svg-icon" v-html="locationSvg"></span>
+                                            <span class="svg-title">위치</span>
                                         </div>
                                         <span class="detail">{{ center.location }}</span>
                                     </div>
-                                    <div class="container__content-info-mobile-item">
+                                    <div class="container__content-info-item">
                                         <div>
-                                            <span class="svg-icon svg-icon--mobile" v-html="phoneSvg"></span>
+                                            <span class="svg-icon svg-icon--phone" v-html="phoneSvg"></span>
                                             <span>전화 문의</span>
                                         </div>
-                                        <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a >
+                                        <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a>
                                     </div>
                                 </div>
                             </div>
-                            <!-- S : 센터 이미지 영역  -->
-                            <div class="container__image">
-                                <!-- 첫 번째 이미지 -->
-                                <div class="container__image-item">
-                                    <div>
-                                        <picture>
-                                            <source :srcset="center.images.pc[0]" media="(min-width: 1480px)" loading="lazy" />
-                                            <source :srcset="center.images.tablet[0]" media="(min-width: 768px)" loading="lazy" />
-                                            <img :src="center.images.mobile[0]" :alt="`${center.name} 이미지 1`" loading="lazy" />
-                                        </picture>
-                                    </div>
-                                </div>
-                                <!-- 두 번째 이미지 -->
-                                <div class="container__image-item">
-                                    <div>
-                                        <picture>
-                                            <source :srcset="center.images.pc[1]" media="(min-width: 1480px)" loading="lazy" />
-                                            <source :srcset="center.images.tablet[1]" media="(min-width: 768px)" loading="lazy" />
-                                            <img :src="center.images.mobile[1]" :alt="`${center.name} 이미지 2`" loading="lazy" />
-                                        </picture>
-                                    </div>
-                                    <!-- 세 번째 이미지 -->
-                                    <div>
-                                        <picture>
-                                            <source :srcset="center.images.pc[2]" media="(min-width: 1480px)" loading="lazy" />
-                                            <source :srcset="center.images.tablet[2]" media="(min-width: 768px)" loading="lazy" />
-                                            <img :src="center.images.mobile[2]" :alt="`${center.name} 이미지 3`" loading="lazy" />
-                                        </picture>
-                                    </div>
+                            <!-- S : 네이버 지도 영역  -->
+                            <div class="container__map">
+                                <div :id="`map-customer-${index}`" class="contact-map">
                                 </div>
                             </div>
-                            <!-- E : 센터 이미지 영역  -->
-                        </template>
-                    </AppButtonTab>
-                </template>
-                <!-- E : Customer Service 탭-->
-            </AppTab>
-        </main>
+                            <!-- E : 네이버 지도 영역  -->
+                            <div class="container__content-info-mobile">
+                                <div class="container__content-info-mobile-item">
+                                    <div>
+                                        <span class="svg-icon svg-icon--mobile" v-html="locationSvg"></span>
+                                        <span>위치</span>
+                                    </div>
+                                    <span class="detail">{{ center.location }}</span>
+                                </div>
+                                <div class="container__content-info-mobile-item">
+                                    <div>
+                                        <span class="svg-icon svg-icon--mobile" v-html="phoneSvg"></span>
+                                        <span>전화 문의</span>
+                                    </div>
+                                    <a :href="`tel:${center.phone}`" class="detail">{{ center.phone }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- S : 센터 이미지 영역  -->
+                        <div class="container__image">
+                            <!-- 첫 번째 이미지 -->
+                            <div class="container__image-item">
+                                <div>
+                                    <picture>
+                                        <source :srcset="center.images.pc[0]" media="(min-width: 1480px)"
+                                            loading="lazy" />
+                                        <source :srcset="center.images.tablet[0]" media="(min-width: 768px)"
+                                            loading="lazy" />
+                                        <img :src="center.images.mobile[0]" :alt="`${center.name} 이미지 1`"
+                                            loading="lazy" />
+                                    </picture>
+                                </div>
+                            </div>
+                            <!-- 두 번째 이미지 -->
+                            <div class="container__image-item">
+                                <div>
+                                    <picture>
+                                        <source :srcset="center.images.pc[1]" media="(min-width: 1480px)"
+                                            loading="lazy" />
+                                        <source :srcset="center.images.tablet[1]" media="(min-width: 768px)"
+                                            loading="lazy" />
+                                        <img :src="center.images.mobile[1]" :alt="`${center.name} 이미지 2`"
+                                            loading="lazy" />
+                                    </picture>
+                                </div>
+                                <!-- 세 번째 이미지 -->
+                                <div>
+                                    <picture>
+                                        <source :srcset="center.images.pc[2]" media="(min-width: 1480px)"
+                                            loading="lazy" />
+                                        <source :srcset="center.images.tablet[2]" media="(min-width: 768px)"
+                                            loading="lazy" />
+                                        <img :src="center.images.mobile[2]" :alt="`${center.name} 이미지 3`"
+                                            loading="lazy" />
+                                    </picture>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- E : 센터 이미지 영역  -->
+                    </template>
+                </AppButtonTab>
+            </template>
+            <!-- E : Customer Service 탭-->
+        </AppTab>
+    </main>
 </template>
 
 <script setup>
@@ -216,9 +234,9 @@ const digitalTechCenters = [
             zoom: 17,
         },
         images: {
-            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
-            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
-            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+            pc: ['/assets/cnx/contact-us/gangnam-1/center_gangnam-1-pc-1.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-pc-2.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/gangnam-1/center_gangnam-1-tb-1.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-tb-2.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-tb-3.png'],
+            mobile: ['/assets/cnx/contact-us/gangnam-1/center_gangnam-1-mo-1.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-mo-2.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-mo-3.png']
         }
     },
     {
@@ -231,9 +249,9 @@ const digitalTechCenters = [
             zoom: 17,
         },
         images: {
-            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
-            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
-            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+            pc: ['/assets/cnx/contact-us/gangnam-2/center_gangnam-2-pc-1.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-pc-2.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/gangnam-2/center_gangnam-2-tb-1.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-tb-2.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-tb-3.png'],
+            mobile: ['/assets/cnx/contact-us/gangnam-2/center_gangnam-2-mo-1.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-mo-2.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-mo-3.png']
         }
     },
     {
@@ -246,9 +264,9 @@ const digitalTechCenters = [
             zoom: 17,
         },
         images: {
-            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
-            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
-            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+            pc: ['/assets/cnx/contact-us/yongsan/center_yongsan-pc-1.png', '/assets/cnx/contact-us/yongsan/center_yongsan-pc-2.png', '/assets/cnx/contact-us/yongsan/center_yongsan-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/yongsan/center_yongsan-tb-1.png', '/assets/cnx/contact-us/yongsan/center_yongsan-tb-2.png', '/assets/cnx/contact-us/yongsan/center_yongsan-tb-3.png'],
+            mobile: ['/assets/cnx/contact-us/yongsan/center_yongsan-mo-1.png', '/assets/cnx/contact-us/yongsan/center_yongsan-mo-2.png', '/assets/cnx/contact-us/yongsan/center_yongsan-mo-3.png']
         }
     }
 ]
@@ -265,9 +283,9 @@ const customerServiceCenters = [
             zoom: 17,
         },
         images: {
-            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
-            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
-            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+            pc: ['/assets/cnx/contact-us/shindorim-1/center_shindorim-1-pc-1.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-pc-2.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/shindorim-1/center_shindorim-1-tb-1.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-tb-2.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-tb-3.png'],
+            mobile: ['/assets/cnx/contact-us/shindorim-1/center_shindorim-1-mo-1.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-mo-2.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-mo-3.png']
         }
     },
     {
@@ -280,9 +298,9 @@ const customerServiceCenters = [
             zoom: 17,
         },
         images: {
-            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
-            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
-            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+            pc: ['/assets/cnx/contact-us/shindorim-2/center_shindorim-2-pc-1.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-pc-2.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/shindorim-2/center_shindorim-2-tb-1.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-tb-2.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-tb-3.png'],
+            mobile: ['/assets/cnx/contact-us/shindorim-2/center_shindorim-2-mo-1.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-mo-2.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-mo-3.png']
         }
     },
     {
@@ -295,9 +313,9 @@ const customerServiceCenters = [
             zoom: 17,
         },
         images: {
-            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
-            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
-            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+            pc: ['/assets/cnx/contact-us/guro/center_guro-pc-1.png', '/assets/cnx/contact-us/guro/center_guro-pc-2.png', '/assets/cnx/contact-us/guro/center_guro-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/guro/center_guro-tb-1.png', '/assets/cnx/contact-us/guro/center_guro-tb-2.png', '/assets/cnx/contact-us/guro/center_guro-tb-3.png'],
+            mobile: ['/assets/cnx/contact-us/guro/center_guro-mo-1.png', '/assets/cnx/contact-us/guro/center_guro-mo-2.png', '/assets/cnx/contact-us/guro/center_guro-mo-3.png']
         }
     },
     {
@@ -310,9 +328,9 @@ const customerServiceCenters = [
             zoom: 17,
         },
         images: {
-            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
-            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
-            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+            pc: ['/assets/cnx/contact-us/mullae/center_mullae-pc-1.png', '/assets/cnx/contact-us/mullae/center_mullae-pc-2.png', '/assets/cnx/contact-us/mullae/center_mullae-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/mullae/center_mullae-tb-1.png', '/assets/cnx/contact-us/mullae/center_mullae-tb-2.png', '/assets/cnx/contact-us/mullae/center_mullae-tb-3.png'],
+            mobile: ['/assets/cnx/contact-us/mullae/center_mullae-mo-1.png', '/assets/cnx/contact-us/mullae/center_mullae-mo-2.png', '/assets/cnx/contact-us/mullae/center_mullae-mo-3.png']
         }
     },
     {
@@ -325,9 +343,9 @@ const customerServiceCenters = [
             zoom: 17,
         },
         images: {
-            pc: ['/assets/cnx/contact-us/center_yongsan-pc-1.png', '/assets/cnx/contact-us/center_yongsan-pc-2.png', '/assets/cnx/contact-us/center_yongsan-pc-3.png'],
-            tablet: ['/assets/cnx/contact-us/center_yongsan-tb-1.png', '/assets/cnx/contact-us/center_yongsan-tb-2.png', '/assets/cnx/contact-us/center_yongsan-tb-3.png'],
-            mobile: ['/assets/cnx/contact-us/center_yongsan-mo-1.png', '/assets/cnx/contact-us/center_yongsan-mo-2.png', '/assets/cnx/contact-us/center_yongsan-mo-3.png']
+            pc: ['/assets/cnx/contact-us/myeongdong/center_myeongdong-pc-1.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-pc-2.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-pc-3.png'],
+            tablet: ['/assets/cnx/contact-us/myeongdong/center_myeongdong-tb-1.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-tb-2.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-tb-3.png'],
+            mobile: ['/assets/cnx/contact-us/myeongdong/center_myeongdong-mo-1.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-mo-2.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-mo-3.png']
         }
     }
 ]
@@ -723,9 +741,6 @@ onUnmounted(() => {
         }
 
         &-item:first-child {
-            width: 100%;
-            height: 100%;
-
             div {
                 aspect-ratio: 312/175;
 
@@ -737,22 +752,21 @@ onUnmounted(() => {
                     aspect-ratio: 644/336;
                 }
             }
-
-            @include tablet {
-                width: 100%;
-                height: 100%;
-            }
         }
 
         &-item:last-child {
             display: flex;
+            align-items: flex-start;
             gap: rem(8);
-            width: 100%;
             flex: 1;
+            overflow: hidden;
 
             @include tablet {
-                flex: 1;
                 gap: rem(24);
+            }
+
+            @include desktop {
+                max-height: rem(336);
             }
 
             div {
@@ -766,7 +780,6 @@ onUnmounted(() => {
                 @include desktop {
                     aspect-ratio: 306/334;
                 }
-
             }
         }
     }
@@ -814,6 +827,42 @@ onUnmounted(() => {
         max-height: none;
         object-fit: contain;
         display: block;
+    }
+}
+
+:deep(.app-button-tab-container) {
+
+    .tab-list {
+        max-width: rem(1440);
+        margin: 0 auto;
+
+        @include desktop {
+            max-width: rem(1320);
+        }
+    }
+
+    .tab-list .inner {
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 rem(24) rem(36);
+        max-width: rem(300);
+
+        @include tablet {
+            max-width: rem(450);
+            padding: 0 rem(80) rem(24);
+        }
+
+        @include desktop {
+            padding: 0 0 rem(48);
+            max-width: rem(400);
+        }
+    }
+
+    .tab-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 </style>
