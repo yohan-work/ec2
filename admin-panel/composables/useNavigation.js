@@ -5,7 +5,7 @@ export const useNavigation = () => {
   const pageMetaData = {
     '/': {
       title: 'Concentrix - A Global Technology and Service Leader',
-      description: 'Concentrix는 글로벌 기술 및 서비스 리더로서 고객 경험을 혁신하고 비즈니스 성과를 향상시킵니다.',
+      description: 'Concentrix Korea는 글로벌 CX & Tech 기업으로서 AI 플랫폼, Commerce 플랫폼, 시스템 통합, 디지털 분석, 글로벌 이커머스 등 종합 디지털 솔루션을 제공합니다. 20년간의 글로벌 경험과 10개 이상 글로벌 센터, 1000명 이상 전문가가 기업의 디지털 전환을 지원합니다.',
       ogImage: '/assets/cnx/share/concentrix-share.png'
     },
     '/what-we-do/strategy-and-design/contents-and-design': {
@@ -65,32 +65,32 @@ export const useNavigation = () => {
     },
     '/what-we-do/technology-services/system-intergration-and-architecting': {
       title: 'System Integration & Architecting - Concentrix',
-      description: '시스템 통합 및 아키텍처 설계로 기업의 IT 인프라를 최적화합니다.',
+      description: '대규모 B2B/B2C 시스템 구축과 Enterprise Architecture 설계 전문 서비스입니다. On/Off-shore 하이브리드 모델로 Commerce·DXP·CRM·데이터 플랫폼 통합 및 글로벌 Roll-out을 지원하며, 삼성전자, LG전자, 아모레퍼시픽 등 글로벌 기업 SI 프로젝트 경험을 바탕으로 안정적인 시스템 통합 서비스를 제공합니다.',
       ogImage: '/assets/cnx/share/system-integration-share.png'
     },
     '/what-we-do/technology-services/ax-consulting-and-implementation': {
       title: 'AX Consulting & Implementation - Concentrix',
-      description: 'AX 컨설팅 및 구현 서비스로 기업의 디지털 전환을 지원합니다.',
+      description: 'Generative AI 컨설팅부터 Agentic AI 설계·구현, QA·운영까지 지원하는 전문 서비스입니다. PoC에서 글로벌 확장까지 Onshore & GDC 협업 기반으로 제공하며, AI 전략 수립, 비즈니스 과제 발굴, 데이터 거버넌스·보안·HITL 기반의 안전한 AI 운영을 통해 기업의 AI 혁신을 지원합니다.',
       ogImage: '/assets/cnx/share/ax-consulting-share.png'
     },
     '/what-we-do/digital-operations/global-dotcom-and-e-commerce': {
       title: 'Global dotcom & e-Commerce - Concentrix',
-      description: '글로벌 닷컴 및 이커머스 서비스로 전 세계 고객에게 최적화된 디지털 경험을 제공합니다.',
+      description: '닷컴에서 이커머스까지 글로벌 비즈니스를 위한 최적화된 플랫폼 솔루션을 제공합니다. 약 20년간 글로벌 Top tier 전자, 자동차, 코스메틱 인더스트리 경험을 바탕으로 이커머스 개발·운영, 글로벌 닷컴 개발, 플랫폼 롤아웃 및 운영 서비스를 제공하며, 10개 이상 글로벌 센터와 1000명 이상 전문가가 24시간 연중무휴 지원합니다.',
       ogImage: '/assets/cnx/share/global-dotcom-share.png'
     },
     '/what-we-do/digital-operations/customer-service': {
       title: 'Customer Service - Concentrix',
-      description: '고객 서비스 솔루션으로 브랜드와 고객 간의 강력한 연결을 구축합니다.',
+      description: '전문 지식, 첨단 기술, 구조화된 운영 모델을 통해 차별화된 고객 경험을 제공하는 고객 서비스 솔루션입니다. B2B/B2C 세일즈 & 마케팅, 디지털 세일즈 운영, 고객 서비스, 기술 지원 등 종합적인 고객 지원 서비스를 통해 고객을 브랜드 지지자로 만들어드립니다.',
       ogImage: '/assets/cnx/share/customer-service-share.png'
     },
     '/what-we-do/digital-operations/trust-and-safety': {
       title: 'Trust & Safety - Concentrix',
-      description: '신뢰와 안전을 기반으로 한 디지털 운영 서비스로 안전한 온라인 환경을 제공합니다.',
+      description: 'AI와 자동화 기술을 활용한 콘텐츠 모더레이션 및 신뢰성 서비스로 안전한 디지털 환경을 제공합니다. 24시간 연중무휴 모니터링, AI 기반 데이터 서비스, 개발 가속화, 모델 정확도 향상, 투명성 및 규정 준수 강화를 통해 차별화된 고객 경험을 실현합니다.',
       ogImage: '/assets/cnx/share/trust-safety-share.png'
     },
     '/about-us/overview': {
       title: 'About Us - Concentrix',
-      description: 'Concentrix에 대해 알아보세요. 글로벌 기술 및 서비스 리더로서의 비전과 미션을 확인하세요.',
+      description: 'Concentrix Korea는 글로벌 CX & Tech 기업으로서 디지털 마케팅 컨설팅, UX/UI 디자인, 디지털 분석, 고객 서비스, 글로벌 닷컴 & 이커머스, 기술 플랫폼 등 종합적인 디지털 솔루션을 제공합니다. 2014년부터 지속적인 성장과 혁신을 통해 고객의 디지털 전환을 지원하는 전문 기업입니다.',
       ogImage: '/assets/cnx/share/overview-share.png'
     },
     '/about-us/newsroom': {
@@ -127,11 +127,11 @@ export const useNavigation = () => {
           title: 'Data & Analytics',
           path: null,
           items: [
-            { text: 'Marketing & Sales Analytics', path: '/what-we-do/data-and-analytics/marketing-and-sales-analytics' },
             { text: 'Digital Channel Analytics', path: '/what-we-do/data-and-analytics/digital-channel-analytics' },
+            { text: 'Marketing & Sales Analytics', path: '/what-we-do/data-and-analytics/marketing-and-sales-analytics' },
+            { text: 'Enterprise Intelligence', path: '/what-we-do/data-and-analytics/enterprise-intelligence' },
             { text: 'Data Engineering', path: '/what-we-do/data-and-analytics/data-engineering' },
             { text: 'Analytics Solution', path: '/what-we-do/data-and-analytics/analytics-solution' },
-            { text: 'Enterprise Intelligence', path: '/what-we-do/data-and-analytics/enterprise-intelligence' }
           ]
         },
         {
