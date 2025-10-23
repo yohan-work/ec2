@@ -85,7 +85,7 @@ export const useNavigation = () => {
     },
     '/what-we-do/digital-operations/trust-and-safety': {
       title: 'Trust & Safety - Concentrix',
-      description: '신뢰와 안전을 기반으로 한 디지털 운영 서비스로 안전한 온라인 환경을 제공합니다.',
+      description: 'AI와 자동화 기술을 활용한 콘텐츠 모더레이션 및 신뢰성 서비스로 안전한 디지털 환경을 제공합니다. 24시간 연중무휴 모니터링, AI 기반 데이터 서비스, 개발 가속화, 모델 정확도 향상, 투명성 및 규정 준수 강화를 통해 차별화된 고객 경험을 실현합니다.',
       ogImage: '/assets/cnx/share/trust-safety-share.png'
     },
     '/about-us/overview': {
