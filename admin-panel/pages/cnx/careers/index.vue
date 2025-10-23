@@ -16,7 +16,7 @@
         <picture>
           <source srcset="/assets/cnx/careers/slide_01.png" media="(min-width: 1024px)" />
           <source srcset="/assets/cnx/careers/slide_01_t.png" media="(min-width: 768px)" />
-          <img src="/assets/cnx/careers/slide_01_m.png" alt="Live at Concentrix" loading="lazy" />
+          <img src="/assets/cnx/careers/slide_01_m.png" alt="Life at Concentrix" loading="lazy" />
         </picture>
         <div class="careers__swiper-content a11y-hidden">
           <strong class="sub-headline-01">Life at Concentrix</strong>

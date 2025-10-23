@@ -16,7 +16,7 @@
             <picture>
               <source srcset="/assets/cnx/careers/slide_01.png" media="(min-width: 1024px)" />
               <source srcset="/assets/cnx/careers/slide_01_t.png" media="(min-width: 768px)" />
-              <img src="/assets/cnx/careers/slide_01_m.png" alt="Live at Concentrix" />
+              <img src="/assets/cnx/careers/slide_01_m.png" alt="Life at Concentrix" />
             </picture>
             <picture>
               <source srcset="/assets/cnx/careers/slide_02.png" media="(min-width: 1024px)" />
@@ -37,7 +37,7 @@
   &lt;picture&gt;
     &lt;source srcset="/assets/cnx/careers/slide_01.png" media="(min-width: 1024px)" /&gt;
     &lt;source srcset="/assets/cnx/careers/slide_01_t.png" media="(min-width: 768px)" /&gt;
-    &lt;img src="/assets/cnx/careers/slide_01_m.png" alt="Live at Concentrix" /&gt;
+    &lt;img src="/assets/cnx/careers/slide_01_m.png" alt="Life at Concentrix" /&gt;
   &lt;/picture&gt;
   &lt;picture&gt;
     &lt;source srcset="/assets/cnx/careers/slide_02.png" media="(min-width: 1024px)" /&gt;
