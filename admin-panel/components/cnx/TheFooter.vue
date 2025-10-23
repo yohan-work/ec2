@@ -82,6 +82,8 @@
                         v-if="item.path" 
                         :to="item.path"
                         class="footer-nav__list-link"
+                        @keydown="handleLinkKeydown"
+                        tabindex="0"
                       >
                         {{ item.text }}
                       </NuxtLink>
@@ -131,19 +133,19 @@
           <div class="footer-branding__right">
             <!-- 소셜 미디어 아이콘들 -->
             <div class="footer-social">
-              <a href="https://www.youtube.com/user/CNXCorporation" class="social-link" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.youtube.com/user/CNXCorporation" class="social-link footer-sns__link" aria-label="YouTube" target="_blank" rel="noopener noreferrer" tabindex="0" @keydown="handleSnsKeydown">
                 <div class="social-icon" v-html="youtubeIcon"></div>
               </a>
-              <a href="https://www.linkedin.com/company/concentrix" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.linkedin.com/company/concentrix" class="social-link footer-sns__link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" tabindex="0" @keydown="handleSnsKeydown">
                 <div class="social-icon" v-html="linkedinIcon"></div>
               </a>
-              <a href="https://x.com/concentrix" class="social-link" aria-label="X" target="_blank" rel="noopener noreferrer">
+              <a href="https://x.com/concentrix" class="social-link footer-sns__link" aria-label="X" target="_blank" rel="noopener noreferrer" tabindex="0" @keydown="handleSnsKeydown">
                 <div class="social-icon" v-html="xIcon"></div>
               </a>
-              <a href="https://www.instagram.com/concentrix/" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.instagram.com/concentrix/" class="social-link footer-sns__link" aria-label="Instagram" target="_blank" rel="noopener noreferrer" tabindex="0" @keydown="handleSnsKeydown">
                 <div class="social-icon" v-html="instagramIcon"></div>
               </a>
-              <a href="https://www.facebook.com/concentrixkr" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.facebook.com/concentrixkr" class="social-link footer-sns__link" aria-label="Facebook" target="_blank" rel="noopener noreferrer" tabindex="0" @keydown="handleSnsKeydown">
                 <div class="social-icon" v-html="facebookIcon"></div>
               </a>
             </div>
@@ -165,7 +167,9 @@
                 <NuxtLink 
                   v-if="!link.external" 
                   :to="link.path"
-                  class="footer-legal__link"
+                  class="footer-legal__link footer-legal__link-item"
+                  tabindex="0"
+                  @keydown="handleLegalKeydown"
                 >
                   {{ link.text }}
                 </NuxtLink>
@@ -174,7 +178,9 @@
                   :href="link.path" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  class="footer-legal__link"
+                  class="footer-legal__link footer-legal__link-item"
+                  tabindex="0"
+                  @keydown="handleLegalKeydown"
                 >
                   {{ link.text }}
                 </a>
@@ -244,15 +250,15 @@ const toggleMenu = (menuKey) => {
     // 해당 메뉴의 섹션들을 확인
     const menu = menuStructure[menuKey]
     if (menu && menu.sections) {
-      // 2뎁스 타이틀이 있는 섹션이 있는지 확인
-      const hasSectionsWithTitle = menu.sections.some(section => section.title)
+      // 2뎁스 타이틀이 있는 섹션이 있는지 확인 (빈 문자열 제외)
+      const hasSectionsWithTitle = menu.sections.some(section => section.title && section.title.trim() !== '')
       
       if (hasSectionsWithTitle) {
         // 2뎁스가 있는 경우: 모든 2뎁스를 닫힌 채로 열기
         accordionState.value.openSection = null
         accordionState.value.openAllSections = false
       } else {
-        // 2뎁스가 없는 경우: 모든 섹션을 열려진 채로 보여주기
+        // 2뎁스가 없는 경우 (빈 타이틀 섹션들): 모든 섹션을 열려진 채로 보여주기
         accordionState.value.openSection = null
         accordionState.value.openAllSections = true
       }
@@ -275,24 +281,81 @@ const toggleSection = (sectionKey) => {
 
 // 포커스 관리 유틸리티 함수들
 const getAllFocusableElements = () => {
-  // 논리적인 순서로 요소들을 가져오기
   const elements = []
   
-  // What We Do 메뉴 타이틀
-  const whatWeDoTitle = document.querySelector('[data-menu="whatwedo"] .footer-nav__title')
-  if (whatWeDoTitle) elements.push(whatWeDoTitle)
-  
-  // About Us 메뉴 타이틀
-  const aboutUsTitle = document.querySelector('[data-menu="aboutus"] .footer-nav__title')
-  if (aboutUsTitle) elements.push(aboutUsTitle)
-  
-  // Careers 링크
-  const careersLink = document.querySelector('[data-menu="careers"] .footer-nav__title-link')
-  if (careersLink) elements.push(careersLink)
-  
-  // Contact Us 링크
-  const contactUsLink = document.querySelector('[data-menu="contactus"] .footer-nav__title-link')
-  if (contactUsLink) elements.push(contactUsLink)
+  if (isMobile.value) {
+    // 모바일: 아코디언 방식의 포커스 탐색
+    // What We Do 메뉴 타이틀
+    const whatWeDoTitle = document.querySelector('[data-menu="whatwedo"] .footer-nav__title')
+    if (whatWeDoTitle) elements.push(whatWeDoTitle)
+    
+    // What We Do가 열려있다면 하위 요소들 추가
+    if (accordionState.value.openMenu === 'whatwedo') {
+      const whatWeDoSections = document.querySelectorAll('[data-menu="whatwedo"] .footer-nav__subtitle')
+      whatWeDoSections.forEach(section => {
+        elements.push(section)
+        
+        // 해당 섹션이 열려있다면 그 섹션의 링크들도 추가
+        const sectionKey = `whatwedo-${Array.from(whatWeDoSections).indexOf(section)}`
+        if (accordionState.value.openSection === sectionKey || accordionState.value.openAllSections) {
+          const sectionLinks = document.querySelectorAll(`[data-menu="whatwedo"] .footer-nav__section:nth-child(${Array.from(whatWeDoSections).indexOf(section) + 1}) .footer-nav__list-link`)
+          sectionLinks.forEach(link => elements.push(link))
+        }
+      })
+    }
+    
+    // About Us 메뉴 타이틀
+    const aboutUsTitle = document.querySelector('[data-menu="aboutus"] .footer-nav__title')
+    if (aboutUsTitle) elements.push(aboutUsTitle)
+    
+    // About Us가 열려있다면 하위 요소들 추가
+    if (accordionState.value.openMenu === 'aboutus') {
+      // About Us는 빈 타이틀 섹션들이므로 직접 링크들을 추가
+      const aboutUsLinks = document.querySelectorAll('[data-menu="aboutus"] .footer-nav__list-link')
+      aboutUsLinks.forEach(link => elements.push(link))
+    }
+    
+    // Careers 링크
+    const careersLink = document.querySelector('[data-menu="careers"] .footer-nav__title-link')
+    if (careersLink) elements.push(careersLink)
+    
+    // Contact Us 링크
+    const contactUsLink = document.querySelector('[data-menu="contactus"] .footer-nav__title-link')
+    if (contactUsLink) elements.push(contactUsLink)
+    
+    // SNS 링크들 (Contact Us 다음에 포커스 이동)
+    const snsLinks = document.querySelectorAll('.footer-sns__link')
+    snsLinks.forEach(link => elements.push(link))
+    
+    // 법적링크들 (SNS 다음에 포커스 이동)
+    const legalLinks = document.querySelectorAll('.footer-legal__link-item')
+    legalLinks.forEach(link => elements.push(link))
+  } else {
+    // 태블릿 이상: 논리적인 순서로 모든 링크에 직접 포커스
+    // What We Do 섹션의 모든 링크들
+    const whatWeDoLinks = document.querySelectorAll('[data-menu="whatwedo"] .footer-nav__list-link')
+    whatWeDoLinks.forEach(link => elements.push(link))
+    
+    // About Us 섹션의 모든 링크들
+    const aboutUsLinks = document.querySelectorAll('[data-menu="aboutus"] .footer-nav__list-link')
+    aboutUsLinks.forEach(link => elements.push(link))
+    
+    // Careers 링크
+    const careersLink = document.querySelector('[data-menu="careers"] .footer-nav__title-link')
+    if (careersLink) elements.push(careersLink)
+    
+    // Contact Us 링크
+    const contactUsLink = document.querySelector('[data-menu="contactus"] .footer-nav__title-link')
+    if (contactUsLink) elements.push(contactUsLink)
+    
+    // SNS 링크들 (Contact Us 다음에 포커스 이동)
+    const snsLinks = document.querySelectorAll('.footer-sns__link')
+    snsLinks.forEach(link => elements.push(link))
+    
+    // 법적링크들 (SNS 다음에 포커스 이동)
+    const legalLinks = document.querySelectorAll('.footer-legal__link-item')
+    legalLinks.forEach(link => elements.push(link))
+  }
   
   return elements
 }
@@ -323,125 +386,309 @@ const focusPreviousElement = () => {
   focusElementByIndex(prevIndex)
 }
 
-// 키보드 이벤트 핸들러들
-const handleMenuKeydown = (event, menuKey) => {
-  if (!isMobile.value) return // 모바일이 아니면 동작하지 않음
-  
+// 법적링크 키보드 이벤트 핸들러
+const handleLegalKeydown = (event) => {
   const { key } = event
   
   switch (key) {
-    case 'Enter':
-    case ' ':
+    case 'ArrowDown':
+    case 'ArrowRight':
       event.preventDefault()
-      toggleMenu(menuKey)
-      
-      // 아코디언이 열렸을 때 첫 번째 하위 요소로 포커스 이동
-      if (accordionState.value.openMenu === menuKey) {
-        nextTick(() => {
+      focusNextElement()
+      break
+    case 'ArrowUp':
+    case 'ArrowLeft':
+      event.preventDefault()
+      focusPreviousElement()
+      break
+    case 'Enter':
+      // Enter 키는 기본 동작 허용 (링크 이동)
+      break
+  }
+}
+
+// SNS 링크 키보드 이벤트 핸들러
+const handleSnsKeydown = (event) => {
+  const { key } = event
+  
+  switch (key) {
+    case 'ArrowDown':
+    case 'ArrowRight':
+      event.preventDefault()
+      focusNextElement()
+      break
+    case 'ArrowUp':
+    case 'ArrowLeft':
+      event.preventDefault()
+      focusPreviousElement()
+      break
+    case 'Enter':
+      // Enter 키는 기본 동작 허용 (링크 이동)
+      break
+  }
+}
+
+// 키보드 이벤트 핸들러들
+const handleMenuKeydown = (event, menuKey) => {
+  const { key } = event
+  
+  if (isMobile.value) {
+    // 모바일: 아코디언 방식
+    switch (key) {
+      case 'Enter':
+      case ' ':
+        event.preventDefault()
+        toggleMenu(menuKey)
+        
+        // 아코디언이 열렸을 때 첫 번째 하위 요소로 포커스 이동
+        if (accordionState.value.openMenu === menuKey) {
+          nextTick(() => {
+            const menuContent = document.getElementById(`footer-menu-${menuKey}`)
+            const firstFocusable = menuContent?.querySelector('[tabindex="0"]')
+            if (firstFocusable) {
+              firstFocusable.focus()
+            }
+          })
+        }
+        break
+      case 'ArrowDown':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+      case 'ArrowRight':
+        event.preventDefault()
+        // 아코디언이 열려있으면 첫 번째 하위 요소로 이동
+        if (accordionState.value.openMenu === menuKey) {
           const menuContent = document.getElementById(`footer-menu-${menuKey}`)
           const firstFocusable = menuContent?.querySelector('[tabindex="0"]')
           if (firstFocusable) {
             firstFocusable.focus()
           }
-        })
-      }
-      break
-    case 'ArrowDown':
-      event.preventDefault()
-      focusPreviousElement()
-      break
-    case 'ArrowUp':
-      event.preventDefault()
-      focusNextElement()
-      break
-    case 'ArrowRight':
-      event.preventDefault()
-      // 아코디언이 열려있으면 첫 번째 하위 요소로 이동
-      if (accordionState.value.openMenu === menuKey) {
-        const menuContent = document.getElementById(`footer-menu-${menuKey}`)
-        const firstFocusable = menuContent?.querySelector('[tabindex="0"]')
-        if (firstFocusable) {
-          firstFocusable.focus()
         }
-      }
-      break
+        break
+    }
+  } else {
+    // 태블릿 이상: 단순 포커스 이동만
+    switch (key) {
+      case 'ArrowDown':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+      case 'ArrowRight':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowLeft':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+    }
   }
 }
 
 const handleSectionKeydown = (event, sectionKey) => {
-  if (!isMobile.value) return // 모바일이 아니면 동작하지 않음
-  
   const { key } = event
   
-  switch (key) {
-    case 'Enter':
-    case ' ':
-      event.preventDefault()
-      toggleSection(sectionKey)
-      
-      // 섹션이 열렸을 때 첫 번째 하위 요소로 포커스 이동
-      if (accordionState.value.openSection === sectionKey) {
-        nextTick(() => {
-          const sectionContent = document.getElementById(`footer-section-${sectionKey}`)
-          const firstFocusable = sectionContent?.querySelector('a')
-          if (firstFocusable) {
-            firstFocusable.focus()
-          }
-        })
-      }
-      break
-    case 'ArrowDown':
-      event.preventDefault()
-      focusPreviousElement()
-      break
-    case 'ArrowUp':
-      event.preventDefault()
-      focusNextElement()
-      break
-    case 'ArrowRight':
-      event.preventDefault()
-      // 섹션이 열려있으면 첫 번째 링크로 이동
-      if (accordionState.value.openSection === sectionKey) {
-        const sectionContent = document.getElementById(`footer-section-${sectionKey}`)
-        const firstLink = sectionContent?.querySelector('a')
-        if (firstLink) {
-          firstLink.focus()
+  if (isMobile.value) {
+    // 모바일: 아코디언 방식
+    switch (key) {
+      case 'Enter':
+      case ' ':
+        event.preventDefault()
+        toggleSection(sectionKey)
+        
+        // 섹션이 열렸을 때 첫 번째 하위 요소로 포커스 이동
+        if (accordionState.value.openSection === sectionKey) {
+          nextTick(() => {
+            const sectionContent = document.getElementById(`footer-section-${sectionKey}`)
+            const firstFocusable = sectionContent?.querySelector('a')
+            if (firstFocusable) {
+              firstFocusable.focus()
+            }
+          })
         }
-      }
-      break
-    case 'ArrowLeft':
-      event.preventDefault()
-      // 부모 메뉴로 포커스 이동
-      const parentMenu = event.target.closest('.footer-nav__column')
-      const parentTitle = parentMenu?.querySelector('.footer-nav__title')
-      if (parentTitle) {
-        parentTitle.focus()
-      }
-      break
+        break
+      case 'ArrowDown':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+      case 'ArrowRight':
+        event.preventDefault()
+        // 섹션이 열려있으면 첫 번째 링크로 이동
+        if (accordionState.value.openSection === sectionKey) {
+          const sectionContent = document.getElementById(`footer-section-${sectionKey}`)
+          const firstLink = sectionContent?.querySelector('a')
+          if (firstLink) {
+            firstLink.focus()
+          }
+        }
+        break
+      case 'ArrowLeft':
+        event.preventDefault()
+        // 부모 메뉴로 포커스 이동
+        const parentMenu = event.target.closest('.footer-nav__column')
+        const parentTitle = parentMenu?.querySelector('.footer-nav__title')
+        if (parentTitle) {
+          parentTitle.focus()
+        }
+        break
+    }
+  } else {
+    // 태블릿 이상: 단순 포커스 이동만
+    switch (key) {
+      case 'ArrowDown':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+      case 'ArrowRight':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowLeft':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+    }
+  }
+}
+
+// 링크 키보드 핸들러
+const handleLinkKeydown = (event) => {
+  const { key } = event
+  
+  if (isMobile.value) {
+    // 모바일: 아코디언 방식
+    switch (key) {
+      case 'Enter':
+      case ' ':
+        // 링크 클릭은 기본 동작 허용
+        break
+      case 'ArrowDown':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+      case 'ArrowLeft':
+        event.preventDefault()
+        // 정확한 부모 섹션으로 포커스 이동
+        const linkElement = event.target
+        const listItem = linkElement.closest('.footer-nav__list-item')
+        const list = listItem?.closest('.footer-nav__list')
+        const sectionId = list?.getAttribute('id')
+        
+        if (sectionId) {
+          // sectionId에서 메뉴 키와 섹션 인덱스 추출 (예: "footer-section-whatwedo-0")
+          const parts = sectionId.split('-')
+          const menuKey = parts[2] // "whatwedo"
+          const sectionIndex = parts[3] // "0"
+          
+          // 해당 섹션 타이틀 찾기
+          const sectionTitle = document.querySelector(`[data-menu="${menuKey}"] .footer-nav__subtitle:nth-child(${parseInt(sectionIndex) + 1})`)
+          if (sectionTitle) {
+            sectionTitle.focus()
+          }
+        }
+        break
+    }
+  } else {
+    // 태블릿 이상: 단순 포커스 이동만
+    switch (key) {
+      case 'Enter':
+      case ' ':
+        // 링크 클릭은 기본 동작 허용
+        break
+      case 'ArrowDown':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+      case 'ArrowRight':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowLeft':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+    }
   }
 }
 
 const handleSimpleMenuKeydown = (event) => {
   const { key } = event
   
-  switch (key) {
-    case 'Enter':
-    case ' ':
-      // 링크가 있으면 클릭
-      const link = event.target.querySelector('a') || event.target
-      if (link && link.tagName === 'A') {
+  if (isMobile.value) {
+    // 모바일: 아코디언 방식
+    switch (key) {
+      case 'Enter':
+      case ' ':
+        // 링크가 있으면 클릭
+        const link = event.target.querySelector('a') || event.target
+        if (link && link.tagName === 'A') {
+          event.preventDefault()
+          link.click()
+        }
+        break
+      case 'ArrowDown':
         event.preventDefault()
-        link.click()
-      }
-      break
-    case 'ArrowDown':
-      event.preventDefault()
-      focusPreviousElement()
-      break
-    case 'ArrowUp':
-      event.preventDefault()
-      focusNextElement()
-      break
+        focusNextElement()
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+    }
+  } else {
+    // 태블릿 이상: 단순 포커스 이동만
+    switch (key) {
+      case 'Enter':
+      case ' ':
+        // 링크가 있으면 클릭
+        const link = event.target.querySelector('a') || event.target
+        if (link && link.tagName === 'A') {
+          event.preventDefault()
+          link.click()
+        }
+        break
+      case 'ArrowDown':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+      case 'ArrowRight':
+        event.preventDefault()
+        focusNextElement()
+        break
+      case 'ArrowLeft':
+        event.preventDefault()
+        focusPreviousElement()
+        break
+    }
   }
 }
 

@@ -340,6 +340,15 @@ onUnmounted(() => {
           color: $d-black;
           margin: 0;
           font-weight: 700;
+          margin-bottom: rem(4);
+
+          @include tablet {
+            margin-bottom: rem(6);
+          }
+
+          @include desktop {
+            margin-bottom: rem(8);
+          }
         }
 
         .unified-list {

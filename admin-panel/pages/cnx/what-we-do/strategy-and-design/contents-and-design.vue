@@ -351,7 +351,7 @@ import AppTitle from '~/components/cnx/AppTitle.vue';
 import AppButton from '~/components/cnx/AppButton.vue';
 import AppSwiper from '~/components/cnx/AppSwiper.vue';
 import AppImgCont from '~/components/cnx/AppImgCont.vue';
-import { nextTick, onBeforeUnmount, onMounted, computed } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, computed, watch } from 'vue';
 
 // AppImgCont subItems 데이터
 const operationSubItems = computed(() => [
@@ -471,6 +471,56 @@ const activeSlideIndex = ref(null);
 const isMobile = ref(false);
 // 폭 변화 안정화 감지를 외부에서 호출하기 위한 함수 (onMounted에서 주입)
 let startWidthStabilizeWatch = () => {};
+
+// 768px 기준 반응형 전환을 즉시 반영하기 위한 matchMedia 감지기
+let responsiveMql = null;
+const setupResponsiveMatchMedia = () => {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+  try {
+    responsiveMql = window.matchMedia('(max-width: 767.98px)');
+    const apply = (matches) => {
+      isMobile.value = !!matches;
+      // 제목 높이 동기화 재적용 (PC 전용 규칙 포함)
+      try { applyBannerSlideTitleMinHeight(); } catch (_) { /* ignore */ }
+      // 기존 리사이즈 핸들러들이 재초기화하도록 resize 이벤트 트리거
+      try { window.dispatchEvent(new Event('resize')); } catch (_) { /* ignore */ }
+    };
+    // 초기 상태 반영
+    apply(responsiveMql.matches);
+    // 변화 감지 리스너 등록 (브라우저별 API 호환)
+    const onChange = (e) => apply(e.matches);
+    if (typeof responsiveMql.addEventListener === 'function') {
+      responsiveMql.addEventListener('change', onChange);
+      introCleanupCallbacks.push(() => { try { responsiveMql.removeEventListener('change', onChange); } catch (_) { /* ignore */ } });
+    } else if (typeof responsiveMql.addListener === 'function') {
+      responsiveMql.addListener(onChange);
+      introCleanupCallbacks.push(() => { try { responsiveMql.removeListener(onChange); } catch (_) { /* ignore */ } });
+    }
+  } catch (_) { /* ignore */ }
+};
+
+// 배너 ScrollTrigger 정리 (모바일 전환 시 사용)
+const cleanupBannerScroll = () => {
+  try {
+    const container = document.querySelector('.banner-slide');
+    // 관련 ScrollTrigger만 제거
+    ScrollTrigger.getAll().forEach(trigger => {
+      try { if (trigger.trigger && trigger.trigger.closest && trigger.trigger.closest('.banner-slide')) trigger.kill(); } catch (_) { /* ignore */ }
+    });
+    // pin-spacer 언랩
+    document.querySelectorAll('.pin-spacer').forEach(sp => {
+      try {
+        if (container && sp.contains(container)) {
+          const parent = sp.parentNode;
+          while (sp.firstChild) parent.insertBefore(sp.firstChild, sp);
+          parent.removeChild(sp);
+        }
+      } catch (_) { /* ignore */ }
+    });
+    // 새 레이아웃 반영
+    ScrollTrigger.refresh();
+  } catch (_) { /* ignore */ }
+};
 
 // ScrollTrigger refresh 후에 포커스를 복구하기 위한 인덱스 기억 및 포커스 헬퍼
 let pendingFocusSlideIndex = null;
@@ -1194,10 +1244,24 @@ const initIntroHoverTilt = () => {
 
 // onMounted에서 intro 관련 초기화 함수 호출 및 일괄 cleanup 처리
 onMounted(() => {
+  // 768px 기준 반응형 전환 즉시 반영
+  setupResponsiveMatchMedia();
   // initBannerScrollAnimation()은 onSwiperInit에서 호출
   initIntroCixClassToggle();
   initIntroLineHeightLinkage();
   initIntroHoverTilt();
+
+  // isMobile 전환 시 PC/모바일 전용 스크립트 즉시 전환
+  watch(isMobile, (val) => {
+    if (val) {
+      // 모바일 전환: 배너 ScrollTrigger 정리 및 레이아웃 리프레시
+      cleanupBannerScroll();
+    } else {
+      // 데스크톱 전환: 폭 안정화 감시를 통해 배너 재빌드 유도
+      try { if (typeof startWidthStabilizeWatch === 'function') startWidthStabilizeWatch(); } catch (_) { /* ignore */ }
+      try { applyBannerSlideTitleMinHeight(); } catch (_) { /* ignore */ }
+    }
+  }, { immediate: false });
   
   onBeforeUnmount(() => {
     // 새로고침 시 생성된 전역 Observer 정리
