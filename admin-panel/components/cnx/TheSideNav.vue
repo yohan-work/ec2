@@ -179,15 +179,15 @@ const toggleMenu = (menuKey) => {
     // 해당 메뉴의 섹션들을 확인
     const menu = menuStructure[menuKey]
     if (menu && menu.sections) {
-      // 2뎁스 타이틀이 있는 섹션이 있는지 확인
-      const hasSectionsWithTitle = menu.sections.some(section => section.title)
+      // 2뎁스 타이틀이 있는 섹션이 있는지 확인 (빈 문자열 제외)
+      const hasSectionsWithTitle = menu.sections.some(section => section.title && section.title.trim() !== '')
       
       if (hasSectionsWithTitle) {
         // 2뎁스가 있는 경우: 모든 2뎁스를 닫힌 채로 열기
         accordionState.value.openSection = null
         accordionState.value.openAllSections = false
       } else {
-        // 2뎁스가 없는 경우: 모든 섹션을 열려진 채로 보여주기
+        // 2뎁스가 없는 경우 (빈 타이틀 섹션들): 모든 섹션을 열려진 채로 보여주기
         accordionState.value.openSection = null
         accordionState.value.openAllSections = true
       }
@@ -240,17 +240,9 @@ const getAllFocusableElements = () => {
   
   // About Us가 열려있다면 하위 요소들 추가
   if (accordionState.value.openMenu === 'aboutus') {
-    const aboutUsSections = document.querySelectorAll('[data-menu="aboutus"] .side-nav-subtitle')
-    aboutUsSections.forEach(section => {
-      elements.push(section)
-      
-      // 해당 섹션이 열려있다면 그 섹션의 링크들도 추가
-      const sectionKey = `aboutus-${Array.from(aboutUsSections).indexOf(section)}`
-      if (accordionState.value.openSection === sectionKey || accordionState.value.openAllSections) {
-        const sectionLinks = document.querySelectorAll(`[data-menu="aboutus"] .side-nav-section:nth-child(${Array.from(aboutUsSections).indexOf(section) + 1}) .side-nav-list__link`)
-        sectionLinks.forEach(link => elements.push(link))
-      }
-    })
+    // About Us는 빈 타이틀 섹션들이므로 직접 링크들을 추가
+    const aboutUsLinks = document.querySelectorAll('[data-menu="aboutus"] .side-nav-list__link')
+    aboutUsLinks.forEach(link => elements.push(link))
   }
   
   // Careers 링크
