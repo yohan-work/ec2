@@ -492,6 +492,7 @@ let isCentering = false;
 let centeringTween = null;
 let pendingCenterIndex = null;
 let isRebuildCenteringActive = false; // 클릭→폭변화→재빌드 동안 포커스 정렬 억제
+let isToggleFocusRestoring = false; // toggleSlide 마지막 포커스 복구 시 정렬 억제
 
 // 요청된 슬라이드를 컨테이너 중앙에 부드럽게 정렬
 const requestCenterSlide = (index) => {
@@ -607,33 +608,24 @@ const toggleSlide = (index) => {
   // 포커스 저장 (스크롤 조정 후 복구용)
   pendingFocusSlideIndex = index;
   
-  // CSS 트랜지션 완료를 정확하게 감지하여 ScrollTrigger 재조정
+  // CSS 변화가 레이아웃에 반영된 후 폭 변화 감시 시작 (새로운 길이를 ScrollTrigger에 반영)
   nextTick(() => {
-    const swiperWrapper = document.querySelector('.banner-slide .swiper-wrapper');
-    if (!swiperWrapper) return;
+    try {
+      if (typeof startWidthStabilizeWatch === 'function') {
+        startWidthStabilizeWatch();
+      }
+    } catch (_) { /* ignore */ }
     
-    const onTransitionEnd = () => {
-      swiperWrapper.removeEventListener('transitionend', onTransitionEnd);
-      
-      try {
-        if (typeof startWidthStabilizeWatch === 'function') {
-          startWidthStabilizeWatch();
-        }
-      } catch (_) { /* ignore */ }
-    };
-    
-    // 트랜지션 완료 이벤트 리스너 등록
-    swiperWrapper.addEventListener('transitionend', onTransitionEnd, { once: true });
-    
-    // 타임아웃 폴백 (트랜지션이 없을 경우 대비)
+    // ScrollTrigger 재구성 완료 후 저장된 상태대로 포커스 복구 (정렬 없이)
     setTimeout(() => {
-      swiperWrapper.removeEventListener('transitionend', onTransitionEnd);
       try {
-        if (typeof startWidthStabilizeWatch === 'function') {
-          startWidthStabilizeWatch();
+        if (typeof pendingFocusSlideIndex === 'number') {
+          isToggleFocusRestoring = true;
+          focusButtonByIndex(pendingFocusSlideIndex);
+          isToggleFocusRestoring = false;
         }
       } catch (_) { /* ignore */ }
-    }, 600); // 0.45s 트랜지션 + 여유분
+    }, 600);
   });
 };
 
@@ -1610,10 +1602,8 @@ const onSlideChange = (swiper) => {
 
 // 탭 포커스로 버튼에 초점이 이동했을 때 해당 슬라이드가 보이도록 스크롤 X 조정
 const onBannerButtonFocus = (index) => {
-  // 재빌드-중앙정렬 플로우 중에는 포커스 정렬을 억제하여 왕복 이동 방지
-  if (isRebuildCenteringActive) {
-    // 재빌드 완료 후 수행될 수 있도록 보류
-    pendingCenterIndex = index;
+  // 재빌드-중앙정렬 플로우 중이거나 toggleSlide 포커스 복구 중에는 포커스 정렬을 억제
+  if (isRebuildCenteringActive || isToggleFocusRestoring) {
     return;
   }
   // 포커스 시 중앙 정렬 요청 (중복 호출은 내부에서 흡수)
