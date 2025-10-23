@@ -75,7 +75,7 @@ export const useNavigation = () => {
     },
     '/what-we-do/digital-operations/global-dotcom-and-e-commerce': {
       title: 'Global dotcom & e-Commerce - Concentrix',
-      description: '글로벌 도트컴 및 이커머스 서비스로 전 세계 고객에게 최적화된 디지털 경험을 제공합니다.',
+      description: '글로벌 닷컴 및 이커머스 서비스로 전 세계 고객에게 최적화된 디지털 경험을 제공합니다.',
       ogImage: '/assets/cnx/share/global-dotcom-share.png'
     },
     '/what-we-do/digital-operations/customer-service': {
