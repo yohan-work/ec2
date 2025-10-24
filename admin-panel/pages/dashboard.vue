@@ -87,15 +87,6 @@
           </NuxtLink>
         </div>
 
-        <!-- 하단 Documents 섹션 -->
-        <div class="mt-8">
-          <h3
-            class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"
-          >
-            Admin
-          </h3>
-        </div>
-
         <!-- 사용자 정보 및 로그아웃 -->
         <div
           class="mt-auto p-4 border-t border-gray-200 bg-white flex-shrink-0"
