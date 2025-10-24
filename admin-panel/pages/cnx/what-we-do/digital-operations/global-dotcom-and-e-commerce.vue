@@ -62,7 +62,7 @@
         <picture>
           <source media="(min-width: 1480px)" srcset="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner.png" type="image/png">
           <source media="(min-width: 768px)" srcset="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_t.png" type="image/png">
-          <img src="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_m.png" alt="Global Introduction Banner" loading="lazy">
+          <img src="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_m.png" alt="세계 지도 위에 서울, 달리안, 마닐라, 베트남, 브라티슬라바 등 주요 글로벌 센터 위치가 표시되어 있으며, 오른쪽에는 각 센터의 업무 내용, 지원 언어, 운영 시간 등이 정리되어 있습니다." loading="lazy">
         </picture>
       </figure>
 
