@@ -53,7 +53,7 @@ const metaOgImage = computed(() => {
 })
 
 // 동적 메타데이터 설정 함수 (페이지에서 사용)
-const setPageMeta = (meta) => {
+const setPageMeta = meta => {
   dynamicMeta.value = meta
 }
 
@@ -107,7 +107,7 @@ const headConfig = computed(() => ({
     // Windows 타일 이미지 설정
     {
       name: 'msapplication-TileImage',
-      content: '/assets/favicon/favicon.png',
+      content: `${baseUrl}/assets/favicon/favicon.png`,
     },
   ],
   link: [
@@ -118,17 +118,17 @@ const headConfig = computed(() => ({
     // 파비콘 설정
     {
       rel: 'icon',
-      href: '/assets/favicon/favicon-150x150.png',
+      href: `${baseUrl}/assets/favicon/favicon-150x150.png`,
       sizes: '32x32',
     },
     {
       rel: 'icon',
-      href: '/assets/favicon/favicon-195x195.png',
+      href: `${baseUrl}/assets/favicon/favicon-195x195.png`,
       sizes: '192x192',
     },
     {
       rel: 'apple-touch-icon',
-      href: '/assets/favicon/favicon-150x150.png',
+      href: `${baseUrl}/assets/favicon/favicon-150x150.png`,
     },
   ],
 }))
@@ -141,7 +141,7 @@ watch(
   () => {
     // 동적 메타데이터 초기화 (페이지 전환 시)
     dynamicMeta.value = null
-    
+
     // 스크롤과 포커스 초기화
     window.scrollTo(0, 0)
     // 메뉴 호버 상태 초기화
@@ -178,5 +178,6 @@ defineOptions({
 .cnx-main {
   flex: 1;
   /* 헤더가 sticky이므로 여백 불필요 */
+  outline:none;
 }
 </style>

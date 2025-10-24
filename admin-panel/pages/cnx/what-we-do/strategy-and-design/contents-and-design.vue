@@ -1701,7 +1701,7 @@ const slideData = ref([
     borderColor: 'white',
   },
   {
-    title: "Amorepacific HK <br>Sulwhasoo <br>D2C mall <br>Development",
+    title: "Amorepacific<br> HK Sulwhasoo <br>D2C mall <br>Development",
     subtitle: "아모레퍼시픽 <br>설화수 홍콩 D2C mall 구축",
     description: "사용자 친화적인 모바일 UX/UI 구현,<br>쇼핑 패턴을 반영한 BX & CX 최적화,<br>고객 경험 기반의 SEO 프로세스 수행,<br>본사 주도의 직영몰 표준 테마 제작",
     launch: "July 27, 2022",
@@ -1748,6 +1748,7 @@ const slideData = ref([
     launch: "June, 2021 ~",
     client: "LG Electronics",
     link: "https://www.instagram.com/lifeisgood_kitchen/",
+    textColor: 'black',
     borderColor: 'black'
   },
   {

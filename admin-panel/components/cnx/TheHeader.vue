@@ -304,7 +304,7 @@ const handleDropdownItemKeydown = (event) => {
       closeDropdownAndReturnFocus()
       break
     case 'Tab':
-      // Tab 키 처리: 마지막 요소에서 다음 요소로 이동 시 드롭다운 닫기
+      // Tab 키 처리: Shift+Tab과 일반 Tab을 구분하여 처리
       event.preventDefault()
       
       const dropdownMenu = event.target.closest('.gnb-dropdown-menu')
@@ -312,14 +312,28 @@ const handleDropdownItemKeydown = (event) => {
       const allFocusableItems = dropdownMenu?.querySelectorAll('[tabindex="0"]')
       const currentIndex = Array.from(allFocusableItems).indexOf(event.target)
       
-      if (currentIndex === allFocusableItems.length - 1) {
-        // 마지막 요소에서 Tab을 누른 경우: 드롭다운 닫고 다음 요소로 이동
-        closeDropdownAndReturnFocus()
-        focusMainMenuItemFromDropdown(dropdownName, event.shiftKey)
+      if (event.shiftKey) {
+        // Shift+Tab: 뒤로 이동
+        if (currentIndex === 0) {
+          // 첫 번째 요소에서 Shift+Tab을 누른 경우: 드롭다운 닫고 이전 요소로 이동
+          closeDropdownAndReturnFocus()
+          focusMainMenuItemFromDropdown(dropdownName, true)
+        } else {
+          // 첫 번째 요소가 아닌 경우: 드롭다운 내부에서 이전 요소로 이동
+          const prevIndex = currentIndex - 1
+          allFocusableItems[prevIndex]?.focus()
+        }
       } else {
-        // 마지막 요소가 아닌 경우: 드롭다운 내부에서 다음 요소로 이동
-        const nextIndex = (currentIndex + 1) % allFocusableItems.length
-        allFocusableItems[nextIndex]?.focus()
+        // 일반 Tab: 앞으로 이동
+        if (currentIndex === allFocusableItems.length - 1) {
+          // 마지막 요소에서 Tab을 누른 경우: 드롭다운 닫고 다음 요소로 이동
+          closeDropdownAndReturnFocus()
+          focusMainMenuItemFromDropdown(dropdownName, false)
+        } else {
+          // 마지막 요소가 아닌 경우: 드롭다운 내부에서 다음 요소로 이동
+          const nextIndex = currentIndex + 1
+          allFocusableItems[nextIndex]?.focus()
+        }
       }
       break
   }

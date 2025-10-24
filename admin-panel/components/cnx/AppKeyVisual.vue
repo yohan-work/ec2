@@ -19,6 +19,8 @@
             :src="mobileImage || desktopImage" 
             :alt="imageAlt || 'Key Visual'"
             @load="onImageLoad"
+            @error="onImageError"
+            ref="imageRef"
           />
         </picture>
         <!-- 스켈레톤 오버레이 -->
@@ -68,11 +70,19 @@ const tabletImage = ref('')
 const isAnimating = ref(false)
 // 이미지 로드 상태
 const isImageLoaded = ref(false)
+// 이미지 ref
+const imageRef = ref(null)
 
 // 이미지 로드 완료 핸들러
 const onImageLoad = () => {
   isImageLoaded.value = true
   startAnimation()
+}
+
+// 이미지 로드 실패 핸들러
+const onImageError = () => {
+  // 에러 시 스켈레톤 유지 (개발 시 이미지 경로 문제 확인 가능)
+  console.error('Image failed to load:', mobileImage.value || desktopImage.value)
 }
 
 // 애니메이션 시작 함수
@@ -85,13 +95,30 @@ const startAnimation = () => {
   }, props.animationDuration)
 }
 
-// 이미지 경로 초기화
+// 이미지 경로 확인 및 캐시된 이미지 체크
+const checkImageStatus = () => {
+  // 이미지 경로가 없으면 스켈레톤 숨김
+  if (!mobileImage.value && !desktopImage.value) {
+    isImageLoaded.value = true
+    return
+  }
+  
+  // 이미지가 이미 로드되었는지 확인 (캐시된 경우)
+  if (imageRef.value?.complete) {
+    isImageLoaded.value = true
+    startAnimation()
+  }
+}
+
+// 이미지 경로 초기화 (SSR 지원)
+const imagePaths = findResponsiveImagePaths('kv', baseImagePath)
+desktopImage.value = imagePaths.desktopImage
+mobileImage.value = imagePaths.mobileImage
+tabletImage.value = imagePaths.tabletImage
+
+// 클라이언트에서 이미지 상태 체크
 onMounted(() => {
-  // 유틸 함수를 사용하여 반응형 이미지 경로들 생성
-  const imagePaths = findResponsiveImagePaths('kv', baseImagePath)
-  desktopImage.value = imagePaths.desktopImage
-  mobileImage.value = imagePaths.mobileImage
-  tabletImage.value = imagePaths.tabletImage
+  checkImageStatus()
 })
 </script>
 

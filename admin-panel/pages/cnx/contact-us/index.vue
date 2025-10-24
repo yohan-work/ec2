@@ -709,8 +709,8 @@ onUnmounted(() => {
         padding: 0 0 rem(123);
 
         @include tablet {
-            flex-direction: row;
-            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: rem(24);
             padding: rem(48) 0 rem(54);
         }
@@ -767,6 +767,7 @@ onUnmounted(() => {
 
             @include desktop {
                 max-height: rem(336);
+                gap: rem(32);
             }
 
             div {
