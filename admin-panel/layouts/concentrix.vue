@@ -178,5 +178,6 @@ defineOptions({
 .cnx-main {
   flex: 1;
   /* 헤더가 sticky이므로 여백 불필요 */
+  outline:none;
 }
 </style>
