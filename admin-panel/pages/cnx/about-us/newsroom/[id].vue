@@ -214,9 +214,11 @@ useHead(() => {
   return {
     title: pageTitle,
     meta: [
+      { name: 'title', content: pageTitle },
       { name: 'description', content: pageDescription },
       { name: 'twitter:description', content: pageDescription },
       { name: 'twitter:image', content: NEWSLETTER_META_CONSTANTS.OG_IMAGE },
+      { name: 'twitter:title', content: pageTitle },
       { property: 'og:title', content: pageTitle },
       { property: 'og:description', content: pageDescription },
       { property: 'og:image', content: NEWSLETTER_META_CONSTANTS.OG_IMAGE },
