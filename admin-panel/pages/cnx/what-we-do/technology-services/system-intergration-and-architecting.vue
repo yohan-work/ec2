@@ -87,10 +87,11 @@ definePageMeta({
 const adSubItems = computed(() => [
   {
     listItems: [
-      '글로벌 B2B·B2C 비즈니스를 위한 Enterprise Commerce 플랫폼',
-      '제품 · 가격 · 주문 · 계정 관리와 ERP · CRM · OMS 연동 지원',
-      'Headless·Composable Architecture 기반 멀티브랜드 · 다국가 확장',
-      '전문 SI 역량과 글로벌 법인 소속 GDC 인력을 통한 맞춤형 구축 · 글로벌 Roll-out 지원'
+      '전략 솔루션 Custom Build 시 최적화 Architecture 설계',
+      'Best-in-Class 아키텍처링 기술로 생산성·품질 동시 확보',
+      'Cloud / On-Prem / Hybrid 아키텍처 설계 경험',
+      'Microservice·Headless·Composable 기반 확장성 제공',
+      '보안·거버넌스·표준화까지 고려한 Enterprise Architecture'
     ]
   }
 ])
@@ -99,10 +100,10 @@ const adSubItems = computed(() => [
 const isSubItems = computed(() => [
   {
     listItems: [
-      '콘텐츠 관리와 Commerce를 통합한 디지털 경험 플랫폼',
-      '제품 · 프로모션 · 고객 여정 관리 및 마케팅 자동화 지원',
-      'Cloud 기반 Architecture로 유연한 확장성과 빠른 배포 가능',
-      '본사와 글로벌 법인 GDC 협업을 통한 대규모 프로젝트 수행 지원'
+      '대규모 SI 프로젝트 경험을 기반으로 Legacy → Cloud Migration 및 Modernization 수행',
+      'ERP·CRM·DXP·Commerce 등 이기종 시스템을 API/Middleware로 통합 구축',
+      '글로벌 인증(SSO/IAM) 체계와 데이터 파이프라인 Architecture 설계·실행',
+      '외부 서비스 및 Enterprise 플랫폼과의 End-to-End 연동 프로젝트 수행'
     ]
   }
 ])
@@ -111,10 +112,11 @@ const isSubItems = computed(() => [
 const gdmrSubItems = computed(() => [
   {
     listItems: [
-      'Cloud SaaS 기반의 글로벌 커머스 플랫폼',
-      '빠른 구축, 다양한 앱·마켓플레이스 연동, 다국가 결제 지원',
-      'Headless · API 기반 확장으로 스타트업부터 엔터프라이즈까지 대응',
-      '글로벌 법인 GDC와 협력한 신속 · 효율적 구축 · 운영 지원'
+      'Onshore + 글로벌 법인 GDC 하이브리드 모델',
+      '영어 소통이 가능한 글로벌 Tech PMO 인력 보유 (HQ와 GDC 간 커뮤니케이션 지원)',
+      '24/7 글로벌 대응 가능한 운영 체계',
+      '멀티브랜드·다국가Roll-out 지원',
+      '삼성전자, LG전자, 아모레퍼시픽, LG생활건강, 한국타이어 등 글로벌 Enterprise SI 프로젝트 경험'
     ]
   }
 ])
