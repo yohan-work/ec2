@@ -49,12 +49,16 @@ const route = useRoute()
 const config = useRuntimeConfig()
 const useDummy = config.public.useDummy
 
+// SSR 안전한 baseUrl 생성
+const requestUrl = useRequestURL()
+const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`
+
 // 스크롤 위치 관리
 const lastClickedNewsletterId = ref(null)
 
-// 상수 정의
+// 상수 정의 (절대경로)
 const NEWSLETTER_META_CONSTANTS = {
-  OG_IMAGE: '/assets/cnx/share/concentrix-share.png',
+  OG_IMAGE: `${baseUrl}/assets/cnx/share/concentrix-share.png`,
   TITLE_SUFFIX: ' - Concentrix',
   DESCRIPTION_MAX_LENGTH: 160,
 }
