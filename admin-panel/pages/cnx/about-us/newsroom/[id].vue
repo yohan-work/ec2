@@ -31,159 +31,205 @@ definePageMeta({
   layout: 'concentrix',
 })
 
-/**
- * 뉴스레터 상세 페이지
- *
- * === dummy data ===
- * for seungjoo Park
- * 실제 DB 연결 로직은 주석처리되어 있으며, 별도로 백업해두었습니다.
- * /public/data/newsletters-dummy.json 파일을 사용합니다.
- *
- */
-
-// 컴포넌트 import (같은 폴더에 있으므로 자동 import되지만 명시적으로 추가)
+// 컴포넌트 import
 import NewsletterContent from './NewsletterContent.vue'
 import RelatedNewsletters from './RelatedNewsletters.vue'
 import AppButton from '~/components/cnx/AppButton.vue'
-import { inject, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
+import {
+  useRoute,
+  useRuntimeConfig,
+  useAsyncData,
+  useHead,
+  showError,
+  createError,
+} from '#app'
 
 const route = useRoute()
-const newsletterId = route.params.id
-
-// 동적 메타데이터 설정 함수 가져오기
-const setPageMeta = inject('setPageMeta')
-
-// 환경 설정
 const config = useRuntimeConfig()
 const useDummy = config.public.useDummy
-
-// 상태 관리
-const newsletter = ref(null)
-const loading = ref(true)
-const error = ref(null)
-const relatedNewsletters = ref([])
 
 // 스크롤 위치 관리
 const lastClickedNewsletterId = ref(null)
 
-// 뉴스레터 조회
-const fetchNewsletter = async () => {
-  try {
-    loading.value = true
-    error.value = null
-
-    if (useDummy) {
-      // === 더미 데이터 로직 ===
-      const response = await $fetch('/data/newsletters-dummy.json')
-      const foundNewsletter = response.data.find(
-        item => item.id == newsletterId
-      )
-
-      if (!foundNewsletter) {
-        error.value = '뉴스레터를 찾을 수 없습니다.'
-        return
-      }
-
-      // 더미 데이터에 추가 필드 보완
-      newsletter.value = {
-        ...foundNewsletter,
-        created_at: foundNewsletter.published_at,
-        updated_at:
-          foundNewsletter.id === 25
-            ? '2025-09-19T19:35:00+09:00'
-            : foundNewsletter.published_at,
-      }
-      
-      // 동적 메타데이터 설정
-      setNewsletterMeta(foundNewsletter)
-    } else {
-      // === DB 연결 로직 ===
-      const response = await $fetch(`/api/public/newsletters/${newsletterId}`)
-      newsletter.value = response.data
-      
-      // 동적 메타데이터 설정
-      setNewsletterMeta(response.data)
-    }
-
-    // 뉴스레터 조회 성공 시 관련 뉴스레터도 가져오기
-    await fetchRelatedNewsletters()
-  } catch (err) {
-    console.error('뉴스레터 조회 실패:', err)
-    if (err.statusCode === 404) {
-      error.value = '뉴스레터를 찾을 수 없습니다.'
-    } else {
-      error.value = '뉴스레터를 불러올 수 없습니다.'
-    }
-  } finally {
-    loading.value = false
-  }
+// 상수 정의
+const NEWSLETTER_META_CONSTANTS = {
+  OG_IMAGE: '/assets/cnx/share/concentrix-share.png',
+  TITLE_SUFFIX: ' - Concentrix',
+  DESCRIPTION_MAX_LENGTH: 160,
 }
 
-// 관련 뉴스레터 조회 (과거 기사 우선, 부족 시 최신 기사로 보완)
-const fetchRelatedNewsletters = async () => {
-  try {
-    if (useDummy) {
-      // === 더미 데이터 로직 ===
-      const response = await $fetch('/data/newsletters-dummy.json')
-
-      // 현재 뉴스레터의 날짜
-      const currentDate = new Date(newsletter.value.published_at)
-
-      // 현재 뉴스레터 제외
-      const allNewsletters = response.data.filter(
-        item => item.id != newsletterId
-      )
-
-      // 과거 기사와 최신 기사로 분리
-      const olderNewsletters = allNewsletters
-        .filter(item => new Date(item.published_at) < currentDate)
-        .sort((a, b) => new Date(b.published_at) - new Date(a.published_at)) // 상대적 최신순 (오래된 것 중 가장 최신)
-
-      const newerNewsletters = allNewsletters
-        .filter(item => new Date(item.published_at) >= currentDate)
-        .sort((a, b) => new Date(b.published_at) - new Date(a.published_at)) // 최신순
-
-      // 과거 기사를 우선으로 채우고, 부족하면 최신 기사로 보완
-      const result = []
-      const maxCount = 5
-
-      // 과거 기사 먼저 추가
-      for (
-        let i = 0;
-        i < olderNewsletters.length && result.length < maxCount;
-        i++
-      ) {
-        result.push(olderNewsletters[i])
-      }
-
-      // 제일 오래된 게시글 접근 시 최신 기사로 보완
-      for (
-        let i = 0;
-        i < newerNewsletters.length && result.length < maxCount;
-        i++
-      ) {
-        result.push(newerNewsletters[i])
-      }
-
-      relatedNewsletters.value = result
-    } else {
-      // === DB 연결 로직 ===
-      const response = await $fetch('/api/public/newsletters/related', {
-        query: {
-          id: newsletterId,
-          limit: 5,
-        },
-      })
-      relatedNewsletters.value = response.data
-    }
-  } catch (err) {
-    console.error('관련 뉴스레터 조회 실패:', err)
-    // 관련 뉴스레터는 실패해도 메인 콘텐츠에 영향 없도록 빈 배열 유지
-    relatedNewsletters.value = []
+// HTML에서 첫 번째 문단 추출
+const getFirstParagraph = htmlContent => {
+  if (!htmlContent) return ''
+  const pMatch = htmlContent.match(/<p[^>]*>(.*?)<\/p>/i)
+  if (pMatch) {
+    const textContent = pMatch[1].replace(/<[^>]*>/g, ' ')
+    const cleanText = textContent.replace(/\s+/g, ' ').trim()
+    return cleanText.length > NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH
+      ? cleanText.substring(
+          0,
+          NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH
+        ) + '...'
+      : cleanText
   }
+  const textContent = htmlContent.replace(/<[^>]*>/g, ' ')
+  const cleanText = textContent.replace(/\s+/g, ' ').trim()
+  const firstSentence = cleanText.split(/[.!?]/)[0]
+  return firstSentence.length > NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH
+    ? firstSentence.substring(
+        0,
+        NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH
+      ) + '...'
+    : firstSentence
 }
 
-// 날짜 포맷 (한국 시간대로 표시)
+const { data, error, loading } = await useAsyncData(
+  `newsletter-page-${route.params.id}`,
+  async () => {
+    const newsletterId = route.params.id
+    let fetchedNewsletter = null
+    let fetchedRelated = []
+
+    // 1. 메인 뉴스레터 조회
+    try {
+      if (useDummy) {
+        // === 더미 데이터 로직 ===
+        const response = await $fetch('/data/newsletters-dummy.json')
+        const found = response.data.find(item => item.id == newsletterId)
+
+        if (!found) {
+          throw createError({
+            statusCode: 404,
+            message: '뉴스레터를 찾을 수 없습니다.',
+            fatal: true,
+          })
+        }
+
+        fetchedNewsletter = {
+          ...found,
+          created_at: found.published_at,
+          updated_at:
+            found.id === 25 ? '2025-09-19T19:35:00+09:00' : found.published_at,
+        }
+      } else {
+        // === DB 연결 로직 ===
+        const response = await $fetch(`/api/public/newsletters/${newsletterId}`)
+        fetchedNewsletter = response.data
+      }
+    } catch (err) {
+      console.error('뉴스레터 조회 실패:', err)
+      if (err.statusCode === 404) {
+        throw createError({
+          statusCode: 404,
+          message: '뉴스레터를 찾을 수 없습니다.',
+          fatal: true,
+        })
+      } else {
+        throw createError({
+          statusCode: 500,
+          message: '뉴스레터를 불러올 수 없습니다.',
+          fatal: true,
+        })
+      }
+    }
+
+    // 2. 관련 뉴스레터 조회 (메인 뉴스레터 조회가 성공한 경우에만)
+    if (fetchedNewsletter) {
+      try {
+        if (useDummy) {
+          // === 더미 데이터 로직 ===
+          const response = await $fetch('/data/newsletters-dummy.json')
+          const currentDate = new Date(fetchedNewsletter.published_at)
+          const allNewsletters = response.data.filter(
+            item => item.id != newsletterId
+          )
+
+          const olderNewsletters = allNewsletters
+            .filter(item => new Date(item.published_at) < currentDate)
+            .sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
+          const newerNewsletters = allNewsletters
+            .filter(item => new Date(item.published_at) >= currentDate)
+            .sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
+
+          const result = []
+          const maxCount = 5
+          for (
+            let i = 0;
+            i < olderNewsletters.length && result.length < maxCount;
+            i++
+          ) {
+            result.push(olderNewsletters[i])
+          }
+          for (
+            let i = 0;
+            i < newerNewsletters.length && result.length < maxCount;
+            i++
+          ) {
+            result.push(newerNewsletters[i])
+          }
+          fetchedRelated = result
+        } else {
+          // === DB 연결 로직 ===
+          const response = await $fetch('/api/public/newsletters/related', {
+            query: { id: newsletterId, limit: 5 },
+          })
+          fetchedRelated = response.data
+        }
+      } catch (err) {
+        console.error('관련 뉴스레터 조회 실패:', err)
+        fetchedRelated = [] // 관련 뉴스레터는 실패해도 페이지 오류는 아님
+      }
+    }
+
+    // useAsyncData는 반환된 객체를 data ref에 담아줍니다.
+    return {
+      newsletter: fetchedNewsletter,
+      relatedNewsletters: fetchedRelated,
+    }
+  }
+)
+
+if (error.value) {
+  showError(error.value)
+}
+
+// data ref에서 실제 데이터를 추출합니다. computed를 사용하면 data.value가 null일 때를 안전하게 처리할 수 있습니다.
+const newsletter = computed(() => data.value?.newsletter)
+const relatedNewsletters = computed(() => data.value?.relatedNewsletters || [])
+
+// ---
+// ---
+useHead(() => {
+  // 데이터가 아직 없거나 오류가 발생한 경우를 대비
+  if (!newsletter.value) {
+    return {
+      title: '뉴스레터' + NEWSLETTER_META_CONSTANTS.TITLE_SUFFIX,
+    }
+  }
+
+  const pageTitle = `${newsletter.value.title}${NEWSLETTER_META_CONSTANTS.TITLE_SUFFIX}`
+  const pageDescription = getFirstParagraph(newsletter.value.body_html)
+
+  return {
+    title: pageTitle,
+    meta: [
+      { name: 'description', content: pageDescription },
+      { name: 'twitter:description', content: pageDescription },
+      { name: 'twitter:image', content: NEWSLETTER_META_CONSTANTS.OG_IMAGE },
+      { property: 'og:title', content: pageTitle },
+      { property: 'og:description', content: pageDescription },
+      { property: 'og:image', content: NEWSLETTER_META_CONSTANTS.OG_IMAGE },
+    ],
+  }
+})
+
+// 관련 뉴스레터 클릭 핸들러
+const handleRelatedNewsletterClick = newsletterId => {
+  lastClickedNewsletterId.value = newsletterId
+}
+
+// 날짜 포맷
 const formatDate = dateString => {
   if (!dateString) return ''
   const date = new Date(dateString)
@@ -192,72 +238,6 @@ const formatDate = dateString => {
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}.${month}.${day}`
 }
-
-// 관련 뉴스레터 클릭 핸들러
-const handleRelatedNewsletterClick = newsletterId => {
-  lastClickedNewsletterId.value = newsletterId
-}
-
-// 상수 정의
-const NEWSLETTER_META_CONSTANTS = {
-  OG_IMAGE: '/assets/cnx/share/concentrix-share.png',
-  TITLE_SUFFIX: ' - Concentrix',
-  DESCRIPTION_MAX_LENGTH: 160
-}
-
-// HTML에서 첫 번째 문단 추출
-const getFirstParagraph = htmlContent => {
-  if (!htmlContent) return ''
-
-  // 첫 번째 <p> 태그 찾기
-  const pMatch = htmlContent.match(/<p[^>]*>(.*?)<\/p>/i)
-  if (pMatch) {
-    // HTML 태그 제거
-    const textContent = pMatch[1].replace(/<[^>]*>/g, ' ')
-    // 연속된 공백 정리
-    const cleanText = textContent.replace(/\s+/g, ' ').trim()
-    // 상수로 정의된 길이로 제한하고 말줄임표 추가
-    return cleanText.length > NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH
-      ? cleanText.substring(0, NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH) + '...'
-      : cleanText
-  }
-
-  // <p> 태그가 없으면 전체 텍스트에서 첫 번째 문장 추출
-  const textContent = htmlContent.replace(/<[^>]*>/g, ' ')
-  const cleanText = textContent.replace(/\s+/g, ' ').trim()
-  const firstSentence = cleanText.split(/[.!?]/)[0]
-  
-  return firstSentence.length > NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH
-    ? firstSentence.substring(0, NEWSLETTER_META_CONSTANTS.DESCRIPTION_MAX_LENGTH) + '...'
-    : firstSentence
-}
-
-// 뉴스레터 메타데이터 설정 함수 (중복 제거)
-const setNewsletterMeta = (newsletterData) => {
-  setPageMeta({
-    title: `${newsletterData.title}${NEWSLETTER_META_CONSTANTS.TITLE_SUFFIX}`,
-    description: getFirstParagraph(newsletterData.body_html),
-    ogImage: NEWSLETTER_META_CONSTANTS.OG_IMAGE
-  })
-}
-
-// 컴포넌트 마운트 시 데이터 로드
-onMounted(() => {
-  fetchNewsletter()
-})
-
-// 라우트 파라미터 변경 감지 (동적 라우트에서 ID 변경 시)
-watch(
-  () => route.params.id,
-  (newId, oldId) => {
-    if (newId !== oldId) {
-      // ID가 변경되면 데이터 재로드
-      fetchNewsletter()
-    }
-  }
-)
-
-// 메타데이터는 레이아웃에서 동적으로 처리됨
 </script>
 
 <style lang="scss" scoped>
