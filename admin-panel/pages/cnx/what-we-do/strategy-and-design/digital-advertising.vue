@@ -12,7 +12,7 @@
       <section class="title-section">
         <AppTitle 
           title="Digital Advertising"
-          text="데이터 기반의 디지털 광고 전략으로 브랜드의 성장을 이끌어갑니다."
+          text="고객 여정 인사이트 기반의 광고 운영 및 최적화,<br>광고 소재 제작까지 End to End 디지털 광고 서비스를 제공합니다."
         />
       </section>
 
@@ -241,7 +241,7 @@ const swiperSlides = ref([
     listItems: [
       "고객사의 1PD 타겟 Affinity 및 마케팅 데이터 인사이트 기반 광고 타겟 세그먼트 전략 수립",
       "미디어 성과, 유저 Journey 교차 분석을 통한 광고 성과 검증",
-      "마케팅 태그 점검 / 대시보드 / 축적 데이터 기반의 *마케팅 성과 예측 모델링 등 Solution Development"
+      "마케팅 태그 점검 / 대시보드 / 축적 데이터 기반의 *마케팅 성과 예측 모델링 등 Solution Development<br><span class='description'>*최대 7일까지 예측 가능, 오차 범위 최대 8% 이내</span>"
     ],
     imageName: "swiper02",
     imageAlt: "창의적 콘텐츠 최적화 이미지"
@@ -276,7 +276,7 @@ const swiperSlides = ref([
     keyText: "Key feature",
     listItems: [
       "고객사 CDP 실시간 연동으로 마케팅 목적에 맞는 CRM 타겟 추출이 가능한 SAM 대시보드 개발 및 운영",
-      "자체 개발 AI 솔루션(MARS) 도입하여 상품과 프로모션에 최적화된 타겟 매핑 모델링 제공 (매핑 정확도 90% 이상)",
+      "자체 개발 AI 솔루션(MARS) 도입하여 상품과 프로모션에 최적화된 타겟 매핑 모델링 제공 <span class='description'>(매핑 정확도 90% 이상)</span>",
       "메타 등 외부 매체와의 API 연동으로 SAM, MARS를 통해 발굴된 고도화된 타겟 세그먼트 활용 가능"
     ],
     imageName: "swiper05",
@@ -325,7 +325,7 @@ const processedSwiperSlides = computed(() => {
 
   .section-description {
     @include body-02;
-    color: $gray-1;
+    color: $d-black;
     margin: 0;
     line-height: 1.6;
     max-width: rem(600);
@@ -497,7 +497,14 @@ const processedSwiperSlides = computed(() => {
         overflow-wrap: break-word;
         position: relative;
         padding-left: rem(16);
-
+        :deep(.description) {
+          @include body-03;
+          color: $gray-1;
+          margin: 0;
+          line-height: 1.6;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
         &::before {
           content: '•';
           position: absolute;
