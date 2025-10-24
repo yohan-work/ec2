@@ -142,21 +142,21 @@
           <ul class="overview-section-content-list">
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/report.gif" alt="report">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/report.gif" alt="report" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/report_hover.gif" alt="report" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/planning.gif" alt="planning">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/planning.gif" alt="planning" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/planning_hover.gif" alt="planning" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/service.gif" alt="service">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/service.gif" alt="service" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/service_hover.gif" alt="service" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
@@ -164,28 +164,28 @@
           <ul class="overview-section-content-list">
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/graphics.gif" alt="graphics">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/graphics.gif" alt="graphics" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/graphics_hover.gif" alt="graphics" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/color.gif" alt="color">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/color.gif" alt="color" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/color_hover.gif" alt="color" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/typography.gif" alt="typography">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/typography.gif" alt="typography" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/typography_hover.gif" alt="typography" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/logo.gif" alt="logo">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/logo.gif" alt="logo" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/logo_hover.gif" alt="logo" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
@@ -193,28 +193,28 @@
           <ul class="overview-section-content-list">
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/icon.gif" alt="icon">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/icon.gif" alt="icon" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/icon_hover.gif" alt="icon" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/guide.gif" alt="guide">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/guide.gif" alt="guide" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/guide_hover.gif" alt="guide" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/image.gif" alt="image">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/image.gif" alt="image" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/image_hover.gif" alt="image" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/interaction.gif" alt="interaction">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/interaction.gif" alt="interaction" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/interaction_hover.gif" alt="interaction" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
@@ -222,21 +222,21 @@
           <ul class="overview-section-content-list">
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/motion.gif" alt="motion">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/motion.gif" alt="motion" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/motion_hover.gif" alt="motion" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/sound.gif" alt="sound">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/sound.gif" alt="sound" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/sound_hover.gif" alt="sound" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
               <span class="overview-section-content-list-item-comma" aria-hidden="true">,&nbsp;</span>
             </li>
             <li class="overview-section-content-list-item">
               <div class="img-swap">
-                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/illustration.gif" alt="illustration">
+                <img class="img-base" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/illustration.gif" alt="illustration" loading="lazy" fetchpriority="low">
                 <img class="img-hover" src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/illustration_hover.gif" alt="illustration" aria-hidden="true" loading="lazy" fetchpriority="low">
               </div>
             </li>
