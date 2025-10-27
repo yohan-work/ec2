@@ -67,7 +67,6 @@ const pagination = ref({
 })
 const displayedCount = ref(0)
 
-
 // 환경 설정
 const config = useRuntimeConfig()
 const useDummy = config.public.useDummy
@@ -107,6 +106,11 @@ const loadMoreNewsletters = async () => {
   try {
     loadingMore.value = true
 
+    // 더보기 클릭 이벤트 발생 (레이아웃에서 포커스 처리를 건너뛰기 위해)
+    if (import.meta.client) {
+      window.dispatchEvent(new CustomEvent('skip-main-focus'))
+    }
+
     if (useDummy) {
       // === 더미 데이터 로직 ===
       const response = await $fetch('/data/newsletters-dummy.json')
@@ -143,7 +147,9 @@ const loadMoreNewsletters = async () => {
       if (nextPageData.length > 0) {
         nextTick(() => {
           const firstNewNewsletterId = nextPageData[0].id
-          const targetElement = document.getElementById(`newsletter-${firstNewNewsletterId}`)
+          const targetElement = document.getElementById(
+            `newsletter-${firstNewNewsletterId}`
+          )
           if (targetElement) {
             // 스크롤만 이동 (포커스 제거)
             targetElement.scrollIntoView({
@@ -180,7 +186,9 @@ const loadMoreNewsletters = async () => {
       if (response.data.length > 0) {
         nextTick(() => {
           const firstNewNewsletterId = response.data[0].id
-          const targetElement = document.getElementById(`newsletter-${firstNewNewsletterId}`)
+          const targetElement = document.getElementById(
+            `newsletter-${firstNewNewsletterId}`
+          )
           if (targetElement) {
             // 스크롤만 이동 (포커스 제거)
             targetElement.scrollIntoView({
@@ -248,7 +256,6 @@ const getPageNumbers = () => {
 const handleNewsletterClick = newsletterId => {
   // 포커스 이동 제거 - 단순 클릭만 처리
 }
-
 
 // 컴포넌트 마운트 시 데이터 로드
 onMounted(() => {

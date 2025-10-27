@@ -136,9 +136,29 @@ const headConfig = computed(() => ({
 // 반응형 메타데이터 적용
 useHead(headConfig)
 
+// 더보기 등 특정 액션에서 포커스 처리를 건너뛰기 위한 플래그
+const skipFocusFlag = ref(false)
+
+// skip-main-focus 이벤트 리스너
+if (import.meta.client) {
+  window.addEventListener('skip-main-focus', () => {
+    skipFocusFlag.value = true
+    // 이벤트 처리 후 즉시 플래그 해제 (단발성 이벤트 대응)
+    setTimeout(() => {
+      skipFocusFlag.value = false
+    }, 100)
+  })
+}
+
 watch(
   () => route.fullPath,
   () => {
+    // 더보기 클릭 등 특정 액션의 경우 main 포커스 건너뛰기
+    if (skipFocusFlag.value) {
+      skipFocusFlag.value = false
+      return
+    }
+
     // 동적 메타데이터 초기화 (페이지 전환 시)
     dynamicMeta.value = null
 
@@ -178,6 +198,6 @@ defineOptions({
 .cnx-main {
   flex: 1;
   /* 헤더가 sticky이므로 여백 불필요 */
-  outline:none;
+  outline: none;
 }
 </style>
