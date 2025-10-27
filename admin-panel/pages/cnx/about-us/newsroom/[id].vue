@@ -16,12 +16,7 @@
 
           <!-- 더보기 버튼 -->
           <div class="newsletter-load-more">
-            <AppButton
-              effect="left"
-              to="/about-us/newsroom"
-              text="목록 보기"
-              @click="handleBackToList"
-            >
+            <AppButton effect="left" to="/about-us/newsroom" text="목록 보기">
             </AppButton>
           </div>
         </div>
@@ -238,14 +233,6 @@ useHead(() => {
 // 관련 뉴스레터 클릭 핸들러
 const handleRelatedNewsletterClick = newsletterId => {
   lastClickedNewsletterId.value = newsletterId
-}
-
-// 목록 보기 클릭 핸들러
-const handleBackToList = () => {
-  // 목록 보기 클릭 이벤트 발생 (레이아웃에서 포커스 처리를 건너뛰기 위해)
-  if (import.meta.client) {
-    window.dispatchEvent(new CustomEvent('skip-main-focus'))
-  }
 }
 
 // 날짜 포맷
