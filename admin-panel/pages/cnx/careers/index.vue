@@ -115,16 +115,19 @@
           <!-- Q&A -->
           <CareersQna title="채용 Q&A" :items="businessQnaItems" refName="business" />
 
+          <!-- FAQ -->
+          <CareersFaq />
+
         </section>
       </template>
 
       <template #service>
         <!-- Customer Service 탭 내용 -->
-        <div class="inner">
+        <div class="inner has-button-tab">
 
           <div class="careers__group">
 
-            <div class="careers__title">
+            <div class="careers__title has-button-tab">
               <h2 class="careers__title-headline">Customer Service</h2> 
             </div>
 
@@ -150,8 +153,8 @@
                   headingLevel="h4"
                   title="고객과 기업을 잇는 소통의 전문가를 모십니다" 
                   content="콘센트릭스의 CS팀은 다양한 기업의 고객센터 운영을 맡아 정확하고 친절한 상담 서비스를 제공합니다.<br>고객 응대에 대한 책임감과 따뜻한 마음을 가진 분들의 많은 지원을 기다립니다." 
-                  buttonText="채용 바로가기기" 
-                  href="https://www.albamon.com/jobs/detail/112108696" 
+                  buttonText="채용 바로가기" 
+                  href="https://www.jobkorea.co.kr/Recruit/GI_Read/47933297" 
                 />
 
               </template>
@@ -190,9 +193,6 @@
         </div>
       </template>
     </AppTab>
-
-    <!-- FAQ -->
-    <CareersFaq />
 
   </div>
 </template>
@@ -597,86 +597,96 @@
 
 <style lang="scss" scoped>
 
-  .careers {
-
-    &__title {
-      padding: rem(56) 0;
-      &:has(+ .careers__button-tab) {
-        padding-bottom: 0;
-      }
-      &-headline {
-        text-align: center;
-        @include headline-02;
-      }
-      @include tablet {
-        padding: rem(80) 0;
-      }
+.careers {
+  
+  &__title {
+    padding: rem(56) 0;
+    &.has-button-tab {
+      padding-bottom: 0;
     }
-
-    &__tab {
-      margin-top: rem(56);
-      :deep(.tab-panel > .inner) {
-        display: flex;
-        flex-direction: column;
-        gap: rem(56);
-      }
-      @include tablet {
-        margin-top: rem(80);
-        :deep(.tab-panel > .inner) {
-          gap: rem(80);
-        }
-      }
-      @include desktop {
-        :deep(.tab-panel > .inner) {
-          gap: rem(120);
-        }
-      }
+    &-headline {
+      text-align: center;
+      @include headline-02;
     }
-
-    &__button-tab {
-      margin-top: rem(16);
-      :deep(.inner) {
-        padding: 0;
-      }
-      :deep(.tab-panel) {
-        display: flex;
-        flex-direction: column;
-        gap: rem(56);
-        margin-top: rem(56);
-      }
-      @include tablet {
-        margin-top: rem(24); 
-        :deep(.tab-panel) {
-          margin-top: rem(80);
-          gap: rem(80);
-        }
-      }
-      @include desktop {
-        :deep(.tab-panel) {
-          gap: rem(120);
-        }
-      }
+    @include tablet {
+      padding: rem(80) 0;
     }
-
-    &__swiper {
-      &-content {
-        position: absolute;
-        z-index: 1;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding: rem(20);
-        color: #fff;
-        @include tablet {
-          justify-content: flex-start;
-          padding: rem(32);
-        }
-        @include desktop {
-          padding: rem(64);
-        }
-      }
-    }
-
   }
+
+  &__swiper {
+    &-content {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: rem(20);
+      color: #fff;
+      @include tablet {
+        justify-content: flex-start;
+        padding: rem(32);
+      }
+      @include desktop {
+        padding: rem(64);
+      }
+    }
+  }
+
+  &__tab {
+    margin-top: rem(56);
+    :deep(.tab-panel > .inner) {
+      display: flex;
+      flex-direction: column;
+      gap: rem(56);
+    }
+    @include tablet {
+      margin-top: rem(80);
+      :deep(.tab-panel > .inner) {
+        gap: rem(80);
+      }
+    }
+    @include desktop {
+      :deep(.tab-panel > .inner) {
+        gap: rem(120);
+      }
+    }
+  }
+
+  &__button-tab {
+    margin-top: rem(16);
+    :deep(.inner) {
+      padding: 0;
+    }
+    :deep(.tab-panel) {
+      display: flex;
+      flex-direction: column;
+      gap: rem(56);
+      margin-top: rem(56);
+    }
+    @include tablet {
+      margin-top: rem(24); 
+      :deep(.tab-panel) {
+        margin-top: rem(80);
+        gap: rem(80);
+      }
+    }
+    @include desktop {
+      :deep(.tab-panel) {
+        gap: rem(120);
+      }
+    }
+  }
+
+  .inner.has-button-tab {
+    padding-bottom: rem(42);
+    @include tablet {
+      padding-bottom: rem(80);
+    }
+    @include desktop {
+      padding-bottom: rem(120);
+    }
+  }
+
+}
 </style>
