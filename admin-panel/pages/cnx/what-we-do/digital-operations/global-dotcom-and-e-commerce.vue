@@ -219,7 +219,8 @@ const initAnimation = () => {
       scrollTrigger: {
         trigger: title2Ref.value,
         start: 'top 80%',
-        toggleActions: 'play none none reverse'
+        toggleActions: 'play none none reverse',
+        refreshPriority: -4,
       }
     })
 
@@ -326,7 +327,7 @@ onUnmounted(() => {
       margin-bottom: rem(24);
     }
     &-text {
-      @include body-01;
+      @include body-02;
       color: $d-black;
     }
     &-count {
@@ -361,6 +362,7 @@ onUnmounted(() => {
         }
         &-title {
           @include body-01;
+
         }
         &-number {
           font-weight: 700;
