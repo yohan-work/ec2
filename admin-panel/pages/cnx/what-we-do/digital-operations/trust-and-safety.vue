@@ -237,14 +237,13 @@ onUnmounted(() => {
       margin-bottom: rem(24);
     }
     &-text {
-      @include body-01;
+      @include body-02;
       font-weight: 400;
       color: $d-black;
     }
     &-list {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: rem(30) rem(10);
       margin-top: rem(40);
       @include tablet {
