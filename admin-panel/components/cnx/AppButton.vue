@@ -132,6 +132,7 @@ $button-colors: (
   border: rem(1) solid $d-black;
   border-radius: 43px;
   position: relative;
+  white-space: nowrap;
   cursor: pointer;
   overflow: hidden;
   transition: all 0.35s;
@@ -178,7 +179,6 @@ $skew-offset: 10%; // skew에 따른 기하학적 오프셋
 
 button,
 a {
-
   // 기본 텍스트 스타일
   font-weight: 700;
   font-size: rem(11);
@@ -331,9 +331,11 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    min-width: rem(168);
     gap: rem(14);
     text-align: left;
+    @include tablet {
+      min-width: rem(168);
+    }
     &::after {
       content: '';
       display: inline-block;
