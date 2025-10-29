@@ -16,6 +16,7 @@
   "dependencies": {
     "@aws-amplify/auth": "^6.15.0",
     "@aws-sdk/client-cognito-identity-provider": "^3.883.0",
+    "@nuxtjs/critters": "^0.9.0",
     "@prisma/client": "^6.16.2",
     "@types/bcrypt": "^6.0.0",
     "@types/d3": "^7.4.3",
@@ -46,6 +47,7 @@
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "autoprefixer": "^10.4.21",
+    "critical": "^7.2.1",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",

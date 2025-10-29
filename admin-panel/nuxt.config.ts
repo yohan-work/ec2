@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   pages: true,
 
   // CSS 및 UI 관련 모듈
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@vueuse/nuxt'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@vueuse/nuxt', '@nuxtjs/critters'],
 
   // TailwindCSS 설정
   tailwindcss: {
@@ -58,11 +58,6 @@ export default defineNuxtConfig({
 
   // 전역 CSS (FOUC 방지를 위해 CNX 스타일 우선 로드)
   css: ['~/layouts/scss/cnx.scss'],
-
-  // Features 설정 (FOUC 방지)
-  features: {
-    inlineStyles: true, // SSR 시 CSS를 HTML에 인라인으로 포함
-  },
 
   // SSR 설정
   ssr: true,
@@ -114,9 +109,6 @@ export default defineNuxtConfig({
   // Vite 설정
   vite: {
     assetsInclude: ['**/*.svg'],
-    build: {
-      cssCodeSplit: false, // CSS 코드 분할 비활성화 (FOUC 방지)
-    },
     css: {
       preprocessorOptions: {
         scss: {
