@@ -342,6 +342,26 @@ const subItemsWithoutTitles = computed(() => [
 &lt;/template&gt;</code></pre>
         </div>
         
+        <h4 class="demo-title">비메오 비디오 사용</h4>
+        <div class="demo-content">
+          <AppImgCont 
+            title="비메오 비디오 데모"
+            text="vimeoId prop을 사용하여 비메오 비디오를 표시할 수 있습니다. 비메오 기본 비율(16:9)을 사용하며, 자동재생은 하지 않습니다."
+            vimeoId="76979871"
+            imageAlt="Concentrix 비메오 비디오"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">비메오 비디오 코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppImgCont 
+  title="비메오 비디오 데모"
+  text="vimeoId prop을 사용하여 비메오 비디오를 표시할 수 있습니다."
+  vimeoId="76979871"
+  imageAlt="Concentrix 비메오 비디오"
+/&gt;</code></pre>
+        </div>
+        
         <div class="props-table">
           <h4 class="props-title">Props</h4>
           <table class="props-table-content">
@@ -407,6 +427,12 @@ const subItemsWithoutTitles = computed(() => [
                 <td>Array</td>
                 <td>[]</td>
                 <td>서브 아이템 배열. 각 아이템은 { title?, listItems } 형태. title이 있으면 제목+리스트, 없으면 불릿 포인트</td>
+              </tr>
+              <tr>
+                <td>vimeoId</td>
+                <td>String</td>
+                <td>''</td>
+                <td>비메오 비디오 ID. 설정하면 이미지 대신 비메오 비디오 표시 (imageName과 함께 사용 불가)</td>
               </tr>
             </tbody>
           </table>

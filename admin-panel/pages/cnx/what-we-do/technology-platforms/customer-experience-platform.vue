@@ -67,7 +67,7 @@
       <section class="content-section">
         <AppImgCont 
           title="SF CREAM"
-          imageName="sf"
+          vimeoId="922735558"
           text="SF CREAM(Salesforce Customer Relationship Engagement Application Module)은 세일즈포스닷컴 솔루션을 기반으로 한 컨택센터 운영솔루션입니다. 콘센트릭스의 글로벌 컨택센터 운영 노하우가 집대성 되어 상담 관리자와 상담원의 업무 생산성 증대 및 관리 효율성에 초점이 맞춰진 모듈형 솔루션 입니다."
           :subItems="sfCreamSubItems"
         />

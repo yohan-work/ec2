@@ -40,34 +40,49 @@
       </div>
     </div>
     
-    <!-- 이미지 컨텐츠 -->
-    <div class="image-content" ref="imageContentRef">
-      <picture>
-        <source 
-          v-if="desktopImage"
-          :srcset="desktopImage" 
-          media="(min-width: 1480px)"
-        />
-        <source 
-          v-if="tabletImage"
-          :srcset="tabletImage" 
-          media="(min-width: 768px)"
-        />
-        <img 
-          :src="mobileImage || desktopImage" 
-          :alt="imageAlt || title || 'Image'"
-          class="content-image"
-          loading="lazy"
-          @load="onImageLoad"
-          @error="onImageError"
-          ref="imageRef"
-        />
-      </picture>
-      <!-- 스켈레톤 오버레이 -->
-      <div 
-        class="skeleton-overlay"
-        :class="{ 'hidden': isImageLoaded }"
-      ></div>
+    <!-- 이미지/비디오 컨텐츠 -->
+    <div class="image-content" :class="{ 'video-content': vimeoId }" ref="imageContentRef">
+      <!-- 비메오 비디오 -->
+      <iframe 
+        v-if="vimeoId"
+        :src="`https://player.vimeo.com/video/${vimeoId}`"
+        :title="imageAlt || title || 'Video'"
+        :aria-label="imageAlt || title || 'Video'"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen
+        class="content-video"
+      ></iframe>
+      
+      <!-- 이미지 -->
+      <template v-else>
+        <picture>
+          <source 
+            v-if="desktopImage"
+            :srcset="desktopImage" 
+            media="(min-width: 1480px)"
+          />
+          <source 
+            v-if="tabletImage"
+            :srcset="tabletImage" 
+            media="(min-width: 768px)"
+          />
+          <img 
+            :src="mobileImage || desktopImage" 
+            :alt="imageAlt || title || 'Image'"
+            class="content-image"
+            loading="lazy"
+            @load="onImageLoad"
+            @error="onImageError"
+            ref="imageRef"
+          />
+        </picture>
+        <!-- 스켈레톤 오버레이 -->
+        <div 
+          class="skeleton-overlay"
+          :class="{ 'hidden': isImageLoaded }"
+        ></div>
+      </template>
     </div>
   </div>
 </template>
@@ -120,6 +135,10 @@ const props = defineProps({
   alignTop: {
     type: Boolean,
     default: false
+  },
+  vimeoId: {
+    type: String,
+    default: ''
   }
 })
 
@@ -172,6 +191,12 @@ const onImageError = () => {
 
 // 이미지 경로 확인 및 캐시된 이미지 체크
 const checkImageStatus = () => {
+  // 비메오 비디오인 경우 스켈레톤 숨김
+  if (props.vimeoId) {
+    isImageLoaded.value = true
+    return
+  }
+  
   // 이미지 경로가 없으면 스켈레톤 숨김
   if (!mobileImage.value && !desktopImage.value) {
     isImageLoaded.value = true
@@ -254,8 +279,8 @@ const initAnimation = () => {
   }
 }
 
-// 이미지 경로 초기화 (SSR 지원)
-if (props.imageName) {
+// 이미지 경로 초기화 (SSR 지원) - 비메오 ID가 없을 때만
+if (props.imageName && !props.vimeoId) {
   // 유틸 함수를 사용하여 반응형 이미지 경로들 생성
   const imagePaths = findResponsiveImagePaths(props.imageName, baseImagePath)
   desktopImage.value = imagePaths.desktopImage
@@ -476,17 +501,38 @@ onUnmounted(() => {
       }
     }
 
+    // 비메오 비디오 스타일
+    &.video-content {
+      aspect-ratio: unset; // 비메오 기본 비율 사용
+      
+      .content-video {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9; // 비메오 기본 비율
+        border: none;
+        border-radius: rem(8);
+      }
+    }
+
     @include tablet {
       // 태블릿: 308/231 비율
       aspect-ratio: 308 / 231;
       flex: 1;
       order: 2; // 태블릿 이상에서 이미지를 우측으로
+      
+      &.video-content {
+        aspect-ratio: unset; // 비메오 기본 비율 사용
+      }
     }
 
     @include desktop {
       // PC: 644/400 비율
       aspect-ratio: 644 / 400;
       flex: 1;
+      
+      &.video-content {
+        aspect-ratio: unset; // 비메오 기본 비율 사용
+      }
     }
   }
 

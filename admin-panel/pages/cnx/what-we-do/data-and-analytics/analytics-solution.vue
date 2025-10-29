@@ -45,6 +45,16 @@
         />
       </section>
 
+      <!-- 콘텐츠 섹션 -->
+      <section class="content-section">
+        <AppImgCont 
+          title="SimilarWeb"
+          text="SimilarWeb은 글로벌 웹 사이트에 대한 고객 행동 정보를 제공하는 마켓 인텔리전스 플랫폼입니다. <br>콘센트릭스는 SimilarWeb 솔루션의 파트너사로서 솔루션 컨설팅 및 분석 서비스를 제공하여 동종 산업군 관련 데이터 및 트렌드에 대한 다양한 인사이트를 활용하여 체계적인 전략 수립을 지원합니다."
+          imageName="as04"
+          :reverse="true"
+        />
+      </section>
+
     </div>
     
   </div>

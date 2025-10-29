@@ -34,27 +34,32 @@
           imageName="ds"
         />
       </section>
+      
+    </div>
 
       <!-- Customer Service​ 섹션 -->
       <section class="content-section">
-        <AppImgCont 
+        <AppSubCont 
           title="Customer Service"
-          text="고객이 필요로 하는 때와 장소에서 항상 함께하며, 고객의 문의 사항을 간편하게 해결하여 원활한 경험을 제공합니다. <br>당사의 종합적인 접근 방식은 고객의 구체적인 요구에 부응하는 혁신적인 지원 역량을 뒷받침합니다."
+          description="고객이 필요로 하는 때와 장소에서 항상 함께하며, 고객의 문의 사항을 간편하게 해결하여 원활한 경험을 제공합니다. <br>당사의 종합적인 접근 방식은 고객의 구체적인 요구에 부응하는 혁신적인 지원 역량을 뒷받침합니다."
           imageName="cs"
-          :reverse="true"
+          imageAlt="AppSubCont 데모 이미지"
+          imagePath="/assets/cnx/what-we-do/digital-operations/customer-service"
         />
       </section>
 
-      <!-- Technical Support​​ 섹션 -->
-      <section class="content-section">
-        <AppImgCont 
-          title="Technical Support"
-          text="뛰어난 기술 지원과 헬프데스크 서비스를 통해 고객의 공감을 불러일으키는 쉽고 원활한 경험을 제공하여 고객을 브랜드 지지자로 만들어 드립니다."
-          imageName="ts"
-        />
-      </section>
-      
-    </div>
+      <div class="inner">
+
+        <!-- Technical Support​​ 섹션 -->
+        <section class="content-section">
+          <AppImgCont 
+            title="Technical Support"
+            text="뛰어난 기술 지원과 헬프데스크 서비스를 통해 고객의 공감을 불러일으키는 쉽고 원활한 경험을 제공하여 고객을 브랜드 지지자로 만들어 드립니다."
+            imageName="ts"
+          />
+        </section>
+        
+      </div>
   </div>
 </template>
 
@@ -62,6 +67,7 @@
 import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
+import AppSubCont from '~/components/cnx/AppSubCont.vue'
 
 // 레이아웃 설정
 definePageMeta({
@@ -76,6 +82,9 @@ definePageMeta({
     word-break: keep-all;
   }
 
+  :deep(.title-content) {
+    max-width: unset;
+  }
 
   .content-section {
     margin-bottom: rem(60);

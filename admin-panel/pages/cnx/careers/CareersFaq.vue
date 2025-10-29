@@ -4,7 +4,7 @@
       <div class="careers-faq__header">
         <strong><span ref="titleRef_1">채용 관련</span><span ref="titleRef_2">질문이 있으신가요?</span></strong>
         <div class="careers-faq__button" ref="buttonRef">
-          <AppButton text="질문하기" href="mailto:Catalyst_TA_Korea@concentrix.com" color="green" />
+          <AppButton text="질문하기" href="mailto:recruiter_catalyst_korea@concentrix.com" color="green" />
         </div>
       </div>
       <picture class="careers-faq__image" ref="imageRef">
