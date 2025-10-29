@@ -12,15 +12,16 @@
     />
 
     <AppSwiper :effect="'fade'" :autoplay="5000" class="careers__swiper">
+
       <div class="careers__swiper-item">
         <picture>
           <source srcset="/assets/cnx/careers/slide_01.png" media="(min-width: 1024px)" />
           <source srcset="/assets/cnx/careers/slide_01_t.png" media="(min-width: 768px)" />
           <img src="/assets/cnx/careers/slide_01_m.png" alt="Life at Concentrix" loading="lazy" />
         </picture>
-        <div class="careers__swiper-content a11y-hidden">
-          <strong class="sub-headline-01">Life at Concentrix</strong>
-          <p class="body-02">
+        <div class="careers__swiper-content">
+          <strong class="careers__swiper-title">Life at Concentrix</strong>
+          <p class="careers__swiper-text">
             우리는 옳은 일은 한다고 믿습니다.<br>
             콘센트릭스는 모두가 존중받는 사회를 꿈꾸며 수평적인 조직 문화를 가지고 있습니다.<br>
             구성원의 다양한 의견과 가치관의 공존을 지향하며 지속 가능한 글로벌 비즈니스를 위해<br>
@@ -28,28 +29,32 @@
           </p>
         </div>
       </div>
+
       <div class="careers__swiper-item">
         <picture>
           <source srcset="/assets/cnx/careers/slide_02.png" media="(min-width: 1024px)" />
           <source srcset="/assets/cnx/careers/slide_02_t.png" media="(min-width: 768px)" />
           <img src="/assets/cnx/careers/slide_02_m.png" alt="Our Operating Philosophies" loading="lazy" />
         </picture>
-        <div class="careers__swiper-content a11y-hidden">
-          <strong class="sub-headline-01">Our Operating Philosophies</strong>
-          <p>
-            <b class="sub-headline-02">Visibility</b><br>
-            <span class="body-02">조직 전체에서 문제를 정확하게 파악하고 기회를 제공합니다.</span>
-          </p>
-          <p>
-            <b class="sub-headline-02">Velocity</b><br>
-            <span class="body-02">변화에 신속하게 대처하고 문제를 해결하여 커다란 전환점을 마련합니다.</span>
-          </p>
-          <p>
-            <b class="sub-headline-02">Value</b><br>
-            <span class="body-02">우리는 직원, 고객, 주주의 이익을 최우선으로 생각합니다.</span>
-          </p>
+        <div class="careers__swiper-content">
+          <strong class="careers__swiper-title">Our Operating Philosophies</strong>
+          <div class="careers__swiper-group">
+            <p>
+              <b>Visibility</b><br> 
+              <span>조직 전체에서 문제를 정확하게 파악하고 기회를 제공합니다.</span>
+            </p>
+            <p>
+              <b>Velocity</b><br>
+              <span>변화에 신속하게 대처하고 문제를 해결하여 커다란 전환점을 마련합니다.</span>
+            </p>
+            <p>
+              <b>Value</b><br>
+              <span>우리는 직원, 고객, 주주의 이익을 최우선으로 생각합니다.</span>
+            </p>
+          </div>
         </div>
       </div>
+      
       <div class="careers__swiper-item">
         <picture>
           <source srcset="/assets/cnx/careers/slide_03.png" media="(min-width: 1024px)" />
@@ -614,6 +619,7 @@
   }
 
   &__swiper {
+
     &-content {
       position: absolute;
       z-index: 1;
@@ -621,16 +627,65 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      gap: rem(20);
       padding: rem(20);
-      color: #fff;
       @include tablet {
         justify-content: flex-start;
+        gap: rem(16);
         padding: rem(32);
       }
       @include desktop {
         padding: rem(64);
       }
     }
+
+    &-title {
+      @include sub-headline-02;
+      @include desktop {
+        @include sub-headline-01;
+      }
+    }
+
+    &-text {
+      @include body-02;
+      @include tablet {
+        @include body-03;
+      }
+      @include desktop {
+        @include body-02; 
+      }
+    }
+
+    &-group {
+      display: flex;
+      flex-direction: column; 
+      gap: rem(12);
+
+      b {
+        @include body-01;
+      }
+      span {
+        @include body-02;
+      }
+
+      @include tablet {
+        gap: rem(24);
+        margin-top: auto;
+        span {
+          @include body-03;
+        }
+      }
+      @include desktop {
+        gap: rem(32);
+        b {
+          @include sub-headline-02;
+        }
+        span {
+          @include body-02;
+        }
+      }
+    }
+
     &-item {
       picture {
         display: block;
@@ -647,6 +702,7 @@
         }
       }
     }
+    
   }
 
   &__tab {
