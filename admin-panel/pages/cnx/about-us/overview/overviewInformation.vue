@@ -38,7 +38,7 @@
     <div class="aboutus-information__grid aboutus-information__grid--korea">
       <strong class="aboutus-information__grid-title">Korea</strong>
       <div class="aboutus-information__grid-item" :ref="el => setInformationCountRef(el)">
-        <p>디지털 마케팅 및 고객경험 센터</p>
+        <p>디지털 마케팅 및<br>고객경험 센터</p>
         <em data-target="8">0</em>
       </div>
       <div class="aboutus-information__grid-item" :ref="el => setInformationCountRef(el)">
@@ -289,10 +289,11 @@
           font-size: rem(14);
           word-break: keep-all;
           overflow-wrap: anywhere;
+          line-height: 1.4;
         }
 
         em {
-          margin-top: rem(10);
+          margin-top: rem(20);
           font-weight: 700;
           font-style: normal;
           text-align: center;

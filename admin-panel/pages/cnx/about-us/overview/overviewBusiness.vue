@@ -196,7 +196,11 @@
     &__visual {
       display: block;
       overflow: hidden;
+      aspect-ratio: 39 / 19;
       img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         transform: scale(1.2);
       }
     }

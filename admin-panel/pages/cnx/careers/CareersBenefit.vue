@@ -100,34 +100,35 @@
   }
 
   onMounted(() => {
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0) {
-            initAnimation()
-            if (observer) {
-              observer.disconnect()
-              observer = null
-            }
-          }
-        })
-      },
-      {
-        threshold: 0,
-        rootMargin: '0px 0px 2560px 0px',
-        root: null
-      }
-    )
+    initAnimation()
+    // observer = new IntersectionObserver(
+    //   (entries) => {
+    //     entries.forEach(entry => {
+    //       if (entry.isIntersecting && entry.intersectionRatio > 0) {
+    //         initAnimation()
+    //         if (observer) {
+    //           observer.disconnect()
+    //           observer = null
+    //         }
+    //       }
+    //     })
+    //   },
+    //   {
+    //     threshold: 0,
+    //     rootMargin: '0px 0px 2560px 0px',
+    //     root: null
+    //   }
+    // )
     
-    if (containerRef.value) {
-      observer.observe(containerRef.value)
-    }
+    // if (containerRef.value) {
+    //   observer.observe(containerRef.value)
+    // }
   })
   
   onBeforeUnmount(() => {
-    if (observer) {
-      observer.disconnect()
-    }
+    // if (observer) {
+    //   observer.disconnect()
+    // }
     ctx?.revert()
     ctx = null
   })

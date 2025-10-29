@@ -223,11 +223,11 @@
   const activeButtonTab = ref(0)
 
   const handleTabChange = (event) => {
-    console.log('Main tab changed:', event)
+    // console.log('Main tab changed:', event)
   }
 
   const handleButtonTabChange = (event) => {
-    console.log('Button tab changed:', event)
+    // console.log('Button tab changed:', event)
   }
 
   // 컨텐츠 데이터
@@ -629,6 +629,22 @@
       }
       @include desktop {
         padding: rem(64);
+      }
+    }
+    &-item {
+      picture {
+        display: block;
+        aspect-ratio: 13 / 25;
+      }
+      img { 
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      @include tablet {
+        picture {
+          aspect-ratio: 220 / 93;
+        }
       }
     }
   }
