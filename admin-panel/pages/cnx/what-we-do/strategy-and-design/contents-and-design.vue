@@ -1336,7 +1336,7 @@ const onSwiperInit = (swiper) => {
   setTimeout(() => {
     // 새로고침 시에는 버튼 클릭과 동일한 로직 사용
     const navType = performance.getEntriesByType('navigation')[0].type;
-    if (navType === 'reload') {
+    if (navType === 'reload'|| navType === 'navigate') {
       // 새로고침 시에는 rebuildAndSmoothCenter 로직 사용
       setTimeout(() => {
         // 기존 ScrollTrigger 제거
@@ -1825,7 +1825,6 @@ const getBorderClass = (slide, index) => {
 
 <style lang="scss" scoped>
 @use 'sass:list';
-
 .contents-and-design {
   * {
     word-break: keep-all;
@@ -1833,6 +1832,9 @@ const getBorderClass = (slide, index) => {
   .banner-slide {
     width: 100%;    
     position: relative;  
+    &-section {
+      overflow: hidden;
+    }
     // GPU 가속 힌트로 스크롤/변환 중 끊김 완화
     &-item {
       transition: all 0.3s ease;
