@@ -2,7 +2,7 @@
   <div class="careers">
 
     <AppKeyVisual 
-      imageAlt="Careers Key Visual"
+      imageAlt="밝은 사무실에서 컴퓨터와 태블릿을 사용하며 협업하거나 개별 업무를 하는 직장인들의 모습."
       :animationDuration="1500"
     />
 
@@ -17,7 +17,7 @@
         <picture>
           <source srcset="/assets/cnx/careers/slide_01.png" media="(min-width: 1024px)" />
           <source srcset="/assets/cnx/careers/slide_01_t.png" media="(min-width: 768px)" />
-          <img src="/assets/cnx/careers/slide_01_m.png" alt="Life at Concentrix" loading="lazy" />
+          <img src="/assets/cnx/careers/slide_01_m.png" alt="Life at Concentrix: 다양한 인종과 배경의 인물 사진으로 구성된 포용적 조직 문화를 소개하는 배너" loading="lazy" />
         </picture>
         <div class="careers__swiper-content">
           <strong class="careers__swiper-title">Life at Concentrix</strong>
@@ -34,7 +34,7 @@
         <picture>
           <source srcset="/assets/cnx/careers/slide_02.png" media="(min-width: 1024px)" />
           <source srcset="/assets/cnx/careers/slide_02_t.png" media="(min-width: 768px)" />
-          <img src="/assets/cnx/careers/slide_02_m.png" alt="Our Operating Philosophies" loading="lazy" />
+          <img src="/assets/cnx/careers/slide_02_m.png" alt="Our Operating Philosophies: 경영 철학('Visibility', 'Velocity', 'Value')에 대한 설명과 함께 다인종 청년들의 행복한 사진이 조합된 배너" loading="lazy" />
         </picture>
         <div class="careers__swiper-content">
           <strong class="careers__swiper-title">Our Operating Philosophies</strong>
@@ -59,7 +59,7 @@
         <picture>
           <source srcset="/assets/cnx/careers/slide_03.png" media="(min-width: 1024px)" />
           <source srcset="/assets/cnx/careers/slide_03_t.png" media="(min-width: 768px)" />
-          <img src="/assets/cnx/careers/slide_03_m.png" alt="Our Culture" loading="lazy" />
+          <img src="/assets/cnx/careers/slide_03_m.png" alt="Our Cultures: 'status quo 거부', '탁월함 추구', '정직한 협력', '고객 승리', 'One Concentrix'를 강조하는 기업 문화 텍스트와 함께 왼쪽 상단에 있는 하트 아이콘" loading="lazy" />
         </picture>
         <div class="careers__swiper-content a11y-hidden">
           <strong class="sub-headline-01">Our Culture</strong>

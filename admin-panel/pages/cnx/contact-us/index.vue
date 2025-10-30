@@ -61,7 +61,7 @@
                                             loading="lazy" />
                                         <source :srcset="center.images.tablet[0]" media="(min-width: 768px)"
                                             loading="lazy" />
-                                        <img :src="center.images.mobile[0]" :alt="`${center.name} 이미지 1`"
+                                        <img :src="center.images.mobile[0]" :alt="'Concentrix ' + center.imageAltTexts[0]"
                                             loading="lazy" />
                                     </picture>
                                 </div>
@@ -74,7 +74,7 @@
                                             loading="lazy" />
                                         <source :srcset="center.images.tablet[1]" media="(min-width: 768px)"
                                             loading="lazy" />
-                                        <img :src="center.images.mobile[1]" :alt="`${center.name} 이미지 2`"
+                                        <img :src="center.images.mobile[1]" :alt="'Concentrix ' + center.imageAltTexts[1]"
                                             loading="lazy" />
                                     </picture>
                                 </div>
@@ -85,7 +85,7 @@
                                             loading="lazy" />
                                         <source :srcset="center.images.tablet[2]" media="(min-width: 768px)"
                                             loading="lazy" />
-                                        <img :src="center.images.mobile[2]" :alt="`${center.name} 이미지 3`"
+                                        <img :src="center.images.mobile[2]" :alt="'Concentrix ' + center.imageAltTexts[2]"
                                             loading="lazy" />
                                     </picture>
                                 </div>
@@ -154,7 +154,7 @@
                                             loading="lazy" />
                                         <source :srcset="center.images.tablet[0]" media="(min-width: 768px)"
                                             loading="lazy" />
-                                        <img :src="center.images.mobile[0]" :alt="`${center.name} 이미지 1`"
+                                        <img :src="center.images.mobile[0]" :alt="'Concentrix ' + center.imageAltTexts[0]"
                                             loading="lazy" />
                                     </picture>
                                 </div>
@@ -167,7 +167,7 @@
                                             loading="lazy" />
                                         <source :srcset="center.images.tablet[1]" media="(min-width: 768px)"
                                             loading="lazy" />
-                                        <img :src="center.images.mobile[1]" :alt="`${center.name} 이미지 2`"
+                                        <img :src="center.images.mobile[1]" :alt="'Concentrix ' + center.imageAltTexts[1]"
                                             loading="lazy" />
                                     </picture>
                                 </div>
@@ -178,7 +178,7 @@
                                             loading="lazy" />
                                         <source :srcset="center.images.tablet[2]" media="(min-width: 768px)"
                                             loading="lazy" />
-                                        <img :src="center.images.mobile[2]" :alt="`${center.name} 이미지 3`"
+                                        <img :src="center.images.mobile[2]" :alt="'Concentrix ' + center.imageAltTexts[2]"
                                             loading="lazy" />
                                     </picture>
                                 </div>
@@ -237,7 +237,8 @@ const digitalTechCenters = [
             pc: ['/assets/cnx/contact-us/gangnam-1/center_gangnam-1-pc-1.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-pc-2.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-pc-3.png'],
             tablet: ['/assets/cnx/contact-us/gangnam-1/center_gangnam-1-tb-1.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-tb-2.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/gangnam-1/center_gangnam-1-mo-1.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-mo-2.png', '/assets/cnx/contact-us/gangnam-1/center_gangnam-1-mo-3.png']
-        }
+        },
+        imageAltTexts: ['강남센터 라운지', '강남센터 회의실', '강남센터 건물 복도']
     },
     {
         name: '강남2센터',
@@ -252,7 +253,8 @@ const digitalTechCenters = [
             pc: ['/assets/cnx/contact-us/gangnam-2/center_gangnam-2-pc-1.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-pc-2.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-pc-3.png'],
             tablet: ['/assets/cnx/contact-us/gangnam-2/center_gangnam-2-tb-1.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-tb-2.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/gangnam-2/center_gangnam-2-mo-1.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-mo-2.png', '/assets/cnx/contact-us/gangnam-2/center_gangnam-2-mo-3.png']
-        }
+        },
+        imageAltTexts: ['강남2센터 사무실 입구', '강남2센터 라운지', '강남2센터 사무실 내부']
     },
     {
         name: '용산센터',
@@ -267,7 +269,8 @@ const digitalTechCenters = [
             pc: ['/assets/cnx/contact-us/yongsan/center_yongsan-pc-1.png', '/assets/cnx/contact-us/yongsan/center_yongsan-pc-2.png', '/assets/cnx/contact-us/yongsan/center_yongsan-pc-3.png'],
             tablet: ['/assets/cnx/contact-us/yongsan/center_yongsan-tb-1.png', '/assets/cnx/contact-us/yongsan/center_yongsan-tb-2.png', '/assets/cnx/contact-us/yongsan/center_yongsan-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/yongsan/center_yongsan-mo-1.png', '/assets/cnx/contact-us/yongsan/center_yongsan-mo-2.png', '/assets/cnx/contact-us/yongsan/center_yongsan-mo-3.png']
-        }
+        },
+        imageAltTexts: ['용산센터 본관 라운지', '용산센터 신관 라운지', '용산센터 별관 휴계공간']
     }
 ]
 
@@ -286,7 +289,8 @@ const customerServiceCenters = [
             pc: ['/assets/cnx/contact-us/shindorim-1/center_shindorim-1-pc-1.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-pc-2.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-pc-3.png'],
             tablet: ['/assets/cnx/contact-us/shindorim-1/center_shindorim-1-tb-1.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-tb-2.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/shindorim-1/center_shindorim-1-mo-1.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-mo-2.png', '/assets/cnx/contact-us/shindorim-1/center_shindorim-1-mo-3.png']
-        }
+        },
+        imageAltTexts: ['신도림1센터 대회의실', '신도림1센터 회의공간 (그룹회의실)', '신도림1센터 휴계공간']
     },
     {
         name: '신도림2센터',
@@ -301,7 +305,8 @@ const customerServiceCenters = [
             pc: ['/assets/cnx/contact-us/shindorim-2/center_shindorim-2-pc-1.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-pc-2.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-pc-3.png'],
             tablet: ['/assets/cnx/contact-us/shindorim-2/center_shindorim-2-tb-1.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-tb-2.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/shindorim-2/center_shindorim-2-mo-1.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-mo-2.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-mo-3.png']
-        }
+        },
+        imageAltTexts: ['신도림2센터 입구 데스크 및 라운지', '신도림2센터 대회의실', '신도림2센터 사무실 책상 및 의자']
     },
     {
         name: '구로센터',
@@ -316,7 +321,8 @@ const customerServiceCenters = [
             pc: ['/assets/cnx/contact-us/guro/center_guro-pc-1.png', '/assets/cnx/contact-us/guro/center_guro-pc-2.png', '/assets/cnx/contact-us/guro/center_guro-pc-3.png'],
             tablet: ['/assets/cnx/contact-us/guro/center_guro-tb-1.png', '/assets/cnx/contact-us/guro/center_guro-tb-2.png', '/assets/cnx/contact-us/guro/center_guro-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/guro/center_guro-mo-1.png', '/assets/cnx/contact-us/guro/center_guro-mo-2.png', '/assets/cnx/contact-us/guro/center_guro-mo-3.png']
-        }
+        },
+        imageAltTexts: ['구로센터 라운지 및 휴계공간', '구로센터 회의공간 (그룹회의실)', '구로센터 대회의실']
     },
     {
         name: '문래센터',
@@ -331,7 +337,8 @@ const customerServiceCenters = [
             pc: ['/assets/cnx/contact-us/mullae/center_mullae-pc-1.png', '/assets/cnx/contact-us/mullae/center_mullae-pc-2.png', '/assets/cnx/contact-us/mullae/center_mullae-pc-3.png'],
             tablet: ['/assets/cnx/contact-us/mullae/center_mullae-tb-1.png', '/assets/cnx/contact-us/mullae/center_mullae-tb-2.png', '/assets/cnx/contact-us/mullae/center_mullae-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/mullae/center_mullae-mo-1.png', '/assets/cnx/contact-us/mullae/center_mullae-mo-2.png', '/assets/cnx/contact-us/mullae/center_mullae-mo-3.png']
-        }
+        },
+        imageAltTexts: ['문래센터 입구 데스크 및 라운지', '문래센터 사무실 내부', '문래센터 사무실 내부: 창가쪽에 붙어있는 책상과 의자']
     },
     {
         name: '명동센터',
@@ -346,7 +353,8 @@ const customerServiceCenters = [
             pc: ['/assets/cnx/contact-us/myeongdong/center_myeongdong-pc-1.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-pc-2.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-pc-3.png'],
             tablet: ['/assets/cnx/contact-us/myeongdong/center_myeongdong-tb-1.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-tb-2.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-tb-3.png'],
             mobile: ['/assets/cnx/contact-us/myeongdong/center_myeongdong-mo-1.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-mo-2.png', '/assets/cnx/contact-us/myeongdong/center_myeongdong-mo-3.png']
-        }
+        },
+        imageAltTexts: ['명동센터 라운지 및 휴계공간', '명동센터 통창으로 구성된 라운지 입구문', '명동센터 사무실 내부']
     }
 ]
 
