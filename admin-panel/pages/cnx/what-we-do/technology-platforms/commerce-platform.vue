@@ -3,7 +3,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="Commerce Platform Key Visual"
+        imageAlt="사무실에서 편안하게 대화하는 비즈니스 팀원들"
         :animationDuration="1200"
       />
     </section>
@@ -46,6 +46,7 @@
           imageName="sap"
           :reverse="true"
           :subItems="sapSubItems"
+          imageAlt="SAP Commerce Cloud의 클라우드 컴퓨팅 로고"
         />
       </section>
 
@@ -55,6 +56,7 @@
           title="Adobe Commerce Cloud"
           imageName="adobe"
           :subItems="adobeSubItems"
+          imageAlt="Adobe Commerce Cloud 서비스 흐름 "
         />
       </section>
 
@@ -65,6 +67,7 @@
           imageName="shopify"
           :reverse="true"
           :subItems="shopifySubItems"
+          imageAlt="Shopify 로고와 쇼핑 관련 다양한 아이콘"
         />
       </section>
     </div>
