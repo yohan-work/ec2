@@ -2,7 +2,7 @@
   <div class="aboutus">
 
     <AppKeyVisual 
-      imageAlt="Style Guide Key Visual"
+      imageAlt="위에서 내려다본 시점의 직장인들. 회색 바닥 위를 걷거나 서 있는 비즈니스 복장의 사람들"
       :animationDuration="1500"
     />
 
