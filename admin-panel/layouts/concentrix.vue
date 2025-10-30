@@ -133,8 +133,90 @@ const headConfig = computed(() => ({
   ],
 }))
 
+// Schema.org JSON-LD 생성 함수들
+const createOrganizationSchema = () => {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: '콘센트릭스서비스코리아',
+    alternateName: 'Concentrix Service Korea',
+    url: baseUrl,
+    logo: `${baseUrl}/assets/cnx/share/concentrix-share.png`,
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'KR',
+      addressLocality: '서울특별시 강남구',
+      addressRegion: '서울특별시',
+      streetAddress: '테헤란로 509, 5층 (삼성동, 엔씨타워1)',
+      postalCode: '06164',
+    },
+    sameAs: [
+      'https://www.youtube.com/user/CNXCorporation',
+      'https://www.linkedin.com/company/concentrix',
+      'https://x.com/concentrix',
+      'https://www.instagram.com/concentrix/',
+      'https://www.facebook.com/concentrixkr',
+    ],
+  }
+}
+
+const createWebSiteSchema = () => {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteName,
+    url: baseUrl,
+    publisher: {
+      '@type': 'Organization',
+      name: '콘센트릭스서비스코리아',
+    },
+  }
+}
+
+const createWebPageSchema = () => {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: pageMeta.value.title,
+    description: pageMeta.value.description,
+    url: getCurrentUrl.value,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: siteName,
+      url: baseUrl,
+    },
+    about: {
+      '@type': 'Organization',
+      name: '콘센트릭스서비스코리아',
+    },
+  }
+}
+
+// JSON-LD 스키마 적용 (각 스키마를 별도의 script 태그로)
+const schemaScripts = computed(() => {
+  return [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(createOrganizationSchema()),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(createWebSiteSchema()),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(createWebPageSchema()),
+    },
+  ]
+})
+
 // 반응형 메타데이터 적용
 useHead(headConfig)
+
+// JSON-LD 스키마 적용
+useHead({
+  script: schemaScripts.value,
+})
 
 // 더보기 등 특정 액션에서 포커스 처리를 건너뛰기 위한 플래그
 const skipFocusFlag = ref(false)
