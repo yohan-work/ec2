@@ -3,7 +3,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="Global dotcom & e-Commerce Key Visual"
+        imageAlt="노트북으로 글로벌 개발 작업을 하는 엔지니어"
         :animationDuration="1200"
       />
     </section>
@@ -22,6 +22,7 @@
           title="Global e-Commerce Development & Operation"
           text="이커머스 플랫폼에서 주문·재고·로열티·프로모션 전 과정에 걸친 UX 및 기능 고도화, 이커머스 정책 개발 및 플랫폼 개선을 위한 통합 설계부터 실행까지 믿고 맡길 수 있습니다. 컨설팅 통한 정확한 지표를 기준으로 경쟁력있는이커머스 플랫폼 구축 및 운영 서비스를 제공합니다. <br><br>지역별 특성에 맞는 맞춤형 운영 대응 가이드라인과 Best Practice를 제공합니다. 또한, 변화하는 고객 니즈를 신속하게 파악하여  시장의 경쟁력을 높이는 차별화된 기능들을 지속적으로 개발하고 고도화 함으로써 고객사의 글로벌 비즈니스 성장을 뒷받침하고 있습니다."
           imageName="gedo"
+          imageAlt="e-Commerce 운영 성과를 보여주는 그래프 화면"
           :reverse="true"
         />
       </section>
@@ -32,6 +33,7 @@
           title="Global dotcom Development"
           text="글로벌 기업에 필수적인 대표적인 글로벌 플랫폼인 닷컴을 위한 프로세스, R&R, 가이드관리를 포함한 글로벌 거버넌스 컨설팅부터 Web-CMS 구축에 이르는 구축단계 전반을 리드합니다. <br><br>웹/모바일/앱 채널에 있어 옴니채널적 관점에서 고객사 비즈니스 환경과 변화하는 상황에 맞는 성공적인 비즈니스 모델을 제시하고 구축 서비스를 제공합니다."
           imageName="gdd"
+          imageAlt="전 세계 연결망을 상징하는 디지털 지구본"
         />
       </section>
 
@@ -41,6 +43,7 @@
           title="Rollout of Global Platform"
           text="약 20년간 다수의 글로벌확산 프로젝트를 통해 검증된 확산 방법론 적용하여 글로벌 플랫폼 롤아웃(Roll-out) 업무를 수행합니다. 이를 위해 각 로컬과 체계적이고 직접적인 커뮤니케이션을 통해 로컬별 요구사항 관리, 이슈핸들링 업무를 수행함으로써, 글로벌플랫폼을 수십 개 로컬에 단기간내 확산하여 론칭하고있습니다. <br><br>확산 업무의 기본인 생산성 향상 및 웹 접근성 검수, 자동화 QA 등 품질 향상을 목표로 각 조직이 긴밀하게 협력합니다."
           imageName="rogp"
+          imageAlt="글로벌 플랫폼 롤아웃 과정을 나타내는 코드 화면"
           :reverse="true"
         />
       </section>
@@ -51,6 +54,7 @@
           title="Operation of Global Platform"
           text="이커머스 또는 닷컴이라는 동일한 글로벌 플랫폼상에서 수십개의 로컬사이트들이 일관된 브랜딩 및 마케팅 활동을 할 수 있도록 관리하며, 글로벌 컨텐츠는 현지화하고 로컬 자체 컨텐츠 제작을 지원합니다. 이러한 서비스들은 Concentrix의 글로벌 딜리버리 네트워크의 협업으로 수행되어 효율성과 비용 경쟁력에 있어 완벽한 솔루션을 제공해드리고 있습니다. <br><br>또한 in-house 분석, SEO, 시스템 조직 연계한 통합 운영 서비스로 고객 경험 향상과 비용 효율을 극대화합니다."
           imageName="oogp"
+          imageAlt="글로벌 플랫폼 데이터를 조작하는 전문가의 손"
         />
       </section>
       
@@ -62,7 +66,7 @@
         <picture>
           <source media="(min-width: 1480px)" srcset="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner.png" type="image/png">
           <source media="(min-width: 768px)" srcset="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_t.png" type="image/png">
-          <img src="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_m.png" alt="세계 지도 위에 서울, 달리안, 마닐라, 베트남, 브라티슬라바 등 주요 글로벌 센터 위치가 표시되어 있으며, 오른쪽에는 각 센터의 업무 내용, 지원 언어, 운영 시간 등이 정리되어 있습니다." loading="lazy">
+          <img src="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_m.png" alt="배송 네트워크가 표시된 세계 지도" loading="lazy">
         </picture>
       </figure>
 

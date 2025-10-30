@@ -327,6 +327,7 @@
     {
       title: 'Attractive<br> Benefits',
       icon: 'icon_benefits_01.svg',
+      alt: '손바닥 위에 하트를 올린 아이콘',
       content: [
         '단체보험 : 질병/재해 사망, 실손보험 제공',
         '건강검진 및 독감접종비 지원',
@@ -340,6 +341,7 @@
     {
       title: 'For your<br> work life',
       icon: 'icon_benefits_02.svg',
+      alt: '악수하는 손을 형상화한 아이콘',
       content: [
         '야근 식대 및 택시비 지원',
         '출퇴근용 주차비 지원',
@@ -350,6 +352,7 @@
     {
       title: 'For your<br> development',
       icon: 'icon_benefits_03.svg',
+      alt: '별 모양 리본 배지를 나타내는 아이콘',
       content: [
         '신규 입사자 OT 및 NEO<br>(New Employee Orientation)',
         '신규 입사자 100일 온보딩 프로그램',
@@ -361,6 +364,7 @@
     {
       title: 'For your<br> special moment',
       icon: 'icon_benefits_04.svg',
+      alt: '각종 경조사 경조금, 근조화환, 휴가 제공',
       content: [
         '신규 입사자 웰컴키트 제공',
         '입사 1주년 축하선물 제공',
@@ -379,6 +383,7 @@
     {
       title: 'Attractive<br> Benefits',
       icon: 'icon_benefits_01.svg',
+      alt: '손바닥 위에 하트를 올린 아이콘',
       content: [
         '단체보험 : 질병/재해 사망, 실손보험 제공',
         '건강검진 및 독감접종비 지원',
@@ -390,6 +395,7 @@
     {
       title: 'For your<br> work life',
       icon: 'icon_benefits_02.svg',
+      alt: '악수하는 손을 형상화한 아이콘',
       content: [
         '야근 식대 및 택시비 지원',
         '직원추천제도: 추천직원 채용 시 보너스 지급',
@@ -399,6 +405,7 @@
     {
       title: 'For your<br> development',
       icon: 'icon_benefits_03.svg',
+      alt: '별 모양 리본 배지를 나타내는 아이콘',
       content: [
         '연간 무제한 온라인 학습 사이트 제공',
         'Hobby club 지원',
@@ -408,6 +415,7 @@
     {
       title: 'For your<br> special moment',
       icon: 'icon_benefits_04.svg',
+      alt: '각종 경조사 경조금, 근조화환, 휴가 제공',
       content: [
         '각종 경조사 경조금, 근조화환, 휴가 제공',
         '장기근속자 포상금 및 특별휴가 제공',
@@ -420,6 +428,7 @@
     {
       title: 'Operations',
       icon: 'icon_cs_01.svg',
+      alt: '개인 맞춤형 지원을 상징',
       content: [
         '상담사들이 주어진 성과 목표를 달성할 수 있도록 지원하고 센터 운영 지표의 목표를 달성할 책임을 갖습니다',
       ],
@@ -427,6 +436,7 @@
     {
       title: 'Training',
       icon: 'icon_cs_02.svg',
+      alt: '고객 지원 및 커뮤니케이션을 상징',
       content: [
         '신규 또는 기존 상담사 고용을 담당하며, 제품 지식, 시스템 활용,CS 스킬 교육을 통해 상담사 역량을 강화합니다',
       ],
@@ -434,6 +444,7 @@
     {
       title: 'Quality',
       icon: 'icon_cs_03.svg',
+      alt: '성장과 성과 향상을 상징',
       content: [
         '상담 품질 점검을 위한 모니터링을 수행하고 모니터링 결과 및 고객 VOC를 분석하여 상담 품질 개선 방향을 제시합니다',
       ],
@@ -441,6 +452,7 @@
     {
       title: 'WFM',
       icon: 'icon_cs_04.svg',
+      alt: '일정 관리와 유연한 근무를 상징',
       content: [
         '볼륨 예측, 인력 배치, 근무 스케줄 관리를 통해 효율적인 리소스 운영과 SLA 준수를 지원합니다',
       ],
@@ -452,6 +464,7 @@
     {
       title: 'Attractive<br> Benefits',
       icon: 'icon_benefits_01.svg',
+      alt: '손바닥 위에 하트를 올린 아이콘',
       content: [
         '단체보험 : 질병/재해 사망, 실손보험 제공',
         '건강검진 및 독감접종비 지원',
@@ -465,6 +478,7 @@
     {
       title: 'For your<br> work life',
       icon: 'icon_benefits_02.svg',
+      alt: '악수하는 손을 형상화한 아이콘',
       content: [
         '야근 식대 및 택시비 지원',
         '출퇴근용 주차비 지원',
@@ -475,6 +489,7 @@
     {
       title: 'For your<br> development',
       icon: 'icon_benefits_03.svg',
+      alt: '별 모양 리본 배지를 나타내는 아이콘',
       content: [
         '신규 입사자 OT 및 NEO<br>(New Employee Orientation)',
         '신규 입사자 100일 온보딩 프로그램',
@@ -486,6 +501,7 @@
     {
       title: 'For your<br> special moment',
       icon: 'icon_benefits_04.svg',
+      alt: '각종 경조사 경조금, 근조화환, 휴가 제공',
       content: [
         '신규 입사자 웰컴키트 제공',
         '입사 1주년 축하선물 제공',

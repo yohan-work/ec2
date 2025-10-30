@@ -4,7 +4,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="Digital Channel Analytics Key Visual"
+        imageAlt="빛과 데이터가 교차하며 흐르는 시각적 표현으로, 수많은 숫자와 데이터 스트림이 빛의 터널처럼 이어져 데이터 분석과 디지털 전환의 속도감과 연결성을 상징하는 비주얼"
         :animationDuration="1200"
       />
     </section>
@@ -23,6 +23,7 @@
           title="Digital Analytics & Tagging Operations"
           text="웹/앱 채널에서의 고객 행동을 정밀하게 분석하고, 이를 바탕으로 성과 개선을 위한 실행 가능한 인사이트를 도출합니다. 단순 리포트 제공을 넘어, 고객이 실제로 어떤 경로를 따라 브랜드와 상호작용하고 이탈 또는 전환하는지 전체 여정을 데이터로 그려냅니다. 또한, 분석 기반의 데이터 전략 수립부터 마케팅 태깅 설계, 구현, 운영 및 QA까지, 디지털 분석에 필요한 전 과정을 통합적으로 제공합니다. 복잡한 글로벌 태깅 운영, 플랫폼 간 데이터 정합성 문제까지 저희가 함께 해결합니다."
           imageName="dca01"
+          imageAlt="컴퓨터 화면 속 데이터 분석 대시보드를 주시하는 여성 분석가 — 다중 모니터에 복잡한 코드와 그래프가 표시된 어두운 사무실 환경에서 데이터 인사이트를 해석하며 작업하는 모습"
         />
       </section>
 
@@ -33,6 +34,7 @@
           text="디지털 마케팅은 데이터의 양이 아닌 데이터의 품질과 이를 활용한 분석이 성패를 결정합니다. 콘센트릭스는GA4 360의 공식 리셀러로서, 수많은 고객들과 함께하며 얻은 풍부한 경험을 토대로 GA4 360 라이선스 도입부터 최적화된 구축·운영 컨설팅, 그리고 깊이 있는 GA4 데이터 분석까지, 고객의 Data-Driven Marketing을 가능하게 하는 국내 최고수준의 서비스를 제공합니다."
           imageName="dca02"
           :reverse="true"
+          imageAlt="Google Analytics, Tag Manager, Campaign Manager, Data Studio 등 주요 마케팅 도구들이 연결된 통합 생태계를 시각적으로 표현한 Google Marketing Platform 구조"
         />
       </section>
 
@@ -56,6 +58,7 @@
           title="SEO & GEO Consulting"
           text="국내외 SEO(Search Engine Optimization) 전문가들이 웹사이트 최적화 현황을 진단하고 자연 유입 트래픽을 높이기 위한 컨설팅을 제공합니다. 기존 SEO 역량을 기반으로 GEO(Generative Engine Optimization)와 AEO(Answer Engine Optimization)까지 확장해 변화하는 검색 트렌드에 선제적으로 대응합니다. <br>다양한 SEO 운영 및 구축 경험을 통해 키워드 리서치, 콘텐츠 전략, 검색 트렌드 분석, Tech 지원과 성과 분석까지 종합 컨설팅을 제공하며, 단기적 이슈 해결은 물론 장기적 성장까지 이끌어갑니다."
           imageName="dca03"
+          imageAlt="Keyword Research와 Performance Analysis를 기반으로 SEO에서 GEO(Generative Engine Optimization)와 AEO(Answer Engine Optimization)로 확장되는 검색 엔진 최적화 흐름을 시각적으로 표현한 SEO 발전 개념 구조"
         />
       </section>
 
@@ -66,6 +69,7 @@
           text="고객 경험의 성패는 방문 수치가 많고 적음이 아니라, 사용자가 실제로 어떻게 서비스와 상호작용하는지에 달려 있습니다. <br>Heatmap, Journey Map, Session Replay 등 행동 기반 분석 기법을 활용하여, 고객 여정과 사용성 문제를 정밀하게 진단하고, 전환 최적화와 고객 경험 개선을 가능하게 합니다. 고객 여정 속 숨겨진 문제를 발견하고, 이를 성과로 전환하는 경험을 지금 시작해보세요."
           imageName="dca04"
           :reverse="true"
+          imageAlt="어두운 공간에서 보랏빛 조명이 비치는 터치스크린을 손끝으로 조작하며 디지털 인터랙션과 기술 혁신을 상징하는 비주얼"
         />
       </section>
 
@@ -86,6 +90,7 @@
           title="Digital Content Monitoring & Governance​"
           text="디지털 채널 전반에서 유통되는 콘텐츠를 상시적으로 감시하고 분석하여, 콘텐츠의 오류 방지는 물론 브랜드 이미지, 제품 메시지의 일관성 유지를 보장합니다. <br>이를 통해 급변하는 온라인 환경에서 콘텐츠의 품질과 신뢰성을 체계적으로 관리하여 비즈니스 가치를 극대화합니다."
           imageName="dca05"
+          imageAlt="휠체어를 탄 남성이 데이터 분석 대시보드를 살펴보며 포용적 업무 환경에서 데이터 기반 의사결정을 수행하는 모습"
         />
       </section>
 

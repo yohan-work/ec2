@@ -3,7 +3,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="Commerce Platform Key Visual"
+        imageAlt="Generative AI 기술을 적용한 거리 환경"
         :animationDuration="1200"
       />
     </section>
@@ -45,6 +45,7 @@
           title="AX(AI Transformation) 컨설팅"
           text="AX(AI Transformation) 전략 수립 서비스는 기업이 AI 기술을 비즈니스에 성공적으로 도입하여 근본적인 혁신을 이루도록 돕는 전문 컨설팅 서비스입니다. 단순한 AI 기술 도입을 넘어, 기업의 현재 상황을 진단하고, AI 기술을 통해 어떤 가치를 창출할 수 있을지 구체적인 계획을 수립하는 데 중점을 둡니다."
           imageName="ax"
+          imageAlt="디지털 인터페이스를 조작하는 컨설팅 담당자의 손"
           :reverse="true"
           :subItems="axSubItems"
         />
@@ -56,6 +57,7 @@
           title="AI 시스템구축"
           text="콘센트릭스는 자체 AI 솔루션인 iX Hello와 AI Aura 뿐 아니라, 그외 AI 솔루션을 기반으로 고객사의 업무를 효율화/자동화하기 위한 AI 시스템을 설계, 개발합니다."
           imageName="ai"
+          imageAlt="AI 시스템을 상징하는 클라우드 네트워크와 하늘"
           :subItems="aiSubItems"
           :alignTop="true"
         />

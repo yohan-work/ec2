@@ -13,7 +13,7 @@
 
         <li class="aboutus-history__item" v-for="item in historyList" :key="item.year"> 
           <div class="aboutus-history__item-thumb">
-            <img :src="item.thumb" :alt="`${item.year} - ${item.detail.map(d => d.title).join(', ')}`" loading="lazy">
+            <img :src="item.thumb" :alt="item.alt" loading="lazy">
           </div>
           <div class="aboutus-history__item-content">
             <em class="aboutus-history__item-year">{{ item.year }}</em>

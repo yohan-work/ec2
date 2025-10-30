@@ -3,7 +3,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="Customer eXperience Platform Key Visual"
+        imageAlt="헤드셋을 착용하고 고객 응대 서비스를 하는 직원들"
         :animationDuration="1200"
       />
     </section>
@@ -24,7 +24,7 @@
           <source media="(min-width: 768px)" srcset="/assets/cnx/what-we-do/technology-platforms/customer-experience-platform/salesforce_t.png">
           <img 
             src="/assets/cnx/what-we-do/technology-platforms/customer-experience-platform/salesforce_m.png" 
-            alt="Sales Cloud, Service Cloud 이미지"
+            alt="Salesforce와 Adobe Experience Cloud의 공식 파트너 로고"
             class="sales-image"
             loading="lazy"
           />
@@ -61,6 +61,7 @@
           text="<b>콘센트릭스는 세일즈포스 공식 컨설팅 파트너</b>로서,<br>다년간의 Sales cloud, Service cloud 프로젝트 경험과 AI 기반 고객 경험 혁신 역량을 보유하고 있으며. 다양한 산업의 특수성을 이해하고, 고객 여정을 중심으로 한 디지털 전환을 성공적으로 이끌어가고 있습니다."
           :reverse="true"
           :subItems="salesServiceSubItems"
+          imageAlt="Sales Cloud와 Service Cloud를 설명하는 비즈니스 여성 모델"
         />
       </section>
 
@@ -70,6 +71,7 @@
           vimeoId="922735558"
           text="SF CREAM(Salesforce Customer Relationship Engagement Application Module)은 세일즈포스닷컴 솔루션을 기반으로 한 컨택센터 운영솔루션입니다. 콘센트릭스의 글로벌 컨택센터 운영 노하우가 집대성 되어 상담 관리자와 상담원의 업무 생산성 증대 및 관리 효율성에 초점이 맞춰진 모듈형 솔루션 입니다."
           :subItems="sfCreamSubItems"
+          imageAlt="SF CREAM 솔루션 소개 영상의 썸네일 화면"
         />
       </section>
     </div>

@@ -4,7 +4,7 @@
     <picture>
       <source srcset="/assets/cnx/careers/visual-work.png" media="(min-width: 1024px)" />
       <source srcset="/assets/cnx/careers/visual-work_t.png" media="(min-width: 768px)" />
-      <img src="/assets/cnx/careers/visual-work_m.png" alt="What we do work" ref="imageRef" loading="lazy" />
+      <img src="/assets/cnx/careers/visual-work_m.png" alt="회의 중 밝게 웃으며 대화하는 두 명의 비즈니스 팀원" ref="imageRef" loading="lazy" />
     </picture>
     <HeadingComponent />
   </div>

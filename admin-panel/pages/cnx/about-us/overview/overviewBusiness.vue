@@ -12,7 +12,7 @@
     <picture class="aboutus-business__visual">
       <source srcset="/assets/cnx/about-us/overview/business-visual.png" media="(min-width: 1024px)" />
       <source srcset="/assets/cnx/about-us/overview/business-visual_t.png" media="(min-width: 768px)" />
-      <img src="/assets/cnx/about-us/overview/business-visual_m.png" alt="Business area" loading="lazy" ref="businessVisualRef" />
+      <img src="/assets/cnx/about-us/overview/business-visual_m.png" alt="회의 중 밝게 웃으며 대화하는 두 명의 비즈니스 팀원" loading="lazy" ref="businessVisualRef" />
     </picture>
 
     <div class="aboutus-business__group">

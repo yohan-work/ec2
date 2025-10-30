@@ -3,7 +3,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="digital experience Platform Key Visual"
+        imageAlt="디지털 기술을 상징하는 푸른빛의 추상적인 배경"
         :animationDuration="1200"
       />
     </section>
@@ -46,6 +46,7 @@
           imageName="aem"
           :reverse="true"
           :subItems="aemSubItems"
+          imageAlt="Adobe Experience Manager 솔루션의 인터페이스"
         />
       </section>
 
@@ -55,6 +56,7 @@
           title="IONACT (국내 CMS 솔루션)"
           imageName="ionact"
           :subItems="ionactSubItems"
+          imageAlt="IONACT 국내 CMS 솔루션의 로고"
         />
       </section>
 
@@ -65,6 +67,7 @@
           imageName="outsystems"
           :reverse="true"
           :subItems="outsystemsSubItems"
+          imageAlt="OutSystems의 Low-Code 개발 플랫폼 그래픽"
         />
       </section>
     </div>
