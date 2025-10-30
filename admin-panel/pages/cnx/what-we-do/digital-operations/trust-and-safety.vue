@@ -3,7 +3,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="Trust & Safety Key Visual"
+        imageAlt="컴퓨터 화면을 보며 보안 작업을 하는 엔지니어"
         :animationDuration="1200"
       />
     </section>
@@ -22,6 +22,7 @@
           title="Content Moderation"
           text="AI, 자동화, 인간의 통찰력을 바탕으로 귀사의 디지털 컨텐츠를 24시간 연중 무휴로 모니터링하여 모두에게 더 안전한 경험을 제공합니다."
           imageName="cm"
+          imageAlt="데이터 보안을 상징하는 디지털 지문 인식 그래픽"
           :reverse="true"
         />
       </section>
@@ -41,35 +42,35 @@
           </p>
           <ul class="introduction-list">
             <li class="introduction-list-item" :ref="el => listItems[0] = el">
-              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic01.svg" alt="" loading="lazy">
+              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic01.svg" alt="AI 지원 서비스의 기술 가속화를 상징하는 로켓 아이콘" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>개발 가속화</strong>
                 데이터 준비 과정을 간소화하여 AI 모델 훈련 및 배포를 가속화합니다.
               </p>
             </li>
             <li class="introduction-list-item" :ref="el => listItems[1] = el">
-              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic02.svg" alt="" loading="lazy">
+              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic02.svg" alt="모델 정확도 향상을 나타내는 방패 속 체크 표시" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>모델 정확도 향상</strong>
                 오류를 줄이고 AI 모델 신뢰성을 개선하며 편향을 최소화하여 일관된 결과를 보장합니다.
               </p>
             </li>
             <li class="introduction-list-item" :ref="el => listItems[2] = el">
-              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic03.svg" alt="" loading="lazy">
+              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic03.svg" alt="투명성 및 공정성 검증을 의미하는 AI 큐브" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>투명성 및 규정 준수 강화</strong>
                 윤리적 기준과 법적 규정을 준수하면서 투명성을 보장합니다.
               </p>
             </li>
             <li class="introduction-list-item" :ref="el => listItems[3] = el">
-              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic04.svg" alt="" loading="lazy">
+              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic04.svg" alt="델 및 학습 데이터 관리를 나타내는 이진 코드" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>모든 데이터 유형 관리</strong>
                 다양한 AI 사용 사례와 데이터 형식에 대응하는 유연성을 제공하여 품질 저하 없이 확장성을 확보합니다.
               </p>
             </li>
             <li class="introduction-list-item" :ref="el => listItems[4] = el">
-              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic05.svg" alt="" loading="lazy">
+              <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic05.svg" alt="AI 기반 시장 변화 예측을 보여주는 데이터 차트" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>사용자 경험 개선</strong>
                 관련성 높고 정확하며 직관적인 상호작용을 제공하여 만족도와 참여도를 높입니다.
