@@ -1,9 +1,9 @@
 <template>
   <div class="aboutus-intro">
-    <video muted autoplay playsinline loop class="aboutus-intro__video pc">
+    <video muted autoplay playsinline loop class="aboutus-intro__video pc" aria-label="Concentrix 용산 지사 사무실 내부">
       <source src="/assets/cnx/about-us/overview/aboutus.mp4" type="video/mp4">
     </video>
-    <video muted autoplay playsinline loop class="aboutus-intro__video mo">
+    <video muted autoplay playsinline loop class="aboutus-intro__video mo" aria-label="Concentrix 용산 지사 사무실 내부">
       <source src="/assets/cnx/about-us/overview/aboutus_m.mp4" type="video/mp4">
     </video>
     <div class="aboutus-intro__content">

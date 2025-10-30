@@ -53,6 +53,7 @@
   const historyList = ref([
     {
       thumb: '/assets/cnx/about-us/overview/2014.png',
+      alt: '2014년 인수 대상인 IBM 로고',
       year: '2014',
       detail: [
         { title: 'IBM CRM BPO 인수', content: 'CRM & Digital Marketing ($1.2B)' },
@@ -60,6 +61,7 @@
     },
     {
       thumb: '/assets/cnx/about-us/overview/2016.png',
+      alt: '2016년 인수한 Minacs 로고와 회사 건물',
       year: '2016',
       detail: [
         { title: 'Minacs 인수', content: 'Global CRM & Marketing Optimization Company ($420M)' }
@@ -67,6 +69,7 @@
     },
     {
       thumb: '/assets/cnx/about-us/overview/2017.png',
+      alt: '협업과 디지털 작업을 상징하는 사무실 장면들',
       year: '2017',
       detail: [
         { title: 'Tigerspike 인수', content: 'Digital Product & Strategy Company ($120M)' }
@@ -74,6 +77,7 @@
     },
     {
       thumb: '/assets/cnx/about-us/overview/2018.png',
+      alt: '2018년 인수 대상인 Convergys 로고와 ACT 로고',
       year: '2018',
       detail: [
         { title: 'Convergys 인수', content: 'Global Customer Care Company ($2.2B)' },
@@ -82,6 +86,7 @@
     },
     {
       thumb: '/assets/cnx/about-us/overview/2020.png',
+      alt: 'Nasdaq 상장 기념 전광판 스크린과 CiX 로고',
       year: '2020',
       detail: [
         { title: 'Nasdaq 상장', content: '글로벌 CX & Tech 기업으로 상장 (Nasdaq : CNXC)' },
@@ -90,6 +95,7 @@
     },
     {
       thumb: '/assets/cnx/about-us/overview/2021.png',
+      alt: 'Value Factory 로고 및 CX Design Engineering PK 로고',
       year: '2021',
       detail: [
         { title: 'Value Factory 인수', content: 'eCommerce Solution Company' },
@@ -98,6 +104,7 @@
     },
     {
       thumb: '/assets/cnx/about-us/overview/2022.png',
+      alt: 'ServiceSource 로고',
       year: '2022',
       detail: [
         { title: 'ServiceSource 인수', content: 'B2B Digital Sales Company ($131M)' }
@@ -105,6 +112,7 @@
     },
     {
       thumb: '/assets/cnx/about-us/overview/2023.png',
+      alt: 'Concentrix와 Webhelp 합병을 나타내는 로고',
       year: '2023.09',
       detail: [
         { title: 'Webhelp 합병', content: 'Global \'tech-powered\' company ($4B)' }
@@ -112,6 +120,7 @@
     },
     {
       thumb: '/assets/cnx/about-us/overview/2024.png',
+      alt: '리브랜딩 후의 Concentrix 로고',
       year: '2024.04',
       detail: [
         { title: 'ReBranding', content: 'CI & Culture Statement Renewal' }
@@ -119,6 +128,7 @@
     },
     {
       thumb: '/assets/cnx/about-us/overview/2025.png',
+      alt: 'SAI Digital 로고',
       year: '2025.09',
       detail: [
         { title: '‘SAI Digital’ 인수합병', content: 'E2E 이커머스 솔루션 서비스 및 자체 AI 솔루션 보유,<br>한국형 베트남 오프쇼어 개발 운영 모델 완성' }
