@@ -508,7 +508,6 @@ defineOptions({
   display: flex;
   flex-direction: column;
   z-index: 2000;
-  box-shadow: -10px 0 20px 0 rgba(0, 0, 0, 0.20);
   
   // 태블릿 이상에서는 숨김
   @include desktop {
@@ -517,6 +516,7 @@ defineOptions({
   
   &.is-open {
     transform: translateX(0);
+    box-shadow: -10px 0 20px 0 rgba(0, 0, 0, 0.20);
   }
   
   @include tablet {
