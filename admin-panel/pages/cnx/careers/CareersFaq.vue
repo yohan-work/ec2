@@ -10,7 +10,7 @@
       <picture class="careers-faq__image" ref="imageRef">
         <source srcset="/assets/cnx/careers/careers_kit.png" media="(min-width: 1024px)">
         <source srcset="/assets/cnx/careers/careers_kit_t.png" media="(min-width: 768px)">
-        <img src="/assets/cnx/careers/careers_kit_m.png" alt="welcome kit" loading="lazy" />
+        <img src="/assets/cnx/careers/careers_kit_m.png" alt="입사 시 제공되는 에코백, 노트, 머그컵, 마우스, 충전기 등 브랜드 웰컴 굿즈 세트" loading="lazy" />
       </picture>
     </div>
   </div>
