@@ -3,7 +3,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="Commerce Platform Key Visual"
+        imageAlt="디지털 기술을 조작하는 손의 클로즈업"
         :animationDuration="1200"
       />
     </section>
@@ -44,6 +44,7 @@
         <AppImgCont 
           title="Architecture Design"
           imageName="ad"
+          imageAlt="데이터 센터의 빛나는 서버 랙 시스템"
           :reverse="true"
           :subItems="adSubItems"
         />
@@ -54,6 +55,7 @@
         <AppImgCont 
           title="Integration Services"
           imageName="is"
+          imageAlt="통합 서비스를 상징하는 추상적인 디지털 연결망"
           :subItems="isSubItems"
         />
       </section>
@@ -63,6 +65,7 @@
         <AppImgCont 
           title="Global Delivery Model & References"
           imageName="gdmr"
+          imageAlt="글로벌 배포 모델을 나타내는 디지털 지구본"
           :reverse="true"
           :subItems="gdmrSubItems"
         />
