@@ -3,7 +3,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="Digital Advertising Key Visual"
+        imageAlt="전구 모형을 들고 아이디어를 공유하며 토론하는 팀의 협업을 표현한 Digital Advertising"
         :animationDuration="1200"
       />
     </section>
@@ -21,6 +21,7 @@
           title="The Catalyst for<br>Business Growth"
           text="정성과 정량의 경계가 허물어지고 솔루션보다 물음표가 더 많아진 데이터 범람 시대, 고객의 여정에 남겨진 데이터 인사이트를 끊임없이 파헤치며 고객사의 물음에 해답을 제시합니다."
           imageName="DA01"
+          imageAlt="노트북 화면 위로 데이터 분석 차트와 그래프가 겹쳐진 이미지 — 디지털 마케팅 성과와 통계 분석을 상징"
         />
       </section>
 
@@ -29,6 +30,7 @@
           title="INSIGHT CATALYST"
           text="밀도 높은 데이터 분석을 통해 정확한 유저 인사이트를 파악 한다면, 브랜드의 목표와 성과를 달성하기 위한 Key Strategy를 정의할 수 있습니다. 이러한 인사이트를 촉매[Catalyst]로 차별화된 디지털 마케팅 성과를 만들어 냅니다."
           imageName="DA02"
+          imageAlt="Client와 Customers를 중심으로 데이터 분석, 퍼포먼스 마케팅, UX 개선, CRM 마케팅 등 핵심 서비스 흐름을 시각화한 INSIGHT CATALYST 구조"
           :reverse="true"
         />
       </section>
@@ -38,6 +40,7 @@
           title="Advanced<br>Performance Marketing"
           text="데이터 분석을 통한 유저 인사이트를 바탕으로 Branding, User Acquisition, Data Analytics, Target-Optimized Creative까지 디지털 마케팅 전반을 아우르는 Full Funnel Performance를 지향합니다."
           imageName="DA03"
+          imageAlt="Strategy, Media Planning, Analytics, Optimization의 4단계로 구성된 퍼포먼스 마케팅 전략 프로세스를 시각화한 Full Funnel Performance 구조"
         />
       </section>
     </div>
@@ -47,7 +50,7 @@
       title="Empowering Brands<br>with Data-Driven Marketing"
       description="고객사 데이터분석, 디지털 광고 운영, 콘텐츠 제작, SEO 등<br>디지털 마케팅 영역에 필요한 모든 Task들이 하나로 통합된, 진정한 의미의<br>End-to-End 디지털 마케팅 솔루션을 제공합니다."
       imageName="subContImg"
-      imageAlt="디지털 광고 솔루션 이미지"
+      imageAlt="다양한 비즈니스 전문가들이 회의실에서 마케팅 전략과 데이터를 분석하며 논의하는 모습으로, 데이터 기반 마케팅 솔루션을 상징하는 장면"
     />
 
     <!-- 스와이퍼 섹션 -->
@@ -232,7 +235,7 @@ const swiperSlides = ref([
       "SEO 환경 구축, 기술 지원 및 키워드 최적화 제언으로 고객사  SEM 성과 개선에 기여"
     ],
     imageName: "swiper01",
-    imageAlt: "데이터 기반 전략 이미지"
+    imageAlt: "디지털 마케팅 전문가들이 벽면의 웹사이트 와이어프레임과 사용자 여정 맵을 분석하며 글로벌 웹사이트 브랜딩 전략을 논의하는 UX 전략 회의"
   },
   {
     title: "Data-Driven Marketing<br>분석 솔루션",
@@ -244,7 +247,7 @@ const swiperSlides = ref([
       "마케팅 태그 점검 / 대시보드 / 축적 데이터 기반의 *마케팅 성과 예측 모델링 등 Solution Development<br><span class='description'>*최대 7일까지 예측 가능, 오차 범위 최대 8% 이내</span>"
     ],
     imageName: "swiper02",
-    imageAlt: "창의적 콘텐츠 최적화 이미지"
+    imageAlt: "마케터가 인공지능 기반 분석 도구를 사용해 광고 성과 데이터를 시각화하고 인사이트를 도출하는 노트북 화면으로, 데이터 기반 마케팅 솔루션을 상징함"
   },
   {
     title: "글로벌 웹사이트<br>토탈 디지털 마케팅",
@@ -256,7 +259,7 @@ const swiperSlides = ref([
       "웹사이트 유저 데이터, 광고 분석 데이터 및 이전 크리에이티브 인사이트 분석을 통한 광고 크리에이티브 고도화"
     ],
     imageName: "swiper03",
-    imageAlt: "성과 중심 마케팅 이미지"
+    imageAlt: "테이블 위 그래프와 메모를 보며 실시간 데이터 분석을 기반으로 광고와 웹사이트 마케팅 전략을 기획하는 사람들의 회의"
   },
   {
     title: "웹사이트 마케팅 데이터<br>분석 & 웹 콘텐츠 퍼블리싱",
@@ -268,7 +271,7 @@ const swiperSlides = ref([
       "기존 콘텐츠 & SEO, 고객사 상품 분석과 시장 트렌드를 반영한 웹사이트 콘텐츠 제작 및 퍼블리싱"
     ],
     imageName: "swiper04",
-    imageAlt: "성과 중심 마케팅 이미지"
+    imageAlt: "모니터의 코드와 웹사이트 데이터를 함께 보며 분석 내용을 설명하는 여성과 이를 듣는 동료들이 SEO와 웹 콘텐츠 퍼블리싱 전략을 논의하는 마케팅 데이터 분석 회의"
   },
   {
     title: "CRM 분석& 자동화 솔루션",
@@ -280,7 +283,7 @@ const swiperSlides = ref([
       "메타 등 외부 매체와의 API 연동으로 SAM, MARS를 통해 발굴된 고도화된 타겟 세그먼트 활용 가능"
     ],
     imageName: "swiper05",
-    imageAlt: "성과 중심 마케팅 이미지"
+    imageAlt: "CRM 분석 대시보드 그래픽 — 다양한 막대그래프, 원형차트, 점 그래프가 표시된 디지털 화면으로 고객 데이터와 마케팅 성과를 시각화하고 CRM 자동화 솔루션을 통해 인사이트를 도출하는 모습을 표현"
   }
 ])
 
