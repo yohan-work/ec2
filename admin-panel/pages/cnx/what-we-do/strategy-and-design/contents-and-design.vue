@@ -36,7 +36,7 @@
                 <picture>
                   <source :srcset="getImageSrc(index + 1)" media="(min-width: 768px)">
                   <source :srcset="getImageSrc(index + 1)" media="(min-width: 1024px)">
-                  <img :src="getImageSrc(index + 1)" :alt="getSlideAltText(slide)" loading="lazy" fetchpriority="low" width="880" height="360">
+                  <img :src="getImageSrc(index + 1)" :alt="slide.imageAlt || getSlideAltText(slide)" loading="lazy" fetchpriority="low" width="880" height="360">
                 </picture>
               </figure>
             </ClientOnly>
@@ -261,23 +261,23 @@
         >
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01_t.jpg" alt="A modern conference room with a long wooden table, hanging light bulbs, and glass walls covered with whiteboard notes and sticky memos." loading="lazy" fetchpriority="low">
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_01_t.jpg" alt="Concentrix Catalyst 오피스 내부 — 회의실과 아이디어 보드, 조명 인테리어가 어우러진 협업 공간" loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02_t.jpg" alt="An open lounge area with grey sofas, wooden cubicle desks, bookshelves, and hanging plants creating a relaxing workspace atmosphere." loading="lazy" fetchpriority="low">
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_02_t.jpg" alt="Concentrix Catalyst 오피스 라운지 — 식물과 조명이 어우러진 모던한 휴게 및 협업 공간" loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03_t.jpg" alt="A professional photo studio with lighting equipment, tripods, monitors, and a white cyclorama backdrop." loading="lazy" fetchpriority="low">
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_03_t.jpg" alt="Concentrix Catalyst 스튜디오 — 조명 장비와 배경 세트가 갖춰진 사진 및 영상 촬영 공간" loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04_t.jpg" alt="A cozy office lounge with grey couches, wooden floors, circular ceiling lights, and the Concentrix Catalyst logo on the wall." loading="lazy" fetchpriority="low">
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_04_t.jpg" alt="Concentrix Catalyst 오피스 라운지 — 원형 조명과 우드 인테리어가 조화를 이루는 휴식 공간" loading="lazy" fetchpriority="low">
           </picture>
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05_t.jpg" alt="A bright office kitchen and lounge area with hanging lights, bookshelves, and greenery providing a natural atmosphere." loading="lazy" fetchpriority="low">
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/office_05_t.jpg" alt="Concentrix Catalyst 오피스 라운지 — 천장 식물 조명과 카페형 공간이 조화를 이룬 녹색 인테리어" loading="lazy" fetchpriority="low">
           </picture>
         </AppSwiper> 
       </div>
@@ -297,7 +297,7 @@
           <picture>
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram.jpg" media="(min-width: 1024px)" />
             <source srcset="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_t.jpg" media="(min-width: 768px)" />
-            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_m.jpg" alt="Business model diagram illustrating various types of business models and their interconnections." loading="lazy" fetchpriority="low" width="1320" height="660">
+            <img src="/assets/cnx/what-we-do/strategy-and-design/contents-and-design/works_diagram_m.jpg" alt="Structure와 Business를 중심으로 UX, 마케팅, 콘텐츠 개발 등 서비스 영역을 시각화한 Concentrix Catalyst 비즈니스 구조" loading="lazy" fetchpriority="low" width="1320" height="660">
           </picture>
         </div>
         <div class="works-section-content">
@@ -306,7 +306,7 @@
               title="Operation"
               text="다양한 디지털 채널에서의 KPI 달성을 위한 채널운영, 프로모션 기획, 이벤트 제작, 그외 브랜드 활동 등을 적극적이고 선제적으로 지원합니다. <br>또한 채널 내 UX/UI 개선 활동이나 추가 서비스개발을 수행하여 장기적인 관점에서의 채널 고도화를 지원합니다."
               imageName="works01"
-              imageAlt="남성과 여성이 테이블에 앉아 노트북을 보며 이야기하고 있습니다."
+              imageAlt="서류를 주고받으며 토론하는 직장인들의 협업과 커뮤니케이션을 표현한 비즈니스"
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
               headingLevel="h3"
@@ -319,7 +319,7 @@
               title="UX/UI Design"
               text="데이터 분석 기반의 플랫폼, 서비스, 시스템 개발을 지원합니다. Concentrix 만의 UX/UI Framework과 Process를 통해 안정적으로 프로젝트를 수행합니다. 또한 전략컨설팅, UX컨설팅 프로젝트의 기획, 디자인, 퍼블리싱 업무를 지원합니다."
               imageName="works02"
-              imageAlt="다양한 앱이 실행된 네 대의 아이폰이 나란히 놓여 있습니다."
+              imageAlt="모바일 화면에 뷰티포인트 설문과 리워드 시스템 UI가 표시된 스마트폰 목업"
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               headingLevel="h3"
               :alignTop="true"
@@ -331,7 +331,7 @@
               title="Digital Contents Creation"
               text="글로벌 플랫폼 내 콘텐츠 제작 및 확산을 수행하며, 대형 온라인 전시 및 포럼 등의 행사기획부터 영상 콘텐츠 제작, 마이크로사이트 구축까지 지원합니다. 또한 소셜미디어 콘텐츠 전략, 기획, 촬영, 제작, 운영 등을 서비스하고 있으며 라이브 커머스, 메타버스와 같은 최신 트렌드를 반영한 서비스의 전략, 기획, 콘텐츠 제작, 촬영 지원 등의 업무를 지원합니다."
               imageName="works03"
-              imageAlt="책상에서 컴퓨터를 사용하고 있는 여성의 모습입니다."
+              imageAlt="데스크에 앉아 인테리어 웹사이트를 보는 여성으로, 모니터 화면에 욕실 인테리어 액세서리 페이지가 표시된 모습"
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"
               :reverse="true"
               headingLevel="h3"
@@ -1699,6 +1699,7 @@ const slideData = ref([
     launch: "Septtember 28, 2022",
     client: "Hankook Tire & Technology",
     borderColor: 'white',
+    imageAlt: "레이싱 팀이 서킷에서 차량을 정비하는 Hankook Tire 모터스포츠 웹사이트",
   },
   {
     title: "Amorepacific<br> HK Sulwhasoo <br>D2C mall <br>Development",
@@ -1706,7 +1707,8 @@ const slideData = ref([
     description: "사용자 친화적인 모바일 UX/UI 구현,<br>쇼핑 패턴을 반영한 BX & CX 최적화,<br>고객 경험 기반의 SEO 프로세스 수행,<br>본사 주도의 직영몰 표준 테마 제작",
     launch: "July 27, 2022",
     client: "Amorepacific",
-    borderColor: 'white'
+    borderColor: 'white',
+    imageAlt: "설화수 시그니처 오렌지 패턴과 로고가 강조된 아모레퍼시픽 홍콩 D2C 몰 메인 디자인",
   },
   {
     title: "LG U+ <br>Integrated <br>Corporate Website <br>Development",
@@ -1714,7 +1716,8 @@ const slideData = ref([
     description: "고객의 방문 목적을 쉽고 빠르게 달성(Simple)하고, 고객 여정을 막힘 없이 지속(Seamless)시키며, 고객 데이터 기반의 최적화된 정보 제공(개인화 마케팅)을 목표로 통합 홈페이지 기획, 디자인 수행",
     launch: "May, 2022",
     client: "LG UPLUS",
-    borderColor: 'white'
+    borderColor: 'white',
+    imageAlt: "밝게 웃으며 소통하는 사람들을 통해 브랜드의 커뮤니케이션 가치를 표현한 LG U+ 통합 기업 웹사이트",
   },
   {
     title: "Amorepacific <br>Brands Websites <br>Operation",
@@ -1722,7 +1725,8 @@ const slideData = ref([
     description: "- 글로벌 브랜드 표준을 준수한 콘텐츠 운영 <br> - 브랜드사이트 기본 퍼포먼스 지표 분석 <br> - 디지털 채널 성과 진단 및 분석 <br> - SEO 컨설팅과 진단 및 분석",
     launch: "March, 2022",
     client: "Amorepacific",
-    borderColor: 'white'
+    borderColor: 'white',
+    imageAlt: "야간 조명 아래 본사 건물을 강조한 아모레퍼시픽 브랜드 웹사이트",
   },
   {
     title: "LG Display <br>CES 2022 <br>Online Exhibition",
@@ -1731,7 +1735,8 @@ const slideData = ref([
     launch: "January, 2022",
     client: "LG Display",
     textColor: 'black',
-    borderColor: 'black'
+    borderColor: 'black',
+    imageAlt: "디지털 전시의 감성을 표현한 핑크 그래픽이 사용된 LG Display CES 2022 온라인 전시",
   },
   {
     title: "Hankook Tire <br>Brand Website <br>Operation",
@@ -1739,7 +1744,8 @@ const slideData = ref([
     description: "한국타이어 글로벌닷컴 통합 운영 <br>라우펜 글로벌닷컴 통합 운영<br>서비스범위 : PMO, 기획, UX/UI, GA, SEO, 로컬커뮤니케이션",
     launch: "January, 2019",
     client: "Hankook Tire & Technology",
-    borderColor: 'white'
+    borderColor: 'white',
+    imageAlt: "전기차 타이어의 패턴과 질감을 강조한 Hankook Tire 브랜드 웹사이트",
   },
   {
     title: "LG Electronics <br>H&A Social <br>Contents Creation",
@@ -1749,7 +1755,8 @@ const slideData = ref([
     client: "LG Electronics",
     link: "https://www.instagram.com/lifeisgood_kitchen/",
     textColor: 'black',
-    borderColor: 'black'
+    borderColor: 'black',
+    imageAlt: "노란색 톤의 베이킹 재료 구성을 활용한 LG전자 H&A 소셜 콘텐츠",
   },
   {
     title: "LG Electronics <br>H&A Contents <br>Creation",
@@ -1760,7 +1767,8 @@ const slideData = ref([
     textColor: 'black',
     activeColor: 'white',
     borderColor: 'white',
-    paginationColor: 'black'
+    paginationColor: 'black',
+    imageAlt: "미니멀한 흰색 인테리어 공간을 강조한 LG전자 H&A 콘텐츠",
   },
   {
     title: "Counselor <br>App Service <br>Development",
@@ -1768,7 +1776,8 @@ const slideData = ref([
     description: "쉽고 다양한 미용&건강, 뷰티포인트 정보와 <br>아모레퍼시픽 공식 카운셀러의 서비스를 이용 가능한 <br>무료 뷰티앱 구축 수행",
     launch: "June, 2020",
     client: "Amorepacific",
-    borderColor: 'white'
+    borderColor: 'white',
+    imageAlt: "달리는 인물 일러스트로 역동성을 표현한 상담사 앱 서비스",
   },
   {
     title: "Amorepacific <br>Innisfree Web/App<br>Renewal",
@@ -1776,7 +1785,8 @@ const slideData = ref([
     description: "이니스프리 이커머스 웹사이트 및 앱 리뉴얼 구축 <br>프로젝트 수행",
     launch: "June, 2020",
     client: "Amorepacific Innisfree",
-    borderColor: 'white'
+    borderColor: 'white',
+    imageAlt: "자연의 감성을 담은 녹색 톤의 아모레퍼시픽 이니스프리 웹·앱 리뉴얼",
   },
   {
     title: "Beauty Point <br>Survey System <br>Development",
@@ -1786,7 +1796,8 @@ const slideData = ref([
     client: "Amorepacific",
     textColor: 'black',
     borderColor: 'black',
-    paginationColor: 'black'
+    paginationColor: 'black',
+    imageAlt: "모바일 설문 화면과 포인트 코인을 강조한 뷰티포인트 설문 시스템",
   }
 ]);
 
