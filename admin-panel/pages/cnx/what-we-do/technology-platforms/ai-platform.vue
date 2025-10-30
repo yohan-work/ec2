@@ -3,7 +3,7 @@
     <!-- 키 비주얼 섹션 -->
     <section class="key-visual-section">
       <AppKeyVisual 
-        imageAlt="AI Platform Key Visual"
+        imageAlt="어두운 배경 앞에서 미래를 바라보는 사람의 실루엣"
         :animationDuration="1200"
       />
     </section>
@@ -44,6 +44,7 @@
           title="iX Hello : AI Agent Platform"
           text="iX Hello는 코딩 없이도 생성형 AI 봇을 쉽게 만들 수 있도록 돕는 AI 플랫폼입니다. iX Hello는 기업의 다양한 비즈니스 영역에 적용되어 효율성을 극대화하고, 데이터 기반의 콘텐츠 생성 및 업무 자동화를 가능하게 합니다."
           imageName="ixhello"
+          imageAlt="iX Hello AI 에이전트 플랫폼의 로고와 그래픽"
           :reverse="true"
           :alignTop="true"
           :subItems="ixHelloSubItems"
@@ -55,6 +56,7 @@
           title="AI Aura (AI Autonomous Reasoning Agent)"
           text="콘센트릭스의 AI Aura는 AI 기반의 실행형 에이전트를 활용해 Commerce를 포함한 닷컴 비즈니스 운영을 자동화하고 최적화하는 서비스입니다.<br>기존의 AI 솔루션이 단순 분석이나 정보 제공에 그쳤다면, AI Aura는 데이터를 기반으로 직접적인 행동을 수행하여 비즈니스 성과를 높이는 것이 특징입니다."  
           imageName="aiaura"
+          imageAlt="회로 기판과 손을 클로즈업한 AI Aura 개념 이미지"
           :alignTop="true"
           :subItems="aiAuraSubItems"
         />
