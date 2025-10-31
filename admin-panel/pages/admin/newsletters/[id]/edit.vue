@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- 페이지 헤더 -->
-    <div class="bg-white border-b border-gray-200 sticky top-0 z-10">
+    <div class="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div class="mx-auto px-6 py-4">
         <div class="flex justify-between items-center">
           <div class="flex items-center space-x-4">
@@ -36,6 +36,41 @@
 
           <div class="flex items-center space-x-3">
             <button
+              @click="togglePreview"
+              class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            >
+              <svg
+                class="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  v-if="!showPreview"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  v-if="!showPreview"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+                <path
+                  v-else
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                />
+              </svg>
+              {{ showPreview ? '편집 모드' : '미리보기' }}
+            </button>
+
+            <button
               @click="saveDraft"
               :disabled="saving"
               class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
@@ -64,7 +99,7 @@
     </div>
 
     <!-- 메인 컨텐츠 -->
-    <div class="mx-auto py-6">
+    <div class="mx-auto py-6 px-6">
       <!-- 로딩 상태 -->
       <div v-if="loading" class="flex items-center justify-center py-16">
         <div class="text-center">
@@ -99,7 +134,7 @@
       </div>
 
       <!-- 편집 폼 -->
-      <form v-else @submit.prevent="saveDraft" class="space-y-8">
+      <form v-else @submit.prevent="saveDraft" class="space-y-6">
         <!-- 기본 정보 -->
         <div
           class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
@@ -220,91 +255,6 @@
                 </div>
               </div>
 
-              <!-- 본문 이미지 -->
-              <div>
-                <label
-                  for="body-image"
-                  class="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  본문 이미지
-                </label>
-                <div class="space-y-4">
-                  <div
-                    v-if="form.body_image || originalNewsletter?.body_image"
-                    class="flex items-start space-x-4"
-                  >
-                    <div class="flex-shrink-0">
-                      <img
-                        :src="form.body_image || originalNewsletter?.body_image"
-                        alt="본문 이미지 미리보기"
-                        class="w-32 h-24 object-cover rounded-lg border border-gray-200 shadow-sm"
-                      />
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <input
-                        id="body-image"
-                        v-model="form.body_image"
-                        type="text"
-                        class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                        placeholder="이미지 URL을 입력하거나 아래 버튼으로 업로드하세요"
-                      />
-                    </div>
-                  </div>
-                  <div v-else>
-                    <input
-                      id="body-image"
-                      v-model="form.body_image"
-                      type="text"
-                      class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                      placeholder="이미지 URL을 입력하거나 아래 버튼으로 업로드하세요"
-                    />
-                  </div>
-                  <div class="flex space-x-3">
-                    <button
-                      type="button"
-                      @click="uploadBodyImage"
-                      class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-                    >
-                      <svg
-                        class="w-4 h-4 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                        />
-                      </svg>
-                      이미지 업로드
-                    </button>
-                    <button
-                      v-if="form.body_image || originalNewsletter?.body_image"
-                      type="button"
-                      @click="removeBodyImage"
-                      class="inline-flex items-center px-4 py-2 text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
-                    >
-                      <svg
-                        class="w-4 h-4 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                      제거
-                    </button>
-                  </div>
-                </div>
-              </div>
-
               <!-- 상태 및 작성자 정보 -->
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -340,179 +290,113 @@
           </div>
         </div>
 
-        <!-- 내용 -->
-        <div class="space-y-0" ref="contentSection">
-          <div
-            ref="stickyHeader"
-            class="px-6 py-4 bg-white border border-gray-200 rounded-t-xl flex justify-between items-center transition-all duration-200"
-            :class="{
-              'fixed top-0 left-0 w-full z-30 shadow-lg border-b':
-                isHeaderSticky,
-            }"
-            :style="isHeaderSticky ? { borderRadius: '0' } : {}"
-          >
-            <h2 class="text-lg font-semibold text-gray-900">내용</h2>
-            <button
-              type="button"
-              @click="addParagraph"
-              class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+        <!-- 블록 에디터 영역 -->
+        <div class="grid grid-cols-3 gap-6">
+          <!-- 좌측 패널: 블록 추가 폼 -->
+          <div class="col-span-1">
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-200 sticky top-24"
             >
-              <svg
-                class="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              문단 추가
-            </button>
-          </div>
+              <div class="px-6 py-4 border-b border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-900">블록 추가</h2>
+              </div>
+              <div class="p-6 space-y-4">
+                <!-- 블록 타입 선택 -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    블록 타입
+                  </label>
+                  <select
+                    v-model="newBlock.type"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="subtitle">부제목</option>
+                    <option value="paragraph">문단</option>
+                    <option value="heading2">대제목 (H2)</option>
+                    <option value="heading3">중제목 (H3)</option>
+                    <option value="image">이미지</option>
+                    <option value="quote">인용구</option>
+                    <option value="list">리스트</option>
+                    <option value="divider">구분선</option>
+                  </select>
+                </div>
 
-          <!-- <div v-if="isHeaderSticky" class="h-20"></div> -->
-
-          <!-- 내용 컨테이너 -->
-          <div
-            class="bg-white rounded-b-xl shadow-sm border-l border-r border-b border-gray-200"
-          >
-            <div class="p-6">
-              <div class="space-y-6">
-                <!-- Subtitle -->
-                <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
-                  <div class="flex justify-between items-center mb-3">
-                    <label class="text-sm font-medium text-gray-700">
-                      부제목 (선택사항)
+                <!-- 부제목 입력 -->
+                <div v-if="newBlock.type === 'subtitle'" class="space-y-3">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                      내용
                     </label>
-                    <div class="flex items-center space-x-2">
-                      <input
-                        id="subtitle-bold"
-                        v-model="form.subtitle_bold"
-                        type="checkbox"
-                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                      />
-                      <label for="subtitle-bold" class="text-sm text-gray-600">
-                        굵게
-                      </label>
-                    </div>
+                    <input
+                      v-model="newBlock.content"
+                      type="text"
+                      class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="부제목을 입력하세요"
+                    />
                   </div>
-                  <input
-                    v-model="form.subtitle"
-                    type="text"
-                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="부제목을 입력하세요 (선택사항)"
-                  />
-                  <div class="mt-2 text-xs text-gray-500">
-                    {{ form.subtitle.length }} 글자
+                  <div class="flex items-center">
+                    <input
+                      v-model="newBlock.options.bold"
+                      type="checkbox"
+                      class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                    />
+                    <label class="ml-2 text-sm text-gray-700">굵게</label>
                   </div>
                 </div>
 
-                <!-- 문단들 -->
-                <div
-                  v-for="(paragraph, index) in form.paragraphs"
-                  :key="paragraph.id"
-                  class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm"
-                >
-                  <div class="flex justify-between items-center mb-3">
-                    <label class="text-sm font-medium text-gray-700">
-                      문단 {{ index + 1 }}
-                    </label>
-                    <button
-                      v-if="form.paragraphs.length > 1"
-                      type="button"
-                      @click="removeParagraph(index)"
-                      class="inline-flex items-center p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                    >
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+                <!-- 문단 입력 -->
+                <div v-if="newBlock.type === 'paragraph'">
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    내용
+                  </label>
                   <textarea
-                    v-model="paragraph.content"
-                    :placeholder="`문단 ${index + 1} 내용을 입력하세요...`"
-                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all"
-                    rows="5"
+                    v-model="newBlock.content"
+                    rows="4"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    placeholder="문단 내용을 입력하세요"
                   ></textarea>
-                  <div class="mt-2 text-xs text-gray-500">
-                    {{ paragraph.content.length }} 글자
-                  </div>
                 </div>
 
-                <!-- 미리보기 -->
+                <!-- 제목 입력 -->
                 <div
-                  v-if="showPreview"
-                  class="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden"
+                  v-if="
+                    newBlock.type === 'heading2' || newBlock.type === 'heading3'
+                  "
                 >
-                  <div class="px-4 py-3 bg-gray-100 border-b border-gray-200">
-                    <h3 class="text-sm font-medium text-gray-700">미리보기</h3>
-                  </div>
-                  <div class="p-6 bg-white">
-                    <!-- 본문 이미지가 있으면 제일 위에 표시 -->
-                    <div v-if="form.body_image" class="mb-6">
-                      <img
-                        :src="form.body_image"
-                        alt="본문 이미지"
-                        class="w-full max-w-2xl mx-auto object-cover rounded-lg shadow-sm"
-                      />
-                    </div>
-
-                    <!-- Subtitle -->
-                    <div v-if="form.subtitle.trim()" class="mb-6">
-                      <h3
-                        :class="
-                          form.subtitle_bold ? 'font-bold' : 'font-normal'
-                        "
-                        class="newsletter-subtitle"
-                      >
-                        {{ form.subtitle }}
-                      </h3>
-                    </div>
-
-                    <!-- 문단들 -->
-                    <div
-                      v-for="(paragraph, index) in form.paragraphs"
-                      :key="`preview-${paragraph.id}`"
-                      class="mb-4 last:mb-0"
-                    >
-                      <p
-                        v-if="paragraph.content.trim()"
-                        class="text-gray-800 leading-relaxed whitespace-pre-wrap"
-                      >
-                        {{ paragraph.content }}
-                      </p>
-                      <p v-else class="text-gray-400 italic">
-                        문단 {{ index + 1 }} 내용이 비어있습니다.
-                      </p>
-                    </div>
-                  </div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    내용
+                  </label>
+                  <input
+                    v-model="newBlock.content"
+                    type="text"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    :placeholder="
+                      newBlock.type === 'heading2'
+                        ? '대제목을 입력하세요'
+                        : '중제목을 입력하세요'
+                    "
+                  />
                 </div>
 
-                <!-- 하단 컨트롤 -->
-                <div
-                  class="flex justify-between items-center pt-4 border-t border-gray-100"
-                >
+                <!-- 이미지 입력 -->
+                <div v-if="newBlock.type === 'image'" class="space-y-3">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                      이미지 URL
+                    </label>
+                    <input
+                      v-model="newBlock.content"
+                      type="text"
+                      class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="이미지 URL을 입력하세요"
+                    />
+                  </div>
                   <button
                     type="button"
-                    @click="showPreview = !showPreview"
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                    @click="uploadBlockImage"
+                    class="w-full inline-flex justify-center items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
                   >
                     <svg
-                      v-if="!showPreview"
                       class="w-4 h-4 mr-2"
                       fill="none"
                       stroke="currentColor"
@@ -522,37 +406,391 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                       />
                     </svg>
-                    <svg
-                      v-else
-                      class="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
-                      />
-                    </svg>
-                    {{ showPreview ? '미리보기 숨기기' : '미리보기 보기' }}
+                    이미지 업로드
                   </button>
+                  <div v-if="newBlock.content" class="mt-2">
+                    <img
+                      :src="newBlock.content"
+                      alt="미리보기"
+                      class="w-full rounded-lg border border-gray-200"
+                    />
+                  </div>
+                </div>
+
+                <!-- 인용구 입력 -->
+                <div v-if="newBlock.type === 'quote'">
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    내용
+                  </label>
+                  <textarea
+                    v-model="newBlock.content"
+                    rows="3"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    placeholder="인용구를 입력하세요"
+                  ></textarea>
+                </div>
+
+                <!-- 리스트 입력 -->
+                <div v-if="newBlock.type === 'list'" class="space-y-3">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                      리스트 타입
+                    </label>
+                    <select
+                      v-model="newBlock.options.listType"
+                      class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="ul">순서 없음 (•)</option>
+                      <option value="ol">순서 있음 (1, 2, 3...)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                      항목 (줄바꿈으로 구분)
+                    </label>
+                    <textarea
+                      v-model="newBlock.content"
+                      rows="4"
+                      class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      placeholder="항목 1&#10;항목 2&#10;항목 3"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <!-- 구분선은 내용 입력 불필요 -->
+                <div v-if="newBlock.type === 'divider'">
+                  <p class="text-sm text-gray-500">
+                    구분선을 추가합니다. 내용 입력이 필요하지 않습니다.
+                  </p>
+                </div>
+
+                <!-- 블록 추가 버튼 -->
+                <button
+                  type="button"
+                  @click="addBlock"
+                  :disabled="!canAddBlock"
+                  class="w-full inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <svg
+                    class="w-4 h-4 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  블록 추가
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 우측 패널: 블록 리스트 -->
+          <div class="col-span-2">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+              <div class="px-6 py-4 border-b border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-900">내용</h2>
+              </div>
+              <div class="p-6">
+                <!-- 미리보기 모드 -->
+                <div v-if="showPreview" class="preview-content">
+                  <div
+                    v-for="block in form.blocks"
+                    :key="block.id"
+                    class="mb-4 last:mb-0"
+                  >
+                    <!-- 부제목 -->
+                    <h3
+                      v-if="block.type === 'subtitle'"
+                      :class="block.options?.bold ? 'font-bold' : 'font-normal'"
+                      class="newsletter-subtitle"
+                    >
+                      {{ block.content }}
+                    </h3>
+
+                    <!-- 문단 -->
+                    <p
+                      v-if="block.type === 'paragraph'"
+                      class="text-gray-800 leading-relaxed whitespace-pre-wrap"
+                    >
+                      {{ block.content }}
+                    </p>
+
+                    <!-- 대제목 -->
+                    <h2
+                      v-if="block.type === 'heading2'"
+                      class="text-2xl font-bold text-gray-900 mb-3"
+                    >
+                      {{ block.content }}
+                    </h2>
+
+                    <!-- 중제목 -->
+                    <h3
+                      v-if="block.type === 'heading3'"
+                      class="text-xl font-bold text-gray-900 mb-2"
+                    >
+                      {{ block.content }}
+                    </h3>
+
+                    <!-- 이미지 -->
+                    <img
+                      v-if="block.type === 'image'"
+                      :src="block.content"
+                      alt="Content Image"
+                      class="w-full rounded-lg shadow-sm"
+                    />
+
+                    <!-- 인용구 -->
+                    <blockquote
+                      v-if="block.type === 'quote'"
+                      class="border-l-4 border-blue-500 pl-4 italic text-gray-700"
+                    >
+                      {{ block.content }}
+                    </blockquote>
+
+                    <!-- 리스트 -->
+                    <ul
+                      v-if="
+                        block.type === 'list' &&
+                        block.options?.listType === 'ul'
+                      "
+                      class="list-disc list-inside text-gray-800"
+                    >
+                      <li
+                        v-for="(item, index) in block.content
+                          .split('\n')
+                          .filter(i => i.trim())"
+                        :key="index"
+                      >
+                        {{ item }}
+                      </li>
+                    </ul>
+                    <ol
+                      v-if="
+                        block.type === 'list' &&
+                        block.options?.listType === 'ol'
+                      "
+                      class="list-decimal list-inside text-gray-800"
+                    >
+                      <li
+                        v-for="(item, index) in block.content
+                          .split('\n')
+                          .filter(i => i.trim())"
+                        :key="index"
+                      >
+                        {{ item }}
+                      </li>
+                    </ol>
+
+                    <!-- 구분선 -->
+                    <hr
+                      v-if="block.type === 'divider'"
+                      class="border-t border-gray-300"
+                    />
+                  </div>
 
                   <div
-                    class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
+                    v-if="form.blocks.length === 0"
+                    class="text-center py-12"
                   >
-                    총 {{ getTotalWordCount() }} 글자
+                    <p class="text-gray-400">좌측에서 블록을 추가해주세요.</p>
                   </div>
+                </div>
+
+                <!-- 편집 모드: 드래그 가능한 블록 리스트 -->
+                <draggable
+                  v-else
+                  v-model="form.blocks"
+                  item-key="id"
+                  class="space-y-3"
+                  handle=".drag-handle"
+                  :animation="200"
+                >
+                  <template #item="{ element: block, index }">
+                    <div
+                      class="block-item bg-gray-50 rounded-lg border border-gray-200 p-4 hover:border-blue-300 transition-colors"
+                    >
+                      <div class="flex items-start space-x-3">
+                        <!-- 드래그 핸들 -->
+                        <button
+                          type="button"
+                          class="drag-handle flex-shrink-0 mt-1 cursor-move text-gray-400 hover:text-gray-600"
+                        >
+                          <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 8h16M4 16h16"
+                            />
+                          </svg>
+                        </button>
+
+                        <!-- 블록 아이콘 및 타입 -->
+                        <div class="flex-shrink-0 mt-1">
+                          <span
+                            class="inline-flex items-center px-2 py-1 text-xs font-medium rounded"
+                            :class="getBlockTypeClass(block.type)"
+                          >
+                            {{ getBlockTypeName(block.type) }}
+                          </span>
+                        </div>
+
+                        <!-- 블록 내용 -->
+                        <div class="flex-1 min-w-0">
+                          <div v-if="block.type === 'subtitle'">
+                            <input
+                              v-model="block.content"
+                              type="text"
+                              class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              placeholder="부제목을 입력하세요"
+                            />
+                            <div class="flex items-center mt-2">
+                              <input
+                                v-model="block.options.bold"
+                                type="checkbox"
+                                class="w-4 h-4 text-blue-600 rounded"
+                              />
+                              <label class="ml-2 text-sm text-gray-700"
+                                >굵게</label
+                              >
+                            </div>
+                          </div>
+
+                          <div v-else-if="block.type === 'paragraph'">
+                            <textarea
+                              v-model="block.content"
+                              rows="3"
+                              class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                              placeholder="문단 내용을 입력하세요"
+                            ></textarea>
+                          </div>
+
+                          <div
+                            v-else-if="
+                              block.type === 'heading2' ||
+                              block.type === 'heading3'
+                            "
+                          >
+                            <input
+                              v-model="block.content"
+                              type="text"
+                              class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              :placeholder="
+                                block.type === 'heading2'
+                                  ? '대제목을 입력하세요'
+                                  : '중제목을 입력하세요'
+                              "
+                            />
+                          </div>
+
+                          <div v-else-if="block.type === 'image'">
+                            <input
+                              v-model="block.content"
+                              type="text"
+                              class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              placeholder="이미지 URL"
+                            />
+                            <img
+                              v-if="block.content"
+                              :src="block.content"
+                              alt="Preview"
+                              class="mt-2 w-full rounded-lg border border-gray-200"
+                            />
+                          </div>
+
+                          <div v-else-if="block.type === 'quote'">
+                            <textarea
+                              v-model="block.content"
+                              rows="3"
+                              class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                              placeholder="인용구를 입력하세요"
+                            ></textarea>
+                          </div>
+
+                          <div v-else-if="block.type === 'list'">
+                            <select
+                              v-model="block.options.listType"
+                              class="w-full px-3 py-2 mb-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                              <option value="ul">순서 없음</option>
+                              <option value="ol">순서 있음</option>
+                            </select>
+                            <textarea
+                              v-model="block.content"
+                              rows="4"
+                              class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                              placeholder="항목 1&#10;항목 2&#10;항목 3"
+                            ></textarea>
+                          </div>
+
+                          <div v-else-if="block.type === 'divider'">
+                            <hr class="border-t-2 border-gray-300" />
+                          </div>
+                        </div>
+
+                        <!-- 삭제 버튼 -->
+                        <button
+                          type="button"
+                          @click="removeBlock(index)"
+                          class="flex-shrink-0 mt-1 text-red-500 hover:text-red-700"
+                        >
+                          <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </template>
+                </draggable>
+
+                <!-- 빈 상태 (편집 모드) -->
+                <div
+                  v-if="!showPreview && form.blocks.length === 0"
+                  class="text-center py-12"
+                >
+                  <svg
+                    class="mx-auto h-12 w-12 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  <h3 class="mt-2 text-sm font-medium text-gray-900">
+                    블록이 없습니다
+                  </h3>
+                  <p class="mt-1 text-sm text-gray-500">
+                    좌측 패널에서 블록을 추가해보세요.
+                  </p>
                 </div>
               </div>
             </div>
@@ -620,6 +858,8 @@
 </template>
 
 <script setup>
+import draggable from 'vuedraggable'
+
 // 인증 확인을 위한 미들웨어 적용
 definePageMeta({
   middleware: 'auth',
@@ -640,125 +880,79 @@ const error = ref(null)
 const saving = ref(false)
 const showPreview = ref(false)
 
-// Sticky 헤더 관련
-const isHeaderSticky = ref(false)
-const stickyHeader = ref(null)
-const contentSection = ref(null)
-const originalHeaderTop = ref(0)
-
 // 폼 데이터
 const form = reactive({
   title: '',
-  body_html: '',
   thumbnail_image: '',
-  body_image: '',
-  subtitle: '',
-  subtitle_bold: false,
   status: 'draft',
-  paragraphs: [
-    { id: 1, content: '' },
-    { id: 2, content: '' },
-  ],
+  blocks: [],
 })
 
-// 에디터 참조 (사용하지 않음)
-// const editorRef = ref(null)
+// 새 블록 입력 폼
+const newBlock = reactive({
+  type: 'paragraph',
+  content: '',
+  options: {
+    bold: false,
+    listType: 'ul',
+  },
+})
 
-// 뉴스레터 조회 (편집 모드일 때)
-const fetchNewsletter = async () => {
-  if (!isEditing.value) {
-    loading.value = false
-    return
+// 블록 타입 정의
+const blockTypes = {
+  subtitle: { name: '부제목', class: 'bg-purple-100 text-purple-700' },
+  paragraph: { name: '문단', class: 'bg-blue-100 text-blue-700' },
+  heading2: { name: '대제목', class: 'bg-indigo-100 text-indigo-700' },
+  heading3: { name: '중제목', class: 'bg-indigo-100 text-indigo-700' },
+  image: { name: '이미지', class: 'bg-green-100 text-green-700' },
+  quote: { name: '인용구', class: 'bg-yellow-100 text-yellow-700' },
+  list: { name: '리스트', class: 'bg-orange-100 text-orange-700' },
+  divider: { name: '구분선', class: 'bg-gray-100 text-gray-700' },
+}
+
+// 블록 타입 이름 가져오기
+const getBlockTypeName = type => blockTypes[type]?.name || type
+
+// 블록 타입 클래스 가져오기
+const getBlockTypeClass = type =>
+  blockTypes[type]?.class || 'bg-gray-100 text-gray-700'
+
+// 블록 추가 가능 여부
+const canAddBlock = computed(() => {
+  if (newBlock.type === 'divider') return true
+  return newBlock.content.trim().length > 0
+})
+
+// 블록 추가
+const addBlock = () => {
+  if (!canAddBlock.value) return
+
+  const block = {
+    id: Date.now(),
+    type: newBlock.type,
+    content: newBlock.content,
+    options: { ...newBlock.options },
   }
 
-  try {
-    loading.value = true
-    error.value = null
+  form.blocks.push(block)
 
-    const response = await $fetch(`/api/admin/newsletters/${newsletterId}`)
-    originalNewsletter.value = response.data
-
-    // 폼에 데이터 채우기
-    form.title = originalNewsletter.value.title
-    form.body_html = originalNewsletter.value.body_html
-    form.thumbnail_image = originalNewsletter.value.thumbnail_image || ''
-    form.body_image = originalNewsletter.value.body_image || ''
-    form.subtitle = originalNewsletter.value.subtitle || ''
-    form.subtitle_bold = originalNewsletter.value.subtitle_bold || false
-    form.status = originalNewsletter.value.status
-
-    // 기존 body_html을 문단으로 변환
-    if (originalNewsletter.value.body_html) {
-      let htmlContent = originalNewsletter.value.body_html
-
-      // <br><br> 패턴을 문단 구분자로 변환
-      htmlContent = htmlContent.replace(
-        /<br\s*\/?>\s*<br\s*\/?>/gi,
-        '|||PARAGRAPH_SEPARATOR|||'
-      )
-
-      // <p> 태그를 기준으로 분할
-      const pTags = htmlContent.match(/<p[^>]*>.*?<\/p>/gi) || []
-
-      if (pTags.length > 0) {
-        // <p> 태그가 있는 경우
-        form.paragraphs = pTags.map((pTag, index) => {
-          // HTML 태그 제거하고 텍스트만 추출
-          const content = pTag
-            .replace(/<[^>]*>/g, '')
-            .replace(/&nbsp;/g, ' ')
-            .replace(/&amp;/g, '&')
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .trim()
-
-          return {
-            id: index + 1,
-            content: content,
-          }
-        })
-      } else {
-        // <p> 태그가 없는 경우, 구분자로 분할
-        const paragraphs = htmlContent
-          .split('|||PARAGRAPH_SEPARATOR|||')
-          .map(paragraph => {
-            return paragraph
-              .replace(/<[^>]*>/g, '')
-              .replace(/&nbsp;/g, ' ')
-              .replace(/&amp;/g, '&')
-              .replace(/&lt;/g, '<')
-              .replace(/&gt;/g, '>')
-              .replace(/&quot;/g, '"')
-              .trim()
-          })
-          .filter(p => p.length > 0)
-
-        if (paragraphs.length > 0) {
-          form.paragraphs = paragraphs.map((content, index) => ({
-            id: index + 1,
-            content: content,
-          }))
-        }
-      }
-    }
-  } catch (err) {
-    console.error('뉴스레터 조회 실패:', err)
-    error.value = err.data?.message || '뉴스레터를 불러올 수 없습니다.'
-  } finally {
-    loading.value = false
-    nextTick(() => {
-      saveOriginalHeaderPosition()
-    })
+  // 폼 초기화
+  newBlock.content = ''
+  newBlock.options = {
+    bold: false,
+    listType: 'ul',
   }
 }
 
-// 에디터 내용 업데이트 (사용하지 않음)
-// const updateContent = () => {
-//   if (editorRef.value) {
-//     form.body_html = editorRef.value.innerHTML
-//   }
-// }
+// 블록 제거
+const removeBlock = index => {
+  form.blocks.splice(index, 1)
+}
+
+// 미리보기 토글
+const togglePreview = () => {
+  showPreview.value = !showPreview.value
+}
 
 // 썸네일 이미지 업로드
 const uploadThumbnail = async () => {
@@ -771,14 +965,12 @@ const uploadThumbnail = async () => {
     const file = event.target.files[0]
     if (!file) return
 
-    // 파일 크기 검사 (15MB)
     if (file.size > 15 * 1024 * 1024) {
       alert('파일 크기가 너무 큽니다. (최대 15MB)')
       return
     }
 
     try {
-      // FormData로 파일 업로드
       const formData = new FormData()
       formData.append('file', file)
 
@@ -804,8 +996,8 @@ const removeThumbnail = () => {
   form.thumbnail_image = ''
 }
 
-// 본문 이미지 업로드
-const uploadBodyImage = async () => {
+// 블록 이미지 업로드
+const uploadBlockImage = async () => {
   const input = document.createElement('input')
   input.type = 'file'
   input.accept = 'image/*'
@@ -815,14 +1007,12 @@ const uploadBodyImage = async () => {
     const file = event.target.files[0]
     if (!file) return
 
-    // 파일 크기 검사 (15MB)
     if (file.size > 15 * 1024 * 1024) {
       alert('파일 크기가 너무 큽니다. (최대 15MB)')
       return
     }
 
     try {
-      // FormData로 파일 업로드
       const formData = new FormData()
       formData.append('file', file)
 
@@ -832,75 +1022,200 @@ const uploadBodyImage = async () => {
       })
 
       if (response.success) {
-        form.body_image = response.data.url
+        newBlock.content = response.data.url
       }
     } catch (error) {
-      console.error('본문 이미지 업로드 실패:', error)
-      alert('본문 이미지 업로드에 실패했습니다.')
+      console.error('이미지 업로드 실패:', error)
+      alert('이미지 업로드에 실패했습니다.')
     }
   })
 
   input.click()
 }
 
-// 본문 이미지 제거
-const removeBodyImage = () => {
-  form.body_image = ''
+// 내용이 있는지 확인
+const hasContent = () => {
+  return form.blocks.length > 0
 }
 
-// 에디터 관련 함수들 (사용하지 않음)
-// const insertTextAtCursor = text => { ... }
-// const handlePaste = e => { ... }
-// const formatText = command => { ... }
-// const insertHeading = level => { ... }
-// const insertList = type => { ... }
-// const insertImage = async () => { ... }
-// const insertLink = () => { ... }
-
-// 문단 추가
-const addParagraph = () => {
-  const newId = Math.max(...form.paragraphs.map(p => p.id)) + 1
-  form.paragraphs.push({ id: newId, content: '' })
-}
-
-// 문단 제거
-const removeParagraph = index => {
-  if (form.paragraphs.length > 1) {
-    form.paragraphs.splice(index, 1)
-  }
-}
-
-// 전체 글자 수 계산
-const getTotalWordCount = () => {
-  return form.paragraphs.reduce((total, paragraph) => {
-    return total + paragraph.content.length
-  }, 0)
-}
-
-// 문단들을 HTML로 변환
-const convertParagraphsToHtml = () => {
+// 블록들을 HTML로 변환
+const convertBlocksToHtml = () => {
   let html = ''
 
-  // 1. 본문 이미지가 있으면 제일 위에 추가
-  //   if (form.body_image) {
-  //     html += `<figure class="newsletter-hero-image"><img src="${form.body_image}" alt="${form.title}" /></figure>`
-  //   }
+  for (const block of form.blocks) {
+    switch (block.type) {
+      case 'subtitle':
+        const fontWeight = block.options?.bold ? 'font-weight: bold;' : ''
+        html += `<h3 class="newsletter-subtitle" style="${fontWeight}">${block.content}</h3>`
+        break
 
-  // 2. 부제목 추가 (Optional)
-  //   if (form.subtitle && form.subtitle.trim()) {
-  //     const fontWeight = form.subtitle_bold ? 'font-weight: bold;' : ''
-  //     html += `<h3 class="newsletter-subtitle" style="${fontWeight}">${form.subtitle}</h3>`
-  //   }
+      case 'paragraph':
+        html += `<p>${block.content.replace(/\n/g, '<br>')}</p><br>`
+        break
 
-  // 3. 문단들 추가
-  const paragraphs = form.paragraphs
-    .filter(p => p.content.trim())
-    .map(p => `<p>${p.content.replace(/\n/g, '<br>')}</p>`)
-    .join('<br>')
+      case 'heading2':
+        html += `<h2>${block.content}</h2>`
+        break
 
-  html += paragraphs
+      case 'heading3':
+        html += `<h3>${block.content}</h3>`
+        break
+
+      case 'image':
+        html += `<figure class="newsletter-image"><img src="${block.content}" alt="Newsletter Image" /></figure>`
+        break
+
+      case 'quote':
+        html += `<blockquote>${block.content}</blockquote>`
+        break
+
+      case 'list':
+        const listType = block.options?.listType || 'ul'
+        const items = block.content
+          .split('\n')
+          .filter(i => i.trim())
+          .map(item => `<li>${item}</li>`)
+          .join('')
+        html += `<${listType}>${items}</${listType}>`
+        break
+
+      case 'divider':
+        html += `<hr />`
+        break
+    }
+  }
 
   return html
+}
+
+// HTML을 블록 배열로 파싱
+const parseHtmlToBlocks = htmlString => {
+  const blocks = []
+  let idCounter = 1
+
+  // HTML 파싱을 위한 임시 div
+  const tempDiv = document.createElement('div')
+  tempDiv.innerHTML = htmlString
+
+  const children = Array.from(tempDiv.children)
+
+  for (const element of children) {
+    const tagName = element.tagName.toLowerCase()
+
+    if (tagName === 'h3' && element.classList.contains('newsletter-subtitle')) {
+      blocks.push({
+        id: idCounter++,
+        type: 'subtitle',
+        content: element.textContent.trim(),
+        options: {
+          bold:
+            element.style.fontWeight === 'bold' ||
+            element.classList.contains('font-bold'),
+        },
+      })
+    } else if (tagName === 'p') {
+      const content = element.innerHTML.replace(/<br\s*\/?>/gi, '\n')
+      if (content.trim()) {
+        blocks.push({
+          id: idCounter++,
+          type: 'paragraph',
+          content: content.replace(/<[^>]*>/g, '').trim(),
+          options: {},
+        })
+      }
+    } else if (tagName === 'h2') {
+      blocks.push({
+        id: idCounter++,
+        type: 'heading2',
+        content: element.textContent.trim(),
+        options: {},
+      })
+    } else if (
+      tagName === 'h3' &&
+      !element.classList.contains('newsletter-subtitle')
+    ) {
+      blocks.push({
+        id: idCounter++,
+        type: 'heading3',
+        content: element.textContent.trim(),
+        options: {},
+      })
+    } else if (
+      tagName === 'figure' &&
+      element.classList.contains('newsletter-image')
+    ) {
+      const img = element.querySelector('img')
+      if (img) {
+        blocks.push({
+          id: idCounter++,
+          type: 'image',
+          content: img.src,
+          options: {},
+        })
+      }
+    } else if (tagName === 'blockquote') {
+      blocks.push({
+        id: idCounter++,
+        type: 'quote',
+        content: element.textContent.trim(),
+        options: {},
+      })
+    } else if (tagName === 'ul' || tagName === 'ol') {
+      const items = Array.from(element.querySelectorAll('li'))
+        .map(li => li.textContent.trim())
+        .join('\n')
+      blocks.push({
+        id: idCounter++,
+        type: 'list',
+        content: items,
+        options: {
+          listType: tagName,
+        },
+      })
+    } else if (tagName === 'hr') {
+      blocks.push({
+        id: idCounter++,
+        type: 'divider',
+        content: '',
+        options: {},
+      })
+    }
+  }
+
+  return blocks.length > 0
+    ? blocks
+    : [{ id: 1, type: 'paragraph', content: '', options: {} }]
+}
+
+// 뉴스레터 조회
+const fetchNewsletter = async () => {
+  if (!isEditing.value) {
+    loading.value = false
+    return
+  }
+
+  try {
+    loading.value = true
+    error.value = null
+
+    const response = await $fetch(`/api/admin/newsletters/${newsletterId}`)
+    originalNewsletter.value = response.data
+
+    // 폼에 데이터 채우기
+    form.title = originalNewsletter.value.title
+    form.thumbnail_image = originalNewsletter.value.thumbnail_image || ''
+    form.status = originalNewsletter.value.status
+
+    // body_html을 blocks로 변환
+    if (originalNewsletter.value.body_html) {
+      form.blocks = parseHtmlToBlocks(originalNewsletter.value.body_html)
+    }
+  } catch (err) {
+    console.error('뉴스레터 조회 실패:', err)
+    error.value = err.data?.message || '뉴스레터를 불러올 수 없습니다.'
+  } finally {
+    loading.value = false
+  }
 }
 
 // 임시저장
@@ -925,11 +1240,6 @@ const saveAndPublish = async () => {
   }
 }
 
-// 내용이 있는지 확인
-const hasContent = () => {
-  return form.paragraphs.some(p => p.content.trim())
-}
-
 // 뉴스레터 저장
 const saveNewsletter = async status => {
   try {
@@ -938,11 +1248,11 @@ const saveNewsletter = async status => {
     const userInfo = getUserInfo()
     const payload = {
       title: form.title,
-      body_html: convertParagraphsToHtml(),
+      body_html: convertBlocksToHtml(),
       thumbnail_image: form.thumbnail_image || null,
-      body_image: form.body_image || null,
-      subtitle: form.subtitle || null,
-      subtitle_bold: form.subtitle_bold,
+      body_image: null, // 블록 에디터에서는 body_image를 별도로 관리하지 않음
+      subtitle: null, // 블록 에디터에서는 subtitle을 블록으로 관리
+      subtitle_bold: false,
       status: status || form.status,
       cognito_user_id: userInfo.userId || userInfo.username,
     }
@@ -980,37 +1290,9 @@ const saveNewsletter = async status => {
   }
 }
 
-// 스크롤 이벤트 처리
-const handleScroll = () => {
-  if (!stickyHeader.value || originalHeaderTop.value === 0) return
-
-  const currentScrollY = window.scrollY
-  const triggerPoint = originalHeaderTop.value
-
-  isHeaderSticky.value = currentScrollY >= triggerPoint
-}
-
-// 기존 헤더 위치
-const saveOriginalHeaderPosition = () => {
-  if (stickyHeader.value && originalHeaderTop.value === 0) {
-    const rect = stickyHeader.value.getBoundingClientRect()
-    originalHeaderTop.value = rect.top + window.scrollY
-  }
-}
-
-// 컴포넌트 마운트 시 데이터 로드 및 이벤트 리스너 등록
+// 컴포넌트 마운트 시 데이터 로드
 onMounted(() => {
   fetchNewsletter()
-
-  // 헤더 위치 저장
-  nextTick(() => {
-    saveOriginalHeaderPosition()
-    window.addEventListener('scroll', handleScroll)
-  })
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
 })
 
 // 메타 태그
@@ -1019,55 +1301,6 @@ useHead({
   meta: [{ name: 'description', content: '뉴스레터 편집 및 작성' }],
 })
 </script>
-
-<style>
-/* 에디터 스타일링 */
-[contenteditable='true'] {
-  outline: none;
-}
-
-[contenteditable='true'] h1,
-[contenteditable='true'] h2,
-[contenteditable='true'] h3,
-[contenteditable='true'] h4,
-[contenteditable='true'] h5,
-[contenteditable='true'] h6 {
-  @apply font-bold mb-2 mt-4;
-}
-
-[contenteditable='true'] h2 {
-  @apply text-xl;
-}
-
-[contenteditable='true'] h3 {
-  @apply text-lg;
-}
-
-[contenteditable='true'] p {
-  @apply mb-2;
-}
-
-[contenteditable='true'] ul,
-[contenteditable='true'] ol {
-  @apply ml-4 mb-2;
-}
-
-[contenteditable='true'] ul {
-  @apply list-disc;
-}
-
-[contenteditable='true'] ol {
-  @apply list-decimal;
-}
-
-[contenteditable='true'] li {
-  @apply mb-1;
-}
-
-[contenteditable='true'] blockquote {
-  @apply border-l-4 border-border pl-4 italic text-muted-foreground;
-}
-</style>
 
 <style lang="scss" scoped>
 @use '~/layouts/scss/cnx.scss' as *;
@@ -1089,6 +1322,54 @@ useHead({
       margin-bottom: rem(24);
     }
     color: #003366;
+  }
+}
+
+.block-item {
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.drag-handle {
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.preview-content {
+  h2 {
+    @apply text-2xl font-bold text-gray-900 mb-4;
+  }
+
+  h3 {
+    @apply text-xl font-bold text-gray-900 mb-3;
+  }
+
+  p {
+    @apply text-gray-800 leading-relaxed mb-4;
+  }
+
+  img {
+    @apply rounded-lg shadow-sm mb-4;
+  }
+
+  blockquote {
+    @apply border-l-4 border-blue-500 pl-4 italic text-gray-700 mb-4;
+  }
+
+  ul,
+  ol {
+    @apply text-gray-800 mb-4;
+  }
+
+  li {
+    @apply mb-1;
+  }
+
+  hr {
+    @apply border-t border-gray-300 my-6;
   }
 }
 </style>
