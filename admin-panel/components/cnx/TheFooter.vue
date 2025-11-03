@@ -913,9 +913,9 @@ defineOptions({
     &__subtitle {
       font-size: rem(12);
       font-weight: $font-weight-regular;
-      color: $d-white;
+      color: $s-teal;
       margin: 0 0 rem(12) 0;
-      line-height: rem(20);
+      line-height: 120%;
       
       &--mobile-clickable {
         cursor: pointer;
@@ -935,7 +935,7 @@ defineOptions({
       }
       
       @include desktop {
-        margin-bottom: rem(8);
+        margin-bottom: rem(10);
       }
     }
     
@@ -970,7 +970,7 @@ defineOptions({
         margin-bottom: rem(4);
         
         @include tablet {
-          margin-bottom: 0;
+          margin-bottom: rem(10);
         }
       }
     }
@@ -978,9 +978,9 @@ defineOptions({
     &__list-link {
       color: $d-white;
       text-decoration: none;
-      font-size: rem(12);
+      font-size: rem(14);
       font-weight: $font-weight-regular;
-      line-height: rem(24);
+      line-height: 120%;
       transition: opacity 0.2s ease;
       
       &:hover {
@@ -991,9 +991,9 @@ defineOptions({
     
     .menu-item-disabled {
       color: $d-white;
-      font-size: rem(12);
+      font-size: rem(14);
       font-weight: $font-weight-regular;
-      line-height: rem(24);
+      line-height: 120%;
       cursor: not-allowed;
     }
   }
