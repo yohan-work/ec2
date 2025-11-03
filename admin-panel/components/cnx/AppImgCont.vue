@@ -469,9 +469,6 @@ onUnmounted(() => {
     position: relative;
     order: 1; // 모바일에서 이미지를 위로
 
-    // 모바일: 312/210 비율
-    aspect-ratio: 312 / 210;
-
     picture {
       width: 100%;
       height: 100%;
@@ -515,8 +512,6 @@ onUnmounted(() => {
     }
 
     @include tablet {
-      // 태블릿: 308/231 비율
-      aspect-ratio: 308 / 231;
       flex: 1;
       order: 2; // 태블릿 이상에서 이미지를 우측으로
       
@@ -526,8 +521,6 @@ onUnmounted(() => {
     }
 
     @include desktop {
-      // PC: 644/400 비율
-      aspect-ratio: 644 / 400;
       flex: 1;
       
       &.video-content {
