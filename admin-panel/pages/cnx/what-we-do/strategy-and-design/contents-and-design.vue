@@ -1972,7 +1972,7 @@ const getBorderClass = (slide, index) => {
         }
 
         @include desktop {
-          font-size: rem(40);
+          font-size: rem(42);
           margin-bottom: rem(45);
           white-space: nowrap;
         }
