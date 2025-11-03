@@ -27,7 +27,7 @@
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 46px (2.875rem)</div>
+              <div class="spec-item">Size: 40px (2.5rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 110%</div>
             </div>
@@ -85,7 +85,7 @@
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 24px (1.5rem)</div>
+              <div class="spec-item">Size: 26px (1.625rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
             </div>
@@ -114,7 +114,7 @@
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 20px (1.25rem)</div>
+              <div class="spec-item">Size: 22px (1.375rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 120%</div>
             </div>
@@ -131,19 +131,19 @@
           <div class="text-specs">
             <div class="spec-group">
               <div class="spec-title">Desktop</div>
-              <div class="spec-item">Size: 21px (1.3125rem)</div>
+              <div class="spec-item">Size: 22px (1.375rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 140%</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 19px (1.1875rem)</div>
+              <div class="spec-item">Size: 20px (1.25rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 140%</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 16px (1rem)</div>
+              <div class="spec-item">Size: 18px (1.125rem)</div>
               <div class="spec-item">Weight: Bold</div>
               <div class="spec-item">Line height: 140%</div>
             </div>
@@ -166,13 +166,13 @@
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 13px (0.8125rem)</div>
+              <div class="spec-item">Size: 16px (1rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 140%</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 14px (0.875rem)</div>
+              <div class="spec-item">Size: 16px (1rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 140%</div>
             </div>
@@ -195,13 +195,13 @@
             </div>
             <div class="spec-group">
               <div class="spec-title">Tablet</div>
-              <div class="spec-item">Size: 11px (0.6875rem)</div>
+              <div class="spec-item">Size: 14px (0.875rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 150%</div>
             </div>
             <div class="spec-group">
               <div class="spec-title">Mobile</div>
-              <div class="spec-item">Size: 12px (0.75rem)</div>
+              <div class="spec-item">Size: 14px (0.875rem)</div>
               <div class="spec-item">Weight: Regular</div>
               <div class="spec-item">Line height: 150%</div>
             </div>
