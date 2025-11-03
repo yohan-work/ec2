@@ -649,21 +649,21 @@ onUnmounted(() => {
       padding: rem(32) rem(100);
       display: flex;
       align-items: flex-start;
-      gap: rem(40);
+      gap: rem(36);
       
       .dropdown-title {
         font-size: $font-size-body2-desktop;
         font-weight: $font-weight-bold;
         color: #333;
-        width: rem(180);
+        width: rem(190);
         line-height: rem(20);
         flex-shrink: 0;
       }
       
       .dropdown-sections {
         display: grid;
-        grid-template-columns: repeat(5, rem(180));
-        gap: rem(40);
+        grid-template-columns: repeat(5, rem(190));
+        gap: rem(36);
         flex: 1;
         
         // About Us는 2개 컬럼만 사용
@@ -674,15 +674,15 @@ onUnmounted(() => {
         .dropdown-section {
           .section-title {
             font-size: rem(12);
-            font-weight: $font-weight-regular;
-            color: $gray-1;
-            margin: 0 0 rem(16) 0;
+            font-weight: $font-weight-bold;
+            color: $p-green;
+            margin: 0 0 rem(10) 0;
             line-height: rem(20);
             display: block;
             
             // 링크인 경우에만 추가 스타일 적용
             &:is(a) {
-              font-size: rem(16);
+              font-size: rem(14);
               font-weight: 700;
               color: #333;
               text-decoration: none;
@@ -702,14 +702,14 @@ onUnmounted(() => {
             padding: 0;
             
             li {
-              margin-bottom: rem(12);
+              margin-bottom: rem(10);
               
                 a, span {
                   color: #000;
                   text-decoration: none;
-                  font-size: rem(12);
+                  font-size: rem(14);
                   font-weight: $font-weight-regular;
-                  line-height: rem(20);
+                  line-height: 120%;
                   transition: text-decoration 0.2s ease, text-shadow 0.2s ease;
                   
                   &:hover {
