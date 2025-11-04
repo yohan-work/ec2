@@ -423,7 +423,7 @@ onUnmounted(() => {
 }
 
 .tab-button {
-    padding: rem(12) rem(16);
+    padding: rem(7) rem(13.5);
     border: 1px solid $gray-1;
     border-radius: 24px;
     background: transparent;
@@ -433,10 +433,12 @@ onUnmounted(() => {
     cursor: pointer;
 
     @include tablet {
-        font-size: rem(11);
+        padding: rem(5) rem(13);
+        @include body-03;
     }
 
     @include desktop {
+        padding: rem(14.5) rem(21);
         font-size: rem(16);
     }
 
