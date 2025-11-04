@@ -194,20 +194,27 @@ const createWebPageSchema = () => {
 
 // JSON-LD 스키마 적용 (각 스키마를 별도의 script 태그로)
 const schemaScripts = computed(() => {
-  return [
-    {
+  const scripts = []
+  
+  // 메인 페이지에만 Organization과 Website 스키마 적용
+  if (route.path === '/') {
+    scripts.push({
       type: 'application/ld+json',
       innerHTML: JSON.stringify(createOrganizationSchema()),
-    },
-    {
+    })
+    scripts.push({
       type: 'application/ld+json',
       innerHTML: JSON.stringify(createWebSiteSchema()),
-    },
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify(createWebPageSchema()),
-    },
-  ]
+    })
+  }
+  
+  // WebPage 스키마는 모든 페이지에 적용
+  scripts.push({
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify(createWebPageSchema()),
+  })
+  
+  return scripts
 })
 
 // 반응형 메타데이터 적용
