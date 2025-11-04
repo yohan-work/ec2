@@ -1,7 +1,12 @@
 <template>
-  <div class="cnx-layout">
+  <div class="cnx-layout" :class="{ 'skip-link-focused': isSkipLinkFocused }">
     <!-- 스킵네비게이션 -->
-    <a href="#main-content" class="skip-link">메인 콘텐츠로 건너뛰기</a>
+    <a 
+      href="#main-content" 
+      class="skip-link"
+      @focus="isSkipLinkFocused = true"
+      @blur="isSkipLinkFocused = false"
+    >메인 콘텐츠로 건너뛰기</a>
     
     <TheHeader />
     <!-- 메인 콘텐츠 -->
@@ -231,6 +236,9 @@ useHead({
 // 더보기 등 특정 액션에서 포커스 처리를 건너뛰기 위한 플래그
 const skipFocusFlag = ref(false)
 
+// 스킵네비게이션 포커스 상태 관리
+const isSkipLinkFocused = ref(false)
+
 // skip-main-focus 이벤트 리스너
 if (import.meta.client) {
   window.addEventListener('skip-main-focus', () => {
@@ -317,6 +325,11 @@ defineOptions({
     outline: rem(2) solid $s-teal;
     outline-offset: 0;
   }
+}
+
+// 스킵네비게이션 포커스 상태에 따른 CSS 변수 설정
+.cnx-layout.skip-link-focused {
+  --skip-link-height: rem(48);
 }
 
 .cnx-main {

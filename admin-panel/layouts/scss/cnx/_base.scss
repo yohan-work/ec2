@@ -78,3 +78,10 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+// 스킵네비게이션 포커스 시 헤더 드롭다운 위치 조정
+:global(.cnx-layout.skip-link-focused .gnb-dropdown-menu) {
+  @include desktop {
+    top: rem(138) !important; // 헤더 높이(90) + 스킵네비게이션 높이(48)
+  }
+}
