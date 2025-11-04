@@ -9,6 +9,7 @@
     <AppTitle 
       title="Careers"
       text="콘센트릭스에서 새로운 성장의 기회를 만나보세요."
+      class="careers-custom-title"
     />
 
     <AppSwiper :effect="'fade'" :autoplay="5000" class="careers__swiper">
@@ -101,7 +102,7 @@
               <h2 class="careers__title-headline">Digital & Technology Business</h2>
             </div>
 
-            <CareersVisualTitle title="Digital & Technology<br>Business에서 하는 일" />
+            <CareersVisualTitle title="Digital & Technology<br><span>Business에서 하는 일</span>" />
 
             <CareersBusiness :items="businessItems" />
 
@@ -156,8 +157,8 @@
                 <!-- banner -->
                 <CareersBanner 
                   headingLevel="h4"
-                  title="고객과 기업을 잇는 소통의 전문가를 모십니다" 
-                  content="콘센트릭스의 CS팀은 다양한 기업의 고객센터 운영을 맡아 정확하고 친절한 상담 서비스를 제공합니다.<br>고객 응대에 대한 책임감과 따뜻한 마음을 가진 분들의 많은 지원을 기다립니다." 
+                  title="고객의 여정이 시작되는 첫 순간, 최고의 경험을 만들 컨택센터 전문가를 모십니다." 
+                  content="탁월한 커뮤니케이션과 혁신적인 서비스로 고객 경험의 시작을 설계할 당신을 기다립니다." 
                   buttonText="채용 바로가기" 
                   href="https://www.jobkorea.co.kr/Recruit/GI_Read/47933297" 
                 />
@@ -170,7 +171,7 @@
 
                 <div class="careers__group">
                   <!-- What we do work -->
-                  <CareersVisualTitle headingLevel="h4" title="Customer Service<br>비상담직에서 하는 일" />
+                  <CareersVisualTitle headingLevel="h4" title="Customer Service<br><span>비상담직에서 하는 일</span>" />
 
                   <CareersNonAgent headingLevel="h4" :items="nonAgentItems" />
                 </div>
@@ -316,7 +317,7 @@
         },
         { 
             title: 'SEO 컨설팅', 
-            content: '새롭게 구축하는 웹사이트 또는 현재 운영중인 웹사이트의 자연유입 트래픽(Organic Traffic) 증대를 위한 SEO 진단, 전략 수립, 실행방안을 제안하며 검색 및 컨텐츠 영역에 대한 고도화와 성과 증대를 제공합니다.'
+            content: '새롭게 구축하는 웹사이트 또는 현재 운영중인 웹사이트의 자연유입 트래픽(Organic Traffic) 개선을 목표로 다양한 SEO 전문 솔루션들을 활용하여 기술 영역 및 컨텐츠 영역에 대한 고도화된 SEO 컨설팅을 제공합니다.'
         }
       ]
     },
@@ -325,7 +326,7 @@
   // attractive benefits
   const businessBenefits = ref([
     {
-      title: 'Attractive<br> Benefits',
+      title: 'For your<br> personal life',
       icon: 'icon_benefits_01.svg',
       alt: '손바닥 위에 하트를 올린 아이콘',
       content: [
@@ -381,7 +382,7 @@
   // agent benefits
   const agentBenefits = ref([
     {
-      title: 'Attractive<br> Benefits',
+      title: 'For your<br> personal life',
       icon: 'icon_benefits_01.svg',
       alt: '손바닥 위에 하트를 올린 아이콘',
       content: [
@@ -462,7 +463,7 @@
   // non-agent benefits
   const nonAgentBenefits = ref([
     {
-      title: 'Attractive<br> Benefits',
+      title: 'For your<br> personal life',
       icon: 'icon_benefits_01.svg',
       alt: '손바닥 위에 하트를 올린 아이콘',
       content: [
@@ -773,6 +774,30 @@
     }
     @include desktop {
       padding-bottom: rem(120);
+    }
+  }
+
+  // AppTitle 커스텀 스타일
+  :deep(.careers-custom-title) {
+    .app-title-heading {
+      @include headline-01;
+    }
+    
+    .app-title-text {
+      @include body-01;
+      margin: rem(24) 0 0;
+    }
+  }
+
+  // AppButtonTab 커스텀 스타일
+  :deep(.careers__button-tab) {
+    .tab-button {
+      padding: rem(14.5) rem(16);
+      @include body-02;
+
+      @include desktop {
+        font-size: $font-size-body3-desktop
+      }
     }
   }
 

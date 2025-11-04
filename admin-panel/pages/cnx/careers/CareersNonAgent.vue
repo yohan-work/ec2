@@ -128,7 +128,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: rem(20);
       aspect-ratio: 3 / 2;
       background-color: #EBEDF0;
       img {
@@ -139,14 +138,20 @@
       margin-top: rem(24);
       strong {
         display: block;
-        @include body-01;
+        font-size: rem(24);
+        font-weight: 700;
+        line-height: 120%;
       }
       p {
         margin-top: rem(16);
         word-break: keep-all;
         overflow-wrap: anywhere;
-        @include body-03;
+        @include body-02;
         color: rgba(0, 0, 0, 0.60);
+
+        @include desktop {
+          font-size: $font-size-body3-desktop;
+        }
       }
     }
 

@@ -151,6 +151,10 @@
       transform: translateY(30px);
       opacity: 0;
       @include sub-headline-01;
+
+      @include tablet {
+        font-size: $font-size-sh1-desktop;
+      }
     }
 
     &__list {
@@ -180,7 +184,7 @@
       text-align: left;
       word-break: keep-all;
       overflow-wrap: anywhere;
-      @include sub-headline-02;
+      @include body-01;
       &::after {
         width: rem(16);
         height: rem(16);
@@ -218,11 +222,11 @@
       gap: 24px;
       margin-top: rem(16);
       span {
-        color: $gray-1;
-        @include sub-headline-02;
+        color: $gray-2;
+        @include body-01;
       }
       p {
-        color: $gray-1;
+        color: #666;
         word-break: keep-all;
         overflow-wrap: anywhere;
         @include body-03;

@@ -139,10 +139,11 @@
       margin-block: rem(8) rem(24);
       transform: translateY(30px);
       opacity: 0;
-      @include body-02;
+      @include body-03;
 
       @include tablet {
         margin-block: rem(16);
+        @include body-02;
       }
 
       @include desktop {

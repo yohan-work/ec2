@@ -116,7 +116,6 @@
   .careers-visual-title { 
     position: relative;
     overflow: hidden;
-    border-radius: rem(12);
     picture {
       display: block;
       aspect-ratio: 312 / 152;
@@ -128,13 +127,11 @@
       transform: scale(1.2);
     }
     @include tablet {
-      border-radius: rem(24);
       picture {
         aspect-ratio: 640 / 310;
       }
     }
     @include desktop {
-      border-radius: rem(40);
       picture {
         aspect-ratio: 1320 / 640;
       }
@@ -147,15 +144,18 @@
       color: #fff;
       transform: translateY(30px);
       opacity: 0;
-      @include body-01;
+      @include sub-headline-02;
       @include tablet {
         top: rem(32);
         left: rem(24);
-        @include sub-headline-02;
       }
       @include desktop {
         top: rem(60);
         left: rem(44);
+      }
+
+      :deep(span) {
+        @include body-01;
       }
     }
   }

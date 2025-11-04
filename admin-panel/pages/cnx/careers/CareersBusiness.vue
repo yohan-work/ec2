@@ -136,8 +136,9 @@
     &-title {
       display: block;
       margin-bottom: rem(24);
-      @include sub-headline-01;
+      @include body-01;
       @include desktop {
+        @include sub-headline-01;
         margin-bottom: rem(56);
       } 
     }
@@ -147,7 +148,11 @@
       flex-direction: column;
       gap: rem(24);
       strong {
-        @include body-01;
+        @include body-02;
+
+        @include desktop {
+          @include body-01;
+        }
       }
       p {
         margin-top: rem(8);
