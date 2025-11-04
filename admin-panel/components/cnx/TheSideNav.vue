@@ -537,12 +537,16 @@ defineOptions({
   width: rem(110);
   
   .side-nav-logo__image {
-    width: rem(110);
+    width: 100%;
+    max-width: 100%;
+    display: block;
     color: $d-white;
     
-    :deep(.side-nav-logo__svg) {
-      width: rem(110);
+    :deep(svg) {
+      width: 100%;
+      max-width: 100%;
       height: auto;
+      display: block;
     }
   }
 }
@@ -658,18 +662,27 @@ defineOptions({
   align-items: center;
   padding: rem(16) 0;
   margin-bottom: 0;
+  
+  &[aria-expanded="false"] {
+    padding-bottom: rem(16);
+  }
+  
+  &[aria-expanded="true"] {
+    padding-bottom: 0;
+  }
 }
 
 .side-nav-list {
   list-style: none;
   margin: 0;
   padding-left: rem(16);
+  padding-bottom: rem(24);
   margin-bottom: 0;
 }
 
 .side-nav-list__item {
   margin: 0;
-  padding: rem(24) 0;
+  padding: rem(10) 0 0 0;
   color: $d-white;
   font-size: rem(14);
   font-weight: 600;
