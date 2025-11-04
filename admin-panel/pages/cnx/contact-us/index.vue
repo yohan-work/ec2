@@ -10,7 +10,7 @@
                         <div class="container">
                             <div class="container__content">
                                 <h2 class="container__content-title">
-                                    콘센트릭스 <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
+                                    <span>콘센트릭스</span> <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
                                 <div class="container__content-info">
                                     <div class="container__content-info-item">
                                         <div>
@@ -103,7 +103,7 @@
                         <div class="container customer-service">
                             <div class="container__content">
                                 <h2 class="container__content-title">
-                                    콘센트릭스 <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
+                                    <span>콘센트릭스</span> <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
                                 <div class="container__content-info">
                                     <div class="container__content-info-item">
                                         <div>
@@ -531,28 +531,22 @@ onUnmounted(() => {
         justify-content: space-between;
 
         @include tablet {
-            gap: rem(120);
+            gap: rem(62);
         }
 
         @include desktop {
-            gap: rem(285);
+            gap: rem(278);
         }
 
         &-title {
-            font-size: rem(24);
-            font-weight: 300;
-            line-height: 1.2;
-
-            @include tablet {
-                font-size: rem(32);
-            }
+            @include sub-headline-01;
 
             @include desktop {
-                font-size: rem(64);
+                @include headline-02;
             }
 
-            span {
-                font-weight: 700;
+            span:first-child {
+                font-weight: 300;
             }
 
             .br-tablet-only {
@@ -574,11 +568,12 @@ onUnmounted(() => {
             &-item {
                 @include tablet {
                     display: flex;
-                    align-items: center;
+                    flex-direction: column;
                     margin: 0 0 rem(5);
                 }
 
                 @include desktop {
+                    flex-direction: row;
                     max-height: rem(64);
                     margin: 0 0 rem(13.66);
                 }
@@ -610,13 +605,12 @@ onUnmounted(() => {
 
                     span:last-child {
                         @include tablet {
-                            font-size: rem(11);
-                            font-weight: 400;
-                            line-height: 1.4;
+                            @include body-03;
+                            font-weight: 700;
                         }
 
                         @include desktop {
-                            font-size: rem(16);
+                            @include body-03;
                             font-weight: 700;
                         }
                     }
@@ -624,16 +618,13 @@ onUnmounted(() => {
 
                 .detail {
                     @include tablet {
-                        font-size: rem(11);
-                        font-weight: 400;
-                        line-height: 1.4;
-                        padding: 0 0 0 rem(22);
+                        @include body-03;
+                        padding: 0 0 0 rem(17);
                     }
 
                     @include desktop {
-                        font-size: rem(16);
-                        font-weight: 400;
-                        padding: 0 0 0 rem(68);
+                        @include body-03;
+                        padding: 0 0 0 rem(40);
                     }
                 }
             }
@@ -666,7 +657,7 @@ onUnmounted(() => {
 
             @include desktop {
                 height: rem(590);
-                margin: rem(-95) 0 0;
+                margin: rem(-103) 0 0;
             }
         }
     }
@@ -696,15 +687,14 @@ onUnmounted(() => {
                 }
 
                 span:last-child {
-                    font-size: rem(12);
+                    @include body-03;
                     font-weight: 700;
                 }
             }
 
             .detail {
-                font-size: rem(12);
-                font-weight: 400;
-                padding: 0 0 0 rem(26);
+                @include body-03;
+                padding: 0 0 0 rem(28);
             }
         }
     }
@@ -797,7 +787,7 @@ onUnmounted(() => {
 .customer-service {
     .container__content {
         @include tablet {
-            gap: rem(80);
+            gap: rem(24);
         }
 
         @include desktop {
@@ -808,12 +798,12 @@ onUnmounted(() => {
     .contact-map {
         @include tablet {
             aspect-ratio: 308/283;
-            margin: rem(-111) 0 0;
+            margin: rem(-94) 0 0;
         }
 
         @include desktop {
             height: rem(590);
-            margin: rem(-157) 0 0;
+            margin: rem(-170) 0 0;
         }
     }
 }
