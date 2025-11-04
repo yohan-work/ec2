@@ -1,8 +1,11 @@
 <template>
   <div class="cnx-layout">
+    <!-- 스킵네비게이션 -->
+    <a href="#main-content" class="skip-link">메인 콘텐츠로 건너뛰기</a>
+    
     <TheHeader />
     <!-- 메인 콘텐츠 -->
-    <main class="cnx-main" tabindex="-1">
+    <main id="main-content" class="cnx-main" tabindex="-1">
       <slot />
     </main>
 
@@ -271,6 +274,9 @@ defineOptions({
 </script>
 
 <style lang="scss" scoped>
+@use '~/layouts/scss/cnx/_functions' as *;
+@use '~/layouts/scss/cnx/_variables' as *;
+
 .cnx-layout {
   font-family:
     'Pretendard',
@@ -284,9 +290,43 @@ defineOptions({
   flex-direction: column;
 }
 
+// 스킵네비게이션
+.skip-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  background-color: $d-black;
+  color: $d-white;
+  text-decoration: none;
+  font-size: rem(16);
+  font-weight: $font-weight-regular;
+  line-height: 1.5;
+  text-align: center;
+  z-index: 10001;
+  transition: height 0.2s ease, padding 0.2s ease;
+  outline: none;
+  border: none;
+
+  &:focus,
+  &:focus-visible {
+    height: rem(48);
+    padding: rem(12) rem(24);
+    outline: rem(2) solid $s-teal;
+    outline-offset: 0;
+  }
+}
+
 .cnx-main {
   flex: 1;
   /* 헤더가 sticky이므로 여백 불필요 */
   outline: none;
+
+  // 스킵 링크로 포커스 이동 시 스크롤 위치 조정
+  &:focus {
+    scroll-margin-top: rem(80);
+  }
 }
 </style>
