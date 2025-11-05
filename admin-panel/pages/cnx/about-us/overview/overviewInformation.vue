@@ -336,6 +336,10 @@ onBeforeUnmount(() => {
             display: none;
           }
         }
+
+        @include desktop {
+          @include body-03;
+        }
       }
 
       em {
