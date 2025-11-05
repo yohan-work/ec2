@@ -195,14 +195,15 @@
     &__head {
       margin-bottom: rem(40);
       &-title {
-        font-weight: 900;
-        @include sub-headline-02;
+        @include headline-02;
+        text-align: center;
       }
       &-text {
         margin-top: rem(8);
         word-break: keep-all;
         overflow-wrap: anywhere;
-        @include body-03 ;
+        @include body-02 ;
+        text-align: center;
       }
 
       @include tablet {

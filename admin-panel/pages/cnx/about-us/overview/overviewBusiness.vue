@@ -8,13 +8,6 @@
         콘센트릭스는 디지털 마케팅/이커머스 전 영역(전략/UX/디자인/운영/구축/분석)에 대한<br>Total End-to-End 서비스를 제공하고 있습니다
       </p>
     </div>
-
-    <picture class="aboutus-business__visual">
-      <source srcset="/assets/cnx/about-us/overview/business-visual.png" media="(min-width: 1024px)" />
-      <source srcset="/assets/cnx/about-us/overview/business-visual_t.png" media="(min-width: 768px)" />
-      <img src="/assets/cnx/about-us/overview/business-visual_m.png" alt="회의 중 밝게 웃으며 대화하는 두 명의 비즈니스 팀원" loading="lazy" ref="businessVisualRef" />
-    </picture>
-
     <div class="aboutus-business__group">
       <div class="aboutus-business__grid" v-for="(group, groupIndex) in groupedBusinessItems" :key="groupIndex">
         <div class="aboutus-business__grid-item" v-for="(item, itemIndex) in group" :key="itemIndex" :ref="el => setBusinessItemRef(el)">
@@ -169,7 +162,7 @@
       margin-bottom: rem(40);
       text-align: center;
       &-title {
-        @include sub-headline-01;
+        @include headline-02;
       }
       &-text {
         margin-top: rem(8);
@@ -247,9 +240,10 @@
       &-title {
         display: block;
         margin-bottom: rem(24);
-        @include sub-headline-01;
+        @include body-01;
         @include desktop {
           margin-bottom: rem(56);
+          @include sub-headline-01;
         } 
       }
 
@@ -260,7 +254,10 @@
         strong {
           display: block;
           margin-bottom: rem(8);
-          @include body-01;
+          @include body-02;
+          @include desktop {
+            @include body-01;
+          }
         }
         p {
           color: #666;

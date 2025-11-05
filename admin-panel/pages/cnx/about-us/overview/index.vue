@@ -152,7 +152,7 @@
           ]
         },
         { 
-          title: 'UX & Creative Consulting', 
+          title: 'UX/UI/Contents', 
           content: [
             'UX / UI 디자인',
             'GUI 디자인',
@@ -197,18 +197,8 @@
       ]
     },
     {
-      title: 'Contents Creation<br>/ Web building <br>&  Management',
+      title: 'Web building <br>&  Management',
       detail: [
-        { 
-          title: 'UX/UI/Contents', 
-          content: [
-            'UX / UI 디자인',
-            'GUI 디자인',
-            '마케팅 콘텐츠',
-            '제품 콘텐츠',
-            'Digital Studio',
-          ]
-        },
         { 
           title: 'Global dotcom & e-Commerce', 
           content: [

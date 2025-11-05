@@ -7,10 +7,10 @@
       <source src="/assets/cnx/about-us/overview/aboutus_m.mp4" type="video/mp4">
     </video>
     <div class="aboutus-intro__content">
-      <h2 class="aboutus-intro__title">We're Concentrix.</h2>
+      <h2 class="aboutus-intro__title">We're <br class="contents-br"> Concentrix.</h2>
       <p class="aboutus-intro__text">
-        솔루션과 테크놀로지 중심으로 넓고 깊게 고민합니다.<br>
-        마음을 움직이고 시장을 변화시킬 수 있도록 기업의<br>서비스를 설계하고 구축, 운영합니다
+        솔루션과 테크놀로지 중심으로 넓고 깊게 고민합니다.<br class="contents-br">
+        마음을 움직이고 시장을 변화시킬 수 있도록 기업의 <br class="contents-br">서비스를 설계하고 구축, 운영합니다
       </p>
     </div>
   </div>
@@ -64,10 +64,33 @@
       }
     }
     &__title {
-      @include sub-headline-01;
+      @include headline-02;
+
+      @include tablet {
+        @include sub-headline-01;
+      }
+
+      .contents-br {
+        @include tablet {
+          display: none;
+        }
+      }
     }
     &__text {
       @include body-02;
+
+      @include desktop {
+        @include body-03;
+        line-height: 1.6;
+      }
+
+      .contents-br {
+      display: none;
+
+      @include tablet {
+        display: block;
+      }
+    }
     }
   }
 </style>
