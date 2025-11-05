@@ -171,8 +171,11 @@ onBeforeUnmount(() => {
       margin-bottom: rem(24);
       @include body-01;
 
+      @include tablet {
+        margin-bottom: rem(40);
+      }
+
       @include desktop {
-        @include sub-headline-01;
         margin-bottom: rem(56);
       }
     }
@@ -187,10 +190,8 @@ onBeforeUnmount(() => {
 
     strong {
       @include body-02;
-
-      @include desktop {
-        @include body-01;
-      }
+      font-weight: 700;
+      line-height: 1.4;
     }
 
     p {
@@ -199,10 +200,14 @@ onBeforeUnmount(() => {
       word-break: keep-all;
       overflow-wrap: anywhere;
       @include body-03;
+
+      @include tablet {
+        margin-top: rem(16);
+      }
     }
 
     @include tablet {
-      gap: rem(20);
+      gap: rem(30);
     }
 
     @include desktop {
