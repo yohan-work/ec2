@@ -140,7 +140,6 @@
 
     &__title {
       padding-bottom: rem(24);
-      border-bottom: 1px solid $d-black;
       transform: translateY(30px);
       opacity: 0;
       @include sub-headline-01;

@@ -4,7 +4,7 @@
       <div class="careers-faq__header">
         <strong><span ref="titleRef_1">채용 관련</span><span ref="titleRef_2">질문이 있으신가요?</span></strong>
         <div class="careers-faq__button" ref="buttonRef">
-          <AppButton text="문의하기" href="mailto:recruiter_catalyst_korea@concentrix.com" color="green" />
+          <AppButton text="질문하기" href="mailto:recruiter_catalyst_korea@concentrix.com" color="green" />
         </div>
       </div>
       <picture class="careers-faq__image" ref="imageRef">
@@ -94,12 +94,12 @@
 <style lang="scss" scoped>
   .careers-faq {
     overflow: hidden;
-    margin-block: rem(64) rem(32);
+    margin-block: rem(8) rem(33);
     @include tablet {
-      margin-block: rem(100) rem(64);
+      margin-block: rem(100) rem(63);
     }
     @include desktop {
-      margin-top: rem(120); 
+      margin-top: 0;
     }
 
     .inner {
