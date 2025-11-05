@@ -22,7 +22,7 @@
       <overviewHistory :historyList="historyList" :createHeadAnimation="createHeadAnimation"/>
 
       <!-- business -->
-      <overviewBusiness :businessItems="businessItems" :createHeadAnimation="createHeadAnimation"/>
+      <!-- <overviewBusiness :businessItems="businessItems" :createHeadAnimation="createHeadAnimation"/> -->
 
     </div>
 
