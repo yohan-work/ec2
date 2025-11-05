@@ -442,6 +442,10 @@ onUnmounted(() => {
         font-size: rem(16);
     }
 
+    &:focus-visible {
+        outline-offset: 3px;
+    }
+
     &.is-active {
         background-color: $p-dark-blue;
         color: $d-white;
