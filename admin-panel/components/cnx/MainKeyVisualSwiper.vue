@@ -311,20 +311,41 @@ const onVideoEnded = (event) => {
 }
 
 // 이미지 슬라이드 타이머 시작 (Date.now() 기반으로 탭 전환 시에도 정확히 계산)
-const startImageTimer = () => {
+const startImageTimer = (retryCount = 0) => {
   if (!process.client) return
   
+  // 최대 3번까지 재시도
+  if (retryCount > 3) {
+    console.warn('Failed to start image timer after retries')
+    return
+  }
+  
+  // 이전 타이머 완전히 정리
   clearImageTimer()
-  isProgressAnimating.value = true
+  
+  // 상태 초기화
+  isProgressAnimating.value = false
   progressPercentage.value = 0
   const duration = 3000 
   currentDuration.value = duration
   
-  const startTime = Date.now()
+  // 현재 활성 슬라이드 인덱스 저장 (슬라이드 변경 감지용)
+  const slideIndex = currentActiveIndex.value
   
-  nextTick(() => {
+  // 짧은 지연 후 실행 (DOM 준비 보장)
+  setTimeout(() => {
+    // 슬라이드가 변경되었는지 확인
+    if (currentActiveIndex.value !== slideIndex) {
+      return
+    }
+    
     const progressBarFill = getProgressBarFill()
-    if (!progressBarFill) return
+    
+    // 프로그래스바 요소가 없으면 재시도
+    if (!progressBarFill) {
+      startImageTimer(retryCount + 1)
+      return
+    }
     
     // 이전 애니메이션 정리 (CSS 애니메이션 제거)
     const existingAnimation = progressBarFill.getAnimations?.()?.[0]
@@ -333,12 +354,32 @@ const startImageTimer = () => {
     }
     progressBarFill.classList.remove('is-animating')
     
-    // 프로그래스 바 초기화
+    // 프로그래스 바 강제 초기화
     progressBarFill.style.width = '0%'
+    progressBarFill.style.setProperty('--progress-start', '0%')
+    progressBarFill.style.setProperty('--progress-percentage', '0%')
+    
+    // 강제 리플로우 (DOM 업데이트 보장)
+    void progressBarFill.offsetWidth
+    
+    // 상태 설정
+    isProgressAnimating.value = true
+    const startTime = Date.now()
     
     // Date.now() 기반으로 경과 시간을 추적하여 탭 전환 후에도 정확히 계산
     const updateProgress = () => {
-      if (!isProgressAnimating.value) return // 중단되었으면 종료
+      // 프로그래스 바가 중단되었는지 확인
+      if (!isProgressAnimating.value) {
+        rafId = null
+        return
+      }
+      
+      // 슬라이드가 변경되었는지 확인 (다른 슬라이드로 넘어갔으면 중단)
+      if (currentActiveIndex.value !== slideIndex) {
+        isProgressAnimating.value = false
+        rafId = null
+        return
+      }
       
       const elapsed = Date.now() - startTime
       const progress = Math.min((elapsed / duration) * 100, 100)
@@ -360,7 +401,7 @@ const startImageTimer = () => {
     }
     
     rafId = requestAnimationFrame(updateProgress)
-  })
+  }, retryCount > 0 ? 50 : 10) // 재시도 시 약간 더 긴 지연
 }
 
 // 비디오 프로그래스 바 애니메이션 시작 (비디오 duration에 맞춰 부드럽게 0~100%)
@@ -630,7 +671,14 @@ const startSlideLogic = () => {
     }
   } else {
     // 이미지 슬라이드: 3초 타이머 시작
-    startImageTimer()
+    // 프로그래스바 완전히 정리된 후 시작
+    nextTick(() => {
+      // 슬라이드가 변경되지 않았는지 확인
+      const currentSlide = props.slides[currentActiveIndex.value]
+      if (currentSlide && currentSlide.type !== 'video') {
+        startImageTimer()
+      }
+    })
     return true
   }
 }
@@ -644,6 +692,7 @@ const onSlideChange = (swiper) => {
   // 프로그래스 리셋
   progressPercentage.value = 0
   currentDuration.value = 0
+  isProgressAnimating.value = false
   
   // 새 인덱스 설정
   const newIndex = swiper.realIndex !== undefined ? swiper.realIndex : swiper.activeIndex
@@ -655,12 +704,33 @@ const onSlideChange = (swiper) => {
     progressBarFill.style.width = '0%'
     progressBarFill.style.setProperty('--progress-start', '0%')
     progressBarFill.style.setProperty('--progress-percentage', '0%')
+    
+    // 이전 애니메이션 정리
+    const existingAnimation = progressBarFill.getAnimations?.()?.[0]
+    if (existingAnimation) {
+      existingAnimation.cancel()
+    }
+    progressBarFill.classList.remove('is-animating')
+    
+    // 강제 리플로우 (DOM 업데이트 보장)
+    void progressBarFill.offsetWidth
   }
   
-  // 새 슬라이드 로직 시작
+  // 새 슬라이드 로직 시작 (이미지 슬라이드의 경우 더 확실한 초기화)
   nextTick(() => {
-    isProgressAnimating.value = false
-    startSlideLogic()
+    const currentSlide = props.slides[currentActiveIndex.value]
+    
+    // 이미지 슬라이드인 경우 약간의 추가 지연으로 DOM 준비 보장
+    if (currentSlide && currentSlide.type !== 'video') {
+      setTimeout(() => {
+        // 슬라이드가 변경되지 않았는지 다시 확인
+        if (currentActiveIndex.value === newIndex) {
+          startSlideLogic()
+        }
+      }, 20)
+    } else {
+      startSlideLogic()
+    }
   })
 }
 
@@ -845,10 +915,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@use '~/layouts/scss/cnx/_functions' as *;
-@use '~/layouts/scss/cnx/_mixins' as *;
-@use '~/layouts/scss/cnx/_variables' as *;
-@use '~/layouts/scss/cnx/_base' as *;
 
 .main-key-visual-swiper {
   position: relative;
