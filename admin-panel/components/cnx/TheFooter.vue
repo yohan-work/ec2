@@ -1059,7 +1059,7 @@ defineOptions({
       
       @include desktop {
         flex-direction: row;
-        align-items: flex-start;
+        align-items: flex-end;
         gap: rem(70);
       }
     }
@@ -1087,60 +1087,65 @@ defineOptions({
     .footer-company-info {
       display: flex;
       flex-direction: column;
+      
+      @include desktop {
+        flex-direction: row;
+        gap: rem(8);
+      }
     }
 
     .footer-company-name {
       font-size: rem(12);
-      font-weight: $font-weight-regular;
+      font-weight: 700;
       color: $d-white;
       margin: rem(32) 0 0 0;
       
       @include tablet {
-        font-size: rem(11);
-        font-weight: $font-weight-bold;
+        font-size: rem(14);
+        font-weight: 700;
         margin: rem(24) 0 0 0;
       }
       
       @include desktop {
-        font-size: rem(11);
-        font-weight: $font-weight-bold;
+        font-size: rem(14);
+        font-weight: 700;
         margin: 0;
       }
     }
 
     .footer-address {
       font-size: rem(12);
-      font-weight: $font-weight-regular;
+      font-weight: 400;
       color: $d-white;
       margin: rem(12) 0 0 0;
       opacity: 0.8;
       
       @include tablet {
-        font-size: rem(11);
-        font-weight: $font-weight-regular;
+        font-size: rem(14);
+        font-weight: 400;
         margin: rem(5) 0 0 0;
       }
       
       @include desktop {
-        font-size: rem(11);
-        font-weight: $font-weight-regular;
-        margin: rem(5) 0 0 0;
+        font-size: rem(14);
+        font-weight: 400;
+        margin: 0;
       }
     }
 
     .footer-copyright {
-      font-size: rem(10);
+      font-size: rem(12);
       font-weight: $font-weight-regular;
       color: $d-white;
       margin: 0;
       
       @include tablet {
-        font-size: rem(10);
+        font-size: rem(12);
         color: $d-white;
       }
       
       @include desktop {
-        font-size: rem(10);
+        font-size: rem(12);
         color: $d-white;
       }
     }
@@ -1203,11 +1208,15 @@ defineOptions({
         transition: opacity 0.2s ease;
         
         @include tablet {
-          font-size: rem(8);
+          font-size: rem(10);
           font-weight: $font-weight-regular;
           line-height: normal;
           text-transform: uppercase;
           color: $d-white;
+        }
+        
+        @include desktop {
+          font-size: rem(10);
         }
         
         &:hover {

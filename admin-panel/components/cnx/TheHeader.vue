@@ -486,10 +486,6 @@ onUnmounted(() => {
     align-items: center;
     justify-content: space-between;
     height: 100%;
-    
-    @include desktop {
-      justify-content: flex-start;
-    }
   }
   
   &__logo {
@@ -525,14 +521,11 @@ onUnmounted(() => {
   &__gnb {
     display: none;
     align-items: center;
-    gap: rem(78);
+    gap: rem(158);
     height: 100%;
     
     @include desktop {
       display: flex;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
     }
     
          .gnb-menu-item {
@@ -542,7 +535,7 @@ onUnmounted(() => {
            padding: 0;
            color: #000;
            text-decoration: none;
-           font-size: rem(14);
+           font-size: rem(18);
            font-weight: 400;
            line-height: 1.5;
            transition: color 0.2s ease;
