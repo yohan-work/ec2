@@ -110,15 +110,14 @@
           <!-- Q&A -->
           <CareersQna title="채용 Q&A" :items="businessQnaItems" refName="business" />
 
-          <!-- FAQ -->
-          <CareersFaq />
+          
 
         </section>
       </template>
 
       <template #service>
         <!-- Customer Service 탭 내용 -->
-        <div class="inner has-button-tab">
+        <div class="inner">
 
           <div class="careers__group">
 
@@ -178,6 +177,10 @@
       </template>
     </AppTab>
 
+    <!-- FAQ -->
+    <div class="inner">
+      <CareersFaq />
+    </div>
   </div>
 </template>
 
