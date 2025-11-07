@@ -76,6 +76,7 @@ onMounted(() => {
 
       // 스크롤 진입 시 나타나는 타임라인 (AppImgCont와 동일한 토글 동작)
       const enterTimeline = gsap.timeline({
+        paused: true, // 초기에는 일시정지 상태로 시작
         scrollTrigger: {
           trigger: listRef.value,
           start: 'top 90%',
@@ -121,6 +122,7 @@ onMounted(() => {
 
       if (elementsToReverse.length) {
         const reverseTimeline = gsap.timeline({
+          paused: true, // 초기에는 일시정지 상태로 시작
           scrollTrigger: {
             trigger: listRef.value,
             start: 'top 70%', // 80% → 70%로 변경하여 겹침 방지
@@ -136,9 +138,6 @@ onMounted(() => {
           stagger: 0.05,
         })
       }
-
-      // ScrollTrigger 재계산을 명시적으로 수행
-      ScrollTrigger.refresh()
     }, listRef.value) // Context의 스코프를 listRef로 제한
   })
 })
