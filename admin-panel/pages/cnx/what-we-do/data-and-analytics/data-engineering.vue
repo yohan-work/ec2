@@ -31,10 +31,17 @@
       <section class="content-section">
         <AppImgCont 
           title="Data Pipeline & Engineering"
-          text="SEO 구축 이후 운영 단계에서 지속적인 성과를 모니터링하고 분석하기 위한 클라우드 기반의 SEO 자동화 솔루션입니다. <br>SEO의 Healthiness 모니터링(On-Page, Off-Page, Technical SEO)과 주요 KPI 및 Keyword 트렌드를 분석하여 장기적인 SEO 성과 유지를 지원합니다.<br><br>※솔루션 : Airflow, BigQuery, Snowflake 등"
+          text="Data Pipeline & Engineering은 다양한 원천의 데이터를 체계적으로 수집·가공·변환하여 필요한 곳에 신속하고 정확하게 전달하는 기술과 프로세스입니다. 즉, 데이터가 생성되는 순간부터 최종 분석·활용까지의 여정을 원활하게 설계·관리하는 데이터 이동 통로이자, 데이터 품질과 신뢰성을 책임지는 중추 시스템이라고 할 수 있습니다."
           imageName="de02"
           imageAlt="다채로운 색상의 선들이 한 지점에서 시작해 여러 단계의 컬러 노드를 거쳐 확장되는 구조로, 데이터 수집에서 통합·분석·확산으로 이어지는 흐름을 시각화한 비주얼"
           :reverse="true"
+          :subItems="[
+            {
+              listItems: [
+                '솔루션 : Airflow, BigQuery, Snowflake 등'
+              ]
+            }
+          ]"
         />
       </section>
 
