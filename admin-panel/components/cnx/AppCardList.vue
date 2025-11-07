@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, computed } from 'vue'
+import { onMounted, onUnmounted, ref, computed, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -43,93 +43,103 @@ const prefersReducedMotion = typeof window !== 'undefined' && typeof window.matc
 onMounted(() => {
   if (!listRef.value) return
   
-  // GSAP Context 생성 - 모든 애니메이션과 ScrollTrigger를 관리
-  gsapContext = gsap.context(() => {
-    const container = listRef.value ? listRef.value.parentElement : null
-    const titleEl = container ? container.querySelector('.app-card-list-title') : null
-    const items = listRef.value ? listRef.value.querySelectorAll('.app-card-list-item') : []
+  // nextTick으로 DOM이 렌더링된 후 초기화
+  nextTick(() => {
+    if (!listRef.value) return
+    
+    // GSAP Context 생성 - 모든 애니메이션과 ScrollTrigger를 관리
+    gsapContext = gsap.context(() => {
+      const container = listRef.value ? listRef.value.parentElement : null
+      const titleEl = container ? container.querySelector('.app-card-list-title') : null
+      const items = listRef.value ? listRef.value.querySelectorAll('.app-card-list-item') : []
 
-    // 모션 최소화 환경에서는 애니메이션을 비활성화하고 즉시 표시
-    if (prefersReducedMotion && prefersReducedMotion.matches) {
+      // 모션 최소화 환경에서는 애니메이션을 비활성화하고 즉시 표시
+      if (prefersReducedMotion && prefersReducedMotion.matches) {
+        if (titleEl) {
+          gsap.set(titleEl, { opacity: 1, y: 0 })
+        }
+        if (items && items.length) {
+          gsap.set(items, { opacity: 1, y: 0 })
+        }
+        return
+      }
+
+      gsap.registerPlugin(ScrollTrigger)
+
+      // 초기 상태 설정 (fade-up 준비)
       if (titleEl) {
-        gsap.set(titleEl, { opacity: 1, y: 0 })
+        gsap.set(titleEl, { opacity: 0, y: 30 })
       }
       if (items && items.length) {
-        gsap.set(items, { opacity: 1, y: 0 })
+        gsap.set(items, { opacity: 0, y: 20 })
       }
-      return
-    }
 
-    gsap.registerPlugin(ScrollTrigger)
-
-    // 초기 상태 설정 (fade-up 준비)
-    if (titleEl) {
-      gsap.set(titleEl, { opacity: 0, y: 30 })
-    }
-    if (items && items.length) {
-      gsap.set(items, { opacity: 0, y: 20 })
-    }
-
-    // 스크롤 진입 시 나타나는 타임라인 (AppImgCont와 동일한 토글 동작)
-    const enterTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: listRef.value,
-        start: 'top 90%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none reverse',
-        invalidateOnRefresh: true,
-        refreshPriority: 10,
-      },
-    })
-
-    if (titleEl) {
-      enterTimeline.to(titleEl, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-      })
-    }
-
-    if (items && items.length) {
-      enterTimeline.to(items, {
-        duration: 0.5,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-        stagger: 0.1,
-      }, '-=0.2')
-    }
-
-    // 스크롤 영역을 벗어날 때 빠르게 위로 사라지는 역타임라인
-    const elementsToReverse = []
-    if (items && items.length) {
-      // 아이템들을 먼저 사라지게
-      elementsToReverse.push(...Array.from(items))
-    }
-    if (titleEl) {
-      // 마지막에 타이틀
-      elementsToReverse.push(titleEl)
-    }
-
-    if (elementsToReverse.length) {
-      const reverseTimeline = gsap.timeline({
+      // 스크롤 진입 시 나타나는 타임라인 (AppImgCont와 동일한 토글 동작)
+      const enterTimeline = gsap.timeline({
+        paused: true, // 초기에는 일시정지 상태로 시작
         scrollTrigger: {
           trigger: listRef.value,
-          start: 'top 80%',
+          start: 'top 90%',
           end: 'bottom 20%',
-          toggleActions: 'none none none play',
+          toggleActions: 'play none none reverse',
+          invalidateOnRefresh: true,
+          refreshPriority: 10,
+          // 개발 모드에서 디버깅용 (필요시 활성화)
+          // markers: process.env.NODE_ENV === 'development',
         },
       })
-      reverseTimeline.to(elementsToReverse, {
-        duration: 0.3,
-        opacity: 0,
-        y: -20,
-        ease: 'power2.in',
-        stagger: 0.05,
-      })
-    }
-  }, listRef.value) // Context의 스코프를 listRef로 제한
+
+      if (titleEl) {
+        enterTimeline.to(titleEl, {
+          duration: 0.6,
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out',
+        })
+      }
+
+      if (items && items.length) {
+        enterTimeline.to(items, {
+          duration: 0.5,
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out',
+          stagger: 0.1,
+        }, '-=0.2')
+      }
+
+      // 스크롤 영역을 벗어날 때 빠르게 위로 사라지는 역타임라인
+      // start 범위를 조정하여 enterTimeline과 겹치지 않도록 수정
+      const elementsToReverse = []
+      if (items && items.length) {
+        // 아이템들을 먼저 사라지게
+        elementsToReverse.push(...Array.from(items))
+      }
+      if (titleEl) {
+        // 마지막에 타이틀
+        elementsToReverse.push(titleEl)
+      }
+
+      if (elementsToReverse.length) {
+        const reverseTimeline = gsap.timeline({
+          paused: true, // 초기에는 일시정지 상태로 시작
+          scrollTrigger: {
+            trigger: listRef.value,
+            start: 'top 70%', // 80% → 70%로 변경하여 겹침 방지
+            end: 'bottom 20%',
+            toggleActions: 'none none none play',
+          },
+        })
+        reverseTimeline.to(elementsToReverse, {
+          duration: 0.3,
+          opacity: 0,
+          y: -20,
+          ease: 'power2.in',
+          stagger: 0.05,
+        })
+      }
+    }, listRef.value) // Context의 스코프를 listRef로 제한
+  })
 })
 
 onUnmounted(() => {
