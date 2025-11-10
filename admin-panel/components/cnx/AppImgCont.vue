@@ -211,7 +211,7 @@ const checkImageStatus = () => {
 
 // GSAP 애니메이션 초기화
 const initAnimation = () => {
-  if (!containerRef.value) return
+  if (!containerRef.value) return null
 
   // 초기 상태 설정
   if (imageContentRef.value) {
@@ -277,6 +277,8 @@ const initAnimation = () => {
       stagger: 0.1
     }, '-=0.2')
   }
+  
+  return tl
 }
 
 // 이미지 경로 초기화 (SSR 지원) - 비메오 ID가 없을 때만
@@ -295,8 +297,32 @@ onMounted(async () => {
   
   // DOM이 완전히 렌더링된 후 애니메이션 초기화
   await nextTick()
+  
+  if (!containerRef.value) return
+  
   requestAnimationFrame(() => {
-    initAnimation()
+    try {
+      // 애니메이션 초기화 (항상 실행)
+      const tl = initAnimation()
+      
+      // ScrollTrigger.isInViewport()를 사용하여 이미 뷰포트에 있는지 확인
+      gsap.registerPlugin(ScrollTrigger)
+      try {
+        // 이미 뷰포트에 있다면 타임라인을 즉시 재생
+        if (tl && ScrollTrigger.isInViewport(containerRef.value, 0.2)) {
+          tl.play(0)
+        }
+      } catch (_) { /* noop */ }
+      
+      // ScrollTrigger refresh 호출
+      try {
+        ScrollTrigger.refresh()
+      } catch (_) { /* noop */ }
+    } catch (error) {
+      // 에러 발생 시 기본 애니메이션 초기화
+      console.warn('AppImgCont animation initialization error:', error)
+      initAnimation()
+    }
   })
 })
 
