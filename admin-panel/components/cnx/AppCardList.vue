@@ -1,12 +1,27 @@
 <template>
   <div class="app-card" :aria-label="title || undefined">
     <h2 class="app-card-list-title" v-if="title">{{ title }}</h2>
-    <ul ref="listRef" class="app-card-list" :style="{ marginBottom: props.noMarginBottom ? '0' : undefined }">
-      <li class="app-card-list-item" v-for="item in items" :key="item.id" >
+    <ul 
+      ref="listRef" 
+      class="app-card-list" 
+      :style="{ 
+        marginBottom: props.noMarginBottom ? '0' : undefined,
+        '--tablet-items-per-row': props.tabletItemsPerRow
+      }"
+    >
+      <li 
+        class="app-card-list-item" 
+        v-for="item in items" 
+        :key="item.id"
+        :style="{ borderColor: item.borderColor || props.borderColor || undefined }"
+      >
         <component :is="itemHeadingLevel" class="app-card-list-item-title">
           <span v-html="item.title"></span>
         </component>
-        <p class="app-card-list-item-description" v-html="item.description"></p>
+        <p v-if="item.description" class="app-card-list-item-description" v-html="item.description"></p>
+        <ul v-if="item.list && item.list.length > 0" class="app-card-list-item-list">
+          <li v-for="(listItem, index) in item.list" :key="index" class="app-card-list-item-list-item" v-html="listItem"></li>
+        </ul>
       </li>
     </ul>
   </div>    
@@ -22,6 +37,8 @@ const props = defineProps({
   items: { type: Array, default: () => [] },
   noMarginBottom: { type: Boolean, default: false },
   itemHeadTag: { type: String, default: undefined },
+  borderColor: { type: String, default: '' },
+  tabletItemsPerRow: { type: Number, default: 3 },
 })
 
 // title 존재 여부에 따라 아이템 헤딩 레벨 결정
@@ -187,7 +204,7 @@ onUnmounted(() => {
       $gap: rem(15);
       
       @include tablet {
-        width: calc(100% / 3 - #{$gap});
+        width: calc(100% / var(--tablet-items-per-row, 3) - #{$gap});
       }
 
       @include desktop {
@@ -214,6 +231,37 @@ onUnmounted(() => {
         
         @include desktop {
           min-height: rem(110);
+        }
+      }
+
+      &-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        
+        @include tablet {
+          min-height: rem(70);
+        }
+        
+        @include desktop {
+          min-height: rem(110);
+        }
+        
+        &-item {
+          @include body-02;
+          color: $gray-1;
+          margin: 0;
+          line-height: 1.6;
+          position: relative;
+          padding-left: rem(16);
+          
+          &::before {
+            content: '-';
+            position: absolute;
+            left: 0;
+            color: $gray-1;
+            font-weight: bold;
+          }
         }
       }
 

@@ -523,11 +523,11 @@ const subItemsWithoutTitles = computed(() => [
     <div class="component-section">
       <h3 class="section-title">AppCardList</h3>
       <p class="section-description">
-        제목과 설명으로 이루어진 카드 목록을 가로/반응형 레이아웃으로 표시합니다. 스크롤 애니메이션이 적용됩니다.
+        제목과 설명 또는 리스트로 이루어진 카드 목록을 가로/반응형 레이아웃으로 표시합니다. 스크롤 애니메이션이 적용됩니다. description 대신 list를 사용하여 불릿포인트 리스트를 표시할 수 있으며, border 색상을 전체 또는 개별 아이템별로 설정할 수 있습니다.
       </p>
       
       <div class="component-demo">
-        <h4 class="demo-title">기본 사용법</h4>
+        <h4 class="demo-title">기본 사용법 (description 사용)</h4>
         <div class="demo-content">
           <AppCardList
             title="AppCardList 컴포넌트 데모 (입력을 할 경우에만 출력이 됩니다.)"
@@ -542,12 +542,104 @@ const subItemsWithoutTitles = computed(() => [
         <div class="code-example">
           <h4 class="code-title">코드 예시</h4>
           <pre class="code-block"><code>&lt;AppCardList
-  title="AppCardList 컴포넌트 데모" (입력을 할 경우에만 출력이 됩니다.)
-
+  title="AppCardList 컴포넌트 데모"
   :items="[
-  { id: 1, title: '카드 1', description: 'pc에서는 카드의 개수만큼 width / 개수 값이 적용됩니다.' },
-  { id: 2, title: '카드 2', description: 'tablet에서는 width 100% / 3 값이 적용되며 가운대로 정렬이 됩니다.' },
-  { id: 3, title: '카드 3', description: 'Mobile에서는 width 100% 값이 적용됩니다.' }
+    { id: 1, title: '카드 1', description: 'pc에서는 카드의 개수만큼 width / 개수 값이 적용됩니다.' },
+    { id: 2, title: '카드 2', description: 'tablet에서는 width 100% / 3 값이 적용되며 가운대로 정렬이 됩니다.' },
+    { id: 3, title: '카드 3', description: 'Mobile에서는 width 100% 값이 적용됩니다.' }
+  ]"
+/&gt;</code></pre>
+        </div>
+
+        <h4 class="demo-title">List 옵션 사용 (description 대신 불릿포인트 리스트)</h4>
+        <div class="demo-content">
+          <AppCardList
+            :items="[
+              { id: 1, title: '카드 1', list: ['리스트 항목 1', '리스트 항목 2', '리스트 항목 3'] },
+              { id: 2, title: '카드 2', list: ['리스트 항목 1', '리스트 항목 2'] },
+              { id: 3, title: '카드 3', list: ['리스트 항목 1', '리스트 항목 2', '리스트 항목 3', '리스트 항목 4'] }
+            ]"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppCardList
+  :items="[
+    { id: 1, title: '카드 1', list: ['리스트 항목 1', '리스트 항목 2', '리스트 항목 3'] },
+    { id: 2, title: '카드 2', list: ['리스트 항목 1', '리스트 항목 2'] },
+    { id: 3, title: '카드 3', list: ['리스트 항목 1', '리스트 항목 2', '리스트 항목 3', '리스트 항목 4'] }
+  ]"
+/&gt;</code></pre>
+        </div>
+
+        <h4 class="demo-title">Border Color 옵션 (전체 적용)</h4>
+        <div class="demo-content">
+          <AppCardList
+            border-color="#003d5b"
+            :items="[
+              { id: 1, title: '카드 1', description: '전체 카드에 동일한 border 색상이 적용됩니다.' },
+              { id: 2, title: '카드 2', description: 'border-color prop으로 전체 색상을 설정할 수 있습니다.' },
+              { id: 3, title: '카드 3', description: '개별 아이템에 borderColor를 설정하면 우선 적용됩니다.' }
+            ]"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppCardList
+  border-color="#003d5b"
+  :items="[
+    { id: 1, title: '카드 1', description: '전체 카드에 동일한 border 색상이 적용됩니다.' },
+    { id: 2, title: '카드 2', description: 'border-color prop으로 전체 색상을 설정할 수 있습니다.' }
+  ]"
+/&gt;</code></pre>
+        </div>
+
+        <h4 class="demo-title">Border Color 옵션 (개별 아이템별 적용)</h4>
+        <div class="demo-content">
+          <AppCardList
+            :items="[
+              { id: 1, title: '카드 1', borderColor: '#25e2cc', description: '개별 아이템에 borderColor를 설정할 수 있습니다.' },
+              { id: 2, title: '카드 2', borderColor: '#003d5b', description: '각 아이템마다 다른 색상을 적용할 수 있습니다.' },
+              { id: 3, title: '카드 3', borderColor: '#003d5b', description: 'borderColor가 없으면 전체 border-color prop을 사용합니다.' }
+            ]"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppCardList
+  :items="[
+    { id: 1, title: '카드 1', borderColor: '#25e2cc', description: '개별 아이템에 borderColor를 설정할 수 있습니다.' },
+    { id: 2, title: '카드 2', borderColor: '#003d5b', description: '각 아이템마다 다른 색상을 적용할 수 있습니다.' },
+    { id: 3, title: '카드 3', borderColor: '#003d5b', description: 'borderColor가 없으면 전체 border-color prop을 사용합니다.' }
+  ]"
+/&gt;</code></pre>
+        </div>
+
+        <h4 class="demo-title">Tablet Items Per Row 옵션 (태블릿에서 한 줄에 표시될 아이템 수)</h4>
+        <div class="demo-content">
+          <AppCardList
+            :tablet-items-per-row="4"
+            :items="[
+              { id: 1, title: '카드 1', description: '태블릿에서 4개가 한 줄에 표시됩니다.' },
+              { id: 2, title: '카드 2', description: 'tabletItemsPerRow prop으로 설정할 수 있습니다.' },
+              { id: 3, title: '카드 3', description: '기본값은 3입니다.' },
+              { id: 4, title: '카드 4', description: '4개 항목이 한 줄에 표시됩니다.' }
+            ]"
+          />
+        </div>
+        
+        <div class="code-example">
+          <h4 class="code-title">코드 예시</h4>
+          <pre class="code-block"><code>&lt;AppCardList
+  :tablet-items-per-row="4"
+  :items="[
+    { id: 1, title: '카드 1', description: '태블릿에서 4개가 한 줄에 표시됩니다.' },
+    { id: 2, title: '카드 2', description: 'tabletItemsPerRow prop으로 설정할 수 있습니다.' },
+    { id: 3, title: '카드 3', description: '기본값은 3입니다.' },
+    { id: 4, title: '카드 4', description: '4개 항목이 한 줄에 표시됩니다.' }
   ]"
 /&gt;</code></pre>
         </div>
@@ -569,9 +661,9 @@ const subItemsWithoutTitles = computed(() => [
           <pre class="code-block"><code>&lt;AppCardList
   itemHeadTag="h2"
   :items="[
-  { id: 1, title: '카드 1', description: 'pc에서는 카드의 개수만큼 width / 개수 값이 적용됩니다.' },
-  { id: 2, title: '카드 2', description: 'tablet에서는 width 100% / 3 값이 적용되며 가운대로 정렬이 됩니다.' },
-  { id: 3, title: '카드 3', description: 'Mobile에서는 width 100% 값이 적용됩니다.' }
+    { id: 1, title: '카드 1', description: 'pc에서는 카드의 개수만큼 width / 개수 값이 적용됩니다.' },
+    { id: 2, title: '카드 2', description: 'tablet에서는 width 100% / 3 값이 적용되며 가운대로 정렬이 됩니다.' },
+    { id: 3, title: '카드 3', description: 'Mobile에서는 width 100% 값이 적용됩니다.' }
   ]"
 /&gt;</code></pre>
         </div>
@@ -598,7 +690,7 @@ const subItemsWithoutTitles = computed(() => [
                 <td>items</td>
                 <td>Array</td>
                 <td>[]</td>
-                <td>카드 아이템 배열. 각 아이템은 { id, title, description } 형태</td>
+                <td>카드 아이템 배열. 각 아이템은 { id, title, description?, list?, borderColor? } 형태. description과 list 중 하나 또는 둘 다 사용 가능</td>
               </tr>
               <tr>
                 <td>noMarginBottom</td>
@@ -607,10 +699,68 @@ const subItemsWithoutTitles = computed(() => [
                 <td>하단 여백 제거</td>
               </tr>
               <tr>
-                <td>noMb</td>
-                <td>Boolean</td>
-                <td>false</td>
-                <td>하단 여백 제거 (동일 옵션)</td>
+                <td>itemHeadTag</td>
+                <td>String</td>
+                <td>undefined</td>
+                <td>아이템 제목의 HTML 태그 레벨 (h1~h6). title이 있으면 h3, 없으면 h2로 자동 설정</td>
+              </tr>
+              <tr>
+                <td>borderColor</td>
+                <td>String</td>
+                <td>''</td>
+                <td>전체 카드의 border 색상. 개별 아이템에 borderColor가 있으면 우선 적용</td>
+              </tr>
+              <tr>
+                <td>tabletItemsPerRow</td>
+                <td>Number</td>
+                <td>3</td>
+                <td>태블릿에서 한 줄에 표시될 아이템 수</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="props-table" style="margin-top: 30px;">
+          <h4 class="props-title">Items 배열 구조</h4>
+          <table class="props-table-content">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>id</td>
+                <td>Number | String</td>
+                <td>✓</td>
+                <td>아이템 고유 식별자</td>
+              </tr>
+              <tr>
+                <td>title</td>
+                <td>String</td>
+                <td>✓</td>
+                <td>카드 제목 (HTML 태그 지원)</td>
+              </tr>
+              <tr>
+                <td>description</td>
+                <td>String</td>
+                <td>✗</td>
+                <td>카드 설명 텍스트 (HTML 태그 지원). list와 함께 사용 가능</td>
+              </tr>
+              <tr>
+                <td>list</td>
+                <td>Array&lt;String&gt;</td>
+                <td>✗</td>
+                <td>불릿포인트 리스트 배열. description 대신 사용 가능</td>
+              </tr>
+              <tr>
+                <td>borderColor</td>
+                <td>String</td>
+                <td>✗</td>
+                <td>개별 아이템의 border 색상 (hex 코드 등). 설정하지 않으면 전체 borderColor prop 사용</td>
               </tr>
             </tbody>
           </table>

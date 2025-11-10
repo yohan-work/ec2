@@ -61,17 +61,7 @@
     </div>
 
     <div class="global-introduction">
-
-      <figure class="global-introduction-banner" ref="bannerRef">
-        <picture>
-          <source media="(min-width: 1480px)" srcset="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner.png" type="image/png">
-          <source media="(min-width: 768px)" srcset="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_t.png" type="image/png">
-          <img src="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_m.png" alt="배송 네트워크가 표시된 세계 지도" loading="lazy">
-        </picture>
-      </figure>
-
       <div class="inner">
-
         <section class="global-introduction-content">
           <h2 class="global-introduction-title" ref="title1Ref">Global Delivery Network</h2>
           <p class="global-introduction-text" ref="text1Ref">
@@ -92,7 +82,24 @@
             </div>
           </div>
         </section>
+      </div>
 
+      <div class="global-introduction-banner" ref="bannerRef">
+        <picture>
+          <source media="(min-width: 1480px)" srcset="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner.png" type="image/png">
+          <source media="(min-width: 768px)" srcset="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_t.png" type="image/png">
+          <img src="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_m.png" alt="배송 네트워크가 표시된 세계 지도" loading="lazy">
+        </picture>
+        <div class="inner">
+          <AppCardList 
+            :items="cardListItems"
+            :tablet-items-per-row="4"
+            :no-margin-bottom="true"
+          />
+        </div>
+      </div>
+
+      <div class="inner">
         <section class="global-introduction-content">
           <h2 class="global-introduction-title" ref="title2Ref">Translation</h2>
           <p class="global-introduction-text" ref="text2Ref">
@@ -122,6 +129,7 @@
 import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
+import AppCardList from '~/components/cnx/AppCardList.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -142,6 +150,57 @@ const count1Items = ref([])
 const title2Ref = ref(null)
 const text2Ref = ref(null)
 const count2Items = ref([])
+
+// AppCardList 샘플 데이터
+const cardListItems = ref([
+  {
+    id: 1,
+    title: 'YDMC (in Seoul)',
+    borderColor: '#25e2cc',
+    list: [
+      '브랜드 웹 통합 운영',
+      'CiX Center, 디지털 스튜디오',
+      'AV머신러닝, 분석 업무 수행',
+      '170 Web Experts',
+      '영어, 중국어, 한국어 지원'
+    ]
+  },
+  {
+    id: 2,
+    title: 'Dalian Center',
+    borderColor: '#003d5b',
+    list: [
+      '브랜드 웹 통합 운영',
+      '개발 업무 지원',
+      '중국어, 광동어, 대만어 번역 지원',
+      '200 Web Experts',
+      '(아모레퍼시픽 전담 인력 5명)',
+      'GMT +8:00 (09:00~22:00)'
+    ]
+  },
+  {
+    id: 3,
+    title: 'Vietnam Center',
+    borderColor: '#003d5b',
+    list: [
+      '개발 업무 지원 (마젠토 지원 가능)',
+      '영어, 베트남어, 아랍어 번역 지원',
+      '150 Web Experts',
+      '호치민 50, 하노이 100',
+      'GMT +7:00 (09:00~22:00)'
+    ]
+  },
+  {
+    id: 4,
+    title: 'Bratislava Center',
+    borderColor: '#003d5b',
+    list: [
+      'Translation',
+      '40명 번역 전문가',
+      'GMT +1:00 (09:00~18:00)'
+    ]
+  }
+])
 
 // GSAP 애니메이션 초기화
 const initAnimation = () => {
@@ -294,6 +353,8 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .commerce-platform-page {
+  word-wrap: break-word;
+  
   * {
     word-break: keep-all;
   }
@@ -315,7 +376,24 @@ onUnmounted(() => {
     background-color: $gray-3;
     padding-bottom: rem(120);
     &-banner {
-      padding: rem(60) 0;
+      padding: rem(60) rem(24);
+      
+      @include tablet {
+        padding: rem(60) 0;
+      }
+      
+      @include desktop {
+        padding: rem(60) 0;
+      }
+      
+      picture {
+        @include desktop {
+          max-width: rem(1316);
+          margin: 0 auto;
+          display: block;
+        }
+      }
+      
       img {
         width: 100%;
         height: 100%;
