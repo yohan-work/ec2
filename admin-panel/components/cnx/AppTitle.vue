@@ -48,6 +48,8 @@ const textRef = ref(null)
 
 // gsap.context 관리를 위한 컨텍스트 핸들 보관
 let gsapCtx = null
+// ScrollTrigger 인스턴스 저장
+let scrollTriggerInstance = null
 
 // 제목이 HTML을 포함하는지 자동 감지 (간단 검출)
 const isHtmlTitle = computed(() => {
@@ -57,7 +59,7 @@ const isHtmlTitle = computed(() => {
 
 // GSAP 애니메이션 초기화
 const initAnimation = () => {
-  if (!containerRef.value) return
+  if (!containerRef.value) return { timeline: null, scrollTrigger: null }
 
   // 존재하는 요소들만 수집
   const elementsToAnimate = []
@@ -70,7 +72,7 @@ const initAnimation = () => {
   }
 
   // 애니메이션할 요소가 없으면 리턴
-  if (elementsToAnimate.length === 0) return
+  if (elementsToAnimate.length === 0) return { timeline: null, scrollTrigger: null }
 
   // 초기 상태 설정 (애니메이션 전 상태)
   elementsToAnimate.forEach(element => {
@@ -80,15 +82,8 @@ const initAnimation = () => {
     })
   })
 
-  // AppImgCont 패턴: 타임라인 내부에 ScrollTrigger 사용
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: containerRef.value,
-      start: 'top 80%',
-      end: 'bottom 20%',
-      toggleActions: 'play none none reverse'
-    }
-  })
+  // 타임라인을 paused로 시작
+  const tl = gsap.timeline({ paused: true })
 
   // 순차적 애니메이션: 타이틀 → 텍스트 (나타날 때)
   if (titleRef.value) {
@@ -96,7 +91,8 @@ const initAnimation = () => {
       duration: 0.6,
       opacity: 1,
       y: 0,
-      ease: 'power2.out'
+      ease: 'power2.out',
+      immediateRender: false
     })
   }
   
@@ -105,37 +101,64 @@ const initAnimation = () => {
       duration: 0.6,
       opacity: 1,
       y: 0,
-      ease: 'power2.out'
+      ease: 'power2.out',
+      immediateRender: false
     }, titleRef.value ? '-=0.3' : 0) // 타이틀이 있으면 0.3초 겹침
   }
 
-  // AppTitle은 역재생만 사용, 추가 로직 불필요
-  // 새로고침 시 이미 가시 상태면 즉시 재생
-  try {
-    if (ScrollTrigger.isInViewport(containerRef.value, 0.2)) {
-      tl.play(0)
-    }
-  } catch (_) { /* noop */ }
+  // ScrollTrigger를 별도로 생성하고 저장
+  scrollTriggerInstance = ScrollTrigger.create({
+    trigger: containerRef.value,
+    start: 'top 80%',
+    end: 'bottom 20%',
+    onEnter: () => tl.play(), // 확실히 트리거되었을 때만 재생
+    onLeaveBack: () => tl.reverse(),
+    immediateRender: false
+  })
+  
+  return { timeline: tl, scrollTrigger: scrollTriggerInstance }
 }
 
 // DOM이 완전히 렌더링된 후 애니메이션 초기화
 onMounted(async () => {
   await nextTick()
+  
+  if (!containerRef.value) return
+  
   // gsap.context로 이 컴포넌트에서 생성한 애니메이션/트리거를 스코프에 묶음
   gsapCtx = gsap.context(() => {
-    initAnimation()
-  }, containerRef.value)
-  // 새로고침/레이아웃 확정 후 트리거 재계산 (프레임에 태워 충돌 완화)
-  try {
     requestAnimationFrame(() => {
-      try { ScrollTrigger.refresh() } catch (_) { /* noop */ }
+      try {
+        // 애니메이션 초기화 (항상 실행)
+        const { timeline: tl, scrollTrigger } = initAnimation()
+        
+        // ScrollTrigger refresh 호출
+        gsap.registerPlugin(ScrollTrigger)
+        try {
+          ScrollTrigger.refresh()
+          
+          // refresh 후 상태 확인
+          if (tl && scrollTrigger && scrollTrigger.isActive) {
+            // 이미 활성화되어 있다면 타임라인을 즉시 재생
+            tl.play(0)
+          }
+        } catch (_) { /* noop */ }
+      } catch (error) {
+        // 에러 발생 시 기본 애니메이션 초기화
+        console.warn('AppTitle animation initialization error:', error)
+        initAnimation()
+      }
     })
-  } catch (_) { /* noop */ }
+  }, containerRef.value)
 })
 
 // 언마운트 시 이 컴포넌트 범위에서 생성된 GSAP 리소스 정리
 onUnmounted(() => {
   try {
+    if (scrollTriggerInstance) {
+      scrollTriggerInstance.kill()
+      scrollTriggerInstance = null
+    }
     if (gsapCtx) gsapCtx.revert()
   } catch (_) { /* noop */ }
 })

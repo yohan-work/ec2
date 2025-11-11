@@ -1,5 +1,5 @@
 <template>
-  <div class="app-sub-cont">
+  <div class="app-sub-cont" ref="containerRef">
     <!-- 상단 타이틀 영역 -->
     <div class="title-section">
       <div class="inner">
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { computed, useSlots, ref, onMounted } from 'vue';
+import { computed, useSlots, ref, onMounted, onUnmounted, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { findResponsiveImagePaths } from '~/utils/cnx/image-utils';
 import { gsap } from 'gsap';
@@ -75,8 +75,11 @@ const slots = useSlots();
 const route = useRoute();
 
 // refs for GSAP animation
+const containerRef = ref(null);
 const titleRef = ref(null);
 const descriptionRef = ref(null);
+// ScrollTrigger 인스턴스 저장
+let scrollTriggerInstance = null;
 
 // 슬롯이 있는지 확인하는 computed
 const hasSlot = computed(() => !!slots.default);
@@ -94,7 +97,8 @@ const { desktopImage, mobileImage, tabletImage } = imagePaths.value;
 
 // GSAP 애니메이션 초기화
 const initAnimation = () => {
-  if (!titleRef.value && !descriptionRef.value) return;
+  if (!containerRef.value) return { timeline: null, scrollTrigger: null };
+  if (!titleRef.value && !descriptionRef.value) return { timeline: null, scrollTrigger: null };
 
   // 초기 상태 설정 (애니메이션 전 상태)
   if (titleRef.value) {
@@ -110,15 +114,8 @@ const initAnimation = () => {
     });
   }
 
-  // ScrollTrigger 애니메이션 설정
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '.app-sub-cont',
-      start: 'top 80%',
-      end: 'bottom 20%',
-      toggleActions: 'play none none reverse'
-    }
-  });
+  // 타임라인을 paused로 시작
+  const tl = gsap.timeline({ paused: true });
 
   // 순차적 애니메이션: 타이틀 → 디스크립션
   if (titleRef.value) {
@@ -126,7 +123,8 @@ const initAnimation = () => {
       duration: 0.6,
       opacity: 1,
       y: 0,
-      ease: 'power2.out'
+      ease: 'power2.out',
+      immediateRender: false
     });
   }
   
@@ -135,14 +133,60 @@ const initAnimation = () => {
       duration: 0.6,
       opacity: 1,
       y: 0,
-      ease: 'power2.out'
+      ease: 'power2.out',
+      immediateRender: false
     }, '-=0.3'); // 타이틀 애니메이션과 0.3초 겹침
   }
+
+  // ScrollTrigger를 별도로 생성하고 저장
+  scrollTriggerInstance = ScrollTrigger.create({
+    trigger: containerRef.value,
+    start: 'top 80%',
+    end: 'bottom 20%',
+    onEnter: () => tl.play(), // 확실히 트리거되었을 때만 재생
+    onLeaveBack: () => tl.reverse(),
+    immediateRender: false
+  });
+  
+  return { timeline: tl, scrollTrigger: scrollTriggerInstance };
 };
 
 // 컴포넌트 마운트 시 애니메이션 초기화
-onMounted(() => {
-  initAnimation();
+onMounted(async () => {
+  await nextTick();
+  
+  if (!containerRef.value) return;
+  
+  requestAnimationFrame(() => {
+    try {
+      // 애니메이션 초기화 (항상 실행)
+      const { timeline: tl, scrollTrigger } = initAnimation();
+      
+      // ScrollTrigger refresh 호출
+      gsap.registerPlugin(ScrollTrigger);
+      try {
+        ScrollTrigger.refresh();
+        
+        // refresh 후 상태 확인
+        if (tl && scrollTrigger && scrollTrigger.isActive) {
+          // 이미 활성화되어 있다면 타임라인을 즉시 재생
+          tl.play(0);
+        }
+      } catch (_) { /* noop */ }
+    } catch (error) {
+      // 에러 발생 시 기본 애니메이션 초기화
+      console.warn('AppSubCont animation initialization error:', error);
+      initAnimation();
+    }
+  });
+});
+
+// 컴포넌트 언마운트 시 ScrollTrigger 정리
+onUnmounted(() => {
+  if (scrollTriggerInstance) {
+    scrollTriggerInstance.kill();
+    scrollTriggerInstance = null;
+  }
 });
 </script>
 

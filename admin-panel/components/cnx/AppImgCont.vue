@@ -178,6 +178,9 @@ const tabletImage = ref('')
 const isImageLoaded = ref(false)
 const imageRef = ref(null)
 
+// ScrollTrigger 인스턴스 저장
+let scrollTriggerInstance = null
+
 // 이미지 로드 완료 핸들러
 const onImageLoad = () => {
   isImageLoaded.value = true
@@ -211,7 +214,7 @@ const checkImageStatus = () => {
 
 // GSAP 애니메이션 초기화
 const initAnimation = () => {
-  if (!containerRef.value) return null
+  if (!containerRef.value) return { timeline: null, scrollTrigger: null }
 
   // 초기 상태 설정
   if (imageContentRef.value) {
@@ -232,15 +235,8 @@ const initAnimation = () => {
     })
   }
 
-  // ScrollTrigger 애니메이션 설정
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: containerRef.value,
-      start: 'top 80%',
-      end: 'bottom 20%',
-      toggleActions: 'play none none reverse'
-    }
-  })
+  // 타임라인을 paused로 시작
+  const tl = gsap.timeline({ paused: true })
 
   // 순차적 애니메이션
   if (imageContentRef.value) {
@@ -248,7 +244,8 @@ const initAnimation = () => {
       duration: 0.8,
       opacity: 1,
       y: 0,
-      ease: 'power2.out'
+      ease: 'power2.out',
+      immediateRender: false
     })
   }
   if (titleRef.value) {
@@ -256,7 +253,8 @@ const initAnimation = () => {
       duration: 0.6,
       opacity: 1,
       y: 0,
-      ease: 'power2.out'
+      ease: 'power2.out',
+      immediateRender: false
     }, '-=0.4')
   }
   if (textRef.value) {
@@ -264,7 +262,8 @@ const initAnimation = () => {
       duration: 0.6,
       opacity: 1,
       y: 0,
-      ease: 'power2.out'
+      ease: 'power2.out',
+      immediateRender: false
     }, '-=0.3')
   }
   
@@ -274,11 +273,22 @@ const initAnimation = () => {
       opacity: 1,
       y: 0,
       ease: 'power2.out',
-      stagger: 0.1
+      stagger: 0.1,
+      immediateRender: false
     }, '-=0.2')
   }
   
-  return tl
+  // ScrollTrigger를 별도로 생성하고 저장
+  scrollTriggerInstance = ScrollTrigger.create({
+    trigger: containerRef.value,
+    start: 'top 80%',
+    end: 'bottom 20%',
+    onEnter: () => tl.play(), // 확실히 트리거되었을 때만 재생
+    onLeaveBack: () => tl.reverse(),
+    immediateRender: false
+  })
+  
+  return { timeline: tl, scrollTrigger: scrollTriggerInstance }
 }
 
 // 이미지 경로 초기화 (SSR 지원) - 비메오 ID가 없을 때만
@@ -303,20 +313,18 @@ onMounted(async () => {
   requestAnimationFrame(() => {
     try {
       // 애니메이션 초기화 (항상 실행)
-      const tl = initAnimation()
-      
-      // ScrollTrigger.isInViewport()를 사용하여 이미 뷰포트에 있는지 확인
-      gsap.registerPlugin(ScrollTrigger)
-      try {
-        // 이미 뷰포트에 있다면 타임라인을 즉시 재생
-        if (tl && ScrollTrigger.isInViewport(containerRef.value, 0.2)) {
-          tl.play(0)
-        }
-      } catch (_) { /* noop */ }
+      const { timeline: tl, scrollTrigger } = initAnimation()
       
       // ScrollTrigger refresh 호출
+      gsap.registerPlugin(ScrollTrigger)
       try {
         ScrollTrigger.refresh()
+        
+        // refresh 후 상태 확인
+        if (tl && scrollTrigger && scrollTrigger.isActive) {
+          // 이미 활성화되어 있다면 타임라인을 즉시 재생
+          tl.play(0)
+        }
       } catch (_) { /* noop */ }
     } catch (error) {
       // 에러 발생 시 기본 애니메이션 초기화
@@ -328,11 +336,10 @@ onMounted(async () => {
 
 // 컴포넌트 언마운트 시 ScrollTrigger 정리
 onUnmounted(() => {
-  ScrollTrigger.getAll().forEach(trigger => {
-    if (trigger.trigger === containerRef.value) {
-      trigger.kill()
-    }
-  })
+  if (scrollTriggerInstance) {
+    scrollTriggerInstance.kill()
+    scrollTriggerInstance = null
+  }
 })
 </script>
 
