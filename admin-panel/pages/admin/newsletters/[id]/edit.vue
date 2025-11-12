@@ -792,6 +792,10 @@ const uploadThumbnail = async () => {
 
       if (response.success) {
         form.thumbnail_image = response.data.url
+        originalHeaderTop.value = 0
+        nextTick(() => {
+          saveOriginalHeaderPosition()
+        })
       }
     } catch (error) {
       console.error('썸네일 이미지 업로드 실패:', error)
@@ -808,6 +812,11 @@ const removeThumbnail = () => {
   if (originalNewsletter.value) {
     originalNewsletter.value.thumbnail_image = null
   }
+  // 레이아웃 변경으로 인한 헤더 위치 재계산
+  originalHeaderTop.value = 0
+  nextTick(() => {
+    saveOriginalHeaderPosition()
+  })
 }
 
 // 본문 이미지 업로드
@@ -839,6 +848,10 @@ const uploadBodyImage = async () => {
 
       if (response.success) {
         form.body_image = response.data.url
+        originalHeaderTop.value = 0
+        nextTick(() => {
+          saveOriginalHeaderPosition()
+        })
       }
     } catch (error) {
       console.error('본문 이미지 업로드 실패:', error)
@@ -855,6 +868,10 @@ const removeBodyImage = () => {
   if (originalNewsletter.value) {
     originalNewsletter.value.body_image = null
   }
+  originalHeaderTop.value = 0
+  nextTick(() => {
+    saveOriginalHeaderPosition()
+  })
 }
 
 // 에디터 관련 함수들 (사용하지 않음)
