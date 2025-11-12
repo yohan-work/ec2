@@ -14,6 +14,7 @@
       <section class="title-section">
         <AppTitle 
           title="Marketing & Sales Analytics"
+          text="AI와 데이터 분석을 기반으로 캠페인 기획부터 성과 측정, 채널 전략까지 마케팅과 세일즈 전 과정을 아우르는 통합 분석 솔루션을 제공합니다."
         />
       </section>
 

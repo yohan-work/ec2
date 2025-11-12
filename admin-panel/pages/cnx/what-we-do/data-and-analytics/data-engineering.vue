@@ -14,6 +14,7 @@
       <section class="title-section">
         <AppTitle 
           title="Data Engineering"
+          text="콘텐츠 크롤링부터 데이터 파이프라인 구축, 플랫폼 운영까지 AI 기반 기술을 통해 데이터를 보다 정교하게 수집, 정제, 변환하여<br class='br-pc' />분석과 서비스의 토대가 되는 안정적이고 유연한 데이터 인프라 솔루션을 제공합니다."
         />
       </section>
 
