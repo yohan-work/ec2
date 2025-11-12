@@ -463,9 +463,12 @@
                   </div>
                   <div class="p-6 bg-white">
                     <!-- 본문 이미지가 있으면 제일 위에 표시 -->
-                    <div v-if="form.body_image" class="mb-6">
+                    <div
+                      v-if="form.body_image || originalNewsletter?.body_image"
+                      class="mb-6"
+                    >
                       <img
-                        :src="form.body_image"
+                        :src="form.body_image || originalNewsletter?.body_image"
                         alt="본문 이미지"
                         class="w-full max-w-2xl mx-auto object-cover rounded-lg shadow-sm"
                       />
@@ -801,7 +804,10 @@ const uploadThumbnail = async () => {
 
 // 썸네일 이미지 제거
 const removeThumbnail = () => {
-  form.thumbnail_image = ''
+  form.thumbnail_image = null
+  if (originalNewsletter.value) {
+    originalNewsletter.value.thumbnail_image = null
+  }
 }
 
 // 본문 이미지 업로드
@@ -845,7 +851,10 @@ const uploadBodyImage = async () => {
 
 // 본문 이미지 제거
 const removeBodyImage = () => {
-  form.body_image = ''
+  form.body_image = null
+  if (originalNewsletter.value) {
+    originalNewsletter.value.body_image = null
+  }
 }
 
 // 에디터 관련 함수들 (사용하지 않음)
