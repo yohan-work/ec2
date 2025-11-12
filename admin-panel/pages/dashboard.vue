@@ -469,24 +469,98 @@
               <h3 class="text-lg font-medium text-gray-900">
                 시스템 활동 추이
               </h3>
-              <p class="text-sm text-gray-500">지난 3개월간의 활동 통계</p>
+              <p class="text-sm text-gray-500">
+                {{
+                  selectedPeriod === 7
+                    ? '지난 7일간의 활동 통계'
+                    : '지난 30일간의 활동 통계'
+                }}
+              </p>
             </div>
             <div class="flex space-x-2">
               <button
-                class="px-3 py-1 text-sm bg-gray-900 text-white rounded-md"
-              >
-                Last 3 months
-              </button>
-              <button
-                class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+                @click="handlePeriodChange(30)"
+                :class="
+                  selectedPeriod === 30
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                "
+                class="px-3 py-1 text-sm rounded-md transition-colors"
               >
                 Last 30 days
               </button>
               <button
-                class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+                @click="handlePeriodChange(7)"
+                :class="
+                  selectedPeriod === 7
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                "
+                class="px-3 py-1 text-sm rounded-md transition-colors"
               >
                 Last 7 days
               </button>
+            </div>
+          </div>
+
+          <!-- 차트 영역 -->
+          <div
+            v-if="activityLoading"
+            class="h-64 flex items-center justify-center"
+          >
+            <div
+              class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"
+            ></div>
+          </div>
+
+          <div
+            v-else-if="activityError"
+            class="h-64 flex items-center justify-center"
+          >
+            <div class="text-center">
+              <svg
+                class="w-12 h-12 text-red-400 mx-auto mb-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p class="text-sm text-gray-500">{{ activityError }}</p>
+              <button
+                @click="fetchActivityTrend(selectedPeriod)"
+                class="mt-2 text-blue-600 hover:text-blue-700 text-sm underline"
+              >
+                다시 시도
+              </button>
+            </div>
+          </div>
+
+          <div v-else-if="activityData" class="h-80 mb-6">
+            <Line :data="chartData" :options="chartOptions" />
+          </div>
+
+          <div v-else class="h-64 flex items-center justify-center">
+            <div class="text-center">
+              <svg
+                class="w-12 h-12 text-gray-300 mx-auto mb-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
+              </svg>
+              <p class="text-sm text-gray-500">데이터를 불러오는 중...</p>
             </div>
           </div>
 
@@ -745,6 +819,29 @@
 </template>
 
 <script setup>
+import { Line } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
+
+// Chart.js 등록
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+)
+
 // 인증 확인을 위한 미들웨어 적용
 definePageMeta({
   middleware: 'auth',
@@ -761,6 +858,12 @@ const metrics = ref(null)
 const metricsLoading = ref(false)
 const metricsError = ref(null)
 const metricsLastUpdated = ref(null)
+
+// 활동 추이 상태
+const selectedPeriod = ref(30)
+const activityData = ref(null)
+const activityLoading = ref(false)
+const activityError = ref(null)
 
 // 사용자 표시 이름
 const getUserDisplayName = () => {
@@ -797,6 +900,99 @@ const fetchMetrics = async () => {
   } finally {
     metricsLoading.value = false
   }
+}
+
+// 활동 추이 데이터 가져오기
+const fetchActivityTrend = async period => {
+  try {
+    activityLoading.value = true
+    activityError.value = null
+
+    const response = await $fetch('/api/system/activity-trend', {
+      query: { period },
+    })
+    activityData.value = response.data
+  } catch (error) {
+    console.error('활동 추이 가져오기 실패:', error)
+    activityError.value =
+      error.data?.statusMessage || '활동 추이를 가져올 수 없습니다.'
+  } finally {
+    activityLoading.value = false
+  }
+}
+
+// 기간 변경 핸들러
+const handlePeriodChange = period => {
+  selectedPeriod.value = period
+  fetchActivityTrend(period)
+}
+
+// 차트 데이터 computed
+const chartData = computed(() => {
+  if (!activityData.value || !activityData.value.activities) {
+    return {
+      labels: [],
+      datasets: [],
+    }
+  }
+
+  const activities = activityData.value.activities
+
+  return {
+    labels: activities.map(item => {
+      const date = new Date(item.date)
+      return `${date.getMonth() + 1}/${date.getDate()}`
+    }),
+    datasets: [
+      {
+        label: '뉴스레터 생성',
+        data: activities.map(item => item.count),
+        borderColor: 'rgb(59, 130, 246)',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        tension: 0.3,
+        fill: true,
+      },
+    ],
+  }
+})
+
+// 차트 옵션
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    tooltip: {
+      mode: 'index',
+      intersect: false,
+      callbacks: {
+        title: context => {
+          if (!activityData.value || !activityData.value.activities) return ''
+          const index = context[0].dataIndex
+          const date = new Date(activityData.value.activities[index].date)
+          return date.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+        },
+        label: context => {
+          return `${context.dataset.label}: ${context.parsed.y}건`
+        },
+      },
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        stepSize: 1,
+      },
+    },
+  },
 }
 
 // 진행바 색상 클래스
@@ -839,6 +1035,7 @@ const refreshPage = () => {
 // 컴포넌트 마운트 시 메트릭 로드
 onMounted(() => {
   fetchMetrics()
+  fetchActivityTrend(selectedPeriod.value)
 
   // 30초마다 자동 새로고침 (옵션)
   const interval = setInterval(fetchMetrics, 30000)
