@@ -14,6 +14,7 @@
       <section class="title-section">
         <AppTitle 
           title="Digital Channel Analytics"
+          text="디지털 채널의 방대한 데이터를 통합적으로 분석하여, 고객 행동의 맥락을 이해하고 마케팅, UX, 콘텐츠 전략 전반에 실행 가능한 인사이트를 제공합니다."
         />
       </section>
 

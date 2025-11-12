@@ -85,3 +85,61 @@
     top: rem(138) !important; // 헤더 높이(90) + 스킵네비게이션 높이(48)
   }
 }
+
+// Br 태그 반응형 유틸리티 클래스
+:global(.br-mo) {
+  display: block;
+
+  @include tablet {
+    display: none;
+  }
+}
+
+:global(.br-tab) {
+  display: none;
+
+  @include tablet {
+    display: block;
+  }
+
+  @include desktop {
+    display: none;
+  }
+}
+
+:global(.br-pc) {
+  display: none;
+
+  @include desktop {
+    display: block;
+  }
+}
+
+// Br 태그 조합 클래스
+:global(.br-mo-tab) {
+  display: block;
+
+  @include desktop {
+    display: none;
+  }
+}
+
+:global(.br-tab-pc) {
+  display: none;
+
+  @include tablet {
+    display: block;
+  }
+}
+
+:global(.br-mo-pc) {
+  display: block;
+
+  @include tablet {
+    display: none;
+  }
+
+  @include desktop {
+    display: block;
+  }
+}

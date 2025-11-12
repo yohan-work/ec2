@@ -14,6 +14,7 @@
       <section class="title-section">
         <AppTitle 
           title="Analytics Solution"
+          text="GA4, Adobe Analytics, Beusable, Optimizely 등 다양한 분석 솔루션들의 라이선스를 제공하고,<br class='br-pc' />이들 분석 솔루션들의 도입과 분석을 지원하여 데이터 기반 의사결정을 지원합니다."
         />
       </section>
 
