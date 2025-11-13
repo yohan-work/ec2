@@ -1,6 +1,7 @@
 import { prisma } from '../../../../lib/prisma'
 import { getAdminUserByCognitoId } from '../../../utils/auth'
 import { serializeBigInt } from '../../../utils/bigint'
+import { calculateDisplayOrder } from '../../../utils/newsletter-order'
 
 export default defineEventHandler(async event => {
   try {
@@ -21,6 +22,7 @@ export default defineEventHandler(async event => {
       subtitle_bold,
       status,
       cognito_user_id,
+      published_date,
     } = body
 
     // 필수 필드 검증
@@ -45,29 +47,22 @@ export default defineEventHandler(async event => {
     const author = await getAdminUserByCognitoId(cognito_user_id)
     console.log('조회된 사용자:', { id: author.id, email: author.email })
 
+    // published_at 결정: published_date가 제공되면 해당 날짜 사용, 없으면 현재 시간 사용
+    let publishedAt = null
+    if (status === 'published') {
+      publishedAt = published_date ? new Date(published_date) : new Date()
+    }
+
     // display_order 계산 (발행된 뉴스레터의 경우에만)
     let displayOrder = 0
-    if (status === 'published') {
+    if (status === 'published' && publishedAt) {
       console.log('발행된 뉴스레터의 display_order 계산 중...')
-
-      // 기존 발행된 뉴스레터들의 순서를 모두 1씩 증가시킴
-      await prisma.newsletters.updateMany({
-        where: {
-          status: 'published',
-          display_order: {
-            gt: 0,
-          },
-        },
-        data: {
-          display_order: {
-            increment: 1,
-          },
-        },
-      })
-
-      // 새 뉴스레터는 1번 순서로 설정
-      displayOrder = 1
-      console.log('새 뉴스레터 display_order: 1, 기존 뉴스레터들 순서 +1 증가')
+      console.log('발행일:', publishedAt)
+      
+      // 발행일과 등록일(현재 시간)을 기준으로 적절한 위치 계산
+      const createdAt = new Date()
+      displayOrder = await calculateDisplayOrder(publishedAt, createdAt)
+      console.log('계산된 display_order:', displayOrder)
     }
 
     // 뉴스레터 생성
@@ -76,7 +71,9 @@ export default defineEventHandler(async event => {
       status,
       author_id: author.id,
       display_order: displayOrder,
+      published_at: publishedAt,
     })
+    
     const newsletter = await prisma.newsletters.create({
       data: {
         title,
@@ -87,7 +84,7 @@ export default defineEventHandler(async event => {
         subtitle_bold: subtitle_bold || false,
         status: status || 'draft',
         author_id: author.id,
-        published_at: status === 'published' ? new Date() : null,
+        published_at: publishedAt,
         display_order: displayOrder,
       },
       include: {
