@@ -16,29 +16,6 @@
           text="고객의 비즈니스 문제를 해결하기 위해 AI를 활용한 맞춤형 솔루션을 제공합니다.<br>반복적인 업무를 자동화하고 효율을 높이는 AI 에이전트 개발부터, 데이터 분석 및 예측 모델 개발에 이르기까지<br>혁신적인 AI 기술을 통해 기업의 경쟁력을 강화하고 새로운 가치를 창출합니다."/>
       </section>
 
-      <!-- 특징 섹션 (3개 컬럼) -->
-      <section class="features-section">
-        <AppCardList 
-          :items="[
-            { 
-              id: 1, 
-              title: '전략 플랫폼', 
-              description: 'iX Hello ( AI Agent platform ) · Enhans (Agentic AI)를 중심으로, 상용/오픈 LLM · RAG · 벡터 검색 · 음성 / 시각 API 등 외부 AI 기술을 선정 · 설계 · 연동' ,
-            },
-            { 
-              id: 2, 
-              title: '아키텍처 & 운영', 
-              description: '멀티스텝 Workflow · 가드레일, 권한 / 감사로그, Human-in-the-Loop - 엔터프라이즈 운영 기준 준수' ,
-            },
-            { 
-              id: 3, 
-              title: '핵심 기능 & 통합', 
-              description: '멀티사이트 / 현지화 / 번역 · 프리뷰 / Workflow, 커머스 · 검색 · DAM · SSO / IAM 연동' ,
-            }
-          ]"
-        />
-      </section>
-
       <section class="content-section">
         <AppImgCont 
           title="iX Hello : AI Agent Platform"
@@ -59,6 +36,29 @@
           imageAlt="회로 기판과 손을 클로즈업한 AI Aura 개념 이미지"
           :alignTop="true"
           :subItems="aiAuraSubItems"
+        />
+      </section>
+
+      <!-- 특징 섹션 (3개 컬럼) -->
+      <section class="features-section">
+        <AppCardList 
+          :items="[
+            { 
+              id: 1, 
+              title: '전략 플랫폼', 
+              description: 'iX Hello ( AI Agent platform ) · Enhans (Agentic AI)를 중심으로, 상용/오픈 LLM · RAG · 벡터 검색 · 음성 / 시각 API 등 외부 AI 기술을 선정 · 설계 · 연동' ,
+            },
+            { 
+              id: 2, 
+              title: '오케스트레이션 & 운영', 
+              description: '멀티스텝 Workflow · 가드레일, 권한 / 감사로그, Human-in-the-Loop - 엔터프라이즈 운영 기준 준수' ,
+            },
+            { 
+              id: 3, 
+              title: '핵심 기능 & 통합', 
+              description: '컨택센터 봇, 지식검색 / 요약 · QA, 문서 / 업무 코파일럿 · 프로세스 자동화 & CRM · DXP · 커머스 · 콘택트센터 · 데이터 레이크 시스템 통합' ,
+            }
+          ]"
         />
       </section>
     </div>

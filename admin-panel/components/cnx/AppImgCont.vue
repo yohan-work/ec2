@@ -461,6 +461,10 @@ onUnmounted(() => {
               color: $gray-1;
               font-weight: bold;
             }
+
+            :deep(b) {
+              font-weight: 700;
+            }
           }
         }
       }

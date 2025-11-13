@@ -43,6 +43,7 @@
       <section class="content-section">
         <AppImgCont 
           title="SAP Commerce Cloud"
+          text="콘센트릭스는 SAP Commerce Cloud(SAP CC, Hybris)를 기반으로 한 Enterprise Commerce Platform을 제공합니다. Headless·Composable Architecture 기반의 유연한 구조로, 멀티브랜드·멀티리전 비즈니스 확장에 최적화된 커머스 시스템을 구현합니다."
           imageName="sap"
           :reverse="true"
           :subItems="sapSubItems"
@@ -54,6 +55,7 @@
       <section class="content-section">
         <AppImgCont 
           title="Adobe Commerce Cloud"
+          text="콘텐츠와 커머스를 통합한 디지털 경험 플랫폼으로, 제품·프로모션·고객 여정 관리와 마케팅 자동화·옴니채널 운영을 지원합니다. Cloud 기반 아키텍처를 통해 유연한 확장성과 빠른 배포가 가능하며, 글로벌 GDC 협업체계로 대규모 프로젝트를 수행합니다."
           imageName="adobe"
           :subItems="adobeSubItems"
           imageAlt="Adobe Commerce Cloud 서비스 흐름 "
@@ -89,11 +91,27 @@ definePageMeta({
 // SAP Commerce Cloud 서브 아이템들
 const sapSubItems = computed(() => [
   {
+    title: '시스템 아키텍처 설계',
     listItems: [
-      '글로벌 B2B·B2C 비즈니스를 위한 Enterprise Commerce 플랫폼',
-      '제품 · 가격 · 주문 · 계정 관리와 ERP · CRM · OMS 연동 지원',
-      'Headless·Composable Architecture 기반 멀티브랜드 · 다국가 확장',
-      '전문 SI 역량과 글로벌 법인 소속 GDC 인력을 통한 맞춤형 구축 · 글로벌 Roll-out 지원'
+      'SAP Commerce Cloud의 Headless 구조를 기반으로, 채널별 UI·UX와 백엔드 시스템 간의 연계 방안을 포함한 엔드투엔드 커머스 아키텍처를 설계합니다.'
+    ]
+  },
+  {
+    title: '데이터 통합 및 연동',
+    listItems: [
+      'ERP, CRM, OMS 등 다양한 기업 시스템과의 API·데이터 연동을 통해 주문, 재고, 결제, 정산 등 주요 비즈니스 데이터를 통합 관리합니다.'
+    ]
+  },
+  {
+    title: '글로벌 구축 및 롤아웃',
+    listItems: [
+      '콘센트릭스의 국내 글로벌 전문 인력 및 글로벌 법인(GDC) 을 통해, 국가별 로컬 규제와 환경에 맞춘 맞춤형 구축 및 운영을 지원합니다.'
+    ]
+  },
+  {
+    title: '성능 및 확장성 최적화',
+    listItems: [
+      'Headless·Composable 구조를 기반으로 서비스 성능, 유지보수성, 글로벌 확장성을 지속 개선하며, <b>SLA 기반 안정적 운영 환경</b>을 제공합니다.'
     ]
   }
 ])
@@ -101,11 +119,27 @@ const sapSubItems = computed(() => [
 // Adobe Commerce Cloud 서브 아이템들
 const adobeSubItems = computed(() => [
   {
+    title: '시스템 아키텍처 설계',
     listItems: [
-      '콘텐츠 관리와 Commerce를 통합한 디지털 경험 플랫폼',
-      '제품 · 프로모션 · 고객 여정 관리 및 마케팅 자동화 지원',
-      'Cloud 기반 Architecture로 유연한 확장성과 빠른 배포 가능',
-      '본사와 글로벌 법인 GDC 협업을 통한 대규모 프로젝트 수행 지원'
+      'Adobe Commerce Cloud(구. 마젠토)와 Adobe Experience Manager(AEM)의 통합 구조를 기반으로, 콘텐츠·커머스·고객 데이터를 연결하는 End-to-End 디지털 경험 아키텍처를 설계합니다.'
+    ]
+  },
+  {
+    title: '데이터 통합 및 연동',
+    listItems: [
+      '제품, 고객, 프로모션 데이터를 ERP·CRM 등과 연동하고, 마케팅 자동화 도구를 통해 실시간 개인화 및 캠페인 운영을 지원합니다.'
+    ]
+  },
+  {
+    title: '글로벌 구축 및 롤아웃',
+    listItems: [
+      '콘센트릭스의 국내 글로벌 전문 기술 인력과 GDC 협업 모델을 통해 북미·유럽·아시아 등 글로벌 지역별 맞춤형 구축 및 운영 지원이 가능합니다.'
+    ]
+  },
+  {
+    title: '성능 및 확장성 최적화',
+    listItems: [
+      'Cloud Native 아키텍처를 통해 트래픽 급증에도 안정적인 성능을 유지하며, 멀티사이트·멀티리전 환경에서의 운영 효율성을 확보합니다.'
     ]
   }
 ])
