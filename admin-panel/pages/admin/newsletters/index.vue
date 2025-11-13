@@ -7,7 +7,7 @@
         <p class="text-sm text-gray-600 mt-1">뉴스레터를 작성하고 관리하세요</p>
       </div>
       <div class="flex gap-2">
-        <button
+        <!-- <button
           @click="toggleOrderMode"
           :class="[
             'inline-flex items-center px-4 py-2 border text-sm font-medium rounded-md transition-colors',
@@ -30,13 +30,13 @@
             />
           </svg>
           {{ orderMode ? '순서 편집 완료' : '순서 편집' }}
-        </button>
+        </button> -->
         <button
           @click="createNewsletter"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors"
           :style="{
             backgroundColor: '#001933',
-            borderColor: '#001933'
+            borderColor: '#001933',
           }"
           @mouseover="hovering = true"
           @mouseleave="hovering = false"
