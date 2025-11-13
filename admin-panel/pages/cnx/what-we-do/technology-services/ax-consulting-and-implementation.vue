@@ -16,6 +16,30 @@
           text="Generative AX 컨설팅부터 Agentic AI 설계·구현, QA·운영까지, PoC에서 글로벌 확장까지 지원하며, <br>전략·데이터 거버넌스·보안·HITL (Human In the Loop) 기반의 안전한 AI 운영을 제공합니다."/>
       </section>
 
+      <!-- AX(AI Transformation) 컨설팅 섹션 -->
+      <section class="content-section">
+        <AppImgCont 
+          title="AX(AI Transformation) 컨설팅"
+          text="AX(AI Transformation) 전략 수립 서비스는 기업이 AI 기술을 비즈니스에 성공적으로 도입하여 <b>근본적인 혁신</b>을 이루도록 돕는 전문 컨설팅 서비스입니다. 단순한 AI 기술 도입을 넘어, 기업의 현재 상황을 진단하고, AI 기술을 통해 어떤 가치를 창출할 수 있을지 구체적인 계획을 수립하는 데 중점을 둡니다."
+          imageName="ax"
+          imageAlt="디지털 인터페이스를 조작하는 컨설팅 담당자의 손"
+          :reverse="true"
+          :subItems="axSubItems"
+        />
+      </section>
+
+      <!-- Integration Services 섹션 -->
+      <section class="content-section">
+        <AppImgCont 
+          title="AI 시스템구축"
+          text="콘센트릭스는 자체 AI 솔루션인 iX Hello와 AI Aura 뿐 아니라, 그외 AI 솔루션을 기반으로 고객사의 업무를 효율화/자동화하기 위한 AI 시스템을 설계, 개발합니다."
+          imageName="ai"
+          imageAlt="AI 시스템을 상징하는 클라우드 네트워크와 하늘"
+          :subItems="aiSubItems"
+          :alignTop="true"
+        />
+      </section>
+
       <!-- 특징 섹션 (3개 컬럼) -->
       <section class="features-section">
         <AppCardList 
@@ -39,30 +63,6 @@
         />
       </section>
 
-      <!-- AX(AI Transformation) 컨설팅 섹션 -->
-      <section class="content-section">
-        <AppImgCont 
-          title="AX(AI Transformation) 컨설팅"
-          text="AX(AI Transformation) 전략 수립 서비스는 기업이 AI 기술을 비즈니스에 성공적으로 도입하여 근본적인 혁신을 이루도록 돕는 전문 컨설팅 서비스입니다. 단순한 AI 기술 도입을 넘어, 기업의 현재 상황을 진단하고, AI 기술을 통해 어떤 가치를 창출할 수 있을지 구체적인 계획을 수립하는 데 중점을 둡니다."
-          imageName="ax"
-          imageAlt="디지털 인터페이스를 조작하는 컨설팅 담당자의 손"
-          :reverse="true"
-          :subItems="axSubItems"
-        />
-      </section>
-
-      <!-- Integration Services 섹션 -->
-      <section class="content-section">
-        <AppImgCont 
-          title="AI 시스템구축"
-          text="콘센트릭스는 자체 AI 솔루션인 iX Hello와 AI Aura 뿐 아니라, 그외 AI 솔루션을 기반으로 고객사의 업무를 효율화/자동화하기 위한 AI 시스템을 설계, 개발합니다."
-          imageName="ai"
-          imageAlt="AI 시스템을 상징하는 클라우드 네트워크와 하늘"
-          :subItems="aiSubItems"
-          :alignTop="true"
-        />
-      </section>
-
     </div>
   </div>
 </template>
@@ -82,12 +82,21 @@ definePageMeta({
 // SAP Commerce Cloud 서브 아이템들
 const axSubItems = computed(() => [
   {
+    title: '전략 수립',
     listItems: [
-      'AI 도입 대상 비즈니스 케이스 발굴',
-      '구체적인 AI 목표 지표 및 로드맵 수립',
-      '솔루션 설계 및 실행 계획 수립',
-      '구축한 AI Agent에 대한 QA 서비스',
-      '운영 체계 구축 및 조직 변화 관리'
+      'AI 도입을 위한 비즈니스 케이스를 발굴하고, 구체적인 목표 지표와 로드맵을 수립합니다.'
+    ]
+  },
+  {
+    title: '실행 계획 수립',
+    listItems: [
+      '솔루션 설계와 실행 계획을 체계적으로 마련하며, 구축된 AI Agent에 대한 QA 서비스를 제공합니다.'
+    ]
+  },
+  {
+    title: '사후 운영 체계 수립',
+    listItems: [
+      '안정적인 운영 체계 구축과 조직 변화 관리까지 지원하여 AI 전환의 효과를 극대화합니다.'
     ]
   }
 ])
