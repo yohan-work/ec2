@@ -25,6 +25,7 @@
           imageAlt="디지털 인터페이스를 조작하는 컨설팅 담당자의 손"
           :reverse="true"
           :subItems="axSubItems"
+          :alignTop="true"
         />
       </section>
 

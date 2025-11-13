@@ -39,6 +39,7 @@
           :reverse="true"
           :subItems="salesServiceSubItems"
           imageAlt="Sales Cloud와 Service Cloud를 설명하는 비즈니스 여성 모델"
+          :alignTop="true"
         />
       </section>
 
@@ -49,6 +50,7 @@
           text="SF CREAM(Salesforce Customer Relationship Engagement Application Module)은 세일즈포스닷컴 솔루션을 기반으로 한 컨택센터 운영솔루션입니다. 콘센트릭스의 글로벌 컨택센터 운영 노하우가 집대성 되어 상담 관리자와 상담원의 업무 생산성 증대 및 관리 효율성에 초점이 맞춰진 모듈형 솔루션 입니다."
           :subItems="sfCreamSubItems"
           imageAlt="SF CREAM 솔루션 소개 영상의 썸네일 화면"
+          :alignTop="true"
         />
       </section>
 
@@ -60,6 +62,7 @@
           :reverse="true"
           :subItems="agentforceSubItems"
           imageAlt="Agentforce 솔루션의 인터페이스"
+          :alignTop="true"
         />
       </section>
 
@@ -70,6 +73,7 @@
           text="콘센트릭스는 Adobe Experience Cloud 기반의 디지털 고객 경험 전문 기업으로 아래 서비스를 제공합니다"
           :subItems="aecSubItems"
           imageAlt="Adobe Experience Cloud 솔루션의 인터페이스"
+          :alignTop="true"
         />
       </section>
 
@@ -90,7 +94,7 @@
             { 
               id: 3, 
               title: '핵심 기능 & 통합', 
-              description: 'Sales Cloud(SFA) / Service Cloud( Contact Center, Field service ) / Agent Force /  CREAM( salesforce.com 패키지, CTI/문자/카카오상담톡 ) / Campaign Automation · Experimentation / Attribution · Dashboard, DXP · Commerce · Contact Center · Ad-Tech 연동' ,
+              description: 'Sales Cloud(SFA) / Service Cloud( Contact Center, Field service ) / Agent Force /  CREAM( salesforce.com 패키지, CTI/문자/카카오상담톡 ) / Campaign Automation · Experimentation / Attribution · Dashboard, DXP · Commerce ·  Contact Center · Ad-Tech 연동' ,
             }
           ]"
         />

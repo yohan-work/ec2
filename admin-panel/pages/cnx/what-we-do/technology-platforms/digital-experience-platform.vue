@@ -25,6 +25,7 @@
           :reverse="true"
           :subItems="aemSubItems"
           imageAlt="Adobe Experience Manager 솔루션의 인터페이스"
+          :alignTop="true"
         />
       </section>
 
@@ -47,6 +48,7 @@
           :reverse="true"
           :subItems="outsystemsSubItems"
           imageAlt="OutSystems의 Low-Code 개발 플랫폼 그래픽"
+          :alignTop="true"
         />
       </section>
 
