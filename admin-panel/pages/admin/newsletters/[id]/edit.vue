@@ -680,7 +680,7 @@ const form = reactive({
   body_image: '',
   subtitle: '',
   subtitle_bold: false,
-  status: 'draft',
+  status: 'published',
   published_date: '', // YYYY-MM-DD 형식의 발행일
   paragraphs: [
     { id: 1, content: '' },
