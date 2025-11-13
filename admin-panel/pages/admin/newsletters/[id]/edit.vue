@@ -305,6 +305,29 @@
                 </div>
               </div>
 
+              <!-- 발행 일자 등록 -->
+              <div>
+                <label
+                  for="published-date"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  게시글 발행일 (선택사항)
+                </label>
+                <input
+                  id="published-date"
+                  v-model="form.published_date"
+                  type="date"
+                  :max="getTodayDate()"
+                  @click="openDatePicker"
+                  class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+                  placeholder="발행일을 선택하세요"
+                />
+                <p class="mt-1 text-xs text-gray-500">
+                  발행일을 지정하지 않으면 저장 및 발행 시 현재 날짜가 자동으로
+                  설정됩니다. 미래 날짜는 선택할 수 없습니다.
+                </p>
+              </div>
+
               <!-- 상태 및 작성자 정보 -->
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -658,6 +681,7 @@ const form = reactive({
   subtitle: '',
   subtitle_bold: false,
   status: 'draft',
+  published_date: '', // YYYY-MM-DD 형식의 발행일
   paragraphs: [
     { id: 1, content: '' },
     { id: 2, content: '' },
@@ -689,6 +713,14 @@ const fetchNewsletter = async () => {
     form.subtitle = originalNewsletter.value.subtitle || ''
     form.subtitle_bold = originalNewsletter.value.subtitle_bold || false
     form.status = originalNewsletter.value.status
+
+    // published_at을 YYYY-MM-DD 형식으로 변환
+    if (originalNewsletter.value.published_at) {
+      const publishedDate = new Date(originalNewsletter.value.published_at)
+      form.published_date = publishedDate.toISOString().split('T')[0]
+    } else {
+      form.published_date = ''
+    }
 
     // 기존 body_html을 문단으로 변환
     if (originalNewsletter.value.body_html) {
@@ -956,6 +988,25 @@ const hasContent = () => {
   return form.paragraphs.some(p => p.content.trim())
 }
 
+// 오늘 날짜를 YYYY-MM-DD 형식으로 반환 (미래 날짜 선택 방지용)
+const getTodayDate = () => {
+  const today = new Date()
+  return today.toISOString().split('T')[0]
+}
+
+// Date input 클릭 시 datepicker 열기
+const openDatePicker = event => {
+  const input = event.target
+  if (input && input.showPicker) {
+    try {
+      input.showPicker()
+    } catch (error) {
+      // 일부 브라우저에서 미지원 시 무시
+      console.log('showPicker not supported')
+    }
+  }
+}
+
 // 뉴스레터 저장
 const saveNewsletter = async status => {
   try {
@@ -971,6 +1022,7 @@ const saveNewsletter = async status => {
       subtitle_bold: form.subtitle_bold,
       status: status || form.status,
       cognito_user_id: userInfo.userId || userInfo.username,
+      published_date: form.published_date || null, // 발행일이 지정된 경우만 전송
     }
 
     let response
