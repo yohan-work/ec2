@@ -280,7 +280,7 @@ const careersBox2Button = ref({
     
     @include desktop {
       margin-bottom: rem(40);
-      width: rem(725);
+      width: rem(745);
     }
   }
   
