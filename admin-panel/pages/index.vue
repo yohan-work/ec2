@@ -9,33 +9,8 @@
       <div class="inner">
         <MainTitle 
           title="What we do"
-          description="콘센트릭스는 디지털 세상에서 기업과 함께 더 나은 고객 경험을 만들어 갑니다.<br/>디지털마케팅/이커머스에 있어, 전략, UX/UI, 광고, 분석, 구축, 운영, 고객 경험 관리와 서비스 혁신까지 아우르는<br/>통합 서비스로 기업의 성과를 높입니다."
+          description="콘센트릭스는 디지털 세상에서 기업과 함께 더 나은 고객 경험을 만들어 갑니다.<br/><br class='br-mo'/>디지털마케팅/이커머스에 있어, 전략, UX/UI, 광고, 분석, 구축, 운영, 고객 경험 관리와 서비스 혁신까지 아우르는 <br class='br-pc'/>통합 서비스로 기업의 성과를 높입니다."
         />
-        <!-- 첫 번째 섹션 콘텐츠 -->
-        <div class="content-grid">
-          <div 
-            v-for="(item, index) in contentGridItems" 
-            :key="index"
-            class="content-grid__item"
-          >
-            <div class="content-grid__item-inner">
-              <!-- 컨텐츠 영역 -->
-              <div class="content-grid__item-content">
-                <!-- 나중에 컨텐츠 추가 -->
-              </div>
-              <!-- Hover 오버레이 -->
-              <div class="content-grid__item-overlay">
-                <AppButton 
-                  v-if="item.link"
-                  :href="item.link.href"
-                  :text="item.link.text"
-                  color="white"
-                  effect="left"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -55,11 +30,11 @@
               :key="index"
               class="stats-grid__item"
             >
-                <div class="stats-grid__number" v-html="stat.number"></div>
-              <div class="stats-grid__label">{{ stat.label }}</div>
               <div class="stats-grid__icon">
                 <img :src="stat.icon" :alt="stat.label" />
               </div>
+              <div class="stats-grid__number" v-html="stat.number"></div>
+              <div class="stats-grid__label">{{ stat.label }}</div>
             </div>
           </div>
         </div>
@@ -67,18 +42,53 @@
     </section>
 
     <!-- 세 번째 섹션 -->
-    <section class="content-section">
+    <section class="content-section content-section--careers">
       <div class="inner">
         <MainTitle title="Careers" />
         <!-- 세 번째 섹션 콘텐츠 -->
+        <div class="careers-box-container">
+          <div class="careers-box careers-box--1">
+            <h3 class="careers-box__title" v-html="careersBox1Title"></h3>
+            <p class="careers-box__description" v-html="careersBox1Description"></p>
+            <AppButton 
+              v-if="careersBox1Button"
+              :to="careersBox1Button.href"
+              :text="careersBox1Button.text"
+              color="green"
+              arrow
+              effect="left"
+            />
+          </div>
+          <div class="careers-box careers-box--2">
+            <h3 class="careers-box__title" v-html="careersBox2Title"></h3>
+            <p class="careers-box__description" v-html="careersBox2Description"></p>
+            <AppButton 
+              v-if="careersBox2Button"
+              :to="careersBox2Button.href"
+              :text="careersBox2Button.text"
+              color="green"
+              arrow
+              effect="left"
+            />
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- 네 번째 섹션 -->
-    <section class="content-section">
+    <section class="content-section content-section--with-bg" :style="{ backgroundImage: `url(${customSectionBgImage})` }">
       <div class="inner">
-        <MainTitle title="Contact Us" />
-        <!-- 네 번째 섹션 콘텐츠 -->
+        <div class="custom-title-section">
+          <h2 class="custom-title-section__heading" v-html="customSectionTitle"></h2>
+          <p class="custom-title-section__description" v-html="customSectionDescription"></p>
+          <AppButton 
+            v-if="customSectionButton"
+            :href="customSectionButton.href"
+            :text="customSectionButton.text"
+            color="white"
+            effect="left"
+          />
+        </div>
       </div>
     </section>
   </div>
@@ -88,22 +98,12 @@
 import MainKeyVisualSwiper from '~/components/cnx/MainKeyVisualSwiper.vue'
 import MainTitle from '~/components/cnx/MainTitle.vue'
 import AppButton from '~/components/cnx/AppButton.vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 // 레이아웃 설정
 definePageMeta({
   layout: 'concentrix',
 })
-
-// 첫 번째 섹션 그리드 아이템 데이터
-// link 속성은 hover 시 표시될 링크 버튼 정보
-const contentGridItems = ref([
-  { id: 1, link: { href: '#', text: '링크 버튼' } },
-  { id: 2, link: { href: '#', text: '링크 버튼' } },
-  { id: 3, link: { href: '#', text: '링크 버튼' } },
-  { id: 4, link: { href: '#', text: '링크 버튼' } },
-  { id: 5, link: { href: '#', text: '링크 버튼' } }
-])
 
 // 두 번째 섹션 통계 데이터
 const statsData = ref([
@@ -158,6 +158,37 @@ const slides = ref([
   }
 ])
 
+// 네 번째 섹션 데이터
+const customSectionTitle = ref('Contact Us')
+const customSectionDescription = ref('Marketing.korea@concentrix.com')
+const customSectionButton = ref({
+  text: '문의하기',
+  href: 'mailto:Marketing.korea@concentrix.com'
+})
+const customSectionBgImage = computed(() => {
+  const basePath = '/assets/cnx/main/main_contactus_bg'
+  // 반응형 이미지 경로 (필요시 확장 가능)
+  return `${basePath}.png`
+})
+
+// 세 번째 섹션 careers 박스 데이터
+const careersBox1Title = ref('Digital & Technology Business')
+const careersBox1Description = ref('이커머스, UX/UI, 개발/운영 등<br class="br-mo-pc" /> 디지털마케팅 전 영역의<br class="br-mo" /> 전문가를 기다립니다.')
+const careersBox1Button = ref({
+  text: '자세히 보기',
+  href: '/cnx/careers?tab=0',
+  target: '_self'
+})
+
+const careersBox2Title = ref('Customer Service')
+const careersBox2Description = ref('고객과 소통하는<br> Customer Service<br class="br-tab-mo" /> 전문가를 찾습니다.')
+const careersBox2Button = ref({
+  text: '자세히 보기',
+  href: '/cnx/careers?tab=1',
+  target: '_self'
+})
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -180,52 +211,68 @@ const slides = ref([
   @include desktop {
     padding-top: rem(120);
   }
-}
 
-.content-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: rem(20);
-  margin-top: rem(40);
-  
-  @include tablet {
-    grid-template-columns: repeat(2, 1fr);
-    gap: rem(20);
-    margin-top: rem(50);
+  &--careers {
+    padding-bottom: rem(50);
     
-    // 태블릿: 상단 2개, 중간 1개(전체 너비), 하단 2개
-    .content-grid__item:nth-child(3) {
-      grid-column: 1 / -1;
+    @include tablet {
+      padding-bottom: rem(120);
+    }
+    
+    @include desktop {
+      padding-bottom: rem(100);
     }
   }
-  
-  @include desktop {
-    grid-template-columns: repeat(6, 1fr);
-    gap: rem(20);
-    margin-top: rem(60);
+
+  &--with-bg {
+    position: relative;
+    width: 100%;
+    height: rem(200);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: rem(50);
+    padding-bottom: rem(50);
     
-    .content-grid__item:nth-child(1) {
-      grid-column: span 2;
-    }
-    .content-grid__item:nth-child(2) {
-      grid-column: span 2;
-    }
-    .content-grid__item:nth-child(3) {
-      grid-column: span 2;
+    @include tablet {
+      height: rem(250);
+      padding-top: rem(80);
+      padding-bottom: rem(80);
     }
     
-    // 하단 2개 아이템: 각각 3칸씩 차지 (1.5칸 = 3칸/6열)
-    .content-grid__item:nth-child(4),
-    .content-grid__item:nth-child(5) {
-      grid-column: span 3;
+    @include desktop {
+      height: rem(250);
+      padding-top: rem(120);
+      padding-bottom: rem(120);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: 0;
+    }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
     }
   }
 }
 
 .stats-section {
+  width: 100%;
+  
   &__text {
-    margin-bottom: rem(30);
     width: 100%;
+    margin-bottom: rem(30);
     
     @include tablet {
       margin-bottom: rem(40);
@@ -239,10 +286,10 @@ const slides = ref([
   
   &__text-line {
     color: $d-black;
-    font-size: rem(24);
+    font-size: rem(16);
     font-weight: 300;
     line-height: 140%;
-    letter-spacing: rem(-0.72);
+    letter-spacing: rem(-0.48);
     margin: 0;
     
     @include tablet {
@@ -259,41 +306,35 @@ const slides = ref([
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: rem(20);
   padding-top: rem(24);
   padding-bottom: rem(24);
-  
-  @include tablet {
-    grid-template-columns: repeat(3, 1fr);
-    gap: rem(50);
-  }
+  width: 100%;
   
   @include desktop {
-    grid-template-columns: repeat(5, rem(199));
-    justify-content: space-between;
-    gap: 0;
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
 .stats-grid__item {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  text-align: center;
 }
 
 .stats-grid__number {
   color: $p-blue;
-  font-size: rem(40);
+  font-size: rem(32);
   font-weight: 700;
   line-height: 100%;
-  letter-spacing: rem(-2.5);
+  letter-spacing: rem(-2.24);
   margin-bottom: 0;
   
   @include tablet {
-    font-size: rem(70);
-    letter-spacing: rem(-4.9);
+    font-size: rem(60);
+    letter-spacing: rem(-4.2);
     margin-bottom: rem(6);
   }
   
@@ -314,13 +355,13 @@ const slides = ref([
 
 .stats-grid__label {
   color: $p-blue;
-  font-size: rem(12);
+  font-size: rem(9);
   font-weight: 600;
   line-height: 140%;
   margin-bottom: rem(12);
   
   @include tablet {
-    font-size: rem(19);
+    font-size: rem(18);
     margin-bottom: rem(14);
   }
   
@@ -331,20 +372,23 @@ const slides = ref([
 }
 
 .stats-grid__icon {
-  width: rem(40);
-  height: rem(40);
+  width: rem(80);
+  height: rem(80);
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+  margin-bottom: rem(12);
   
   @include tablet {
-    width: rem(48);
-    height: rem(48);
+    width: rem(160);
+    height: rem(160);
+    margin-bottom: rem(16);
   }
   
   @include desktop {
-    width: rem(56);
-    height: rem(56);
+    width: rem(230);
+    height: rem(230);
+    margin-bottom: rem(20);
   }
   
   img {
@@ -355,53 +399,156 @@ const slides = ref([
   }
 }
 
-.content-grid__item {
-  position: relative;
-  aspect-ratio: 1;
-  background-color: $n-gray;
-  border-radius: rem(8);
-  overflow: hidden;
-}
-
-.content-grid__item-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.content-grid__item-content {
-  width: 100%;
-  height: 100%;
-  padding: rem(20);
+.careers-box-container {
+  display: flex;
+  flex-direction: column;
+  gap: rem(10);
+  margin-top: rem(12);
   
   @include tablet {
-    padding: rem(24);
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: rem(32);
+    margin-top: rem(24);
   }
   
   @include desktop {
-    padding: rem(30);
+    flex-wrap: nowrap;
+    gap: rem(32);
+    margin-top: rem(24);
   }
 }
 
-.content-grid__item-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
+.careers-box {
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  height: rem(300);
+  background-color: #f7f7f7;
+  border-radius: rem(8);
+  padding: rem(20);
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: right rem(20) bottom 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+  flex-direction: column;
   
-  .content-grid__item:hover & {
-    opacity: 1;
-    pointer-events: auto;
+  @include tablet {
+    width: calc((100% - rem(32)) / 2);
+    height: rem(530);
+    border-radius: rem(20);
+    padding: rem(30);
+    background-position: right rem(30) bottom 0;
+  }
+  
+  @include desktop {
+    width: calc((100% - rem(32)) / 2);
+    height: rem(616);
+  }
+
+  &__title {
+    @include sub-headline-02;
+    margin: 0 0 rem(8) 0;
+    color: $d-black;
+    
+    @include tablet {
+      margin-bottom: rem(12);
+    }
+    
+    @include desktop {
+      margin-bottom: rem(12);
+    }
+  }
+
+  &__description {
+    @include body-01;
+    margin: 0;
+    color: $gray-1;
+    word-break: keep-all;
+    font-size: rem(16);
+    font-weight: 700;
+    line-height: 140%;
+    
+    @include tablet {
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+  }
+
+  button,
+  a {
+    align-self: flex-start;
+    margin-top: rem(20);
+    
+    @include tablet {
+      background-color: #f7f7f7;
+    }
+    
+    @include desktop {
+      margin-top: rem(30);
+    }
+  }
+
+  &--1 {
+    background-image: url('/assets/cnx/main/main_careers_bg1_m.png');
+    
+    @include tablet {
+      background-image: url('/assets/cnx/main/main_careers_bg1_t.png');
+    }
+    
+    @include desktop {
+      background-image: url('/assets/cnx/main/main_careers_bg1.png');
+    }
+  }
+
+  &--2 {
+    background-image: url('/assets/cnx/main/main_careers_bg2_m.png');
+    
+    @include tablet {
+      background-image: url('/assets/cnx/main/main_careers_bg2_t.png');
+    }
+    
+    @include desktop {
+      background-image: url('/assets/cnx/main/main_careers_bg2.png');
+    }
   }
 }
 
+.custom-title-section {
+  text-align: left;
+
+  &__heading {
+    @include sub-headline-02;
+    color: $d-white;
+  }
+
+  &__description {
+    @include body-03;
+    color: $d-white;
+    line-height: 140%;
+    margin-top: 0;
+    
+    @include tablet {
+      margin-top: rem(4);
+    }
+    
+    @include desktop {
+      margin-top: rem(2);
+    }
+  }
+
+  // AppButton이 button 또는 a 태그로 렌더링되므로 직접 선택
+  button,
+  a {
+    margin-top: rem(18);
+    
+    @include tablet {
+      margin-top: rem(54);
+    }
+    
+    @include desktop {
+      margin-top: rem(47);
+    }
+  }
+}
 
 </style>

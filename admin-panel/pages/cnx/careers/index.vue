@@ -185,7 +185,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 
 import AppKeyVisual from '~/components/cnx/AppKeyVisual'
 import AppTitle from '~/components/cnx/AppTitle'
@@ -206,8 +207,20 @@ definePageMeta({
   ssr: false,
 })
 
+const route = useRoute()
 const activeTab = ref(0)
 const activeButtonTab = ref(0)
+
+// 쿼리 파라미터에서 탭 인덱스 읽기
+onMounted(() => {
+  const tabParam = route.query.tab
+  if (tabParam !== undefined) {
+    const tabIndex = parseInt(tabParam)
+    if (!isNaN(tabIndex) && tabIndex >= 0 && tabIndex <= 1) {
+      activeTab.value = tabIndex
+    }
+  }
+})
 
 const handleTabChange = (event) => {
   // console.log('Main tab changed:', event)

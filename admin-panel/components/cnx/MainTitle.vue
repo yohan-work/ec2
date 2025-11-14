@@ -32,12 +32,16 @@ const props = defineProps({
     color: $gray-1;
     line-height: 140%;
     margin-top: rem(24);
+    font-size: rem(16);
+    word-break: keep-all;
     
     @include tablet {
+      font-size: $font-size-body1-tablet;
       margin-top: rem(28);
     }
     
     @include desktop {
+      font-size: $font-size-body1-desktop;
       margin-top: rem(17);
     }
   }
