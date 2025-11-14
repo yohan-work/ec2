@@ -539,19 +539,6 @@ const careersBox2Button = ref({
     }
   }
 
-  // AppButton이 button 또는 a 태그로 렌더링되므로 직접 선택
-  button,
-  a {
-    margin-top: rem(18);
-    
-    @include tablet {
-      margin-top: rem(54);
-    }
-    
-    @include desktop {
-      margin-top: rem(47);
-    }
-  }
 }
 
 </style>
