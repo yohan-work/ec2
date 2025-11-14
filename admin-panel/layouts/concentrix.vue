@@ -1,5 +1,5 @@
 <template>
-  <div class="cnx-layout" :class="{ 'skip-link-focused': isSkipLinkFocused }">
+  <div class="cnx-layout" :class="{ 'skip-link-focused': isSkipLinkFocused }" @contextmenu.prevent>
     <!-- 스킵네비게이션 -->
     <a 
       href="#main-content" 

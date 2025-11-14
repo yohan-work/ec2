@@ -526,13 +526,16 @@ const careersBox2Button = ref({
     color: $d-white;
     line-height: 140%;
     margin-top: 0;
+    margin-bottom: rem(18);
     
     @include tablet {
       margin-top: rem(4);
+      margin-bottom: rem(54);
     }
     
     @include desktop {
       margin-top: rem(2);
+      margin-bottom: rem(47);
     }
   }
 
