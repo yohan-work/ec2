@@ -39,14 +39,10 @@
 </template>
 
 <script setup>
-import { computed, useSlots, ref, onMounted, onUnmounted, nextTick } from 'vue';
+import { computed, useSlots, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { findResponsiveImagePaths } from '~/utils/cnx/image-utils';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// GSAP ScrollTrigger 플러그인 등록
-gsap.registerPlugin(ScrollTrigger);
+import { useIntersectionObserver } from '@vueuse/core';
 
 const { title, description, imageName, imageAlt, imagePath } = defineProps({
   title: {
@@ -74,12 +70,15 @@ const { title, description, imageName, imageAlt, imagePath } = defineProps({
 const slots = useSlots();
 const route = useRoute();
 
-// refs for GSAP animation
+// refs
 const containerRef = ref(null);
 const titleRef = ref(null);
 const descriptionRef = ref(null);
-// ScrollTrigger 인스턴스 저장
-let scrollTriggerInstance = null;
+
+// Intersection Observer 상태
+const isVisible = ref(false);
+let lastScrollY = 0;
+let isFirstCheck = true; // 첫 번째 체크인지 확인
 
 // 슬롯이 있는지 확인하는 computed
 const hasSlot = computed(() => !!slots.default);
@@ -95,99 +94,37 @@ const imagePaths = computed(() => {
 
 const { desktopImage, mobileImage, tabletImage } = imagePaths.value;
 
-// GSAP 애니메이션 초기화
-const initAnimation = () => {
-  if (!containerRef.value) return { timeline: null, scrollTrigger: null };
-  if (!titleRef.value && !descriptionRef.value) return { timeline: null, scrollTrigger: null };
-
-  // 초기 상태 설정 (애니메이션 전 상태)
-  if (titleRef.value) {
-    gsap.set(titleRef.value, { 
-      opacity: 0, 
-      y: 30 
-    });
-  }
-  if (descriptionRef.value) {
-    gsap.set(descriptionRef.value, { 
-      opacity: 0, 
-      y: 30 
-    });
-  }
-
-  // 타임라인을 paused로 시작
-  const tl = gsap.timeline({ paused: true });
-
-  // 순차적 애니메이션: 타이틀 → 디스크립션
-  if (titleRef.value) {
-    tl.to(titleRef.value, {
-      duration: 0.6,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out',
-      immediateRender: false
-    });
-  }
-  
-  if (descriptionRef.value) {
-    tl.to(descriptionRef.value, {
-      duration: 0.6,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out',
-      immediateRender: false
-    }, '-=0.3'); // 타이틀 애니메이션과 0.3초 겹침
-  }
-
-  // ScrollTrigger를 별도로 생성하고 저장
-  scrollTriggerInstance = ScrollTrigger.create({
-    trigger: containerRef.value,
-    start: 'top 80%',
-    end: 'bottom 20%',
-    onEnter: () => tl.play(), // 확실히 트리거되었을 때만 재생
-    onLeaveBack: () => tl.reverse(),
-    immediateRender: false
-  });
-  
-  return { timeline: tl, scrollTrigger: scrollTriggerInstance };
-};
-
-// 컴포넌트 마운트 시 애니메이션 초기화
-onMounted(async () => {
-  await nextTick();
-  
-  if (!containerRef.value) return;
-  
-  requestAnimationFrame(() => {
-    try {
-      // 애니메이션 초기화 (항상 실행)
-      const { timeline: tl, scrollTrigger } = initAnimation();
-      
-      // ScrollTrigger refresh 호출
-      gsap.registerPlugin(ScrollTrigger);
-      try {
-        ScrollTrigger.refresh();
-        
-        // refresh 후 상태 확인
-        if (tl && scrollTrigger && scrollTrigger.isActive) {
-          // 이미 활성화되어 있다면 타임라인을 즉시 재생
-          tl.play(0);
-        }
-      } catch (_) { /* noop */ }
-    } catch (error) {
-      // 에러 발생 시 기본 애니메이션 초기화
-      console.warn('AppSubCont animation initialization error:', error);
-      initAnimation();
+// VueUse Intersection Observer 설정
+useIntersectionObserver(
+  containerRef,
+  ([{ isIntersecting }]) => {
+    isVisible.value = isIntersecting;
+    
+    // 현재 스크롤 위치
+    const currentScrollY = window.scrollY || window.pageYOffset;
+    // 스크롤 방향 감지 (true: 아래로, false: 위로)
+    const isScrollingDown = currentScrollY > lastScrollY;
+    
+    // 페이지 최상단에 있는지 확인 (스크롤 위치가 100px 이하)
+    const isNearTop = currentScrollY < 100;
+    
+    if (isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+      // 아래로 스크롤하거나, 첫 로드이거나, 페이지 최상단인 경우 active 클래스 추가
+      containerRef.value?.classList.add('active');
+      isFirstCheck = false; // 첫 체크 완료
+    } else if (!isIntersecting && !isScrollingDown) {
+      // 위로 스크롤하면서 화면에서 벗어날 때 active 클래스 제거 (리셋)
+      containerRef.value?.classList.remove('active');
+      isFirstCheck = true; // 다시 첫 체크 상태로 (재진입 대비)
     }
-  });
-});
-
-// 컴포넌트 언마운트 시 ScrollTrigger 정리
-onUnmounted(() => {
-  if (scrollTriggerInstance) {
-    scrollTriggerInstance.kill();
-    scrollTriggerInstance = null;
+    
+    lastScrollY = currentScrollY;
+  },
+  {
+    threshold: 0.2, // 20% 이상 보일 때 감지
+    rootMargin: '-50px' // 뷰포트 경계에서 50px 안쪽에서 감지
   }
-});
+);
 </script>
 
 <style lang="scss" scoped>
@@ -195,6 +132,21 @@ onUnmounted(() => {
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  // active 상태: 순차적 애니메이션
+  &.active {
+    .title {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0s;
+    }
+
+    .description {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.3s; // 타이틀보다 0.3초 늦게
+    }
+  }
 }
 
 /* 상단 타이틀 영역 */
@@ -223,12 +175,20 @@ onUnmounted(() => {
   @include sub-headline-01;
   color: $d-black;
   margin: 0 0 rem(24) 0;
+  // 초기 상태: 투명하고 아래에 위치
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .description {
   @include body-02;
   color: $d-black;
   margin: 0;
+  // 초기 상태: 투명하고 아래에 위치
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 /* 가운데 슬롯 영역 */
