@@ -1,5 +1,5 @@
 <template>
-  <div class="app-title" :class="`text-${align}`" ref="containerRef">
+  <div ref="containerRef" class="app-title" :class="`text-${align}`">
     <component :is="headingTag" v-if="title" ref="titleRef" class="app-title-heading">
       <template v-if="isHtmlTitle">
         <span class="app-title-html" v-html="title"></span>
@@ -45,7 +45,8 @@ const containerRef = ref(null)
 const titleRef = ref(null)
 const textRef = ref(null)
 const isVisible = ref(false)
-const hasBeenActivated = ref(false) // 한 번이라도 활성화되었는지 추적
+let lastScrollY = 0
+let isFirstCheck = true // 첫 번째 체크인지 확인
 
 // 제목이 HTML을 포함하는지 자동 감지 (간단 검출)
 const isHtmlTitle = computed(() => {
@@ -62,18 +63,26 @@ useIntersectionObserver(
     // 부모 컴포넌트에 가시성 상태 전달
     emit('visibility-change', isIntersecting)
     
+    // 현재 스크롤 위치
+    const currentScrollY = window.scrollY || window.pageYOffset
+    // 스크롤 방향 감지 (true: 아래로, false: 위로)
+    const isScrollingDown = currentScrollY > lastScrollY
+    
+    // 페이지 최상단에 있는지 확인 (스크롤 위치가 100px 이하)
+    const isNearTop = currentScrollY < 100
+    
     // 콘솔에 상태 로그 (개발용)
-    if (isIntersecting && !hasBeenActivated.value) {
-      console.log('✅ AppTitle 섹션이 화면에 처음 보입니다!')
-      // active 클래스 추가 (한 번만)
+    if (isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+      // 아래로 스크롤하거나, 첫 로드이거나, 페이지 최상단인 경우 active 클래스 추가
       containerRef.value?.classList.add('active')
-      hasBeenActivated.value = true // 활성화 상태 기록
-    } else if (isIntersecting && hasBeenActivated.value) {
-      console.log('✅ AppTitle 섹션이 다시 화면에 보입니다! (이미 활성화됨)')
-    } else {
-      console.log('❌ AppTitle 섹션이 화면에서 벗어났습니다! (active 상태 유지)')
-      // active 클래스는 제거하지 않음 - 한 번 활성화되면 계속 유지
+      isFirstCheck = false // 첫 체크 완료
+    } else if (!isIntersecting && !isScrollingDown) {
+      // 위로 스크롤하면서 화면에서 벗어날 때 active 클래스 제거 (리셋)
+      containerRef.value?.classList.remove('active')
+      isFirstCheck = true // 다시 첫 체크 상태로 (재진입 대비)
     }
+    
+    lastScrollY = currentScrollY
   },
   {
     threshold: 0.2, // 20% 이상 보일 때 감지
