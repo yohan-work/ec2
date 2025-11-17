@@ -7,7 +7,7 @@
                 <AppButtonTab v-model="activeTab1" :tabs="tabs1" alignment="left" @tab-change="onTabChange">
                     <!-- eslint-disable vue/no-v-for-template-key -->
                     <template v-for="(center, index) in digitalTechCenters" :key="index" #[`tab-${index}`]>
-                        <div class="container">
+                        <div class="container" :ref="el => setContainerRef(el, 'digital', index)">
                             <div class="container__content">
                                 <h2 class="container__content-title">
                                     <span>콘센트릭스</span> <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
@@ -54,7 +54,7 @@
                         <!-- S : 센터 이미지 영역  -->
                         <div class="container__image">
                             <!-- 첫 번째 이미지 -->
-                            <div class="container__image-item">
+                            <div class="container__image-item" :ref="el => setImageItemRef(el)">
                                 <div>
                                     <picture>
                                         <source :srcset="center.images.pc[0]" media="(min-width: 1480px)"
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <!-- 두 번째 이미지 -->
-                            <div class="container__image-item">
+                            <div class="container__image-item" :ref="el => setImageItemRef(el)">
                                 <div>
                                     <picture>
                                         <source :srcset="center.images.pc[1]" media="(min-width: 1480px)"
@@ -100,7 +100,7 @@
             <template #customer-service>
                 <AppButtonTab v-model="activeTab2" :tabs="tabs2" alignment="left" @tab-change="onTabChange">
                     <template v-for="(center, index) in customerServiceCenters" :key="index" #[`tab-${index}`]>
-                        <div class="container customer-service">
+                        <div class="container customer-service" :ref="el => setContainerRef(el, 'customer', index)">
                             <div class="container__content">
                                 <h2 class="container__content-title">
                                     <span>콘센트릭스</span> <br class="br-tablet-only"> <span>{{ center.name }}</span></h2>
@@ -147,7 +147,7 @@
                         <!-- S : 센터 이미지 영역  -->
                         <div class="container__image">
                             <!-- 첫 번째 이미지 -->
-                            <div class="container__image-item">
+                            <div class="container__image-item" :ref="el => setImageItemRef(el)">
                                 <div>
                                     <picture>
                                         <source :srcset="center.images.pc[0]" media="(min-width: 1480px)"
@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                             <!-- 두 번째 이미지 -->
-                            <div class="container__image-item">
+                            <div class="container__image-item" :ref="el => setImageItemRef(el)">
                                 <div>
                                     <picture>
                                         <source :srcset="center.images.pc[1]" media="(min-width: 1480px)"
@@ -198,7 +198,7 @@ definePageMeta({
     layout: 'concentrix',
 })
 
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, onBeforeUnmount, onBeforeUpdate, nextTick } from 'vue'
 
 // Components
 import AppTitle from '~/components/cnx/AppTitle.vue'
@@ -216,6 +216,12 @@ const activeTab1 = ref(0)
 const activeTab2 = ref(0)
 const maps = ref({})
 const isMobile = ref(false)
+
+// Fade-up 애니메이션을 위한 refs
+const containerRefs = ref([])
+const containerObservers = ref([])
+const imageItemRefs = ref([])
+const imageItemObservers = ref([])
 
 const contactTabs = [
     { label: 'Digital & Technology Business', slot: 'digital-technology-business' },
@@ -362,6 +368,100 @@ const customerServiceCenters = [
 const tabs1 = digitalTechCenters.map(center => ({ text: center.name }));
 const tabs2 = customerServiceCenters.map(center => ({ text: center.name }));
 
+// Container ref 설정 함수
+const setContainerRef = (el, type, index) => {
+    if (el) {
+        containerRefs.value.push(el)
+    }
+}
+
+// Image Item ref 설정 함수
+const setImageItemRef = (el) => {
+    if (el) {
+        imageItemRefs.value.push(el)
+    }
+}
+
+// Container Observers 설정
+const setupContainerObservers = () => {
+    // 기존 observers 정리
+    containerObservers.value.forEach(observer => observer?.disconnect())
+    containerObservers.value = []
+
+    // 각 container에 대해 개별 observer 생성
+    containerRefs.value.forEach((container) => {
+        if (!container) return
+
+        let lastScrollY = 0
+        let isFirstCheck = true
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                const currentScrollY = window.scrollY || window.pageYOffset
+                const isScrollingDown = currentScrollY > lastScrollY
+                const isNearTop = currentScrollY < 100
+
+                if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+                    container.classList.add('active')
+                    isFirstCheck = false
+                } else if (!entry.isIntersecting && !isScrollingDown) {
+                    container.classList.remove('active')
+                    isFirstCheck = true
+                }
+
+                lastScrollY = currentScrollY
+            },
+            {
+                threshold: 0.1,
+                rootMargin: '-50px'
+            }
+        )
+
+        observer.observe(container)
+        containerObservers.value.push(observer)
+    })
+}
+
+// Image Item Observers 설정
+const setupImageItemObservers = () => {
+    // 기존 observers 정리
+    imageItemObservers.value.forEach(observer => observer?.disconnect())
+    imageItemObservers.value = []
+
+    // 각 image-item에 대해 개별 observer 생성
+    imageItemRefs.value.forEach((imageItem) => {
+        if (!imageItem) return
+
+        let lastScrollY = 0
+        let isFirstCheck = true
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                const currentScrollY = window.scrollY || window.pageYOffset
+                const isScrollingDown = currentScrollY > lastScrollY
+                const isNearTop = currentScrollY < 100
+
+                if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+                    imageItem.classList.add('active')
+                    isFirstCheck = false
+                } else if (!entry.isIntersecting && !isScrollingDown) {
+                    imageItem.classList.remove('active')
+                    isFirstCheck = true
+                }
+
+                lastScrollY = currentScrollY
+            },
+            {
+                threshold: 0.1,
+                rootMargin: '-50px'
+            }
+        )
+
+        observer.observe(imageItem)
+        imageItemObservers.value.push(observer)
+    })
+}
+
 // 네이버 지도 스크립트 로드 함수
 const loadNaverMapScript = () => {
     return new Promise((resolve, reject) => {
@@ -470,11 +570,17 @@ const initializeCurrentMap = async () => {
 const handleTabChange = async () => {
     await nextTick()
     initializeCurrentMap()
+    // 탭 변경 시 observer 재설정
+    setupContainerObservers()
+    setupImageItemObservers()
 }
 
 const onTabChange = async () => {
     await nextTick()
     initializeCurrentMap()
+    // 탭 변경 시 observer 재설정
+    setupContainerObservers()
+    setupImageItemObservers()
 }
 
 // 리사이즈 이벤트 핸들러
@@ -487,9 +593,20 @@ const handleResize = () => {
     }
 }
 
+onBeforeUpdate(() => {
+    containerRefs.value = []
+    imageItemRefs.value = []
+})
+
 onMounted(() => {
     checkScreenSize()
     initializeCurrentMap()
+    
+    // Fade-up 애니메이션 Observer 설정
+    nextTick(() => {
+        setupContainerObservers()
+        setupImageItemObservers()
+    })
 
     // 리사이즈 이벤트 리스너 등록
     if (process.client) {
@@ -502,6 +619,16 @@ onUnmounted(() => {
     if (process.client) {
         window.removeEventListener('resize', handleResize)
     }
+})
+
+onBeforeUnmount(() => {
+    // Container observers 정리
+    containerObservers.value.forEach(observer => observer?.disconnect())
+    containerObservers.value = []
+    
+    // Image Item observers 정리
+    imageItemObservers.value.forEach(observer => observer?.disconnect())
+    imageItemObservers.value = []
 })
 
 </script>
@@ -523,6 +650,53 @@ onUnmounted(() => {
 
     @include desktop {
         padding: 0 0 rem(78);
+    }
+
+    // 초기 상태: 자식 요소들 숨김
+    .container__content-title,
+    .container__content-info-item,
+    .container__map,
+    .container__content-info-mobile-item {
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    // active 상태: 순차적으로 나타남
+    &.active {
+        .container__content-title {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0s;
+        }
+
+        .container__content-info-item {
+            opacity: 1;
+            transform: translateY(0);
+            &:nth-child(1) {
+                transition-delay: 0.2s;
+            }
+            &:nth-child(2) {
+                transition-delay: 0.3s;
+            }
+        }
+
+        .container__map {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.4s;
+        }
+
+        .container__content-info-mobile-item {
+            opacity: 1;
+            transform: translateY(0);
+            &:nth-child(1) {
+                transition-delay: 0.5s;
+            }
+            &:nth-child(2) {
+                transition-delay: 0.6s;
+            }
+        }
     }
 
     &__content {
@@ -721,6 +895,14 @@ onUnmounted(() => {
         &-item {
             width: 100%;
             height: 100%;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+            &.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
 
             div {
                 width: 100%;
