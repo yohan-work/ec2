@@ -23,9 +23,7 @@
 
 <script setup>
 
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ref, computed, onBeforeUpdate, onMounted, onBeforeUnmount } from 'vue'
 
 const props = defineProps({
   headingLevel: {
@@ -42,6 +40,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const titleRef = ref(null)
 
 const groupedBusinessItems = computed(() => {
   const grouped = []
@@ -63,48 +63,103 @@ const setItemRef = (el) => {
   }
 }
 
-let ctx = null
-
-gsap.registerPlugin(ScrollTrigger)
-
-const initAnimation = () => {
-  ctx = gsap.context(() => {
-    if (itemRefs.value.length === 0) return
-    itemRefs.value.forEach(item => {
-      if (!item) return
-
-      gsap.fromTo(item, {
-        y: 30,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none none',
-          invalidateOnRefresh: true,
-          // markers: true
-        }
-      })
-    })
-  })
-}
-
 onBeforeUpdate(() => {
   itemRefs.value = []
 })
 
+// 타이틀용 Observer
+let titleObserver = null
+
+// 각 아이템에 대한 Observer 배열
+const itemObservers = ref([])
+
+// 타이틀 Observer 설정
+const setupTitleObserver = () => {
+  if (!titleRef.value) return
+
+  let lastScrollY = 0
+  let isFirstCheck = true
+
+  titleObserver = new IntersectionObserver(
+    ([entry]) => {
+      const currentScrollY = window.scrollY || window.pageYOffset
+      const isScrollingDown = currentScrollY > lastScrollY
+      const isNearTop = currentScrollY < 100
+
+      if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+        titleRef.value.classList.add('active')
+        isFirstCheck = false
+      } else if (!entry.isIntersecting && !isScrollingDown) {
+        titleRef.value.classList.remove('active')
+        isFirstCheck = true
+      }
+
+      lastScrollY = currentScrollY
+    },
+    {
+      threshold: 0.2,
+      rootMargin: '-50px'
+    }
+  )
+
+  titleObserver.observe(titleRef.value)
+}
+
+// 아이템 Observers 설정
+const setupItemObservers = () => {
+  // 기존 observers 정리
+  itemObservers.value.forEach(observer => observer?.disconnect())
+  itemObservers.value = []
+
+  // 각 아이템에 대해 개별 observer 생성
+  itemRefs.value.forEach((item) => {
+    if (!item) return
+
+    let lastScrollY = 0
+    let isFirstCheck = true
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const currentScrollY = window.scrollY || window.pageYOffset
+        const isScrollingDown = currentScrollY > lastScrollY
+        const isNearTop = currentScrollY < 100
+
+        if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+          item.classList.add('active')
+          isFirstCheck = false
+        } else if (!entry.isIntersecting && !isScrollingDown) {
+          item.classList.remove('active')
+          isFirstCheck = true
+        }
+
+        lastScrollY = currentScrollY
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '-50px'
+      }
+    )
+
+    observer.observe(item)
+    itemObservers.value.push(observer)
+  })
+}
+
 onMounted(() => {
-  initAnimation()
+  setupTitleObserver()
+  setupItemObservers()
 })
 
 onBeforeUnmount(() => {
-  ctx?.revert()
-  ctx = null
+  // 타이틀 observer 정리
+  if (titleObserver) {
+    titleObserver.disconnect()
+    titleObserver = null
+  }
+  
+  // 아이템 observers 정리
+  itemObservers.value.forEach(observer => observer?.disconnect())
+  itemObservers.value = []
 })
 </script>
 
@@ -122,6 +177,15 @@ onBeforeUnmount(() => {
 
   &-title {
     @include sub-headline-01;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+    // 타이틀 active 상태
+    &.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   &-container {
@@ -156,6 +220,7 @@ onBeforeUnmount(() => {
     border-radius: rem(12);
     transform: translateY(30px);
     opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 
     @include tablet {
       border-radius: rem(16);
@@ -164,6 +229,12 @@ onBeforeUnmount(() => {
     @include desktop {
       padding: rem(48);
       border-radius: rem(20);
+    }
+
+    // 각 아이템 active 상태
+    &.active {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     &-title {

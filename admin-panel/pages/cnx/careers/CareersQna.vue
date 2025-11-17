@@ -19,9 +19,8 @@
 
 <script setup>
 
-  import { ref, onMounted, onUnmounted } from 'vue'
-  import { gsap } from 'gsap'
-  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+  import { ref } from 'vue'
+  import { useIntersectionObserver } from '@vueuse/core'
 
   const props = defineProps({
     headingLevel: {
@@ -49,17 +48,6 @@
   const qaOpenRef = ref(new Set())
 
   // Q&A 토글
-  // const toggleQaItem = (refName) => {
-  //   const newSet = new Set(qaOpenRef.value)
-  //   if (newSet.has(refName)) {
-  //     newSet.delete(refName)
-  //   } else {
-  //     newSet.add(refName)
-  //   }
-  //   qaOpenRef.value = newSet
-  // }
-
-  // Q&A 토글
   const toggleQaItem = (refName) => {
     const newSet = new Set()
     if (qaOpenRef.value.has(refName)) {
@@ -70,78 +58,42 @@
     qaOpenRef.value = newSet
   }
 
-  let ctx = null
-  let observer = null
-  gsap.registerPlugin(ScrollTrigger)
+  // Intersection Observer 상태
+  const isVisible = ref(false)
+  let lastScrollY = 0
+  let isFirstCheck = true
 
-  const initAnimation = () => {
-    ctx = gsap.context(() => {
-      if (!containerRef.value) return
-      gsap.fromTo(titleRef.value, {
-        y: 30,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: titleRef.value,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none none'
-        }
-      })
-      gsap.fromTo(listRef.value, {
-        y: 30,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: listRef.value,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none none'
-        }
-      })
-    })
-  }
-
-  onMounted(() => {
-    initAnimation()
-    // observer = new IntersectionObserver(
-    //   (entries) => {
-    //     entries.forEach(entry => {
-    //       if (entry.isIntersecting && entry.intersectionRatio > 0) {
-    //         initAnimation()
-    //         if (observer) {
-    //           observer.disconnect()
-    //           observer = null
-    //         }
-    //       }
-    //     })
-    //   },
-    //   {
-    //     threshold: 0,
-    //     rootMargin: '0px 0px 2560px 0px',
-    //     root: null
-    //   }
-    // )
-    // if (containerRef.value) {
-    //   observer.observe(containerRef.value)
-    // }
-  })
-
-  onBeforeUnmount(() => {
-    // if (observer) {
-    //   observer.disconnect()
-    // }
-    ctx?.revert()
-    ctx = null
-  })
+  // VueUse Intersection Observer 설정
+  useIntersectionObserver(
+    containerRef,
+    ([{ isIntersecting }]) => {
+      isVisible.value = isIntersecting
+      
+      // 현재 스크롤 위치
+      const currentScrollY = window.scrollY || window.pageYOffset
+      // 스크롤 방향 감지 (true: 아래로, false: 위로)
+      const isScrollingDown = currentScrollY > lastScrollY
+      
+      // 페이지 최상단에 있는지 확인 (스크롤 위치가 100px 이하)
+      const isNearTop = currentScrollY < 100
+      
+      if (isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+        // 아래로 스크롤하거나, 첫 로드이거나, 페이지 최상단인 경우 active 클래스 추가
+        containerRef.value?.classList.add('active')
+        isFirstCheck = false
+      } else if (!isIntersecting && !isScrollingDown) {
+        // 위로 스크롤하면서 화면에서 벗어날 때 active 클래스 제거 (리셋)
+        containerRef.value?.classList.remove('active')
+        isFirstCheck = true
+      }
+      
+      lastScrollY = currentScrollY
+    },
+    {
+      threshold: 0.2,
+      rootMargin: '-50px'
+    }
+  )
 </script>
 
 <style lang="scss" scoped>
@@ -150,6 +102,7 @@
     &__title {
       transform: translateY(30px);
       opacity: 0;
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
       @include sub-headline-01;
 
       @include tablet {
@@ -162,8 +115,24 @@
       border-top: 1px solid #ddd;
       transform: translateY(30px);
       opacity: 0;
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
       @include tablet {
         margin-top: rem(48);
+      }
+    }
+
+    // active 상태: 순차적 애니메이션
+    &.active {
+      .careers-qna__title {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0s;
+      }
+
+      .careers-qna__list {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.3s;
       }
     }
 

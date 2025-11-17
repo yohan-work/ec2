@@ -16,10 +16,7 @@
 
 <script setup>
 
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import AppButton from '~/components/cnx/AppButton'
 
 const props = defineProps({
@@ -56,11 +53,6 @@ const titleRef = ref(null)
 const contentRef = ref(null)
 const buttonRef = ref(null)
 
-let ctx = null
-let observer = null
-
-gsap.registerPlugin(ScrollTrigger)
-
 // 배너 타입에 따른 배경 이미지 스타일 계산
 const bannerStyle = computed(() => {
   return {
@@ -70,74 +62,50 @@ const bannerStyle = computed(() => {
   }
 })
 
-const initAnimation = () => {
-  ctx = gsap.context(() => {
-    if (!titleRef.value && !contentRef.value && !buttonRef.value) return
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.value,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        duration: 1,
-        ease: 'power2.out',
-        toggleActions: 'play none none none'
+// Container Observer
+let containerObserver = null
+
+// Container Observer 설정
+const setupContainerObserver = () => {
+  if (!containerRef.value) return
+
+  let lastScrollY = 0
+  let isFirstCheck = true
+
+  containerObserver = new IntersectionObserver(
+    ([entry]) => {
+      const currentScrollY = window.scrollY || window.pageYOffset
+      const isScrollingDown = currentScrollY > lastScrollY
+      const isNearTop = currentScrollY < 100
+
+      if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+        containerRef.value.classList.add('active')
+        isFirstCheck = false
+      } else if (!entry.isIntersecting && !isScrollingDown) {
+        containerRef.value.classList.remove('active')
+        isFirstCheck = true
       }
-    })
-      .fromTo(titleRef.value, {
-        y: 30,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-      })
-      .fromTo(contentRef.value, {
-        y: 30,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-      }, '-=0.2')
-      .fromTo(buttonRef.value, {
-        y: 30,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-      }, '-=0.2')
-  })
+
+      lastScrollY = currentScrollY
+    },
+    {
+      threshold: 0.2,
+      rootMargin: '-50px'
+    }
+  )
+
+  containerObserver.observe(containerRef.value)
 }
 
 onMounted(() => {
-  initAnimation()
-  // observer = new IntersectionObserver(
-  //   (entries) => {
-  //     entries.forEach(entry => {
-  //       if (entry.isIntersecting && entry.intersectionRatio > 0) {
-  //         initAnimation()
-  //         if (observer) {
-  //           observer.disconnect()
-  //           observer = null
-  //         }
-  //       }
-  //     })
-  //   },
-  //   {
-  //     threshold: 0,
-  //     rootMargin: '0px 0px 2560px 0px',
-  //     root: null
-  //   }
-  // )
-  // if (containerRef.value) {
-  //   observer.observe(containerRef.value)
-  // }
+  setupContainerObserver()
 })
 
-onUnmounted(() => {
-  // if (observer) {
-  //   observer.disconnect()
-  // }
-  ctx?.revert()
-  ctx = null
+onBeforeUnmount(() => {
+  if (containerObserver) {
+    containerObserver.disconnect()
+    containerObserver = null
+  }
 })
 </script>
 
@@ -163,16 +131,16 @@ onUnmounted(() => {
   &__title {
     transform: translateY(30px);
     opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     @include sub-headline-02;
     color: #fff;
-
-
   }
 
   &__content {
     margin-block: rem(8) rem(24);
     transform: translateY(30px);
     opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     @include body-03;
     color: #fff;
 
@@ -203,9 +171,31 @@ onUnmounted(() => {
   &__button {
     transform: translateY(30px);
     opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 
     @include desktop {
       text-align: right;
+    }
+  }
+
+  // active 상태: 순차적 애니메이션
+  &.active {
+    .careers-banner__title {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0s;
+    }
+
+    .careers-banner__content {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.2s;
+    }
+
+    .careers-banner__button {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.4s;
     }
   }
 

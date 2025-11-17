@@ -18,10 +18,8 @@
 
 <script setup>
 
-  import { ref, onMounted, onBeforeUnmount } from 'vue'
-  import { gsap } from 'gsap'
-  import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
+  import { ref } from 'vue'
+  import { useIntersectionObserver } from '@vueuse/core'
   import AppButton from '~/components/cnx/AppButton'
 
   const imageRef = ref(null)
@@ -30,64 +28,42 @@
   const buttonRef = ref(null)
   const containerRef = ref(null)
 
-  let ctx = null
-  gsap.registerPlugin(ScrollTrigger)
+  // Intersection Observer 상태
+  const isVisible = ref(false)
+  let lastScrollY = 0
+  let isFirstCheck = true
 
-  const initAnimation = () => {
-    ctx = gsap.context(() => {
-    if (!imageRef.value && !titleRef_1.value && !titleRef_2.value && !buttonRef.value) return
-
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.value,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        ease: 'power2.out',
-        toggleActions: 'play none none none'
+  // VueUse Intersection Observer 설정
+  useIntersectionObserver(
+    containerRef,
+    ([{ isIntersecting }]) => {
+      isVisible.value = isIntersecting
+      
+      // 현재 스크롤 위치
+      const currentScrollY = window.scrollY || window.pageYOffset
+      // 스크롤 방향 감지 (true: 아래로, false: 위로)
+      const isScrollingDown = currentScrollY > lastScrollY
+      
+      // 페이지 최상단에 있는지 확인 (스크롤 위치가 100px 이하)
+      const isNearTop = currentScrollY < 100
+      
+      if (isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+        // 아래로 스크롤하거나, 첫 로드이거나, 페이지 최상단인 경우 active 클래스 추가
+        containerRef.value?.classList.add('active')
+        isFirstCheck = false
+      } else if (!isIntersecting && !isScrollingDown) {
+        // 위로 스크롤하면서 화면에서 벗어날 때 active 클래스 제거 (리셋)
+        containerRef.value?.classList.remove('active')
+        isFirstCheck = true
       }
-      }).fromTo(imageRef.value, {
-        scale: 1.2,
-        opacity: 0,
-      }, {
-        scale: 1,
-        opacity: 1,
-        ease: 'power2.out',
-      })
-      .fromTo(titleRef_1.value, {
-        y: 30,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        ease: 'power2.out',
-      }, 0)
-      .fromTo(titleRef_2.value, {
-        y: 30,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        ease: 'power2.out',
-      }, '-=0.2')
-      .fromTo(buttonRef.value, {
-        y: 30,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        ease: 'power2.out',
-      }, '-=0.2')
-    })
-  }
-
-  onMounted(() => {
-    initAnimation()
-  })
-
-  onBeforeUnmount(() => {
-    ctx?.revert()
-    ctx = null
-  })
+      
+      lastScrollY = currentScrollY
+    },
+    {
+      threshold: 0.2,
+      rootMargin: '-50px'
+    }
+  )
 
 </script>
 
@@ -100,6 +76,34 @@
     }
     @include desktop {
       margin-top: 0;
+    }
+
+    // active 상태: 순차적 애니메이션
+    &.active {
+      .careers-faq__image {
+        transform: scale(1);
+        opacity: 1;
+        transition-delay: 0s;
+      }
+
+      .careers-faq__header strong span {
+        opacity: 1;
+        transform: translateY(0);
+
+        &:nth-child(1) {
+          transition-delay: 0s;
+        }
+
+        &:nth-child(2) {
+          transition-delay: 0.2s;
+        }
+      }
+
+      .careers-faq__button {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.4s;
+      }
     }
 
     .inner {
@@ -130,6 +134,7 @@
           display: block;
           transform: translateY(30px);
           opacity: 0;
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
       }
       @include tablet {
@@ -149,6 +154,7 @@
       margin-top: rem(60);
       transform: scale(1.2);
       opacity: 0;
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
       @include tablet {
         margin-top: rem(0);
       }
@@ -160,6 +166,7 @@
     &__button {
       transform: translateY(30px);
       opacity: 0;
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
 
   }
