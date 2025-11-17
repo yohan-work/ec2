@@ -13,8 +13,6 @@
 <script setup>
 
   import { ref, onMounted, onBeforeUnmount, h } from 'vue'
-  import { gsap } from 'gsap'
-  import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
   const props = defineProps({
     headingLevel: {
@@ -41,73 +39,50 @@
   const titleRef = ref(null)
   const containerRef = ref(null)
 
-  let ctx = null
-  let observer = null
-  gsap.registerPlugin(ScrollTrigger)
+  // Container Observer (이미지와 타이틀 동시 애니메이션)
+  let containerObserver = null
 
-  const initAnimation = () => {
-    ctx = gsap.context(() => {
-      if (!imageRef.value && !titleRef.value) return
+  // Container Observer 설정
+  const setupContainerObserver = () => {
+    if (!containerRef.value) return
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.value,
-          start: 'top 90%',
-          toggleActions: 'play none none none',
+    let lastScrollY = 0
+    let isFirstCheck = true
+
+    containerObserver = new IntersectionObserver(
+      ([entry]) => {
+        const currentScrollY = window.scrollY || window.pageYOffset
+        const isScrollingDown = currentScrollY > lastScrollY
+        const isNearTop = currentScrollY < 100
+
+        if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+          containerRef.value.classList.add('active')
+          isFirstCheck = false
+        } else if (!entry.isIntersecting && !isScrollingDown) {
+          containerRef.value.classList.remove('active')
+          isFirstCheck = true
         }
-      })
 
-      tl.fromTo(imageRef.value, {
-        scale: 1.2,
-      }, {
-        scale: 1,
-        ease: 'power2.out',
-        duration: 1
-      })
-      .fromTo(titleRef.value, {
-        y: 30,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        ease: 'power2.out',
-        duration: 1
-      }, 0)
-    })
+        lastScrollY = currentScrollY
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '-50px'
+      }
+    )
+
+    containerObserver.observe(containerRef.value)
   }
 
   onMounted(() => {
-    initAnimation()
-    // observer = new IntersectionObserver(
-    //   (entries) => {
-    //     entries.forEach(entry => {
-    //       if (entry.isIntersecting && entry.intersectionRatio > 0) {
-    //         initAnimation()
-    //         if (observer) {
-    //           observer.disconnect()
-    //           observer = null
-    //         }
-    //       }
-    //     })
-    //   },
-    //   {
-    //     threshold: 0,
-    //     rootMargin: '0px 0px 2560px 0px',
-    //     root: null
-    //   }
-    // )
-    
-    // if (containerRef.value) {
-    //   observer.observe(containerRef.value)
-    // }
+    setupContainerObserver()
   })
 
   onBeforeUnmount(() => {
-    // if (observer) {
-    //   observer.disconnect()
-    // }
-    ctx?.revert()
-    ctx = null
+    if (containerObserver) {
+      containerObserver.disconnect()
+      containerObserver = null
+    }
   })
 
 </script>
@@ -125,6 +100,7 @@
       height: 100%;
       object-fit: cover;
       transform: scale(1.2);
+      transition: transform 0.6s ease-out;
     }
     @include tablet {
       picture {
@@ -137,6 +113,18 @@
       }
     }
 
+    // active 상태: 이미지와 타이틀 동시 애니메이션
+    &.active {
+      img {
+        transform: scale(1);
+      }
+
+      .careers-visual-title__title {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     &__title {
       position: absolute;
       top: rem(16);
@@ -144,6 +132,7 @@
       color: #fff;
       transform: translateY(30px);
       opacity: 0;
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
       @include sub-headline-02;
       @include tablet {
         top: rem(32);

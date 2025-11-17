@@ -59,8 +59,6 @@
 <script setup>
 
 import { ref, onMounted, onBeforeUnmount, onBeforeUpdate } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const props = defineProps({
   createHeadAnimation: {
@@ -80,60 +78,84 @@ const setInformationCountRef = (el) => {
   }
 }
 
-let ctx = null
+let headObserver = null
+const countObservers = ref([])
 
-gsap.registerPlugin(ScrollTrigger)
-
-const initAnimation = () => {
-  ctx = gsap.context(() => {
-
-    // Information Head 애니메이션
-    props.createHeadAnimation(
+// Head 애니메이션 초기화
+const setupHeadAnimation = () => {
+  if (props.createHeadAnimation && informationHeadRef.value) {
+    headObserver = props.createHeadAnimation(
       informationHeadRef.value,
       informationHeadTitleRef.value,
       informationHeadTextRef.value
     )
+  }
+}
 
-    // Information Grid Item 카운트업 애니메이션
-    if (informationCountRefs.value.length > 0) {
-      informationCountRefs.value.forEach(item => {
-        if (!item) return
-
-        const emElement = item.querySelector('em')
-        if (!emElement) return
-
-        const originalText = emElement.getAttribute('data-target')
-
-        const hasPlus = originalText.includes('+')
-        const numberValue = parseInt(originalText.replace(/[^0-9]/g, ''))
-
-        if (isNaN(numberValue)) return
-
-        const counter = { value: 0 }
-
-        gsap.fromTo(counter, {
-          value: 0,
-        }, {
-          value: numberValue,
-          duration: 1.5,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-            once: true
-          },
-          onUpdate: function () {
-            const currentValue = Math.floor(counter.value)
-            emElement.textContent = currentValue.toLocaleString() + (hasPlus ? '+' : '')
-          },
-          onComplete: function () {
-            emElement.textContent = numberValue.toLocaleString() + (hasPlus ? '+' : '')
-          }
-        })
-      })
+// 카운트업 애니메이션 함수 (easeOutQuad)
+const animateCountUp = (element, start, end, duration, hasPlus) => {
+  const startTime = performance.now()
+  
+  const easeOutQuad = (t) => t * (2 - t)
+  
+  const animate = (currentTime) => {
+    const elapsed = currentTime - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    
+    const easedProgress = easeOutQuad(progress)
+    const currentValue = Math.floor(start + (end - start) * easedProgress)
+    
+    element.textContent = currentValue.toLocaleString() + (hasPlus ? '+' : '')
+    
+    if (progress < 1) {
+      requestAnimationFrame(animate)
+    } else {
+      element.textContent = end.toLocaleString() + (hasPlus ? '+' : '')
     }
+  }
+  
+  requestAnimationFrame(animate)
+}
 
+// 카운트 Observers 설정
+const setupCountObservers = () => {
+  // 기존 observers 정리
+  countObservers.value.forEach(observer => observer?.disconnect())
+  countObservers.value = []
+
+  // 각 카운트 아이템에 대해 개별 observer 생성
+  informationCountRefs.value.forEach((item) => {
+    if (!item) return
+
+    const emElement = item.querySelector('em')
+    if (!emElement) return
+
+    const originalText = emElement.getAttribute('data-target')
+    const hasPlus = originalText.includes('+')
+    const numberValue = parseInt(originalText.replace(/[^0-9]/g, ''))
+
+    if (isNaN(numberValue)) return
+
+    let hasAnimated = false
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          // 카운트업 애니메이션 실행 (1500ms = 1.5초)
+          animateCountUp(emElement, 0, numberValue, 1500, hasPlus)
+          hasAnimated = true
+          // 한 번만 실행되면 되므로 observer 해제
+          observer.disconnect()
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '-10%'
+      }
+    )
+
+    observer.observe(item)
+    countObservers.value.push(observer)
   })
 }
 
@@ -142,12 +164,20 @@ onBeforeUpdate(() => {
 })
 
 onMounted(() => {
-  initAnimation()
+  setupHeadAnimation()
+  setupCountObservers()
 })
 
 onBeforeUnmount(() => {
-  ctx?.revert()
-  ctx = null
+  // Head observer 정리
+  if (headObserver) {
+    headObserver.disconnect()
+    headObserver = null
+  }
+  
+  // 카운트 observers 정리
+  countObservers.value.forEach(observer => observer?.disconnect())
+  countObservers.value = []
 })
 </script>
 
@@ -170,6 +200,9 @@ onBeforeUnmount(() => {
 
     &-title {
       @include headline-02;
+      transform: translateY(30px);
+      opacity: 0;
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 
       .title-br {
         display: block;
@@ -185,6 +218,24 @@ onBeforeUnmount(() => {
       word-break: keep-all;
       overflow-wrap: anywhere;
       @include body-02;
+      transform: translateY(30px);
+      opacity: 0;
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    // active 상태
+    &.active {
+      .aboutus-information__head-title {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0s;
+      }
+
+      .aboutus-information__head-text {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.2s;
+      }
     }
 
     @include tablet {

@@ -38,6 +38,9 @@
 <script setup>
 import { ref, watch, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
+// 전역 카운터 (SSR 호환)
+let tabInstanceCounter = 0
+
 // Props
 const props = defineProps({
   tabs: {
@@ -58,8 +61,9 @@ const props = defineProps({
 // Emits
 const emit = defineEmits(['update:modelValue', 'tab-change'])
 
-// 고유 ID 생성 (SSR 호환 - ref로 한 번만 생성)
-const componentId = ref(props.instanceId || `normal-tab-${Math.random().toString(36).substr(2, 9)}`)
+// 고유 ID 생성 (SSR 호환 - 카운터 사용)
+// instanceId가 제공되지 않으면 카운터를 사용하여 순차적 ID 생성
+const componentId = ref(props.instanceId || `normal-tab-${++tabInstanceCounter}`)
 
 // State
 const activeTab = ref(props.modelValue)
@@ -209,6 +213,7 @@ const setupEventListeners = () => {
 // Lifecycle
 onMounted(async () => {
   // DOM 완전 렌더링 대기 후 이벤트 리스너 등록
+  await nextTick()
   await setupEventListeners()
 })
 

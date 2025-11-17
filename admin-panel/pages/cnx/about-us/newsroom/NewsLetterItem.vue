@@ -1,5 +1,5 @@
 <template>
-  <li :id="`newsletter-${newsletter.id}`" class="newsletter-item">
+  <li :id="`newsletter-${newsletter.id}`" class="newsletter-item" ref="itemRef">
     <NuxtLink
       :to="`/about-us/newsroom/${newsletter.id}`"
       @click="handleNewsletterClick(newsletter.id)"
@@ -31,6 +31,8 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
 // Props 정의
 const props = defineProps({
   newsletter: {
@@ -41,6 +43,9 @@ const props = defineProps({
 
 // Emits 정의
 const emit = defineEmits(['newsletter-click'])
+
+const itemRef = ref(null)
+let observer = null
 
 // 이미지 로딩 실패 시 기본 이미지 표시됩니다.
 const handleImageError = event => {
@@ -61,10 +66,62 @@ const formatDate = dateString => {
 const handleNewsletterClick = newsletterId => {
   emit('newsletter-click', newsletterId)
 }
+
+// Intersection Observer 설정
+const setupObserver = () => {
+  if (!itemRef.value) return
+
+  let lastScrollY = 0
+  let isFirstCheck = true
+
+  observer = new IntersectionObserver(
+    ([entry]) => {
+      const currentScrollY = window.scrollY || window.pageYOffset
+      const isScrollingDown = currentScrollY > lastScrollY
+      const isNearTop = currentScrollY < 100
+
+      if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+        itemRef.value.classList.add('active')
+        isFirstCheck = false
+      } else if (!entry.isIntersecting && !isScrollingDown) {
+        itemRef.value.classList.remove('active')
+        isFirstCheck = true
+      }
+
+      lastScrollY = currentScrollY
+    },
+    {
+      threshold: 0.2,
+      rootMargin: '-50px'
+    }
+  )
+
+  observer.observe(itemRef.value)
+}
+
+onMounted(() => {
+  setupObserver()
+})
+
+onBeforeUnmount(() => {
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 .newsletter-item {
+  transform: translateY(30px);
+  opacity: 0;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   &:first-child {
     border-top: rem(1) solid $d-gray;
   }
