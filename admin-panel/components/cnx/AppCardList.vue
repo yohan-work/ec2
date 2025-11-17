@@ -1,8 +1,7 @@
 <template>
-  <div class="app-card" :aria-label="title || undefined">
+  <div ref="listRef" class="app-card" :aria-label="title || undefined">
     <h2 class="app-card-list-title" v-if="title">{{ title }}</h2>
     <ul 
-      ref="listRef" 
       class="app-card-list" 
       :style="{ 
         marginBottom: props.noMarginBottom ? '0' : undefined,
@@ -28,9 +27,8 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, computed, nextTick } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ref, computed } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 const props = defineProps({
   title: { type: String, default: '' },
@@ -40,6 +38,9 @@ const props = defineProps({
   borderColor: { type: String, default: '' },
   tabletItemsPerRow: { type: Number, default: 3 },
 })
+
+// emit 정의 (부모 컴포넌트에 가시성 상태 전달 가능)
+const emit = defineEmits(['visibility-change'])
 
 // title 존재 여부에 따라 아이템 헤딩 레벨 결정
 const itemHeadingLevel = computed(() => {
@@ -51,79 +52,38 @@ const itemHeadingLevel = computed(() => {
 })
 
 const listRef = ref(null)
-let gsapContext = null
+const isVisible = ref(false)
+let lastScrollY = 0
 
-const prefersReducedMotion = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
-  ? window.matchMedia('(prefers-reduced-motion: reduce)')
-  : { matches: false }
-
-// GSAP 애니메이션 초기화
-const initAnimation = () => {
-  if (!listRef.value) return
-
-  const container = listRef.value.parentElement
-  const titleEl = container?.querySelector('.app-card-list-title')
-  const items = Array.from(listRef.value.querySelectorAll('.app-card-list-item'))
-
-  // 모션 최소화 환경에서는 애니메이션을 비활성화하고 즉시 표시
-  if (prefersReducedMotion?.matches) {
-    gsap.set([titleEl, ...items].filter(Boolean), { opacity: 1, y: 0 })
-    return
+// VueUse Intersection Observer 설정
+useIntersectionObserver(
+  listRef,
+  ([{ isIntersecting }]) => {
+    isVisible.value = isIntersecting
+    
+    // 부모 컴포넌트에 가시성 상태 전달
+    emit('visibility-change', isIntersecting)
+    
+    // 현재 스크롤 위치
+    const currentScrollY = window.scrollY || window.pageYOffset
+    // 스크롤 방향 감지 (true: 아래로, false: 위로)
+    const isScrollingDown = currentScrollY > lastScrollY
+    lastScrollY = currentScrollY
+    
+    // 콘솔에 상태 로그 (개발용)
+    if (isIntersecting && isScrollingDown) {
+      // 아래로 스크롤하면서 화면에 들어올 때만 active 클래스 추가
+      listRef.value?.classList.add('active')
+    } else if (!isIntersecting && !isScrollingDown) {
+      // 위로 스크롤하면서 화면에서 벗어날 때 active 클래스 제거 (리셋)
+      listRef.value?.classList.remove('active')
+    }
+  },
+  {
+    threshold: 0.2, // 20% 이상 보일 때 감지
+    rootMargin: '-50px' // 뷰포트 경계에서 50px 안쪽에서 감지
   }
-
-  // GSAP Context 생성
-  gsapContext = gsap.context(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
-    // 타이틀 애니메이션
-    if (titleEl) {
-      gsap.fromTo(titleEl,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: listRef.value,
-            start: 'top 70%',
-            toggleActions: 'play none none reverse'
-          }
-        }
-      )
-    }
-
-    // 아이템 애니메이션
-    if (items.length) {
-      gsap.fromTo(items,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: 'power2.out',
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: listRef.value,
-            start: 'top 70%',
-            toggleActions: 'play none none reverse'
-          }
-        }
-      )
-    }
-  }, listRef.value)
-}
-
-onMounted(async () => {
-  await nextTick() // DOM 렌더 완료 대기
-  if (!listRef.value) return
-  initAnimation() // 그 이후에 애니메이션 초기화
-})
-
-onUnmounted(() => {
-  // GSAP Context를 정리하여 모든 애니메이션과 ScrollTrigger를 자동으로 정리
-  gsapContext?.revert()
-})
+)
 </script>
 
 <style lang="scss" scoped>
@@ -152,12 +112,21 @@ onUnmounted(() => {
       @include sub-headline-02;
       text-align: center;
       margin-bottom: rem(30);
+      // 초기 상태: 투명하고 아래에 위치
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
 
     &-item {
       width: 100%;
       padding: rem(16);
       border: 1px solid $gray-2;
+      
+      // 초기 상태: 투명하고 아래에 위치
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 
       $gap: rem(15);
       
@@ -223,6 +192,25 @@ onUnmounted(() => {
         }
       }
 
+    }
+  }
+  
+  // active 상태: fadeup 모션 실행
+  &.active {
+    .app-card-list-title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .app-card-list-item {
+      opacity: 1;
+      transform: translateY(0);
+      
+      // stagger 효과: 각 아이템마다 순차적으로 나타남
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          transition-delay: #{($i - 1) * 0.1}s;
+        }
+      }
     }
   }
 }
