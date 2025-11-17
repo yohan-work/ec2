@@ -1026,7 +1026,7 @@ const initBannerScrollAnimation = () => {
   });
 };
 
-// Intro CiX 이미지: 클래스 토글 방식으로 fade-in-up 처리 초기화
+// Intro CiX 이미지: Intersection Observer를 사용한 fade-in-up 처리 초기화
 const initIntroCixClassToggle = () => {
   const wraps = document.querySelectorAll('.intro-section .intro-section-content-item-wrap');
   if (!wraps || wraps.length === 0) return;
@@ -1035,16 +1035,33 @@ const initIntroCixClassToggle = () => {
     wraps.forEach((wrap) => {
       const img = wrap.querySelector('img');
       if (!(img instanceof HTMLElement)) return;
-      const st = ScrollTrigger.create({
-        trigger: wrap,
-        start: 'top 90%',
-        end: 'bottom 10%',
-        toggleClass: { targets: wrap, className: 'active' },
-        invalidateOnRefresh: true,
-        refreshPriority: 10
-      });
+      
+      // 각 wrap에 대한 활성화 여부 추적
+      let hasBeenActivated = false;
+      
+      // Intersection Observer 설정
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting && !hasBeenActivated) {
+            console.log('✅ Intro CiX 이미지가 화면에 처음 보입니다!');
+            wrap.classList.add('active');
+            hasBeenActivated = true;
+          }
+        },
+        {
+          threshold: 0.2,
+          rootMargin: '-50px'
+        }
+      );
+      
+      observer.observe(wrap);
+      
       // cleanup 등록
-      introCleanupCallbacks.push(() => { try { st.kill(); } catch (_) { /* ignore */ } });
+      introCleanupCallbacks.push(() => {
+        try {
+          observer.disconnect();
+        } catch (_) { /* ignore */ }
+      });
     });
   } catch (_) {
     // noop
