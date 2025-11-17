@@ -53,7 +53,7 @@ const itemHeadingLevel = computed(() => {
 
 const listRef = ref(null)
 const isVisible = ref(false)
-const hasBeenActivated = ref(false) // 한 번이라도 활성화되었는지 추적
+let lastScrollY = 0
 
 // VueUse Intersection Observer 설정
 useIntersectionObserver(
@@ -64,17 +64,19 @@ useIntersectionObserver(
     // 부모 컴포넌트에 가시성 상태 전달
     emit('visibility-change', isIntersecting)
     
+    // 현재 스크롤 위치
+    const currentScrollY = window.scrollY || window.pageYOffset
+    // 스크롤 방향 감지 (true: 아래로, false: 위로)
+    const isScrollingDown = currentScrollY > lastScrollY
+    lastScrollY = currentScrollY
+    
     // 콘솔에 상태 로그 (개발용)
-    if (isIntersecting && !hasBeenActivated.value) {
-      console.log('✅ AppCardList 섹션이 화면에 처음 보입니다!')
-      // active 클래스 추가 (한 번만)
+    if (isIntersecting && isScrollingDown) {
+      // 아래로 스크롤하면서 화면에 들어올 때만 active 클래스 추가
       listRef.value?.classList.add('active')
-      hasBeenActivated.value = true // 활성화 상태 기록
-    } else if (isIntersecting && hasBeenActivated.value) {
-      console.log('✅ AppCardList 섹션이 다시 화면에 보입니다! (이미 활성화됨)')
-    } else {
-      console.log('❌ AppCardList 섹션이 화면에서 벗어났습니다! (active 상태 유지)')
-      // active 클래스는 제거하지 않음 - 한 번 활성화되면 계속 유지
+    } else if (!isIntersecting && !isScrollingDown) {
+      // 위로 스크롤하면서 화면에서 벗어날 때 active 클래스 제거 (리셋)
+      listRef.value?.classList.remove('active')
     }
   },
   {
