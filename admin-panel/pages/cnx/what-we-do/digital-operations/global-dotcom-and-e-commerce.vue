@@ -62,7 +62,7 @@
 
     <div class="global-introduction">
       <div class="inner">
-        <section class="global-introduction-content">
+        <section class="global-introduction-content" ref="section1Ref">
           <h2 class="global-introduction-title" ref="title1Ref">Global Delivery Network</h2>
           <p class="global-introduction-text" ref="text1Ref">
             약 20년간 협업해 온 Concentrix의 글로벌 딜리버리 네트워크는 Global One Team으로 프로젝트를 수행하고 있습니다. <br>
@@ -100,7 +100,7 @@
       </div>
 
       <div class="inner">
-        <section class="global-introduction-content">
+        <section class="global-introduction-content" ref="section2Ref">
           <h2 class="global-introduction-title" ref="title2Ref">Translation</h2>
           <p class="global-introduction-text" ref="text2Ref">
             기업 웹사이트와 마케팅 콘텐츠 번역에 특화된 번역 서비스로 전 세계 100+개 이상 국가에서 사용되는 90+개 이상의 다양한 언어를 지원합니다. <br><br>
@@ -130,26 +130,28 @@ import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AppCardList from '~/components/cnx/AppCardList.vue'
-import { ref, onMounted, onUnmounted } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-// GSAP ScrollTrigger 플러그인 등록
-gsap.registerPlugin(ScrollTrigger)
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 // 레이아웃 설정
 definePageMeta({
   layout: 'concentrix'
 })
 
-// refs for GSAP animation
+// refs for animation
+const section1Ref = ref(null)
 const bannerRef = ref(null)
+const section2Ref = ref(null)
 const title1Ref = ref(null)
 const text1Ref = ref(null)
 const count1Items = ref([])
 const title2Ref = ref(null)
 const text2Ref = ref(null)
 const count2Items = ref([])
+
+// Observers
+let section1Observer = null
+let bannerObserver = null
+let section2Observer = null
 
 // AppCardList 샘플 데이터
 const cardListItems = ref([
@@ -202,151 +204,123 @@ const cardListItems = ref([
   }
 ])
 
-// GSAP 애니메이션 초기화
-const initAnimation = () => {
-  // 배너 애니메이션
-  if (bannerRef.value) {
-    gsap.set(bannerRef.value, { opacity: 0, y: 50 })
-    gsap.to(bannerRef.value, {
-      scrollTrigger: {
-        trigger: bannerRef.value,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse'
-      },
-      duration: 0.8,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out'
-    })
-  }
+// Section 1 Observer 설정
+const setupSection1Observer = () => {
+  if (!section1Ref.value) return
 
-  // 첫 번째 섹션 애니메이션 (Timeline 기반)
-  if (title1Ref.value || text1Ref.value || (count1Items.value && count1Items.value.length > 0)) {
-    const tl1 = gsap.timeline({
-      scrollTrigger: {
-        trigger: title1Ref.value,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse'
+  let lastScrollY = 0
+  let isFirstCheck = true
+
+  section1Observer = new IntersectionObserver(
+    ([entry]) => {
+      const currentScrollY = window.scrollY || window.pageYOffset
+      const isScrollingDown = currentScrollY > lastScrollY
+      const isNearTop = currentScrollY < 100
+
+      if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+        section1Ref.value.classList.add('active')
+        isFirstCheck = false
+      } else if (!entry.isIntersecting && !isScrollingDown) {
+        section1Ref.value.classList.remove('active')
+        isFirstCheck = true
       }
-    })
 
-    // 초기 상태 설정
-    if (title1Ref.value) {
-      gsap.set(title1Ref.value, { opacity: 0, y: 30 })
+      lastScrollY = currentScrollY
+    },
+    {
+      threshold: 0.2,
+      rootMargin: '-50px'
     }
-    if (text1Ref.value) {
-      gsap.set(text1Ref.value, { opacity: 0, y: 30 })
-    }
-    if (count1Items.value && count1Items.value.length > 0) {
-      count1Items.value.forEach(item => {
-        if (item) {
-          gsap.set(item, { opacity: 0, y: 30 })
-        }
-      })
-    }
+  )
 
-    // Timeline 애니메이션
-    if (title1Ref.value) {
-      tl1.to(title1Ref.value, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out'
-      })
-    }
+  section1Observer.observe(section1Ref.value)
+}
 
-    if (text1Ref.value) {
-      tl1.to(text1Ref.value, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out'
-      }, '-=0.4')
-    }
+// Banner Observer 설정
+const setupBannerObserver = () => {
+  if (!bannerRef.value) return
 
-    // Count items stagger
-    if (count1Items.value && count1Items.value.length > 0) {
-      tl1.to(count1Items.value, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-        stagger: 0.15
-      }, '-=0.3')
-    }
-  }
+  let lastScrollY = 0
+  let isFirstCheck = true
 
-  // 두 번째 섹션 애니메이션 (Timeline 기반)
-  if (title2Ref.value || text2Ref.value || (count2Items.value && count2Items.value.length > 0)) {
-    const tl2 = gsap.timeline({
-      scrollTrigger: {
-        trigger: title2Ref.value,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse',
-        refreshPriority: -4,
+  bannerObserver = new IntersectionObserver(
+    ([entry]) => {
+      const currentScrollY = window.scrollY || window.pageYOffset
+      const isScrollingDown = currentScrollY > lastScrollY
+      const isNearTop = currentScrollY < 100
+
+      if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+        bannerRef.value.classList.add('active')
+        isFirstCheck = false
+      } else if (!entry.isIntersecting && !isScrollingDown) {
+        bannerRef.value.classList.remove('active')
+        isFirstCheck = true
       }
-    })
 
-    // 초기 상태 설정
-    if (title2Ref.value) {
-      gsap.set(title2Ref.value, { opacity: 0, y: 30 })
+      lastScrollY = currentScrollY
+    },
+    {
+      threshold: 0.2,
+      rootMargin: '-50px'
     }
-    if (text2Ref.value) {
-      gsap.set(text2Ref.value, { opacity: 0, y: 30 })
-    }
-    if (count2Items.value && count2Items.value.length > 0) {
-      count2Items.value.forEach(item => {
-        if (item) {
-          gsap.set(item, { opacity: 0, y: 30 })
-        }
-      })
-    }
+  )
 
-    // Timeline 애니메이션
-    if (title2Ref.value) {
-      tl2.to(title2Ref.value, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out'
-      })
-    }
+  bannerObserver.observe(bannerRef.value)
+}
 
-    if (text2Ref.value) {
-      tl2.to(text2Ref.value, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out'
-      }, '-=0.4')
-    }
+// Section 2 Observer 설정
+const setupSection2Observer = () => {
+  if (!section2Ref.value) return
 
-    // Count items stagger
-    if (count2Items.value && count2Items.value.length > 0) {
-      tl2.to(count2Items.value, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-        stagger: 0.15
-      }, '-=0.3')
+  let lastScrollY = 0
+  let isFirstCheck = true
+
+  section2Observer = new IntersectionObserver(
+    ([entry]) => {
+      const currentScrollY = window.scrollY || window.pageYOffset
+      const isScrollingDown = currentScrollY > lastScrollY
+      const isNearTop = currentScrollY < 100
+
+      if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+        section2Ref.value.classList.add('active')
+        isFirstCheck = false
+      } else if (!entry.isIntersecting && !isScrollingDown) {
+        section2Ref.value.classList.remove('active')
+        isFirstCheck = true
+      }
+
+      lastScrollY = currentScrollY
+    },
+    {
+      threshold: 0.2,
+      rootMargin: '-50px'
     }
-  }
+  )
+
+  section2Observer.observe(section2Ref.value)
 }
 
 // 마운트 시 애니메이션 초기화
 onMounted(() => {
-  // nextTick으로 DOM이 완벽하게 업데이트된 후 애니메이션 실행
-  setTimeout(() => {
-    initAnimation()
-  }, 100)
+  setupSection1Observer()
+  setupBannerObserver()
+  setupSection2Observer()
 })
 
-// 언마운트 시 ScrollTrigger 정리
-onUnmounted(() => {
-  ScrollTrigger.getAll().forEach(trigger => {
-    trigger.kill()
-  })
+// 언마운트 시 Observer 정리
+onBeforeUnmount(() => {
+  if (section1Observer) {
+    section1Observer.disconnect()
+    section1Observer = null
+  }
+  if (bannerObserver) {
+    bannerObserver.disconnect()
+    bannerObserver = null
+  }
+  if (section2Observer) {
+    section2Observer.disconnect()
+    section2Observer = null
+  }
 })
 
 </script>
@@ -377,6 +351,14 @@ onUnmounted(() => {
     padding-bottom: rem(120);
     &-banner {
       padding: rem(60) rem(24);
+      transform: translateY(30px);
+      opacity: 0;
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      
+      &.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
       
       @include tablet {
         padding: rem(60) 0;
@@ -403,6 +385,50 @@ onUnmounted(() => {
     &-content {
       padding: rem(60) 0;
       text-align: center;
+
+      .global-introduction-title {
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      .global-introduction-text {
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      .global-introduction-count-item {
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      // active 상태
+      &.active {
+        .global-introduction-title {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0s;
+        }
+
+        .global-introduction-text {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0.2s;
+        }
+
+        .global-introduction-count-item {
+          opacity: 1;
+          transform: translateY(0);
+          &:nth-child(1) {
+            transition-delay: 0.4s;
+          }
+          &:nth-child(2) {
+            transition-delay: 0.55s;
+          }
+        }
+      }
     }
     &-title {
       @include sub-headline-01;

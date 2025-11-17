@@ -36,8 +36,6 @@
 <script setup>
 
   import { ref, computed, onMounted, onBeforeUnmount, onBeforeUpdate } from 'vue'
-  import { gsap } from 'gsap'
-  import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
   const props = defineProps({
     historyList: {
@@ -66,31 +64,9 @@
     }
   }
 
-  let ctx = null
   let headObserver = null
   const itemObservers = ref([])
-
-  gsap.registerPlugin(ScrollTrigger)
-
-  // GSAP Icon 애니메이션 (스크롤 진행에 따라 위치 변경 - scrub 유지)
-  const createHistoryIconAnimation = (start, end) => {
-    if (!historyIconRef.value) return
-    gsap.to(historyIconRef.value, {
-      ease: 'none',
-      scrollTrigger: {
-        trigger: historyContainerRef.value,
-        start,
-        end,
-        scrub: true,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const scrollDistance = self.end - self.start
-          const currentY = scrollDistance * self.progress
-          gsap.set(historyIconRef.value, { y: currentY })
-        }
-      }
-    })
-  }
+  let iconScrollCleanup = null
 
   // Head 애니메이션 초기화
   const setupHeadAnimation = () => {
@@ -143,24 +119,70 @@
     })
   }
 
-  // Icon 애니메이션 초기화 (GSAP 유지)
-  const initIconAnimation = () => {
-    ctx = gsap.context(() => {
-      const triggerPoint = '65%'
-
-      if (historyIconRef.value && historyContainerRef.value) {
-        ScrollTrigger.matchMedia({
-          // 모바일 환경 (767px 이하)
-          "(max-width: 767px)": () => {
-            createHistoryIconAnimation(`top ${triggerPoint}`, `bottom ${triggerPoint}`)
-          },
-          // 데스크톱 환경 (768px 이상)
-          "(min-width: 768px)": () => {
-            createHistoryIconAnimation(`top+=38 ${triggerPoint}`, `bottom-=38 ${triggerPoint}`)
-          }
-        })
+  // Icon 스크롤 애니메이션 설정 (순수 JavaScript)
+  const setupIconScrollAnimation = () => {
+    if (!historyIconRef.value || !historyContainerRef.value) return
+    
+    let ticking = false
+    
+    const updateIconPosition = () => {
+      const container = historyContainerRef.value
+      const icon = historyIconRef.value
+      
+      if (!container || !icon) return
+      
+      // 컨테이너의 위치와 높이 계산
+      const rect = container.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      const triggerPoint = viewportHeight * 0.65
+      
+      // 시작/끝 지점 계산 (모바일/데스크톱 구분)
+      const isDesktop = window.innerWidth >= 768
+      const startOffset = isDesktop ? 38 : 0
+      const endOffset = isDesktop ? 38 : 0
+      
+      // 시작점: 컨테이너 상단이 뷰포트 65% 지점에 도달
+      // 끝점: 컨테이너 하단이 뷰포트 65% 지점에 도달
+      const startY = rect.top - triggerPoint + startOffset
+      const endY = rect.bottom - triggerPoint - endOffset
+      const totalDistance = endY - startY
+      
+      // 진행도 계산 (0 ~ 1)
+      let progress = (-startY) / totalDistance
+      progress = Math.max(0, Math.min(1, progress))
+      
+      // 아이콘 Y 위치 업데이트
+      const moveDistance = totalDistance
+      icon.style.transform = `translateY(${moveDistance * progress}px)`
+      
+      ticking = false
+    }
+    
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateIconPosition)
+        ticking = true
       }
-    })
+    }
+    
+    const onResize = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateIconPosition)
+        ticking = true
+      }
+    }
+    
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize, { passive: true })
+    
+    // 초기 위치 설정
+    updateIconPosition()
+    
+    // cleanup 함수 반환
+    iconScrollCleanup = () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
+    }
   }
 
   onBeforeUpdate(() => {
@@ -169,7 +191,7 @@
 
   onMounted(() => {
     setupHeadAnimation()
-    initIconAnimation()
+    setupIconScrollAnimation()
     setupItemObservers()
   })
 
@@ -180,9 +202,11 @@
       headObserver = null
     }
 
-    // GSAP context 정리
-    ctx?.revert()
-    ctx = null
+    // Icon scroll 리스너 정리
+    if (iconScrollCleanup) {
+      iconScrollCleanup()
+      iconScrollCleanup = null
+    }
     
     // Item observers 정리
     itemObservers.value.forEach(observer => observer?.disconnect())

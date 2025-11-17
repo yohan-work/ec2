@@ -31,7 +31,7 @@
 
     <div class="introduction">
       <div class="inner">
-        <section class="introduction-content">
+        <section class="introduction-content" ref="contentRef">
           <h2 class="introduction-title" ref="titleRef">AI Support & Data Services</h2>
           <h3 class="introduction-subtitle" ref="subtitleRef">데이터 위험을 AI 중심 기회로 전환</h3>
           <p class="introduction-text" ref="textRef">
@@ -41,35 +41,35 @@
             당사의 솔루션은 첨단 기술과 인간의 전문성을 결합하여 영향력 있고 혁신적인 결과를 제공합니다.
           </p>
           <ul class="introduction-list">
-            <li class="introduction-list-item" :ref="el => listItems[0] = el">
+            <li class="introduction-list-item">
               <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic01.svg" alt="AI 지원 서비스의 기술 가속화를 상징하는 로켓 아이콘" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>개발 가속화</strong>
                 데이터 준비 과정을 간소화하여 AI 모델 훈련 및 배포를 가속화합니다.
               </p>
             </li>
-            <li class="introduction-list-item" :ref="el => listItems[1] = el">
+            <li class="introduction-list-item">
               <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic02.svg" alt="모델 정확도 향상을 나타내는 방패 속 체크 표시" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>모델 정확도 향상</strong>
                 오류를 줄이고 AI 모델 신뢰성을 개선하며 편향을 최소화하여 일관된 결과를 보장합니다.
               </p>
             </li>
-            <li class="introduction-list-item" :ref="el => listItems[2] = el">
+            <li class="introduction-list-item">
               <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic03.svg" alt="투명성 및 공정성 검증을 의미하는 AI 큐브" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>투명성 및 규정 준수 강화</strong>
                 윤리적 기준과 법적 규정을 준수하면서 투명성을 보장합니다.
               </p>
             </li>
-            <li class="introduction-list-item" :ref="el => listItems[3] = el">
+            <li class="introduction-list-item">
               <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic04.svg" alt="델 및 학습 데이터 관리를 나타내는 이진 코드" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>모든 데이터 유형 관리</strong>
                 다양한 AI 사용 사례와 데이터 형식에 대응하는 유연성을 제공하여 품질 저하 없이 확장성을 확보합니다.
               </p>
             </li>
-            <li class="introduction-list-item" :ref="el => listItems[4] = el">
+            <li class="introduction-list-item">
               <img src="/assets/cnx/what-we-do/digital-operations/trust-and-safety/ic05.svg" alt="AI 기반 시장 변화 예측을 보여주는 데이터 차트" loading="lazy">
               <p class="introduction-list-item-text">
                 <strong>사용자 경험 개선</strong>
@@ -87,116 +87,64 @@
 import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
-import { ref, onMounted, onUnmounted } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-// GSAP ScrollTrigger 플러그인 등록
-gsap.registerPlugin(ScrollTrigger)
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 // 레이아웃 설정
 definePageMeta({
   layout: 'concentrix'
 })
 
-// refs for GSAP animation
+// refs for animation
+const contentRef = ref(null)
 const titleRef = ref(null)
 const subtitleRef = ref(null)
 const textRef = ref(null)
-const listItems = ref([])
 
-// GSAP 애니메이션 초기화
-const initAnimation = () => {
-  // Title, Subtitle, Text 애니메이션
-  if (titleRef.value || subtitleRef.value || textRef.value) {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: titleRef.value,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse'
+let contentObserver = null
+
+// Content Observer 설정
+const setupContentObserver = () => {
+  if (!contentRef.value) return
+
+  let lastScrollY = 0
+  let isFirstCheck = true
+
+  contentObserver = new IntersectionObserver(
+    ([entry]) => {
+      const currentScrollY = window.scrollY || window.pageYOffset
+      const isScrollingDown = currentScrollY > lastScrollY
+      const isNearTop = currentScrollY < 100
+
+      if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+        contentRef.value.classList.add('active')
+        isFirstCheck = false
+      } else if (!entry.isIntersecting && !isScrollingDown) {
+        contentRef.value.classList.remove('active')
+        isFirstCheck = true
       }
-    })
 
-    // 초기 상태 설정
-    if (titleRef.value) {
-      gsap.set(titleRef.value, { opacity: 0, y: 30 })
+      lastScrollY = currentScrollY
+    },
+    {
+      threshold: 0.2,
+      rootMargin: '-50px'
     }
-    if (subtitleRef.value) {
-      gsap.set(subtitleRef.value, { opacity: 0, y: 30 })
-    }
-    if (textRef.value) {
-      gsap.set(textRef.value, { opacity: 0, y: 30 })
-    }
+  )
 
-    // Timeline 애니메이션
-    if (titleRef.value) {
-      tl.to(titleRef.value, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out'
-      })
-    }
-
-    if (subtitleRef.value) {
-      tl.to(subtitleRef.value, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out'
-      }, '-=0.4')
-    }
-
-    if (textRef.value) {
-      tl.to(textRef.value, {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out'
-      }, '-=0.4')
-    }
-  }
-
-  // List items stagger 애니메이션
-  if (listItems.value && listItems.value.length > 0) {
-    const listTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: listItems.value[0],
-        start: 'top 80%',
-        toggleActions: 'play none none reverse'
-      }
-    })
-
-    // 초기 상태 설정
-    listItems.value.forEach(item => {
-      if (item) {
-        gsap.set(item, { opacity: 0, y: 30 })
-      }
-    })
-
-    // Stagger 애니메이션
-    listTl.to(listItems.value, {
-      duration: 0.6,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out',
-      stagger: 0.1
-    })
-  }
+  contentObserver.observe(contentRef.value)
 }
 
 // 마운트 시 애니메이션 초기화
 onMounted(() => {
-  setTimeout(() => {
-    initAnimation()
-  }, 100)
+  setupContentObserver()
 })
 
-// 언마운트 시 ScrollTrigger 정리
-onUnmounted(() => {
-  ScrollTrigger.getAll().forEach(trigger => {
-    trigger.kill()
-  })
+// 언마운트 시 Observer 정리
+onBeforeUnmount(() => {
+  if (contentObserver) {
+    contentObserver.disconnect()
+    contentObserver = null
+  }
 })
 
 </script>
@@ -228,6 +176,71 @@ onUnmounted(() => {
     }
     &-content {
       text-align: center;
+
+      .introduction-title {
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      .introduction-subtitle {
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      .introduction-text {
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      .introduction-list-item {
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      // active 상태
+      &.active {
+        .introduction-title {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0s;
+        }
+
+        .introduction-subtitle {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0.2s;
+        }
+
+        .introduction-text {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0.4s;
+        }
+
+        .introduction-list-item {
+          opacity: 1;
+          transform: translateY(0);
+          &:nth-child(1) {
+            transition-delay: 0.6s;
+          }
+          &:nth-child(2) {
+            transition-delay: 0.7s;
+          }
+          &:nth-child(3) {
+            transition-delay: 0.8s;
+          }
+          &:nth-child(4) {
+            transition-delay: 0.9s;
+          }
+          &:nth-child(5) {
+            transition-delay: 1s;
+          }
+        }
+      }
     }
     &-title {
       @include sub-headline-01;
