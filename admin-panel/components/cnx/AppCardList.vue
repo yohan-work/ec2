@@ -52,9 +52,6 @@ const itemHeadingLevel = computed(() => {
 
 const listRef = ref(null)
 let gsapContext = null
-// ScrollTrigger 인스턴스 저장
-let enterScrollTriggerInstance = null
-let reverseScrollTriggerInstance = null
 
 const prefersReducedMotion = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
   ? window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -62,165 +59,70 @@ const prefersReducedMotion = typeof window !== 'undefined' && typeof window.matc
 
 // GSAP 애니메이션 초기화
 const initAnimation = () => {
-  if (!listRef.value) return { timeline: null, scrollTrigger: null }
+  if (!listRef.value) return
 
-  const container = listRef.value ? listRef.value.parentElement : null
-  const titleEl = container ? container.querySelector('.app-card-list-title') : null
-  const items = listRef.value ? listRef.value.querySelectorAll('.app-card-list-item') : []
+  const container = listRef.value.parentElement
+  const titleEl = container?.querySelector('.app-card-list-title')
+  const items = Array.from(listRef.value.querySelectorAll('.app-card-list-item'))
 
   // 모션 최소화 환경에서는 애니메이션을 비활성화하고 즉시 표시
-  if (prefersReducedMotion && prefersReducedMotion.matches) {
-    if (titleEl) {
-      gsap.set(titleEl, { opacity: 1, y: 0 })
-    }
-    if (items && items.length) {
-      gsap.set(items, { opacity: 1, y: 0 })
-    }
-    return { timeline: null, scrollTrigger: null }
+  if (prefersReducedMotion?.matches) {
+    gsap.set([titleEl, ...items].filter(Boolean), { opacity: 1, y: 0 })
+    return
   }
 
-  // 초기 상태 설정 (fade-up 준비)
-  if (titleEl) {
-    gsap.set(titleEl, { opacity: 0, y: 30 })
-  }
-  if (items && items.length) {
-    gsap.set(items, { opacity: 0, y: 20 })
-  }
-
-  // 타임라인을 paused로 시작
-  const enterTimeline = gsap.timeline({ paused: true })
-
-  if (titleEl) {
-    enterTimeline.to(titleEl, {
-      duration: 0.6,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out',
-      immediateRender: false
-    })
-  }
-
-  if (items && items.length) {
-    enterTimeline.to(items, {
-      duration: 0.5,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out',
-      stagger: 0.1,
-      immediateRender: false
-    }, titleEl ? '-=0.2' : 0)
-  }
-
-  // ScrollTrigger를 별도로 생성하고 저장
-  enterScrollTriggerInstance = ScrollTrigger.create({
-    trigger: listRef.value,
-    start: 'top 80%',
-    end: 'bottom 20%',
-    onEnter: () => enterTimeline.play(), // 확실히 트리거되었을 때만 재생
-    onLeaveBack: () => enterTimeline.reverse(),
-    immediateRender: false,
-    invalidateOnRefresh: true,
-    refreshPriority: 10
-  })
-
-  // 스크롤 영역을 벗어날 때 빠르게 위로 사라지는 역타임라인
-  // start 범위를 조정하여 enterTimeline과 겹치지 않도록 수정
-  const elementsToReverse = []
-  if (items && items.length) {
-    // 아이템들을 먼저 사라지게
-    elementsToReverse.push(...Array.from(items))
-  }
-  if (titleEl) {
-    // 마지막에 타이틀
-    elementsToReverse.push(titleEl)
-  }
-
-  if (elementsToReverse.length) {
-    const reverseTimeline = gsap.timeline({ paused: true })
-    reverseTimeline.to(elementsToReverse, {
-      duration: 0.3,
-      opacity: 0,
-      y: -20,
-      ease: 'power2.in',
-      stagger: 0.05,
-      immediateRender: false
-    })
-
-    // 역타임라인용 ScrollTrigger 생성
-    reverseScrollTriggerInstance = ScrollTrigger.create({
-      trigger: listRef.value,
-      start: 'top 70%', // 80% → 70%로 변경하여 겹침 방지
-      end: 'bottom 20%',
-      onLeave: () => reverseTimeline.play(),
-      immediateRender: false
-    })
-  }
-
-  // GSAP Context 생성 - 모든 애니메이션과 ScrollTrigger를 관리
+  // GSAP Context 생성
   gsapContext = gsap.context(() => {
     gsap.registerPlugin(ScrollTrigger)
-  }, listRef.value) // Context의 스코프를 listRef로 제한
-  
-  return { timeline: enterTimeline, scrollTrigger: enterScrollTriggerInstance }
+
+    // 타이틀 애니메이션
+    if (titleEl) {
+      gsap.fromTo(titleEl,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: listRef.value,
+            start: 'top 70%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      )
+    }
+
+    // 아이템 애니메이션
+    if (items.length) {
+      gsap.fromTo(items,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: listRef.value,
+            start: 'top 70%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      )
+    }
+  }, listRef.value)
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await nextTick() // DOM 렌더 완료 대기
   if (!listRef.value) return
-  
-  // nextTick으로 DOM이 렌더링된 후 초기화
-  nextTick(() => {
-    if (!listRef.value) return
-    
-    requestAnimationFrame(() => {
-      try {
-        // 애니메이션 초기화 (항상 실행)
-        const { timeline: enterTimeline, scrollTrigger } = initAnimation()
-        
-        // ScrollTrigger refresh 호출
-        gsap.registerPlugin(ScrollTrigger)
-        try {
-          ScrollTrigger.refresh()
-          
-          // refresh 후 상태 확인
-          if (enterTimeline && scrollTrigger && scrollTrigger.isActive) {
-            // 이미 활성화되어 있다면 타임라인을 즉시 재생
-            enterTimeline.play(0)
-          }
-        } catch (_) { /* noop */ }
-      } catch (error) {
-        // 에러 발생 시 기본 애니메이션 초기화
-        console.warn('AppCardList animation initialization error:', error)
-        initAnimation()
-        const container = listRef.value ? listRef.value.parentElement : null
-        const titleEl = container ? container.querySelector('.app-card-list-title') : null
-        const items = listRef.value ? listRef.value.querySelectorAll('.app-card-list-item') : []
-        
-        if (titleEl) {
-          gsap.set(titleEl, { opacity: 1, y: 0 })
-        }
-        if (items && items.length) {
-          gsap.set(items, { opacity: 1, y: 0 })
-        }
-      }
-    })
-  })
+  initAnimation() // 그 이후에 애니메이션 초기화
 })
 
 onUnmounted(() => {
-  // ScrollTrigger 인스턴스 정리
-  if (enterScrollTriggerInstance) {
-    enterScrollTriggerInstance.kill()
-    enterScrollTriggerInstance = null
-  }
-  if (reverseScrollTriggerInstance) {
-    reverseScrollTriggerInstance.kill()
-    reverseScrollTriggerInstance = null
-  }
   // GSAP Context를 정리하여 모든 애니메이션과 ScrollTrigger를 자동으로 정리
-  if (gsapContext) {
-    gsapContext.revert() // 모든 애니메이션을 원래 상태로 되돌리고 정리
-    gsapContext = null
-  }
+  gsapContext?.revert()
 })
 </script>
 
