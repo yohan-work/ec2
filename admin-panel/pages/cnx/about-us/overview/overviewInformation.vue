@@ -136,17 +136,32 @@ const setupCountObservers = () => {
 
     if (isNaN(numberValue)) return
 
-    let hasAnimated = false
+    let lastScrollY = 0
+    let isFirstCheck = true
+    let isAnimating = false
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
+        const currentScrollY = window.scrollY || window.pageYOffset
+        const isScrollingDown = currentScrollY > lastScrollY
+        const isNearTop = currentScrollY < 100
+
+        if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop) && !isAnimating) {
           // 카운트업 애니메이션 실행 (1500ms = 1.5초)
+          isAnimating = true
           animateCountUp(emElement, 0, numberValue, 1500, hasPlus)
-          hasAnimated = true
-          // 한 번만 실행되면 되므로 observer 해제
-          observer.disconnect()
+          // 애니메이션 완료 후 플래그 리셋 (1.5초 후)
+          setTimeout(() => {
+            isAnimating = false
+          }, 1500)
+          isFirstCheck = false
+        } else if (!entry.isIntersecting && !isScrollingDown) {
+          // 스크롤 업으로 화면 밖으로 나가면 카운터 리셋
+          emElement.textContent = '0' + (hasPlus ? '+' : '')
+          isFirstCheck = true
         }
+
+        lastScrollY = currentScrollY
       },
       {
         threshold: 0.1,
