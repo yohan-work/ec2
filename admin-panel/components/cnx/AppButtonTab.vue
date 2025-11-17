@@ -2,7 +2,7 @@
 
 <template>
     <div class="app-button-tab-container" :data-component-instance="componentId">
-        <div class="tab-list" role="tablist" :class="[`align-${alignment}`]">
+        <div class="tab-list" role="tablist" :class="[`align-${alignment}`]" ref="tabListRef">
             <div class="inner">
                 <button v-for="(tab, index) in tabs" :key="index"
                     :class="['tab-button', { 'is-active': activeTab === index }]"
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { computed, ref, onMounted, onUnmounted, nextTick, onBeforeUnmount } from 'vue'
 
 const props = defineProps({
     tabs: {
@@ -50,8 +50,9 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'tab-change'])
 
-// 고유 ID 생성 (SSR 호환 - ref로 한 번만 생성)
-const componentId = ref(props.instanceId || `btn-tab-${Math.random().toString(36).substr(2, 9)}`)
+// 전역 카운터로 SSR 호환 ID 생성
+let buttonTabInstanceCounter = 0
+const componentId = ref(props.instanceId || `btn-tab-${++buttonTabInstanceCounter}`)
 
 const activeTab = computed({
     get: () => props.modelValue,
@@ -60,6 +61,10 @@ const activeTab = computed({
 
 // 실제 포커스된 탭 인덱스를 추적
 const focusedTabIndex = ref(props.modelValue)
+
+// Fade-up 애니메이션을 위한 refs
+const tabListRef = ref(null)
+let tabListObserver = null
 
 const selectTab = (index) => {
     activeTab.value = index
@@ -112,6 +117,38 @@ const handleFocus = (event) => {
 
 // 템플릿에서 사용할 변수들을 명시적으로 선언
 const { alignment, tabs } = props
+
+// Tab List Observer 설정 (Fade-up 애니메이션)
+const setupTabListObserver = () => {
+    if (!tabListRef.value) return
+
+    let lastScrollY = 0
+    let isFirstCheck = true
+
+    tabListObserver = new IntersectionObserver(
+        ([entry]) => {
+            const currentScrollY = window.scrollY || window.pageYOffset
+            const isScrollingDown = currentScrollY > lastScrollY
+            const isNearTop = currentScrollY < 100
+
+            if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+                tabListRef.value.classList.add('active')
+                isFirstCheck = false
+            } else if (!entry.isIntersecting && !isScrollingDown) {
+                tabListRef.value.classList.remove('active')
+                isFirstCheck = true
+            }
+
+            lastScrollY = currentScrollY
+        },
+        {
+            threshold: 0.2,
+            rootMargin: '-50px'
+        }
+    )
+
+    tabListObserver.observe(tabListRef.value)
+}
 
 // 이벤트 리스너 등록 함수 (DOM 완전 렌더링 대기)
 const setupEventListeners = () => {
@@ -336,6 +373,9 @@ onMounted(async () => {
         // 폴백: 즉시 이벤트 리스너 등록 시도
         await setupEventListeners()
     }
+    
+    // Fade-up 애니메이션 Observer 설정
+    setupTabListObserver()
 })
 
 onUnmounted(() => {
@@ -362,6 +402,14 @@ onUnmounted(() => {
             button.removeEventListener('keydown', handleKeydown)
             button.removeEventListener('focus', handleFocus)
         })
+    }
+})
+
+onBeforeUnmount(() => {
+    // Tab List Observer 정리
+    if (tabListObserver) {
+        tabListObserver.disconnect()
+        tabListObserver = null
     }
 })
 </script>
@@ -408,6 +456,27 @@ onUnmounted(() => {
         }
     }
 
+    // 초기 상태: 탭 버튼들 숨김
+    .tab-button {
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    // active 상태: 탭 버튼들이 stagger로 나타남
+    &.active {
+        .tab-button {
+            opacity: 1;
+            transform: translateY(0);
+            
+            // stagger 효과 (최대 10개 버튼까지 지원)
+            @for $i from 1 through 10 {
+                &:nth-child(#{$i}) {
+                    transition-delay: #{($i - 1) * 0.1}s;
+                }
+            }
+        }
+    }
 
     &.align-left .inner {
         justify-content: flex-start;
@@ -423,22 +492,23 @@ onUnmounted(() => {
 }
 
 .tab-button {
-    padding: rem(7) rem(13.5);
+    padding: rem(6.5) rem(13.5);
     border: 1px solid $gray-1;
-    border-radius: 24px;
+    border-radius: rem(24);
     background: transparent;
     color: $gray-1;
     font-size: rem(10);
+    line-height: 140%;
     font-weight: 500;
     cursor: pointer;
 
     @include tablet {
-        padding: rem(5) rem(13);
+        padding: rem(3.5) rem(13);
         @include body-03;
     }
 
     @include desktop {
-        padding: rem(14.5) rem(21);
+        padding: rem(11) rem(21);
         font-size: rem(16);
     }
 
