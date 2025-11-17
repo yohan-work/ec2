@@ -30,8 +30,6 @@
 <script setup>
 
   import { ref, computed, onMounted, onBeforeUnmount, onBeforeUpdate } from 'vue'
-  import { gsap } from 'gsap'
-  import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
   const props = defineProps({
     businessItems: {
@@ -48,7 +46,6 @@
   const businessHeadRef = ref(null)
   const businessHeadTitleRef = ref(null)
   const businessHeadTextRef = ref(null)
-  const businessVisualRef = ref(null)
 
 
   // business item ref 설정 함수
@@ -70,55 +67,58 @@
     }
   }
 
-  let ctx = null
+  // Observers 저장
+  let headObserver = null
+  const itemObservers = ref([])
 
-  gsap.registerPlugin(ScrollTrigger)
-
-  const initAnimation = () => {
-    ctx = gsap.context(() => {
-
-      // Business Head 애니메이션
-      props.createHeadAnimation(
+  // Head 애니메이션 초기화
+  const setupHeadAnimation = () => {
+    if (props.createHeadAnimation && businessHeadRef.value) {
+      headObserver = props.createHeadAnimation(
         businessHeadRef.value,
         businessHeadTitleRef.value,
         businessHeadTextRef.value
       )
+    }
+  }
 
-      if (businessItemRefs.value.length === 0) return
-      businessItemRefs.value.forEach(item => {
-        if (!item) return
+  // 아이템 Observers 설정
+  const setupItemObservers = () => {
+    // 기존 observers 정리
+    itemObservers.value.forEach(observer => observer?.disconnect())
+    itemObservers.value = []
 
-        gsap.fromTo(item, {
-          y: 30,
-          opacity: 0
-        }, {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            toggleActions: 'play none none none'
+    // 각 아이템에 대해 개별 observer 생성
+    businessItemRefs.value.forEach((item) => {
+      if (!item) return
+
+      let lastScrollY = 0
+      let isFirstCheck = true
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          const currentScrollY = window.scrollY || window.pageYOffset
+          const isScrollingDown = currentScrollY > lastScrollY
+          const isNearTop = currentScrollY < 100
+
+          if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+            item.classList.add('active')
+            isFirstCheck = false
+          } else if (!entry.isIntersecting && !isScrollingDown) {
+            item.classList.remove('active')
+            isFirstCheck = true
           }
-        })
-      })
 
-      gsap.fromTo(businessVisualRef.value, {
-        scale: 1.2,
-      }, {
-        scale: 1,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: businessVisualRef.value,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none none'
+          lastScrollY = currentScrollY
+        },
+        {
+          threshold: 0.2,
+          rootMargin: '-50px'
         }
-      })
+      )
 
+      observer.observe(item)
+      itemObservers.value.push(observer)
     })
   }
 
@@ -127,26 +127,25 @@
   })
 
   onMounted(() => {
-    initAnimation()
+    setupHeadAnimation()
+    setupItemObservers()
   })
 
   onBeforeUnmount(() => {
-    ctx?.revert()
-    ctx = null
+    // Head observer 정리
+    if (headObserver) {
+      headObserver.disconnect()
+      headObserver = null
+    }
+    
+    // 아이템 observers 정리
+    itemObservers.value.forEach(observer => observer?.disconnect())
+    itemObservers.value = []
   })
 
 </script>
 
 <style lang="scss" scoped>
-
-  @mixin translate {
-    transform: translate(rem(30), 0);
-    opacity: 0;
-    transition: all 0.6s ease;
-    @include tablet {
-      transform: translate(0, rem(30));
-    }
-  }
 
   .aboutus-business {
 
@@ -161,14 +160,37 @@
     &__head {
       margin-bottom: rem(40);
       text-align: center;
+      
       &-title {
         @include headline-02;
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
       }
+      
       &-text {
         margin-top: rem(8);
         word-break: keep-all;
         overflow-wrap: anywhere;
         @include body-02;
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      // active 상태
+      &.active {
+        .aboutus-business__head-title {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0s;
+        }
+
+        .aboutus-business__head-text {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0.2s;
+        }
       }
 
       @include tablet {
@@ -183,18 +205,6 @@
         &-text {
           margin-top: rem(24);
         }
-      }
-    }
-
-    &__visual {
-      display: block;
-      overflow: hidden;
-      aspect-ratio: 39 / 19;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: scale(1.2);
       }
     }
 
@@ -228,12 +238,20 @@
         border-radius: rem(12);
         transform: translateY(30px);
         opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        
         @include tablet {
           border-radius: rem(16);
         }
         @include desktop {
           padding: rem(48);
           border-radius: rem(20);
+        }
+
+        // active 상태
+        &.active {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
 

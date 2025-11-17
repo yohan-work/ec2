@@ -11,7 +11,7 @@
       <i v-if="historyList.length > 0" class="aboutus-history__icon" ref="historyIconRef"></i>
       <ul class="aboutus-history__list" ref="historyListRef">
 
-        <li class="aboutus-history__item" v-for="item in historyList" :key="item.year"> 
+        <li class="aboutus-history__item" v-for="item in historyList" :key="item.year" :ref="el => setHistoryItemRef(el)"> 
           <div class="aboutus-history__item-thumb">
             <img :src="item.thumb" :alt="item.alt" loading="lazy">
           </div>
@@ -23,7 +23,7 @@
                 <p v-html="detail.content" v-if="detail.content !== ''"></p>
               </li>
             </ul>
-            <i aria-hidden="true" class="point" :ref="el => setHistoryPointRef(el)"></i>
+            <i aria-hidden="true" class="point"></i>
           </div>
         </li>
 
@@ -57,19 +57,22 @@
   const historyIconRef = ref(null)
   const historyContainerRef = ref(null)
   const historyListRef = ref(null)
-  const historyPointRefs = ref([])
+  const historyItemRefs = ref([])
 
-  // history point ref 설정 함수
-  const setHistoryPointRef = (el) => {
+  // history item ref 설정 함수
+  const setHistoryItemRef = (el) => {
     if (el) {
-      historyPointRefs.value.push(el)
+      historyItemRefs.value.push(el)
     }
   }
 
   let ctx = null
+  let headObserver = null
+  const itemObservers = ref([])
 
   gsap.registerPlugin(ScrollTrigger)
 
+  // GSAP Icon 애니메이션 (스크롤 진행에 따라 위치 변경 - scrub 유지)
   const createHistoryIconAnimation = (start, end) => {
     if (!historyIconRef.value) return
     gsap.to(historyIconRef.value, {
@@ -89,20 +92,63 @@
     })
   }
 
-  const initAnimation = () => {
-    ctx = gsap.context(() => {
-
-      const triggerPoint = '65%'
-
-      // History Head 애니메이션
-      props.createHeadAnimation(
+  // Head 애니메이션 초기화
+  const setupHeadAnimation = () => {
+    if (props.createHeadAnimation && historyHeadRef.value) {
+      headObserver = props.createHeadAnimation(
         historyHeadRef.value,
         historyHeadTitleRef.value,
         historyHeadTextRef.value
       )
+    }
+  }
+
+  // Item Observers 설정 (Intersection Observer 사용)
+  const setupItemObservers = () => {
+    // 기존 observers 정리
+    itemObservers.value.forEach(observer => observer?.disconnect())
+    itemObservers.value = []
+
+    // 각 아이템에 대해 개별 observer 생성
+    historyItemRefs.value.forEach((item) => {
+      if (!item) return
+
+      let lastScrollY = 0
+      let isFirstCheck = true
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          const currentScrollY = window.scrollY || window.pageYOffset
+          const isScrollingDown = currentScrollY > lastScrollY
+          const isNearTop = currentScrollY < 100
+
+          if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+            item.classList.add('active')
+            isFirstCheck = false
+          } else if (!entry.isIntersecting && !isScrollingDown) {
+            item.classList.remove('active')
+            isFirstCheck = true
+          }
+
+          lastScrollY = currentScrollY
+        },
+        {
+          threshold: 0.2,
+          rootMargin: '-50px'
+        }
+      )
+
+      observer.observe(item)
+      itemObservers.value.push(observer)
+    })
+  }
+
+  // Icon 애니메이션 초기화 (GSAP 유지)
+  const initIconAnimation = () => {
+    ctx = gsap.context(() => {
+      const triggerPoint = '65%'
 
       if (historyIconRef.value && historyContainerRef.value) {
-
         ScrollTrigger.matchMedia({
           // 모바일 환경 (767px 이하)
           "(max-width: 767px)": () => {
@@ -114,61 +160,38 @@
           }
         })
       }
-
-      if (historyPointRefs.value.length > 0) {
-        historyPointRefs.value.forEach((item, index) => {
-          if (!item) return
-          ScrollTrigger.create({
-            trigger: item,
-            start: `top ${triggerPoint}`,
-            end: `bottom-=100%`,
-            toggleActions: 'play none none reverse',
-            // markers: true,
-            invalidateOnRefresh: true,
-            onEnter: () => {
-              item.classList.add('active');
-              // if (index === historyPointRefs.value.length - 1) {
-              //   historyIconRef.value.classList.add('hide');
-              // }
-            },
-            onLeaveBack: () => {
-              item.classList.remove('active');
-              // if (index === historyPointRefs.value.length - 1) {
-              //   historyIconRef.value.classList.remove('hide');
-              // }
-            }
-          })
-        })
-      }
-
     })
   }
 
   onBeforeUpdate(() => {
-    historyPointRefs.value = []
+    historyItemRefs.value = []
   })
 
   onMounted(() => {
-    initAnimation()
+    setupHeadAnimation()
+    initIconAnimation()
+    setupItemObservers()
   })
 
   onBeforeUnmount(() => {
+    // Head observer 정리
+    if (headObserver) {
+      headObserver.disconnect()
+      headObserver = null
+    }
+
+    // GSAP context 정리
     ctx?.revert()
     ctx = null
+    
+    // Item observers 정리
+    itemObservers.value.forEach(observer => observer?.disconnect())
+    itemObservers.value = []
   })
 
 </script>
 
 <style lang="scss" scoped>
-
-  @mixin translate {
-    transform: translate(rem(30), 0);
-    opacity: 0;
-    transition: all 0.6s ease;
-    @include tablet {
-      transform: translate(0, rem(30));
-    }
-  }
 
   @mixin history-icon {
     width: rem(4);
@@ -194,16 +217,39 @@
 
     &__head {
       margin-bottom: rem(40);
+      
       &-title {
         @include headline-02;
         text-align: center;
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
       }
+      
       &-text {
         margin-top: rem(8);
         word-break: keep-all;
         overflow-wrap: anywhere;
         @include body-02 ;
         text-align: center;
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      // active 상태
+      &.active {
+        .aboutus-history__head-title {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0s;
+        }
+
+        .aboutus-history__head-text {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0.2s;
+        }
       }
 
       @include tablet {
@@ -321,7 +367,8 @@
       position: relative;
       padding-left: rem(29);
 
-      &:has(.point.active) {
+      // active 상태
+      &.active {
         #{$parent}-thumb {
           transform: translate(0, 0);
           opacity: 1;
@@ -343,7 +390,14 @@
             transition-delay: 0.4s;
           }
         }
-
+        .point {
+          visibility: visible;
+          &::before {
+            transition: all 0.6s ease;
+            transform: scale(2.5);
+            opacity: 0;
+          }
+        }
       }
 
       .point {
@@ -360,15 +414,6 @@
 
         @include history-icon;
 
-        &.active {
-          visibility: visible;
-          &::before {
-            transition: all 0.6s ease;
-            transform: scale(2.5);
-            opacity: 0;
-          }
-        }
-
         @include tablet {
           top: 50%;
           left: 50%;
@@ -378,7 +423,14 @@
 
       &-thumb {
         aspect-ratio: 289 / 145;
-        @include translate;
+        transform: translate(rem(30), 0);
+        opacity: 0;
+        transition: all 0.6s ease;
+        
+        @include tablet {
+          transform: translate(0, rem(30));
+        }
+        
         img {
           width: 100%;
           height: 100%;
@@ -403,13 +455,15 @@
         font-size: rem(24);
         font-weight: 900;
         line-height: 1.4;
-
-        @include translate;
+        transform: translate(rem(30), 0);
+        opacity: 0;
+        transition: all 0.6s ease;
 
         @include tablet {
           position: static !important;
           font-size: rem(20);
           line-height: 1.25;
+          transform: translate(0, rem(30));
         }
         @include desktop {
           font-size: rem(40);
@@ -426,13 +480,17 @@
           font-weight: 500;
           font-size: rem(16);
           line-height: 1.6;
-          @include translate;
+          transform: translate(rem(30), 0);
+          opacity: 0;
+          transition: all 0.6s ease;
         }
         p {
           font-size: rem(14);
           font-weight: 300;
           line-height: 1.6;
-          @include translate;
+          transform: translate(rem(30), 0);
+          opacity: 0;
+          transition: all 0.6s ease;
         }
 
         @include tablet {
@@ -441,10 +499,12 @@
           strong {
             font-size: rem(9);
             line-height: 1.55;
+            transform: translate(0, rem(30));
           }
           p {
             font-size: rem(8);
             line-height: 1.55;
+            transform: translate(0, rem(30));
           }
         }
         @include desktop {

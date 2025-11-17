@@ -31,10 +31,6 @@
 
 <script setup>
   import { ref } from 'vue'
-  import { gsap } from 'gsap'
-  import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-  gsap.registerPlugin(ScrollTrigger)
 
   import AppKeyVisual from '~/components/cnx/AppKeyVisual' 
   import AppTitle from '~/components/cnx/AppTitle'
@@ -239,33 +235,39 @@
     },
   ])
 
+  // Intersection Observer 기반 애니메이션 함수
   const createHeadAnimation = (triggerElement, titleElement, textElement) => {
-    if (!triggerElement || !titleElement || !textElement) return
+    if (!triggerElement) return
 
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: triggerElement,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none none'
+    let lastScrollY = 0
+    let isFirstCheck = true
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const currentScrollY = window.scrollY || window.pageYOffset
+        const isScrollingDown = currentScrollY > lastScrollY
+        const isNearTop = currentScrollY < 100
+
+        if (entry.isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
+          triggerElement.classList.add('active')
+          isFirstCheck = false
+        } else if (!entry.isIntersecting && !isScrollingDown) {
+          triggerElement.classList.remove('active')
+          isFirstCheck = true
+        }
+
+        lastScrollY = currentScrollY
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '-50px'
       }
-    })
-    .fromTo(titleElement, {
-      y: 30,
-      opacity: 0
-    }, {
-      y: 0,
-      opacity: 1,
-      ease: 'power2.out',
-    })
-    .fromTo(textElement, {
-      y: 30,
-      opacity: 0
-    }, {
-      y: 0,
-      opacity: 1,
-      ease: 'power2.out',
-    }, '-=0.2') // 0.2초 전에 시작하여 부드러운 연속 애니메이션
+    )
+
+    observer.observe(triggerElement)
+
+    // observer 반환하여 필요시 cleanup 가능하도록
+    return observer
   }
 
 </script>
