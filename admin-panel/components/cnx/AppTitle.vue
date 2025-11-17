@@ -13,12 +13,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-// GSAP ScrollTrigger 플러그인 등록
-gsap.registerPlugin(ScrollTrigger)
+import { ref, computed } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 const props = defineProps({
   title: {
@@ -41,15 +37,15 @@ const props = defineProps({
   }
 })
 
-// refs for GSAP animation
+// emit 정의 (부모 컴포넌트에 가시성 상태 전달 가능)
+const emit = defineEmits(['visibility-change'])
+
+// refs
 const containerRef = ref(null)
 const titleRef = ref(null)
 const textRef = ref(null)
-
-// gsap.context 관리를 위한 컨텍스트 핸들 보관
-let gsapCtx = null
-// ScrollTrigger 인스턴스 저장
-let scrollTriggerInstance = null
+const isVisible = ref(false)
+const hasBeenActivated = ref(false) // 한 번이라도 활성화되었는지 추적
 
 // 제목이 HTML을 포함하는지 자동 감지 (간단 검출)
 const isHtmlTitle = computed(() => {
@@ -57,111 +53,33 @@ const isHtmlTitle = computed(() => {
   return /<\s*[a-zA-Z][\s\S]*>/i.test(value)
 })
 
-// GSAP 애니메이션 초기화
-const initAnimation = () => {
-  if (!containerRef.value) return { timeline: null, scrollTrigger: null }
-
-  // 존재하는 요소들만 수집
-  const elementsToAnimate = []
-  
-  if (titleRef.value) {
-    elementsToAnimate.push(titleRef.value)
-  }
-  if (textRef.value) {
-    elementsToAnimate.push(textRef.value)
-  }
-
-  // 애니메이션할 요소가 없으면 리턴
-  if (elementsToAnimate.length === 0) return { timeline: null, scrollTrigger: null }
-
-  // 초기 상태 설정 (애니메이션 전 상태)
-  elementsToAnimate.forEach(element => {
-    gsap.set(element, { 
-      opacity: 0, 
-      y: 30 
-    })
-  })
-
-  // 타임라인을 paused로 시작
-  const tl = gsap.timeline({ paused: true })
-
-  // 순차적 애니메이션: 타이틀 → 텍스트 (나타날 때)
-  if (titleRef.value) {
-    tl.to(titleRef.value, {
-      duration: 0.6,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out',
-      immediateRender: false
-    })
-  }
-  
-  if (textRef.value) {
-    tl.to(textRef.value, {
-      duration: 0.6,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out',
-      immediateRender: false
-    }, titleRef.value ? '-=0.3' : 0) // 타이틀이 있으면 0.3초 겹침
-  }
-
-  // ScrollTrigger를 별도로 생성하고 저장
-  scrollTriggerInstance = ScrollTrigger.create({
-    trigger: containerRef.value,
-    start: 'top 80%',
-    end: 'bottom 20%',
-    onEnter: () => tl.play(), // 확실히 트리거되었을 때만 재생
-    onLeaveBack: () => tl.reverse(),
-    immediateRender: false
-  })
-  
-  return { timeline: tl, scrollTrigger: scrollTriggerInstance }
-}
-
-// DOM이 완전히 렌더링된 후 애니메이션 초기화
-onMounted(async () => {
-  await nextTick()
-  
-  if (!containerRef.value) return
-  
-  // gsap.context로 이 컴포넌트에서 생성한 애니메이션/트리거를 스코프에 묶음
-  gsapCtx = gsap.context(() => {
-    requestAnimationFrame(() => {
-      try {
-        // 애니메이션 초기화 (항상 실행)
-        const { timeline: tl, scrollTrigger } = initAnimation()
-        
-        // ScrollTrigger refresh 호출
-        gsap.registerPlugin(ScrollTrigger)
-        try {
-          ScrollTrigger.refresh()
-          
-          // refresh 후 상태 확인
-          if (tl && scrollTrigger && scrollTrigger.isActive) {
-            // 이미 활성화되어 있다면 타임라인을 즉시 재생
-            tl.play(0)
-          }
-        } catch (_) { /* noop */ }
-      } catch (error) {
-        // 에러 발생 시 기본 애니메이션 초기화
-        console.warn('AppTitle animation initialization error:', error)
-        initAnimation()
-      }
-    })
-  }, containerRef.value)
-})
-
-// 언마운트 시 이 컴포넌트 범위에서 생성된 GSAP 리소스 정리
-onUnmounted(() => {
-  try {
-    if (scrollTriggerInstance) {
-      scrollTriggerInstance.kill()
-      scrollTriggerInstance = null
+// VueUse Intersection Observer 설정
+useIntersectionObserver(
+  containerRef,
+  ([{ isIntersecting }]) => {
+    isVisible.value = isIntersecting
+    
+    // 부모 컴포넌트에 가시성 상태 전달
+    emit('visibility-change', isIntersecting)
+    
+    // 콘솔에 상태 로그 (개발용)
+    if (isIntersecting && !hasBeenActivated.value) {
+      console.log('✅ AppTitle 섹션이 화면에 처음 보입니다!')
+      // active 클래스 추가 (한 번만)
+      containerRef.value?.classList.add('active')
+      hasBeenActivated.value = true // 활성화 상태 기록
+    } else if (isIntersecting && hasBeenActivated.value) {
+      console.log('✅ AppTitle 섹션이 다시 화면에 보입니다! (이미 활성화됨)')
+    } else {
+      console.log('❌ AppTitle 섹션이 화면에서 벗어났습니다! (active 상태 유지)')
+      // active 클래스는 제거하지 않음 - 한 번 활성화되면 계속 유지
     }
-    if (gsapCtx) gsapCtx.revert()
-  } catch (_) { /* noop */ }
-})
+  },
+  {
+    threshold: 0.2, // 20% 이상 보일 때 감지
+    rootMargin: '-50px' // 뷰포트 경계에서 50px 안쪽에서 감지
+  }
+)
 </script>
 
 <style lang="scss" scoped>
@@ -179,6 +97,12 @@ onUnmounted(() => {
 
   &-heading {
     @include headline-01;
+    
+    // 초기 상태: 투명하고 아래에 위치
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    
     & + .app-title-text {
       margin-top: rem(8);
 
@@ -195,11 +119,31 @@ onUnmounted(() => {
   &-text {
     @include body-01;
     color: $gray-1;
+    
+    // 초기 상태: 투명하고 아래에 위치
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   }
 
   // HTML 제목을 감싸는 스팬은 레이아웃에 영향 없도록 처리
   .app-title-html {
     display: contents;
+  }
+
+  // active 상태: fadeup 모션 실행
+  &.active {
+    .app-title-heading {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0s; // 타이틀이 먼저 나타남
+    }
+    
+    .app-title-text {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.3s; // 타이틀보다 0.3초 늦게 나타남 (순차적 효과)
+    }
   }
 
   // 정렬 옵션
