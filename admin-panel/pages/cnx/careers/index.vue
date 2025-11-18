@@ -1,7 +1,10 @@
 <template>
   <div class="careers">
 
-    <AppKeyVisual imageAlt="밝은 사무실에서 컴퓨터와 태블릿을 사용하며 협업하거나 개별 업무를 하는 직장인들의 모습." :animationDuration="1500" />
+    <AppKeyVisual 
+      imageAlt="밝은 사무실에서 컴퓨터와 태블릿을 사용하며 협업하거나 개별 업무를 하는 직장인들의 모습." 
+      :animationDuration="1500"
+    />
 
     <AppTitle title="Careers" text="콘센트릭스에서 새로운 성장의 기회를 만나보세요." class="careers-custom-title" />
 
@@ -110,8 +113,6 @@
           <!-- Q&A -->
           <CareersQna title="채용 Q&A" :items="businessQnaItems" refName="business" />
 
-          
-
         </section>
       </template>
 
@@ -162,9 +163,6 @@
                 <CareersBenefit headingLevel="h4" title="Attractive Benefits" :items="nonAgentBenefits"
                   :isVisible="activeButtonTab === 1" />
 
-                <!-- banner -->
-
-
               </template>
 
             </AppButtonTab>
@@ -194,7 +192,6 @@ import AppTab from '~/components/cnx/AppTab'
 import AppSwiper from '~/components/cnx/AppSwiper'
 import AppButtonTab from '~/components/cnx/AppButtonTab'
 
-import CareersVisualTitle from './CareersVisualTitle'
 import CareersBusiness from './CareersBusiness'
 import CareersBenefit from './CareersBenefit'
 import CareersNonAgent from './CareersNonAgent'
@@ -222,12 +219,12 @@ onMounted(() => {
   }
 })
 
-const handleTabChange = (event) => {
-  // console.log('Main tab changed:', event)
+const handleTabChange = () => {
+  // 탭 변경 핸들러 (필요시 구현)
 }
 
-const handleButtonTabChange = (event) => {
-  // console.log('Button tab changed:', event)
+const handleButtonTabChange = () => {
+  // 버튼 탭 변경 핸들러 (필요시 구현)
 }
 
 // 컨텐츠 데이터

@@ -53,13 +53,16 @@ const props = defineProps({
   }
 })
 
-// 템플릿에서 사용할 변수들
-const imageAlt = props.imageAlt
-const animationDuration = props.animationDuration
-
 const route = useRoute()
 // imagePath가 제공되면 사용, 아니면 현재 페이지 경로 사용
-const baseImagePath = props.imagePath || `/assets/cnx${route.path}`
+// 쿼리 파라미터와 해시를 제거한 순수한 경로만 사용
+let cleanPath = route.path.split('?')[0].split('#')[0]
+// cleanPath에서 /cnx 접두사 제거 (이미 /assets/cnx에 포함되므로)
+if (cleanPath.startsWith('/cnx')) {
+  cleanPath = cleanPath.replace(/^\/cnx/, '')
+}
+// baseImagePath 설정
+const baseImagePath = props.imagePath || `/assets/cnx${cleanPath}`
 
 // 반응형 이미지 경로들
 const desktopImage = ref('')
