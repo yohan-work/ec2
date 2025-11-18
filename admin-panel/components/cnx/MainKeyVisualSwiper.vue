@@ -1128,7 +1128,13 @@ onUnmounted(() => {
       left: rem(-40);
     }
 
-    @include desktop {
+    // 1480px ~ 1679px 구간
+    @media all and (min-width: #{$pc}) and (max-width: 1679px) {
+      left: rem(-56);
+    }
+
+    // 1680px 이상
+    @media all and (min-width: 1680px) {
       left: calc(rem(-124) + rem(-56));
     }
   }
@@ -1138,7 +1144,13 @@ onUnmounted(() => {
       right: rem(-40);
     }
 
-    @include desktop {
+    // 1480px ~ 1679px 구간
+    @media all and (min-width: #{$pc}) and (max-width: 1679px) {
+      right: rem(-56);
+    }
+
+    // 1680px 이상
+    @media all and (min-width: 1680px) {
       right: calc(rem(-124) + rem(-56));
     }
   }
