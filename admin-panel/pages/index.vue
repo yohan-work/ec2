@@ -11,6 +11,36 @@
           title="What we do"
           description="콘센트릭스는 디지털 세상에서 기업과 함께 더 나은 고객 경험을 만들어 갑니다.<br/><br class='br-mo'/>디지털마케팅/이커머스에 있어, 전략, UX/UI, 광고, 분석, 구축, 운영, 고객 경험 관리와 서비스 혁신까지 아우르는 <br class='br-pc'/>통합 서비스로 기업의 성과를 높입니다."
         />
+        
+        <!-- 5개의 박스 컨테이너 -->
+        <div class="what-we-do-boxes">
+          <div 
+            v-for="(box, index) in whatWeDoBoxes" 
+            :key="index"
+            @click="toggleBox(index)"
+            :class="['what-we-do-box', `what-we-do-box--${index}`, { 'active': activeBoxIndexes.includes(index) }]"
+          >
+            <!-- 타이틀과 디스크립션 영역 -->
+            <div class="what-we-do-box__header">
+              <h3 class="what-we-do-box__title" v-html="box.title"></h3>
+              <p class="what-we-do-box__description" v-html="box.description"></p>
+            </div>
+            
+            <!-- 링크 영역 -->
+            <div class="what-we-do-box__content">
+              <div class="what-we-do-box__links">
+                <a 
+                  v-for="(link, linkIndex) in box.links" 
+                  :key="linkIndex"
+                  :href="link.href"
+                  class="what-we-do-box__link"
+                >
+                  {{ link.text }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -99,11 +129,15 @@ import MainKeyVisualSwiper from '~/components/cnx/MainKeyVisualSwiper.vue'
 import MainTitle from '~/components/cnx/MainTitle.vue'
 import AppButton from '~/components/cnx/AppButton.vue'
 import { ref, computed } from 'vue'
+import { useNavigation } from '~/composables/useNavigation'
 
 // 레이아웃 설정
 definePageMeta({
   layout: 'concentrix',
 })
+
+// useNavigation에서 menuStructure 가져오기
+const { menuStructure } = useNavigation()
 
 // 두 번째 섹션 통계 데이터
 const statsData = ref([
@@ -171,23 +205,57 @@ const customSectionBgImage = computed(() => {
   return `${basePath}.png`
 })
 
+// 첫 번째 섹션 What we do 박스 데이터
+// descriptions 객체: 각 섹션의 description을 별도로 관리
+const descriptions = {
+  'Strategy & Design': '우리는 브랜드와 사용자의 접점을 전략적으로 설계하여 지속 가능한 성장을 만들어냅니다.',
+  'Data & Analytics': '디지털마케팅·이커머스 성과 극대화를 위해 데이터 환경 구축, 거버넌스, 인사이트 분석, AI 기반 분석 솔루션을 제공합니다.',
+  'Technology Platforms': 'Commerce·Experience·AI 플랫폼 기반 및 글로벌 표준 아키텍처와 레퍼런스로 빠른 가치 실현과 확장을 지원합니다.',
+  'Technology Services': 'Enterprise SI와 AX Consulting 기반으로 전략부터 운영까지 End-to-End을 지원해 안정적 디지털 전환을 가속화합니다.',
+  'Digital Operations': '상상이상의 결과를 만들어 내기위해 그냥 하던 대로 하지 않습니다. 고객사를 위한 혁신적인 솔루션을 적용하여 운영합니다.'
+}
+
+// menuStructure를 활용하여 whatWeDoBoxes를 동적으로 생성
+const whatWeDoBoxes = computed(() => {
+  const sections = menuStructure.whatwedo.sections
+  return sections.map(section => ({
+    title: section.title,
+    description: descriptions[section.title] || '',
+    links: (section.items || []).map(item => ({
+      text: item.text,
+      href: item.path
+    }))
+  }))
+})
+
 // 세 번째 섹션 careers 박스 데이터
 const careersBox1Title = ref('Digital & Technology Business')
 const careersBox1Description = ref('이커머스, UX/UI, 개발/운영 등<br class="br-mo-pc" /> 디지털마케팅 전 영역의<br class="br-mo" /> 전문가를 기다립니다.')
 const careersBox1Button = ref({
   text: '자세히 보기',
-  href: '/cnx/careers?tab=0',
-  target: '_self'
+  href: '/cnx/careers?tab=0'
 })
 
 const careersBox2Title = ref('Customer Service')
 const careersBox2Description = ref('고객과 소통하는<br> Customer Service<br class="br-tab-mo" /> 전문가를 찾습니다.')
 const careersBox2Button = ref({
   text: '자세히 보기',
-  href: '/cnx/careers?tab=1',
-  target: '_self'
+  href: '/cnx/careers?tab=1'
 })
 
+// 박스 확장/축소를 위한 클릭 인터랙션
+const activeBoxIndexes = ref([0]) // 첫 번째 박스는 초기값으로 열림
+
+// 박스 클릭 핸들러
+const toggleBox = (index) => {
+  // 클릭한 박스가 이미 열려있으면 유지 (아무 동작 안 함)
+  if (activeBoxIndexes.value.includes(index)) {
+    return
+  }
+  
+  // 다른 박스를 클릭하면 이전 박스는 닫고 새 박스만 열기 (아코디언 방식)
+  activeBoxIndexes.value = [index]
+}
 
 </script>
 
@@ -263,6 +331,305 @@ const careersBox2Button = ref({
       height: 100%;
       display: flex;
       align-items: center;
+    }
+  }
+}
+
+.what-we-do-boxes {
+  display: flex;
+  flex-direction: column;
+  gap: rem(12);
+  margin-top: rem(30);
+  
+  @include tablet {
+    gap: rem(24);
+    margin-top: rem(40);
+  }
+  
+  @include desktop {
+    gap: rem(24);
+    margin-top: rem(50);
+  }
+}
+
+.what-we-do-box {
+  width: 100%;
+  height: rem(61);
+  display: flex;
+  flex-direction: column;
+  padding: rem(20);
+  background-color: $gray-3;
+  border-radius: rem(8);
+  transition: background 0.6s ease-out, height 0.6s ease-out;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  
+  @include tablet {
+    height: rem(107);
+    padding: rem(36) rem(44);
+    border-radius: rem(8);
+  }
+  
+  @include desktop {
+    height: rem(132);
+    padding: rem(40) rem(48);
+    border-radius: rem(20);
+  }
+  
+  // 배경 이미지를 ::before로 분리하여 항상 고정 위치에 표시
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: auto;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: none; // 닫힐 때는 transition 없이 바로 사라짐
+  }
+  
+  // 각 박스별 배경 이미지 (순서: snd, dna, tp, ts, do)
+  &.what-we-do-box--0::before {
+    background-image: url('/assets/cnx/main/main_snd_m.png');
+    
+    @include tablet {
+      background-image: url('/assets/cnx/main/main_snd_t.png');
+    }
+    
+    @include desktop {
+      background-image: url('/assets/cnx/main/main_snd.png');
+    }
+  }
+  
+  &.what-we-do-box--1::before {
+    background-image: url('/assets/cnx/main/main_dna_m.png');
+    
+    @include tablet {
+      background-image: url('/assets/cnx/main/main_dna_t.png');
+    }
+    
+    @include desktop {
+      background-image: url('/assets/cnx/main/main_dna.png');
+    }
+  }
+  
+  &.what-we-do-box--2::before {
+    background-image: url('/assets/cnx/main/main_tp_m.png');
+    
+    @include tablet {
+      background-image: url('/assets/cnx/main/main_tp_t.png');
+    }
+    
+    @include desktop {
+      background-image: url('/assets/cnx/main/main_tp.png');
+    }
+  }
+  
+  &.what-we-do-box--3::before {
+    background-image: url('/assets/cnx/main/main_ts_m.png');
+    
+    @include tablet {
+      background-image: url('/assets/cnx/main/main_ts_t.png');
+    }
+    
+    @include desktop {
+      background-image: url('/assets/cnx/main/main_ts.png');
+    }
+  }
+  
+  &.what-we-do-box--4::before {
+    background-image: url('/assets/cnx/main/main_do_m.png');
+    
+    @include tablet {
+      background-image: url('/assets/cnx/main/main_do_t.png');
+    }
+    
+    @include desktop {
+      background-image: url('/assets/cnx/main/main_do.png');
+    }
+  }
+  
+  &:hover:not(.active) {
+    background: linear-gradient(95deg, #003D5B 0%, #005979 100%);
+    
+    .what-we-do-box__title {
+      color: $d-white;
+    }
+    
+    .what-we-do-box__description {
+      color: $d-white;
+    }
+  }
+  
+  &.active {
+    background: linear-gradient(95deg, #003D5B 0%, #005979 100%);
+    height: rem(435);
+    
+    @include tablet {
+      height: rem(430);
+    }
+    
+    @include desktop {
+      height: rem(432);
+    }
+    
+    &::before {
+      opacity: 1;
+      transition: opacity 0.4s ease-out 0.2s; // 박스 확장 시 조금 늦게 시작
+    }
+    
+    .what-we-do-box__title {
+      color: $d-white;
+    }
+    
+    .what-we-do-box__description {
+      color: $d-white;
+      display: block;
+    }
+    
+    .what-we-do-box__content {
+      display: flex;
+    }
+  }
+  
+  &__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+    
+    @include desktop {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+  
+  &__title {
+    color: $p-blue;
+    font-size: rem(19);
+    font-weight: 700;
+    line-height: 110%;
+    width: 100%;
+    flex-shrink: 0;
+    
+    @include tablet {
+      font-size: rem(32);
+    }
+    
+    @include desktop {
+      width: 50%;
+      font-size: rem(35);
+    }
+  }
+  
+  &__description {
+    color: #555;
+    font-size: rem(14);
+    font-weight: 600;
+    line-height: 130%;
+    word-break: keep-all;
+    text-wrap: balance;
+    width: 100%;
+    text-align: left;
+    margin-top: rem(12);
+    
+    @media all and (max-width: #{$pc - 1px}) {
+      display: none;
+    }
+    
+    @include tablet {
+      font-size: rem(19);
+    }
+    
+    @include desktop {
+      width: 50%;
+      text-align: right;
+      font-size: rem(20);
+      font-weight: 500;
+      margin-top: 0;
+    }
+  }
+  
+  &__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: none;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: rem(36);
+    
+    @include tablet {
+      margin-top: rem(70);
+    }
+    
+    @include desktop {
+      margin-top: rem(70);
+    }
+  }
+  
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: rem(8);
+    flex-shrink: 0;
+    
+    @include tablet {
+      gap: rem(10);
+    }
+    
+    @include desktop {
+      gap: rem(10);
+    }
+  }
+  
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: rem(8);
+    color: $d-white;
+    font-size: rem(18);
+    font-weight: 400;
+    text-decoration: none;
+    transition: text-decoration 0.3s ease;
+    
+    @include tablet {
+      font-size: rem(22);
+    }
+    
+    @include desktop {
+      font-size: rem(24);
+    }
+    
+    &:hover {
+      text-decoration: underline;
+    }
+    
+    &::after {
+      content: '';
+      display: inline-block;
+      width: rem(12);
+      height: rem(12);
+      background-color: $d-white;
+      -webkit-mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
+      -webkit-mask-size: contain;
+      mask: url('~/components/assets/cnx/link-arrow.svg') no-repeat center;
+      mask-size: contain;
+      flex-shrink: 0;
+      
+      @include tablet {
+        width: rem(16);
+        height: rem(16);
+      }
     }
   }
 }
