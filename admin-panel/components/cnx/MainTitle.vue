@@ -33,6 +33,7 @@ const props = defineProps({
     line-height: 140%;
     margin-top: rem(24);
     font-size: rem(16);
+    font-weight: 400;
     word-break: keep-all;
     
     @include tablet {

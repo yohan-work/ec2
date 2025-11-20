@@ -394,7 +394,6 @@ const toggleBox = (index) => {
     transition: none; // 닫힐 때는 transition 없이 바로 사라짐
   }
   
-  // 각 박스별 배경 이미지 (순서: snd, dna, tp, ts, do)
   &.what-we-do-box--0::before {
     background-image: url('/assets/cnx/main/main_snd_m.png');
     
@@ -514,7 +513,7 @@ const toggleBox = (index) => {
   
   &__title {
     color: $p-blue;
-    font-size: rem(19);
+    font-size: rem(22);
     font-weight: 700;
     line-height: 110%;
     width: 100%;
@@ -597,7 +596,7 @@ const toggleBox = (index) => {
     align-items: center;
     gap: rem(8);
     color: $d-white;
-    font-size: rem(18);
+    font-size: rem(14);
     font-weight: 400;
     text-decoration: none;
     transition: text-decoration 0.3s ease;
