@@ -89,12 +89,12 @@
             { 
               id: 2, 
               title: '데이터 & 오케스트레이션', 
-              description: 'CDP · Real-time Profile / Segmentation, Consent / Privacy Management, Omnichannel Journey Orchestration · Trigger/Rule-based Personalization'
+              description: 'CDP · Real-time Profile  · Segmentation / Consent / Privacy Management  · Omnichannel Journey Orchestration · Trigger / Rule-based Personalization'
             },
             { 
               id: 3, 
               title: '핵심 기능 & 통합', 
-              description: 'Sales Cloud(SFA) / Service Cloud( Contact Center, Field service ) / Agent Force /  CREAM( salesforce.com 패키지, CTI/문자/카카오상담톡 ) / Campaign Automation · Experimentation / Attribution · Dashboard, DXP · Commerce ·  Contact Center · Ad-Tech 연동' ,
+              description: 'Sales Cloud(SFA) · Service Cloud( Contact Center, Field service ) · Agent Force · CREAM( salesforce.com 패키지, CTI/문자/카카오상담톡 ) · Campaign Automation · Experimentation · Attribution · Dashboard, DXP · Commerce · Contact Center · Ad-Tech 연동' ,
             }
           ]"
         />

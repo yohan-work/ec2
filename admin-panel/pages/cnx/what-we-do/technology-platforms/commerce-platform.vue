@@ -66,12 +66,12 @@
             { 
               id: 2, 
               title: '적용 범위 & 아키텍처', 
-              description: 'B2B / B2C / 하이브리드, 멀티브랜드·다국가(언어/통화), Headless API · Composable · Cloud Scale' ,
+              description: 'B2B · B2C · 하이브리드 · 멀티브랜드 · 다국가(언어 / 통화) · Headless API · Composable · Cloud Scale' ,
             },
             { 
               id: 3, 
               title: '핵심 기능 & 통합', 
-              description: '카탈로그 / 가격 / 재고 / 프로모션 · B2B 계정/권한, ERP · PIM · OMS · CRM · 결제 / 세금 · 물류 · 마켓플레이스 연동' ,
+              description: '카탈로그 ·  가격 · 재고 · 프로모션 · B2B 계정/권한 ·  ERP · PIM · OMS · CRM · 결제 · 세금 · 물류 · 마켓플레이스 연동' ,
             }
           ]"
         />

@@ -61,7 +61,7 @@
             { 
               id: 1, 
               title: '범위', 
-              description: 'Large-scale B2B / B2C system development & operations, enterprise architecture design' ,
+              description: 'Large-scale B2B / B2C system development & operations · enterprise architecture design' ,
             },
             { 
               id: 2, 

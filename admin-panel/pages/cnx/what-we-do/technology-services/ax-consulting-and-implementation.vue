@@ -32,7 +32,7 @@
       <!-- Integration Services 섹션 -->
       <section class="content-section">
         <AppImgCont 
-          title="AI 시스템구축"
+          title="AI 시스템 구축"
           text="콘센트릭스는 자체 AI 솔루션인 iX Hello와 AI Aura 뿐 아니라, 그외 AI 솔루션을 기반으로 고객사의 업무를 효율화/자동화하기 위한 AI 시스템을 설계, 개발합니다."
           imageName="ai"
           imageAlt="AI 시스템을 상징하는 클라우드 네트워크와 하늘"
@@ -48,7 +48,7 @@
             { 
               id: 1, 
               title: '범위', 
-              description: 'Generative AI 컨설팅, Agentic AI 설계 · 구현, QA · 운영 서비스' ,
+              description: 'Generative AI 컨설팅 · Agentic AI 설계 / 구현 · QA · 운영 서비스' ,
             },
             { 
               id: 2, 
@@ -58,7 +58,7 @@
             { 
               id: 3, 
               title: '핵심 역량 & 레퍼런스', 
-              description: 'AX 전략 수립, 비즈니스 과제 발굴, 데이터 거버넌스 · 보안 · HITL 기반 안전한 AI 운영' ,
+              description: 'AX 전략 수립 비즈니스 과제 발굴 · 데이터 거버넌스 / 보안 / HITL 기반 안전한 AI 운영' ,
             }
           ]"
         />

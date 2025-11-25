@@ -64,12 +64,12 @@
             { 
               id: 2, 
               title: '아키텍처 & 운영', 
-              description: 'Headless CMS, Design System / 표준 컴포넌트, Microservice, Low-Code 개발 / 배포' ,
+              description: 'Headless CMS · Design System / 표준 컴포넌트 · Microservice · Low-Code 개발 / 배포' ,
             },
             { 
               id: 3, 
               title: '핵심 기능 & 통합', 
-              description: '멀티사이트 / 현지화 / 번역 · 프리뷰 / Workflow, 커머스 · 검색 · DAM · SSO / IAM 연동' ,
+              description: '멀티사이트 · 현지화 · 번역 · 프리뷰 · Workflow · 커머스 · 검색 · DAM · SSO / IAM 연동' ,
             }
           ]"
         />
