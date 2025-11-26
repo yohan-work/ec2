@@ -21,7 +21,7 @@
       <section class="content-section">
         <AppImgCont 
           title="Sales & Marketing"
-          text="B2B 및 B2C 고객 모두의 니즈를 충족하도록 설계된 업계를 선도하는 세일즈 솔루션을 활용하십시오. 고객 확보부터 유지 관리까지, 잠재 고객을 충성도 높은 고객으로 전환하고 성장을 촉진할 수 있도록 도와드립니다."
+          text="B2B 및 B2C 고객 모두의 니즈를 충족하도록 설계된 업계를 선도하는<br class='br-pc'> 세일즈 솔루션을 활용하십시오. 고객 확보부터 유지 관리까지, 잠재 고객을 충성도 높은 고객으로 전환하고 성장을 촉진할 수 있도록 도와드립니다."
           imageName="sm"
           imageAlt="위에서 내려다본 원형 테이블 회의에 참여한 팀원들"
           :reverse="true"
@@ -57,7 +57,7 @@
         <section class="content-section">
           <AppImgCont 
             title="Technical Support"
-            text="뛰어난 기술 지원과 헬프데스크 서비스를 통해 고객의 공감을 불러일으키는 쉽고 원활한 경험을 제공하여 고객을 브랜드 지지자로 만들어 드립니다."
+            text="뛰어난 기술 지원과 헬프데스크 서비스를 통해 고객의 공감을 불러일으키는<br class='br-pc'> 쉽고 원활한 경험을 제공하여 고객을 브랜드 지지자로 만들어 드립니다."
             imageName="ts"
             imageAlt="컴퓨터 앞에서 기술 지원 업무를 하는 전문가"
           />

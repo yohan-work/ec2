@@ -169,7 +169,7 @@ const slides = ref([
     mobileVideo: '/assets/cnx/main/MAIN_KV3_m.mp4',
     desktopVideo: '/assets/cnx/main/MAIN_KV3.mp4',
     imageAlt: 'Main Key Visual Video 3',
-    title: 'The Futur<br>of CX',
+    title: 'The Future<br>of CX',
     description: "See how Concentrix is disrupting <br>the moment and rewriting the rules for<br>what's next in CX.",
     button: {
       text: 'Unlock the Future',
@@ -212,7 +212,7 @@ const descriptions = {
   'Data & Analytics': '디지털마케팅·이커머스 성과 극대화를 위해 데이터 환경 구축, 거버넌스, 인사이트 분석, AI 기반 분석 솔루션을 제공합니다.',
   'Technology Platforms': 'Commerce·Experience·AI 플랫폼 기반 및 글로벌 표준 아키텍처와 레퍼런스로 빠른 가치 실현과 확장을 지원합니다.',
   'Technology Services': 'Enterprise SI와 AX Consulting 기반으로 전략부터 운영까지 End-to-End을 지원해 안정적 디지털 전환을 가속화합니다.',
-  'Digital Operations': '상상이상의 결과를 만들어 내기위해 그냥 하던 대로 하지 않습니다. 고객사를 위한 혁신적인 솔루션을 적용하여 운영합니다.'
+  'Digital Operations': '상상이상의 결과를 만들어 내기위해 그냥 하던 대로 하지 않습니다.<br class="br-pc"> 고객사를 위한 혁신적인 솔루션을 적용하여 운영합니다.'
 }
 
 // menuStructure를 활용하여 whatWeDoBoxes를 동적으로 생성
@@ -237,7 +237,7 @@ const careersBox1Button = ref({
 })
 
 const careersBox2Title = ref('Customer Service')
-const careersBox2Description = ref('고객과 소통하는<br> Customer Service<br class="br-tab-mo" /> 전문가를 찾습니다.')
+const careersBox2Description = ref('고객과 소통하는<br class="br-mo-pc"> Customer Service<br class="br-mo" /> 전문가를 찾습니다.')
 const careersBox2Button = ref({
   text: '자세히 보기',
   href: '/cnx/careers?tab=1'
