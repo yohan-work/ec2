@@ -113,6 +113,9 @@
           <!-- Q&A -->
           <CareersQna title="채용 Q&A" :items="businessQnaItems" refName="business" />
 
+          <!-- FAQ -->
+          <CareersFaq mailto="recruiter_catalyst_korea@concentrix.com" />
+
         </section>
       </template>
 
@@ -171,14 +174,12 @@
           <!-- Q&A -->
           <CareersQna title="채용 Q&A" :items="customerServiceQnaItems" refName="cs" />
 
+          <!-- FAQ -->
+          <CareersFaq mailto="ta@concentrix.com" />
+
         </div>
       </template>
     </AppTab>
-
-    <!-- FAQ -->
-    <div class="inner">
-      <CareersFaq />
-    </div>
   </div>
 </template>
 

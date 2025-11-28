@@ -317,7 +317,7 @@
           <div class="works-section-content-item">
             <AppImgCont 
               title="UX/UI Design"
-              text="데이터 분석 기반의 플랫폼, 서비스, 시스템 개발을 지원합니다. Concentrix 만의 UX/UI Framework과 Process를 통해 안정적으로 프로젝트를 수행합니다. 또한 전략컨설팅, UX컨설팅 프로젝트의 기획, 디자인, 퍼블리싱 업무를 지원합니다."
+              text="데이터 분석 기반의 플랫폼, 서비스, 시스템 개발을 지원합니다. Concentrix만의 UX/UI Framework과 Process를 통해 안정적으로 프로젝트를 수행합니다. 또한 전략컨설팅, UX컨설팅 프로젝트의 기획, 디자인, 퍼블리싱 업무를 지원합니다."
               imageName="works02"
               imageAlt="모바일 화면에 뷰티포인트 설문과 리워드 시스템 UI가 표시된 스마트폰 목업"
               imagePath="/assets/cnx/what-we-do/strategy-and-design/contents-and-design"

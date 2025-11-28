@@ -4,7 +4,7 @@
       <div class="careers-faq__header">
         <strong><span ref="titleRef_1">채용 관련</span><span ref="titleRef_2">질문이 있으신가요?</span></strong>
         <div class="careers-faq__button" ref="buttonRef">
-          <AppButton text="질문하기" href="mailto:recruiter_catalyst_korea@concentrix.com" color="green" />
+          <AppButton text="질문하기" :href="`mailto:${mailto}`" color="green" />
         </div>
       </div>
       <picture class="careers-faq__image" ref="imageRef">
@@ -21,6 +21,13 @@
   import { ref } from 'vue'
   import { useIntersectionObserver } from '@vueuse/core'
   import AppButton from '~/components/cnx/AppButton'
+
+  const props = defineProps({
+    mailto: {
+      type: String,
+      default: 'recruiter_catalyst_korea@concentrix.com'
+    }
+  })
 
   const imageRef = ref(null)
   const titleRef_1 = ref(null)
