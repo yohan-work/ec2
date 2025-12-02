@@ -68,7 +68,7 @@
           <h2 class="global-introduction-title" ref="title1Ref">Global Delivery Network</h2>
           <p class="global-introduction-text" ref="text1Ref">
             약 20년간 협업해 온 Concentrix의 글로벌 딜리버리 네트워크는 Global One Team으로 프로젝트를 수행하고 있습니다. <br>
-            대규모 글로벌 디지털 채널에 최적화된 운영 서비스를 제공하기 위해 10+개 글로벌 센터와 1000+명의 전문가들이 테크놀로지 솔루션기반으로 <br>
+            대규모 글로벌 디지털 채널에 최적화된 운영 서비스를 제공하기 위해 10+개 글로벌 센터와 1,000+명의 전문가들이 테크놀로지 솔루션기반으로 <br>
             고품질, 고효율 서비스를 달성하고 있습니다. <br><br>
             특히 글로벌 비즈니스 시간대를 고려하여 24*365 중단 없는 서비스 지원 체계를 통해 <br>
             국가별 업무시간에 맞춰 신속하게 대응하는 안정적인 운영 환경을 구축하고 있습니다.
