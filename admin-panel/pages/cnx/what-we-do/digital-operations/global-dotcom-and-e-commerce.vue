@@ -95,7 +95,7 @@
         <div class="inner">
           <AppCardList 
             :items="cardListItems"
-            :tablet-items-per-row="4"
+            :tablet-items-per-row="2"
             :no-margin-bottom="true"
           />
         </div>
@@ -169,33 +169,33 @@ const cardListItems = ref([
       '영어, 중국어, 한국어 지원'
     ]
   },
+  // {
+  //   id: 2,
+  //   title: 'Dalian Center',
+  //   borderColor: '#003d5b',
+  //   list: [
+  //     '브랜드 웹 통합 운영',
+  //     '개발 업무 지원',
+  //     '중국어, 광동어, 대만어 번역 지원',
+  //     '200 Web Experts',
+  //     '(아모레퍼시픽 전담 인력 5명)',
+  //     'GMT +8:00 (09:00~22:00)'
+  //   ]
+  // },
+  // {
+  //   id: 3,
+  //   title: 'Vietnam Center',
+  //   borderColor: '#003d5b',
+  //   list: [
+  //     '개발 업무 지원 (마젠토 지원 가능)',
+  //     '영어, 베트남어, 아랍어 번역 지원',
+  //     '150 Web Experts',
+  //     '호치민 50, 하노이 100',
+  //     'GMT +7:00 (09:00~22:00)'
+  //   ]
+  // },
   {
     id: 2,
-    title: 'Dalian Center',
-    borderColor: '#003d5b',
-    list: [
-      '브랜드 웹 통합 운영',
-      '개발 업무 지원',
-      '중국어, 광동어, 대만어 번역 지원',
-      '200 Web Experts',
-      '(아모레퍼시픽 전담 인력 5명)',
-      'GMT +8:00 (09:00~22:00)'
-    ]
-  },
-  {
-    id: 3,
-    title: 'Vietnam Center',
-    borderColor: '#003d5b',
-    list: [
-      '개발 업무 지원 (마젠토 지원 가능)',
-      '영어, 베트남어, 아랍어 번역 지원',
-      '150 Web Experts',
-      '호치민 50, 하노이 100',
-      'GMT +7:00 (09:00~22:00)'
-    ]
-  },
-  {
-    id: 4,
     title: 'Bratislava Center',
     borderColor: '#003d5b',
     list: [
