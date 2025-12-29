@@ -92,13 +92,13 @@
           <source media="(min-width: 768px)" srcset="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_t.png" type="image/png">
           <img src="/assets/cnx/what-we-do/digital-operations/global-dotcom-and-e-commerce/banner_m.png" alt="배송 네트워크가 표시된 세계 지도" loading="lazy">
         </picture>
-        <div class="inner">
+        <!-- <div class="inner">
           <AppCardList 
             :items="cardListItems"
             :tablet-items-per-row="2"
             :no-margin-bottom="true"
           />
-        </div>
+        </div> -->
       </div>
 
       <div class="inner">
@@ -156,19 +156,19 @@ let bannerObserver = null
 let section2Observer = null
 
 // AppCardList 샘플 데이터
-const cardListItems = ref([
-  {
-    id: 1,
-    title: 'YDMC (in Seoul)',
-    borderColor: '#25e2cc',
-    list: [
-      '브랜드 웹 통합 운영',
-      'CiX Center, 디지털 스튜디오',
-      'AV머신러닝, 분석 업무 수행',
-      '170 Web Experts',
-      '영어, 중국어, 한국어 지원'
-    ]
-  },
+// const cardListItems = ref([
+//   {
+//     id: 1,
+//     title: 'YDMC (in Seoul)',
+//     borderColor: '#25e2cc',
+//     list: [
+//       '브랜드 웹 통합 운영',
+//       'CiX Center, 디지털 스튜디오',
+//       'AV머신러닝, 분석 업무 수행',
+//       '170 Web Experts',
+//       '영어, 중국어, 한국어 지원'
+//     ]
+//   },
   // {
   //   id: 2,
   //   title: 'Dalian Center',
@@ -194,17 +194,17 @@ const cardListItems = ref([
   //     'GMT +7:00 (09:00~22:00)'
   //   ]
   // },
-  {
-    id: 2,
-    title: 'Bratislava Center',
-    borderColor: '#003d5b',
-    list: [
-      'Translation',
-      '40명 번역 전문가',
-      'GMT +1:00 (09:00~18:00)'
-    ]
-  }
-])
+//   {
+//     id: 2,
+//     title: 'Bratislava Center',
+//     borderColor: '#003d5b',
+//     list: [
+//       'Translation',
+//       '40명 번역 전문가',
+//       'GMT +1:00 (09:00~18:00)'
+//     ]
+//   }
+// ])
 
 // Section 1 Observer 설정
 const setupSection1Observer = () => {
