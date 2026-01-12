@@ -69,7 +69,7 @@ export default defineNuxtConfig({
 
   // hook path
   hooks: {
-    'pages:extend'(pages) {
+    'pages:extend'(pages: any) {
       const fs = require('fs')
       const path = require('path')
 
@@ -113,17 +113,19 @@ export default defineNuxtConfig({
 
   build: {
     // 빌드 시 aws-amplify를 포함하도록 강제
-    transpile: ['aws-amplify'],
+    transpile: ['aws-amplify', '@aws-amplify/auth', '@aws-amplify/core'],
   },
 
   // Vite 설정
   vite: {
     optimizeDeps: {
-      // 개발 및 빌드 시 의존성 최적화에 포함
-      include: ['aws-amplify/auth'],
+      include: ['aws-amplify', '@aws-amplify/auth'],
     },
-    alias: {
-      './runtimeConfig': './runtimeConfig.browser',
+    resolve: {
+      alias: {
+        'aws-amplify/auth': '@aws-amplify/auth',
+        'aws-amplify/utils': '@aws-amplify/utils',
+      },
     },
     assetsInclude: ['**/*.svg'],
     css: {
