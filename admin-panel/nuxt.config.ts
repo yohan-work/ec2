@@ -13,6 +13,10 @@ export default defineNuxtConfig({
       },
     ],
     compressPublicAssets: true, // 정적 파일 압축
+    externals: {
+      // 빌드 결과물의 package.json 의존성 목록에서 제외
+      external: ['.prisma', '@prisma/client'],
+    },
   },
 
   // Pages 디렉토리 활성화 (Nuxt 3 안정버전)
