@@ -1,4 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+import fs from 'node:fs'
+import path from 'node:path'
+
 // @ts-ignore
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
@@ -14,8 +18,25 @@ export default defineNuxtConfig({
     ],
     compressPublicAssets: true, // 정적 파일 압축
     externals: {
-      // 빌드 결과물의 package.json 의존성 목록에서 제외
       external: ['.prisma', '@prisma/client'],
+
+      inline: ['prisma'],
+    },
+    hooks: {
+      compiled(nitro) {
+        const pkgPath = path.join(
+          nitro.options.output.serverDir,
+          'package.json'
+        )
+        if (fs.existsSync(pkgPath)) {
+          const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'))
+          if (pkg.dependencies && pkg.dependencies['.prisma']) {
+            delete pkg.dependencies['.prisma']
+            fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
+            console.log('[Security Fix] .prisma 의존성 제거 완료')
+          }
+        }
+      },
     },
   },
 
@@ -117,7 +138,13 @@ export default defineNuxtConfig({
 
   build: {
     // 빌드 시 aws-amplify를 포함하도록 강제
-    transpile: ['aws-amplify', '@aws-amplify/auth', '@aws-amplify/core'],
+    transpile: [
+      'aws-amplify',
+      '@aws-amplify/auth',
+      '@aws-amplify/core',
+      '@prisma/client',
+      '.prisma',
+    ],
   },
 
   // Vite 설정
