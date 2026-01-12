@@ -4,11 +4,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
 
-  build: {
-    // Amplify 모듈을 Nuxt 빌드 과정에 명시적으로 포함시켜 경로 에러를 해결합니다.
-    transpile: ['aws-amplify', '@aws-amplify/auth']
-  },
-
   nitro: {
     publicAssets: [
       {
@@ -19,7 +14,7 @@ export default defineNuxtConfig({
     ],
     compressPublicAssets: true, // 정적 파일 압축
     externals: {
-      // Prisma 클라이언트를 빌드 결과물에 직접 포함시켜 
+      // Prisma 클라이언트를 빌드 결과물에 직접 포함시켜
       // 외부 의존성 혼란 공격(Dependency Confusion)을 원천 차단합니다.
       inline: ['@prisma/client', 'prisma'],
     },
@@ -143,10 +138,5 @@ export default defineNuxtConfig({
         },
       },
     },
-    resolve: {
-      alias: {
-        'aws-amplify/auth': 'aws-amplify/auth',
-      }
-    }
   },
 })
