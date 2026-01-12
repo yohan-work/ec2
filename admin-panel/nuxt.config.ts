@@ -111,8 +111,20 @@ export default defineNuxtConfig({
     },
   },
 
+  build: {
+    // 빌드 시 aws-amplify를 포함하도록 강제
+    transpile: ['aws-amplify'],
+  },
+
   // Vite 설정
   vite: {
+    optimizeDeps: {
+      // 개발 및 빌드 시 의존성 최적화에 포함
+      include: ['aws-amplify/auth'],
+    },
+    alias: {
+      './runtimeConfig': './runtimeConfig.browser',
+    },
     assetsInclude: ['**/*.svg'],
     css: {
       preprocessorOptions: {
