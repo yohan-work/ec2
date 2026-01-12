@@ -13,11 +13,6 @@ export default defineNuxtConfig({
       },
     ],
     compressPublicAssets: true, // 정적 파일 압축
-    externals: {
-      // Prisma 클라이언트를 빌드 결과물에 직접 포함시켜
-      // 외부 의존성 혼란 공격(Dependency Confusion)을 원천 차단합니다.
-      inline: ['@prisma/client', 'prisma'],
-    },
   },
 
   // Pages 디렉토리 활성화 (Nuxt 3 안정버전)
