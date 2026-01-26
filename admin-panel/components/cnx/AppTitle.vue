@@ -133,6 +133,10 @@ useIntersectionObserver(
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    
+    :deep(.weight-normal) {
+      font-weight: $font-weight-regular;
+    }
   }
 
   // HTML 제목을 감싸는 스팬은 레이아웃에 영향 없도록 처리

@@ -157,6 +157,7 @@ export const useNavigation = () => {
           path: null,
           items: [
             { text: 'Global dotcom & e-Commerce', path: '/what-we-do/digital-operations/global-dotcom-and-e-commerce' },
+            { text: 'Sales & Marketing', path: '/what-we-do/digital-operations/sales-marketing' },
             { text: 'Customer Service', path: '/what-we-do/digital-operations/customer-service' },
             { text: 'Trust & Safety', path: '/what-we-do/digital-operations/trust-and-safety' }
           ]

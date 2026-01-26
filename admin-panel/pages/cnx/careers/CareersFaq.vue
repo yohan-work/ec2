@@ -8,9 +8,8 @@
         </div>
       </div>
       <picture class="careers-faq__image" ref="imageRef">
-        <source srcset="/assets/cnx/careers/careers_kit.png" media="(min-width: 1024px)">
-        <source srcset="/assets/cnx/careers/careers_kit_t.png" media="(min-width: 768px)">
-        <img src="/assets/cnx/careers/careers_kit_m.png" alt="입사 시 제공되는 에코백, 노트, 머그컵, 마우스, 충전기 등 브랜드 웰컴 굿즈 세트" loading="lazy" />
+        <source srcset="/assets/cnx/careers/careers_faq.png" media="(min-width: 1480px)">
+        <img src="/assets/cnx/careers/careers_faq_t.png" alt="질문을 형상화하는 팻말을 든 사람들 이미지" loading="lazy" />
       </picture>
     </div>
   </div>
@@ -77,12 +76,13 @@
 <style lang="scss" scoped>
   .careers-faq {
     overflow: hidden;
-    margin-block: rem(8) rem(33);
+    padding-block: rem(16) rem(52);
+    //margin-block: rem(8) rem(33);
     @include tablet {
-      margin-block: rem(100) rem(63);
+      padding-block: rem(100) rem(63);
     }
     @include desktop {
-      margin-top: 0;
+      padding-top: 0;
     }
 
     // active 상태: 순차적 애니메이션
@@ -158,11 +158,13 @@
     }
 
     &__image {
+      display: none;
       margin-top: rem(60);
       transform: scale(1.2);
       opacity: 0;
       transition: opacity 0.6s ease-out, transform 0.6s ease-out;
       @include tablet {
+        display: block;
         margin-top: rem(0);
       }
       @include desktop {

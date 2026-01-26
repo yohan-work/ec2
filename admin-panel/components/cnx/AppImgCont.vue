@@ -352,6 +352,31 @@ onMounted(() => {
       margin-top: rem(24);
     }
 
+    :deep(.sub-none-list) {
+      margin-top: rem(16);
+      @include desktop {
+        margin-top: rem(24);
+      }
+      li {
+        padding-left: rem(16);
+        position: relative;
+        &::before {
+          content: '•';
+          position: absolute;
+          top: rem(-1);
+          left: rem(3);
+          color: $gray-1;
+          font-weight: $font-weight-bold;
+        }
+        @include desktop {
+          padding-left: rem(24);
+          &::before {
+            left: rem(8);
+          }
+        }
+      }
+    }
+
     .sub-items {
       display: flex;
       flex-direction: column;
