@@ -18,7 +18,7 @@
       <div
         class="stat-card warning"
         v-if="analysisData.statistics.unusedFiles > 0"
-        :title="'다른 파일에서 import하지 않는 컴포넌트입니다.\n(UI/CNX/DMS 컴포넌트만 체크)'"
+        :title="'다른 파일에서 import하지 않는 컴포넌트입니다.\n(UI/CNX 컴포넌트만 체크)'"
       >
         <div class="stat-label">미사용 컴포넌트 ⓘ</div>
         <div class="stat-value">{{ analysisData.statistics.unusedFiles }}</div>
@@ -71,7 +71,7 @@
       <div class="view-options">
         <label
           class="filter-item"
-          :title="'UI/CNX/DMS 컴포넌트 중 다른 파일에서 import하지 않는 컴포넌트만 표시합니다.'"
+          :title="'UI/CNX 컴포넌트 중 다른 파일에서 import하지 않는 컴포넌트만 표시합니다.'"
         >
           <input
             type="checkbox"
@@ -267,7 +267,6 @@ const layoutType = ref<'force' | 'cluster' | 'hierarchical'>('force')
 const typeColors: Record<string, string> = {
   'component-ui': '#3b82f6',
   'component-cnx': '#10b981',
-  'component-dms': '#f59e0b',
   page: '#ef4444',
   composable: '#8b5cf6',
   layout: '#ec4899',
@@ -289,7 +288,6 @@ function formatType(type: string): string {
   const typeNames: Record<string, string> = {
     'component-ui': 'UI Component',
     'component-cnx': 'CNX Component',
-    'component-dms': 'DMS Component',
     page: 'Page',
     composable: 'Composable',
     layout: 'Layout',
@@ -394,7 +392,7 @@ function getFilteredData() {
 
   // 미사용 컴포넌트만 보기
   if (showUnusedOnly.value) {
-    const componentTypes = ['component-ui', 'component-cnx', 'component-dms']
+    const componentTypes = ['component-ui', 'component-cnx']
     nodes = nodes.filter(
       n => componentTypes.includes(n.type) && n.importedBy.length === 0
     )

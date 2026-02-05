@@ -8,7 +8,6 @@ export interface FileNode {
   type:
     | 'component-ui'
     | 'component-cnx'
-    | 'component-dms'
     | 'page'
     | 'composable'
     | 'layout'
@@ -47,7 +46,6 @@ export interface AnalysisResult {
 const TARGET_DIRS = [
   'components/ui',
   'components/cnx',
-  'components/dms',
   'pages',
   'composables',
   'layouts',
@@ -81,11 +79,6 @@ function determineFileType(filePath: string): FileNode['type'] {
     filePath.startsWith('components/cnx/')
   )
     return 'component-cnx'
-  if (
-    filePath.includes('/components/dms/') ||
-    filePath.startsWith('components/dms/')
-  )
-    return 'component-dms'
   if (filePath.includes('/pages/') || filePath.startsWith('pages/'))
     return 'page'
   if (filePath.includes('/composables/') || filePath.startsWith('composables/'))
@@ -334,7 +327,7 @@ function detectUnusedFiles(nodes: FileNode[]): string[] {
   return nodes
     .filter(node => {
       // 컴포넌트 타입만 체크
-      const componentTypes = ['component-ui', 'component-cnx', 'component-dms']
+      const componentTypes = ['component-ui', 'component-cnx']
 
       // 컴포넌트가 아니면 제외
       if (!componentTypes.includes(node.type)) {
