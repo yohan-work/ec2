@@ -1,4 +1,6 @@
 import { Amplify } from 'aws-amplify'
+import { CookieStorage } from 'aws-amplify/utils'
+import { cognitoUserPoolsTokenProvider } from 'aws-amplify/auth/cognito'
 
 // @ts-ignore
 export default defineNuxtPlugin(() => {
@@ -29,6 +31,14 @@ export default defineNuxtPlugin(() => {
 
   console.log('Amplify 설정 시작:', amplifyConfig)
   Amplify.configure(amplifyConfig)
+  try {
+    cognitoUserPoolsTokenProvider.setKeyValueStorage(new CookieStorage())
+  } catch (e) {
+    console.warn(
+      'Amplify cookieStorage 설정 실패 (토큰은 localStorage에 저장됨):',
+      e
+    )
+  }
 
   console.log('Amplify configured with:', {
     userPoolId: config.public.cognitoUserPoolId,

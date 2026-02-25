@@ -150,12 +150,11 @@ export default defineNuxtConfig({
   // Vite 설정
   vite: {
     optimizeDeps: {
-      include: ['aws-amplify', '@aws-amplify/auth'],
+      include: ['aws-amplify', 'aws-amplify/utils', '@aws-amplify/auth'],
     },
     resolve: {
       alias: {
         'aws-amplify/auth': '@aws-amplify/auth',
-        'aws-amplify/utils': '@aws-amplify/utils',
       },
     },
     assetsInclude: ['**/*.svg'],

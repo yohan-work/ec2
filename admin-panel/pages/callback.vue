@@ -150,8 +150,13 @@ const processCallback = async () => {
       )
     }
 
+    // code 없이 /callback 접근 시: 이미 로그인됐으면 대시보드로, 아니면 로그인 페이지로
     if (!code) {
-      throw new Error('인증 코드가 없습니다. AWS Cognito 설정을 확인해주세요.')
+      await checkAuth()
+      if (isAuthenticated.value) {
+        return navigateTo('/dashboard')
+      }
+      return navigateTo('/login')
     }
 
     console.log('인증 코드 확인됨. OAuth 토큰 교환 시작...')
