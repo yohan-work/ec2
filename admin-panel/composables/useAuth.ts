@@ -80,21 +80,21 @@ export const useAuth = () => {
     if (process.server) return
 
     try {
-      console.log('인증 상태 확인 시작')
+      // console.log('인증 상태 확인 시작')
       authState.value.isLoading = true
 
-      console.log('getCurrentUser 호출 시작')
+      // console.log('getCurrentUser 호출 시작')
       const user = await getCurrentUser()
-      console.log('사용자 정보 가져오기 성공:', user)
+      // console.log('사용자 정보 가져오기 성공:', user)
 
-      console.log('fetchAuthSession 호출 시작')
+      // console.log('fetchAuthSession 호출 시작')
       const session = await fetchAuthSession()
-      console.log('세션 정보 가져오기 성공:', {
-        hasTokens: !!session?.tokens,
-        hasAccessToken: !!session?.tokens?.accessToken,
-        hasIdToken: !!session?.tokens?.idToken,
-        credentials: !!session?.credentials,
-      })
+      // console.log('세션 정보 가져오기 성공:', {
+      //   hasTokens: !!session?.tokens,
+      //   hasAccessToken: !!session?.tokens?.accessToken,
+      //   hasIdToken: !!session?.tokens?.idToken,
+      //   credentials: !!session?.credentials,
+      // })
 
       authState.value.user = user
       authState.value.isAuthenticated = !!user && !!session?.tokens?.accessToken
@@ -109,7 +109,7 @@ export const useAuth = () => {
       })
     } finally {
       authState.value.isLoading = false
-      console.log('인증 상태 확인 완료 - 로딩 상태:', authState.value.isLoading)
+      // console.log('인증 상태 확인 완료 - 로딩 상태:', authState.value.isLoading)
     }
   }
 
@@ -118,12 +118,12 @@ export const useAuth = () => {
     if (process.server) return
 
     try {
-      console.log('signInWithRedirect 호출 시작')
-      console.log('현재 Amplify 설정 확인 중...')
+      // console.log('signInWithRedirect 호출 시작')
+      // console.log('현재 Amplify 설정 확인 중...')
 
       // signInWithRedirect 호출
       await signInWithRedirect()
-      console.log('signInWithRedirect 호출 완료')
+      // console.log('signInWithRedirect 호출 완료')
     } catch (error) {
       console.error('Login error:', error)
       throw error
