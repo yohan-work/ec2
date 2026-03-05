@@ -132,7 +132,7 @@ const config = useRuntimeConfig()
 
 // 페이지 로드 시 인증 상태 확인
 onMounted(async () => {
-  console.log('로그인 페이지 마운트됨 - 인증 상태 확인 시작')
+  // console.log('로그인 페이지 마운트됨 - 인증 상태 확인 시작')
   await checkAuth()
   console.log('인증 상태 확인 완료')
 })
