@@ -101,7 +101,7 @@
             <!-- banner -->
             <CareersBanner title="상시채용"
               content="콘센트릭스 코리아는 <br class='banner-br'>전문가 분들을 기다리고 있습니다.<br>지원서를 보내주시면 인사팀 담당자가 <br class='banner-br'>업무 역할에 맞는 팀과 연결하여 <br class='banner-br'>빠르게 연락 드립니다."
-              buttonText="지원하기" href="mailto:recruiter_catalyst_korea@concentrix.com" />
+              buttonText="지원하기" href="mailto:professional.hiring.korea@concentrix.com" />
 
             <CareersBusiness title="Our Works" :items="businessItems" />
 
@@ -114,7 +114,7 @@
           <CareersQna title="채용 Q&A" :items="businessQnaItems" refName="business" />
 
           <!-- FAQ -->
-          <CareersFaq mailto="recruiter_catalyst_korea@concentrix.com" />
+          <CareersFaq mailto="professional.hiring.korea@concentrix.com" />
 
         </section>
       </template>
@@ -365,7 +365,6 @@ const businessBenefits = ref([
       '각종 경조사 경조금, 근조화환, 휴가 제공',
       '장기근속자 포상금 및 특별휴가 제공',
       'Family Day : 설(구정)과 추석 명절 연휴 전, 연말 마지막 근무일 조기퇴근',
-      'Refresh Day : 매월 마지막주 금요일 조기퇴근',
       'Special Day : 생일자 당월 특별 휴가 제공'
     ]
   }
