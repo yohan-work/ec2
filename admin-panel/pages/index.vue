@@ -152,8 +152,8 @@ const statsData = ref([
 const slides = ref([
   {
     type: 'video',
-    mobileVideo: '/assets/cnx/main/MAIN_KV1_m.mp4',
-    desktopVideo: '/assets/cnx/main/MAIN_KV1.mp4',
+    mobileVideo: '/assets/cnx/main/MAIN_KV1_m_260423.mp4',
+    desktopVideo: '/assets/cnx/main/MAIN_KV1_260423.mp4',
     imageAlt: 'Main Key Visual Video 1'
   },
   {
