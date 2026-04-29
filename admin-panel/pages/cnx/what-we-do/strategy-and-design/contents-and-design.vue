@@ -1770,7 +1770,7 @@ const slideData = ref([
     description: "LG전자 H&A 소셜 서브 계정 Life is Good <br>Kitchen 채널전략수립, 채널 오픈, 정기 콘텐츠 제작<br>및 운영 수행",
     launch: "June, 2021 ~",
     client: "LG Electronics",
-    link: "https://www.instagram.com/lifeisgood_kitchen/",
+    link: "https://www.instagram.com/lifesgood_kitchen/",
     textColor: 'black',
     borderColor: 'black',
     imageAlt: "노란색 톤의 베이킹 재료 구성을 활용한 LG전자 H&A 소셜 콘텐츠",
