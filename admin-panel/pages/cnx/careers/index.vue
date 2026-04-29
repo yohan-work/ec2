@@ -175,7 +175,7 @@
           <CareersQna title="채용 Q&A" :items="customerServiceQnaItems" refName="cs" />
 
           <!-- FAQ -->
-          <CareersFaq mailto="ta@concentrix.com" />
+          <CareersFaq mailto="KR.CS.TA-NONAGENT@concentrix.com" />
 
         </div>
       </template>
