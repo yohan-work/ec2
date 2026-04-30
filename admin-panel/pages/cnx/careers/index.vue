@@ -140,7 +140,7 @@
                 <!-- banner -->
                 <CareersBanner headingLevel="h4" title="고객의 여정이 시작되는 <br class='banner-br'>첫 순간, <br class='banner-br-pc'> 최고의 경험을 만들 <br class='banner-br'>컨택센터 전문가를 모십니다."
                   content="탁월한 커뮤니케이션과 혁신적인 서비스로 고객 <br class='banner-br'>경험의 시작을 설계할 당신을 기다립니다." buttonText="채용 바로가기"
-                  href="https://www.jobkorea.co.kr/Recruit/GI_Read/47933297" bannerType="customer" />
+                  href="https://www.jobkorea.co.kr/Recruit/GI_Read/49080944?Oem_Code=C1" bannerType="customer" />
 
                 <!-- Benefit -->
                 <CareersBenefit headingLevel="h4" title="Attractive Benefits" :items="agentBenefits" />
