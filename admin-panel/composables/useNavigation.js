@@ -63,7 +63,7 @@ export const useNavigation = () => {
       description: 'AI 플랫폼으로 비즈니스 혁신을 실현합니다. iX Hello AI Agent Platform과 AI Aura를 통해 코딩 없이 챗봇 구축, 업무 자동화, 데이터 분석 및 예측 모델 개발로 기업의 경쟁력을 강화합니다.',
       ogImage: '/assets/cnx/share/ai-platform-share.png'
     },
-    '/what-we-do/technology-services/system-intergration-and-architecting': {
+    '/what-we-do/technology-services/system-integration-and-architecting': {
       title: 'System Integration & Architecting - Concentrix',
       description: '대규모 B2B/B2C 시스템 구축과 Enterprise Architecture 설계 전문 서비스입니다. On/Off-shore 하이브리드 모델로 Commerce·DXP·CRM·데이터 플랫폼 통합 및 글로벌 Roll-out을 지원하며, 삼성전자, LG전자, 아모레퍼시픽 등 글로벌 기업 SI 프로젝트 경험을 바탕으로 안정적인 시스템 통합 서비스를 제공합니다.',
       ogImage: '/assets/cnx/share/system-integration-share.png'
@@ -148,7 +148,7 @@ export const useNavigation = () => {
           title: 'Technology Services',
           path: null,
           items: [
-            { text: 'System Integration & Architecting', path: '/what-we-do/technology-services/system-intergration-and-architecting' },
+            { text: 'System Integration & Architecting', path: '/what-we-do/technology-services/system-integration-and-architecting' },
             { text: 'AX Consulting & Implementation', path: '/what-we-do/technology-services/ax-consulting-and-implementation' }
           ]
         },
