@@ -57,8 +57,10 @@
       <section class="content-section">
         <AppImgCont 
           title="SEO & GEO Consulting"
-          text="국내외 SEO(Search Engine Optimization) 전문가들이 웹사이트 최적화 현황을 진단하고 자연 유입 트래픽을 높이기 위한 컨설팅을 제공합니다. 기존 SEO 역량을 기반으로 GEO(Generative Engine Optimization)와 AEO(Answer Engine Optimization)까지 확장해 변화하는 검색 트렌드에 선제적으로 대응합니다. <br>다양한 SEO 운영 및 구축 경험을 통해 키워드 리서치, 콘텐츠 전략, 검색 트렌드 분석, Tech 지원과 성과 분석까지 종합 컨설팅을 제공하며, 단기적 이슈 해결은 물론 장기적 성장까지 이끌어갑니다."
+          text="SEO(Search Engine Optimization) 전문성을 기반으로 AEO(Answer Engine Optimization) 및 GEO(Generative Engine Optimization)까지 확장하여, 검색엔진과 생성형 AI 환경 모두에서 브랜드 가시성을 높이는 컨설팅을 제공합니다. 키워드 리서치, 콘텐츠 전략, 검색 트렌드 분석부터 Tech SEO/GEO 지원 및 성과 분석까지 통합적으로 수행하며, 단순 검색 결과뿐만 아니라 AI 답변 내에서도 브랜드가 효과적으로 언급되고 인용될 수 있도록 콘텐츠와 사이트 구조를 최적화합니다. 이를 통해 단기적인 이슈 해결은 물론, 장기적인 검색 경쟁력과 AI 가시성 성장을 함께 이끌어갑니다."
           imageName="dca03"
+          :subItems="seoGeoSubItems"
+          :alignTop="true"
           imageAlt="Keyword Research와 Performance Analysis를 기반으로 SEO에서 GEO(Generative Engine Optimization)와 AEO(Answer Engine Optimization)로 확장되는 검색 엔진 최적화 흐름을 시각적으로 표현한 SEO 발전 개념 구조"
         />
       </section>
@@ -105,11 +107,25 @@ import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue' 
 import AppCardList from '~/components/cnx/AppCardList.vue'
+import { computed } from 'vue'
 
 // 레이아웃 설정
 definePageMeta({
   layout: 'concentrix'
 })
+
+// SEO & GEO Consulting 서브 아이템들
+const seoGeoSubItems = computed(() => [
+  {
+    title: 'Our Approach',
+    keepListBullets: true,
+    listItems: [
+      '<b>SEO Optimization :</b><br>크롤링, 인덱싱, 사이트 구조 및 콘텐츠 최적화를 통해 검색엔진 친화적인 환경을 구축합니다.',
+      '<b>AI Search Visibility Analysis :</b><br>생성형 AI 및 프롬프트 답변 내 브랜드 노출 현황, 경쟁사 언급 키워드, 답변 가시성을 정밀 분석합니다.',
+      '<b>GEO Optimization :</b><br>LLM이 이해하고 신뢰할 수 있는 콘텐츠 구조를 설계하여, AI 답변 내 브랜드 언급 및 인용 가능성을 극대화합니다.'
+    ]
+  }
+])
 
 const aboutPageSchema = {
   '@context': 'https://schema.org',

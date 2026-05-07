@@ -18,6 +18,7 @@
             v-for="(item, index) in subItems" 
             :key="`sub-${index}`" 
             class="sub-item"
+            :class="{ 'keep-list-bullets': item.keepListBullets }"
             :ref="el => subItemRefs[index] = el"
           >
             <!-- 타이틀 영역 (타이틀이 있을 때만 표시) -->
@@ -446,7 +447,7 @@ onMounted(() => {
     }
 
     // 제목이 있는 subItems - bullet 제거
-    .sub-items .sub-item:has(.sub-title) {
+    .sub-items .sub-item:has(.sub-title):not(.keep-list-bullets) {
       .unified-list-item {
         padding-left: 0;
 
