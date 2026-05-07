@@ -33,6 +33,7 @@ const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`
 
 // 공통 메타데이터 상수
 const siteName = 'Concentrix'
+const schemaBaseUrl = 'https://kr.concentrix.com'
 
 // 네비게이션 composable에서 페이지별 메타데이터 가져오기
 const { getPageMeta, normalizeDynamicMeta } = useNavigation()
@@ -148,8 +149,8 @@ const createOrganizationSchema = () => {
     '@type': 'Organization',
     name: '콘센트릭스서비스코리아',
     alternateName: 'Concentrix Service Korea',
-    url: baseUrl,
-    logo: `${baseUrl}/assets/cnx/share/concentrix-share.png`,
+    url: schemaBaseUrl,
+    logo: `${schemaBaseUrl}/assets/cnx/share/concentrix-share.png`,
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'KR',
@@ -163,7 +164,6 @@ const createOrganizationSchema = () => {
       'https://www.linkedin.com/company/concentrix',
       'https://x.com/concentrix',
       'https://www.instagram.com/concentrix/',
-      'https://www.facebook.com/concentrixkr',
     ],
   }
 }
@@ -173,7 +173,7 @@ const createWebSiteSchema = () => {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: siteName,
-    url: baseUrl,
+    url: schemaBaseUrl,
     publisher: {
       '@type': 'Organization',
       name: '콘센트릭스서비스코리아',
@@ -191,7 +191,7 @@ const createWebPageSchema = () => {
     isPartOf: {
       '@type': 'WebSite',
       name: siteName,
-      url: baseUrl,
+      url: schemaBaseUrl,
     },
     about: {
       '@type': 'Organization',
@@ -202,26 +202,25 @@ const createWebPageSchema = () => {
 
 // JSON-LD 스키마 적용 (각 스키마를 별도의 script 태그로)
 const schemaScripts = computed(() => {
-  const scripts = []
-  
-  // 메인 페이지에만 Organization과 Website 스키마 적용
+  const scripts = [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(createOrganizationSchema()),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(createWebSiteSchema()),
+    },
+  ]
+
+  // WebPage 스키마는 메인 페이지에만 적용
   if (route.path === '/') {
     scripts.push({
       type: 'application/ld+json',
-      innerHTML: JSON.stringify(createOrganizationSchema()),
-    })
-    scripts.push({
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify(createWebSiteSchema()),
+      innerHTML: JSON.stringify(createWebPageSchema()),
     })
   }
-  
-  // WebPage 스키마는 모든 페이지에 적용
-  scripts.push({
-    type: 'application/ld+json',
-    innerHTML: JSON.stringify(createWebPageSchema()),
-  })
-  
+
   return scripts
 })
 
@@ -229,9 +228,9 @@ const schemaScripts = computed(() => {
 useHead(headConfig)
 
 // JSON-LD 스키마 적용
-useHead({
+useHead(() => ({
   script: schemaScripts.value,
-})
+}))
 
 // 더보기 등 특정 액션에서 포커스 처리를 건너뛰기 위한 플래그
 const skipFocusFlag = ref(false)

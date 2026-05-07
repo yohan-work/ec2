@@ -111,4 +111,31 @@ definePageMeta({
   layout: 'concentrix'
 })
 
+const aboutPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'Digital Channel Analytics - Concentrix',
+  url: 'https://kr.concentrix.com/what-we-do/data-and-analytics/digital-channel-analytics',
+  description:
+    '디지털 채널 애널리틱스로 고객 여정을 정밀 분석하고 성과를 극대화합니다. GA4 360 공식 리셀러로서 디지털 분석, SEO/GEO 컨설팅, UI/UX 애널리틱스, 콘텐츠 모니터링을 통해 데이터 기반의 비즈니스 인사이트를 제공합니다.',
+  about: {
+    '@type': 'Service',
+    name: 'Digital Channel Analytics - Concentrix',
+  },
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'Concentrix',
+    url: 'https://kr.concentrix.com',
+  },
+}
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(aboutPageSchema),
+    },
+  ],
+})
+
 </script>
