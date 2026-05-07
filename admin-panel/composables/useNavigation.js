@@ -78,6 +78,11 @@ export const useNavigation = () => {
       description: '닷컴에서 이커머스까지 글로벌 비즈니스를 위한 최적화된 플랫폼 솔루션을 제공합니다. 약 20년간 글로벌 Top tier 전자, 자동차, 코스메틱 인더스트리 경험을 바탕으로 이커머스 개발·운영, 글로벌 닷컴 개발, 플랫폼 롤아웃 및 운영 서비스를 제공하며, 10개 이상 글로벌 센터와 1000명 이상 전문가가 24시간 연중무휴 지원합니다.',
       ogImage: '/assets/cnx/share/global-dotcom-share.png'
     },
+    '/what-we-do/digital-operations/sales-marketing': {
+      title: 'Sales & Marketing - Concentrix',
+      description: '혁신적인 영업 및 마케팅으로 지속 가능한 성장을 이끄는 세일즈 솔루션을 제공합니다. B2B 세일즈 아웃소싱부터 B2C 영업 솔루션까지 폭넓게 제공하며 영업 전 과정과 고객 관리 전반을 지원합니다.',
+      ogImage: '/assets/cnx/share/concentrix-share.png'
+    },
     '/what-we-do/digital-operations/customer-service': {
       title: 'Customer Service - Concentrix',
       description: '전문 지식, 첨단 기술, 구조화된 운영 모델을 통해 차별화된 고객 경험을 제공하는 고객 서비스 솔루션입니다. B2B/B2C 세일즈 & 마케팅, 디지털 세일즈 운영, 고객 서비스, 기술 지원 등 종합적인 고객 지원 서비스를 통해 고객을 브랜드 지지자로 만들어드립니다.',
