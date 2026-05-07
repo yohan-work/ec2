@@ -309,7 +309,11 @@ const businessItems = ref([
       },
       {
         title: 'SEO 컨설팅',
-        content: '새롭게 구축하는 웹사이트 또는 현재 운영중인 웹사이트의 자연유입 트래픽(Organic Traffic) 개선을 목표로 다양한 SEO 전문 솔루션들을 활용하여 기술 영역 및 컨텐츠 영역에 대한 고도화된 SEO 컨설팅을 제공합니다.'
+        content: '신규 구축 또는 기존 웹사이트의 자연 유입 트래픽(Organic Traffic) 개선을 목표로 합니다. 전문 SEO 솔루션을 활용해 Technical 최적화부터 콘텐츠 전략까지, 웹사이트의 검색 경쟁력을 극대화하는 고도화된 컨설팅을 수행합니다.'
+      },
+      {
+        title: 'GEO 컨설팅',
+        content: '생성형 AI 검색 환경에서 브랜드와 콘텐츠의 가시성을 높이는 전략을 설계합니다. AI 크롤러 접근성 개선 및 인용 가능한 콘텐츠 구조화 등, 변화하는 AI 검색 환경에 대응하는 GEO(Generative Engine Optimization) 전략을 수행합니다.'
       }
     ]
   },
