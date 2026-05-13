@@ -296,10 +296,10 @@
             />
           </svg>
           <h3 class="mt-2 text-sm font-medium text-gray-900">
-            뉴스룸가 없습니다
+            뉴스룸이 없습니다
           </h3>
           <p class="mt-1 text-sm text-gray-500">
-            아직 발행된 뉴스룸가 없습니다.
+            아직 발행된 뉴스룸이 없습니다.
           </p>
         </div>
 

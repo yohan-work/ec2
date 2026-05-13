@@ -251,7 +251,7 @@ const publishNewsletter = async () => {
     })
 
     newsletter.value = response.data
-    alert('뉴스룸가 성공적으로 발행되었습니다!')
+    alert('뉴스룸이 성공적으로 발행되었습니다!')
   } catch (error) {
     console.error('뉴스룸 발행 실패:', error)
     alert('발행 중 오류가 발생했습니다.')

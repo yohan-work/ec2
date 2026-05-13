@@ -1040,8 +1040,8 @@ const saveNewsletter = async status => {
 
     const message =
       status === 'published'
-        ? '뉴스룸가 발행되었습니다!'
-        : '뉴스룸가 저장되었습니다.'
+        ? '뉴스룸이 발행되었습니다!'
+        : '뉴스룸이 저장되었습니다.'
     alert(message)
 
     // 생성된 경우 해당 뉴스룸의 상세 페이지로 이동

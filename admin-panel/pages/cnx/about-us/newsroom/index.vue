@@ -208,7 +208,7 @@ const loadMoreNewsletters = async () => {
 
 // 더보기 버튼 표시 여부 계산
 const shouldShowLoadMore = computed(() => {
-  // 총 뉴스룸가 5개 미만이면 더보기 버튼 미노출
+  // 총 뉴스룸이 5개 미만이면 더보기 버튼 미노출
   if (pagination.value.total < 5) {
     return false
   }
