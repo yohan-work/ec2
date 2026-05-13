@@ -44,7 +44,7 @@
             Dashboard
           </div>
 
-          <!-- 뉴스레터 관리 -->
+          <!-- 뉴스룸 관리 -->
           <NuxtLink
             to="/admin/newsletters"
             class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
@@ -62,7 +62,7 @@
                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
               />
             </svg>
-            뉴스레터
+            뉴스룸
           </NuxtLink>
 
           <!-- 시스템 로그 -->
@@ -363,7 +363,7 @@
                   </span>
                 </div>
                 <p class="text-xs text-gray-500 mt-1">
-                  뉴스레터 {{ metrics?.application.recentNewsletters || 0 }},
+                  뉴스룸 {{ metrics?.application.recentNewsletters || 0 }},
                 </p>
               </div>
               <div class="p-3 bg-orange-50 rounded-lg">
@@ -574,11 +574,11 @@
                   전체 데이터 통계
                 </h4>
                 <div class="grid grid-cols-3 gap-4">
-                  <!-- 뉴스레터 통계 -->
+                  <!-- 뉴스룸 통계 -->
                   <div class="bg-white rounded-lg p-4 border border-gray-200">
                     <div class="flex items-center justify-between mb-3">
                       <span class="text-sm font-medium text-gray-700"
-                        >뉴스레터</span
+                        >뉴스룸</span
                       >
                       <span class="text-2xl font-bold text-blue-600">{{
                         metrics.application.totalNewsletters
@@ -697,7 +697,7 @@
           <div class="flex items-center justify-center flex-wrap gap-6 text-sm">
             <div class="flex items-center">
               <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-              <span class="text-gray-600">뉴스레터</span>
+              <span class="text-gray-600">뉴스룸</span>
             </div>
             <div class="flex items-center">
               <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
@@ -718,7 +718,7 @@
                 >
                   <div class="flex items-center">
                     <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                    <span class="text-gray-700">새 뉴스레터 작성</span>
+                    <span class="text-gray-700">새 뉴스룸 작성</span>
                   </div>
                   <span class="text-gray-500"
                     >{{ metrics.application.recentNewsletters }}개</span
@@ -778,9 +778,9 @@
                 </div>
                 <div>
                   <p class="text-sm font-medium text-gray-900">
-                    새 뉴스레터 작성
+                    새 뉴스룸 작성
                   </p>
-                  <p class="text-xs text-gray-500">뉴스레터 콘텐츠 생성</p>
+                  <p class="text-xs text-gray-500">뉴스룸 콘텐츠 생성</p>
                 </div>
               </NuxtLink>
 
@@ -945,7 +945,7 @@ const chartData = computed(() => {
     }),
     datasets: [
       {
-        label: '뉴스레터 생성',
+        label: '뉴스룸 생성',
         data: activities.map(item => item.count),
         borderColor: 'rgb(59, 130, 246)',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -1012,7 +1012,7 @@ const formatTime = date => {
   })
 }
 
-// 활동 추이 클래스 (뉴스레터 또는 채용공고 활동이 증가/감소)
+// 활동 추이 클래스 (뉴스룸 또는 채용공고 활동이 증가/감소)
 const getActivityTrendClass = (current, total) => {
   if (total === 0) return 'text-gray-500'
   const percentageChange = Math.round((current / total) * 100)

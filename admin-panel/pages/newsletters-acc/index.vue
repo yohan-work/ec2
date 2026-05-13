@@ -15,13 +15,13 @@
               to="/newsletters-acc"
               class="text-indigo-600 bg-indigo-50 px-3 py-2 rounded-md text-sm font-medium"
             >
-              뉴스레터 (acc)
+              뉴스룸 (acc)
             </NuxtLink>
             <NuxtLink
               to="/newsletters"
               class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
             >
-              뉴스레터
+              뉴스룸
             </NuxtLink>
             <NuxtLink
               to="/recruits"
@@ -43,10 +43,10 @@
             <h2
               class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate"
             >
-              뉴스레터 (acc)
+              뉴스룸 (acc)
             </h2>
             <p class="mt-1 text-sm text-gray-500">
-              총 {{ pagination.total }}개의 뉴스레터
+              총 {{ pagination.total }}개의 뉴스룸
             </p>
           </div>
 
@@ -57,7 +57,7 @@
                 v-model="searchQuery"
                 @input="debouncedSearch"
                 type="text"
-                placeholder="뉴스레터 검색..."
+                placeholder="뉴스룸 검색..."
                 class="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
               <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -84,10 +84,10 @@
           <div
             class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"
           ></div>
-          <p class="mt-2 text-sm text-gray-500">뉴스레터를 불러오는 중...</p>
+          <p class="mt-2 text-sm text-gray-500">뉴스룸을 불러오는 중...</p>
         </div>
 
-        <!-- 뉴스레터 아코디언 목록 -->
+        <!-- 뉴스룸 아코디언 목록 -->
         <div v-else-if="newsletters.length > 0" class="space-y-4">
           <div
             v-for="(newsletter, index) in newsletters"
@@ -149,7 +149,7 @@
               v-if="expandedItems.includes(index)"
               class="border-t border-gray-200"
             >
-              <!-- 로딩 상태 (개별 뉴스레터) -->
+              <!-- 로딩 상태 (개별 뉴스룸) -->
               <div v-if="loadingDetails[newsletter.id]" class="p-6 text-center">
                 <div
                   class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"
@@ -296,10 +296,10 @@
             />
           </svg>
           <h3 class="mt-2 text-sm font-medium text-gray-900">
-            뉴스레터가 없습니다
+            뉴스룸가 없습니다
           </h3>
           <p class="mt-1 text-sm text-gray-500">
-            아직 발행된 뉴스레터가 없습니다.
+            아직 발행된 뉴스룸가 없습니다.
           </p>
         </div>
 
@@ -401,7 +401,7 @@ const newsletterDetails = ref({})
 const loadingDetails = ref({})
 const detailErrors = ref({})
 
-// 뉴스레터 목록 조회
+// 뉴스룸 목록 조회
 const fetchNewsletters = async () => {
   try {
     loading.value = true
@@ -426,13 +426,13 @@ const fetchNewsletters = async () => {
     loadingDetails.value = {}
     detailErrors.value = {}
   } catch (error) {
-    console.error('뉴스레터 목록 조회 실패:', error)
+    console.error('뉴스룸 목록 조회 실패:', error)
   } finally {
     loading.value = false
   }
 }
 
-// 개별 뉴스레터 상세 조회
+// 개별 뉴스룸 상세 조회
 const fetchNewsletterDetail = async newsletterId => {
   try {
     loadingDetails.value[newsletterId] = true
@@ -441,10 +441,10 @@ const fetchNewsletterDetail = async newsletterId => {
     const response = await $fetch(`/api/public/newsletters/${newsletterId}`)
     newsletterDetails.value[newsletterId] = response.data
   } catch (error) {
-    console.error(`뉴스레터 ${newsletterId} 조회 실패:`, error)
+    console.error(`뉴스룸 ${newsletterId} 조회 실패:`, error)
     detailErrors.value[newsletterId] =
       error.statusCode === 404
-        ? '뉴스레터를 찾을 수 없습니다.'
+        ? '뉴스룸을 찾을 수 없습니다.'
         : '상세 내용을 불러올 수 없습니다.'
   } finally {
     loadingDetails.value[newsletterId] = false
@@ -530,11 +530,11 @@ onMounted(() => {
 
 // 메타 태그
 useHead({
-  title: '뉴스레터 목록 (아코디언)',
+  title: '뉴스룸 목록 (아코디언)',
   meta: [
     {
       name: 'description',
-      content: '아코디언 형식으로 뉴스레터 목록과 상세 내용을 확인하세요',
+      content: '아코디언 형식으로 뉴스룸 목록과 상세 내용을 확인하세요',
     },
   ],
 })

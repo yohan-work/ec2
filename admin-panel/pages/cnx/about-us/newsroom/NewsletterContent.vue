@@ -37,7 +37,7 @@
 
 <script setup>
 /**
- * 뉴스레터 본문 내용을 표시하는 컴포넌트
+ * 뉴스룸 본문 내용을 표시하는 컴포넌트
  */
 
 // Props
@@ -135,11 +135,12 @@ const handleImageError = event => {
   }
 
   &-hero-image {
-    width: 100%;
+    // width: 100%;
     height: 100%;
     margin-bottom: rem(16);
     img {
-      width: 100%;
+      // width: 100%;
+      max-width: 100%;
       height: 100%;
       object-fit: cover;
       margin: 0 auto;

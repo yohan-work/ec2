@@ -7,7 +7,7 @@
           <!-- 제목 -->
           <AppTitle title="Newsroom" />
 
-          <!-- 뉴스레터 목록 -->
+          <!-- 뉴스룸 목록 -->
           <NewsletterList
             :newsletters="newsletters"
             :loading="loading"
@@ -45,7 +45,7 @@ definePageMeta({
 })
 
 /**
- * 뉴스레터 목록 페이지
+ * 뉴스룸 목록 페이지
  *
  * === dummy data ===
  * for seungjoo Park
@@ -95,7 +95,7 @@ const fetchNewsletters = async () => {
       displayedCount.value = response.data.length
     }
   } catch (error) {
-    console.error('뉴스레터 목록 조회 실패:', error)
+    console.error('뉴스룸 목록 조회 실패:', error)
   } finally {
     loading.value = false
   }
@@ -131,7 +131,7 @@ const loadMoreNewsletters = async () => {
       const nextEndIndex = nextStartIndex + pagination.value.limit
       const nextPageData = filteredData.slice(nextStartIndex, nextEndIndex)
 
-      // 기존 뉴스레터에 새로운 뉴스레터 추가
+      // 기존 뉴스룸에 새로운 뉴스룸 추가
       newsletters.value = [...newsletters.value, ...nextPageData]
       displayedCount.value += nextPageData.length
 
@@ -143,7 +143,7 @@ const loadMoreNewsletters = async () => {
         pages: Math.ceil(filteredData.length / pagination.value.limit),
       }
 
-      // 새로 로드된 첫 번째 뉴스레터로 스크롤 이동
+      // 새로 로드된 첫 번째 뉴스룸로 스크롤 이동
       if (nextPageData.length > 0) {
         nextTick(() => {
           const firstNewNewsletterId = nextPageData[0].id
@@ -175,14 +175,14 @@ const loadMoreNewsletters = async () => {
 
       const response = await $fetch('/api/public/newsletters', { query })
 
-      // 기존 뉴스레터에 새로운 뉴스레터 추가
+      // 기존 뉴스룸에 새로운 뉴스룸 추가
       newsletters.value = [...newsletters.value, ...response.data]
       displayedCount.value += response.data.length
 
       // pagination 정보 업데이트
       pagination.value = response.pagination
 
-      // 새로 로드된 첫 번째 뉴스레터로 스크롤 이동
+      // 새로 로드된 첫 번째 뉴스룸로 스크롤 이동
       if (response.data.length > 0) {
         nextTick(() => {
           const firstNewNewsletterId = response.data[0].id
@@ -200,7 +200,7 @@ const loadMoreNewsletters = async () => {
       }
     }
   } catch (error) {
-    console.error('추가 뉴스레터 로드 실패:', error)
+    console.error('추가 뉴스룸 로드 실패:', error)
   } finally {
     loadingMore.value = false
   }
@@ -208,7 +208,7 @@ const loadMoreNewsletters = async () => {
 
 // 더보기 버튼 표시 여부 계산
 const shouldShowLoadMore = computed(() => {
-  // 총 뉴스레터가 5개 미만이면 더보기 버튼 미노출
+  // 총 뉴스룸가 5개 미만이면 더보기 버튼 미노출
   if (pagination.value.total < 5) {
     return false
   }

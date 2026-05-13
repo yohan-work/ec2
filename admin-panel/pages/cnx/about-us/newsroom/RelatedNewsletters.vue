@@ -4,7 +4,7 @@
       <!-- 제목 -->
       <h2 class="related-newsletters-title">더 많은 뉴스 보기</h2>
 
-      <!-- 뉴스레터 목록 -->
+      <!-- 뉴스룸 목록 -->
       <ul class="related-newsletters-list">
         <li
           v-for="item in newsletters"
@@ -31,7 +31,7 @@
 
 <script setup>
 /**
- * 관련 뉴스레터 목록을 표시하는 컴포넌트
+ * 관련 뉴스룸 목록을 표시하는 컴포넌트
  */
 
 // Props
@@ -56,7 +56,7 @@ const formatDate = dateString => {
   return `${year}.${month}.${day}`
 }
 
-// 뉴스레터 클릭 핸들러
+// 뉴스룸 클릭 핸들러
 const handleNewsletterClick = newsletterId => {
   // 현재 스크롤 위치 저장
   const scrollPosition = window.scrollY

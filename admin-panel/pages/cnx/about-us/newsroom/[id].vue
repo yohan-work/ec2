@@ -4,10 +4,10 @@
     <main>
       <div class="newsletter">
         <div class="inner">
-          <!-- 뉴스레터 내용 -->
+          <!-- 뉴스룸 내용 -->
           <NewsletterContent v-if="newsletter" :newsletter="newsletter" />
 
-          <!-- 관련 뉴스레터 -->
+          <!-- 관련 뉴스룸 -->
           <RelatedNewsletters
             v-if="relatedNewsletters.length"
             :newsletters="relatedNewsletters"
@@ -95,7 +95,7 @@ const { data, error, loading } = await useAsyncData(
     let fetchedNewsletter = null
     let fetchedRelated = []
 
-    // 1. 메인 뉴스레터 조회
+    // 1. 메인 뉴스룸 조회
     try {
       if (useDummy) {
         // === 더미 데이터 로직 ===
@@ -105,7 +105,7 @@ const { data, error, loading } = await useAsyncData(
         if (!found) {
           throw createError({
             statusCode: 404,
-            message: '뉴스레터를 찾을 수 없습니다.',
+            message: '뉴스룸을 찾을 수 없습니다.',
             fatal: true,
           })
         }
@@ -122,23 +122,23 @@ const { data, error, loading } = await useAsyncData(
         fetchedNewsletter = response.data
       }
     } catch (err) {
-      console.error('뉴스레터 조회 실패:', err)
+      console.error('뉴스룸 조회 실패:', err)
       if (err.statusCode === 404) {
         throw createError({
           statusCode: 404,
-          message: '뉴스레터를 찾을 수 없습니다.',
+          message: '뉴스룸을 찾을 수 없습니다.',
           fatal: true,
         })
       } else {
         throw createError({
           statusCode: 500,
-          message: '뉴스레터를 불러올 수 없습니다.',
+          message: '뉴스룸을 불러올 수 없습니다.',
           fatal: true,
         })
       }
     }
 
-    // 2. 관련 뉴스레터 조회 (메인 뉴스레터 조회가 성공한 경우에만)
+    // 2. 관련 뉴스룸 조회 (메인 뉴스룸 조회가 성공한 경우에만)
     if (fetchedNewsletter) {
       try {
         if (useDummy) {
@@ -181,8 +181,8 @@ const { data, error, loading } = await useAsyncData(
           fetchedRelated = response.data
         }
       } catch (err) {
-        console.error('관련 뉴스레터 조회 실패:', err)
-        fetchedRelated = [] // 관련 뉴스레터는 실패해도 페이지 오류는 아님
+        console.error('관련 뉴스룸 조회 실패:', err)
+        fetchedRelated = [] // 관련 뉴스룸은 실패해도 페이지 오류는 아님
       }
     }
 
@@ -208,7 +208,7 @@ useHead(() => {
   // 데이터가 아직 없거나 오류가 발생한 경우를 대비
   if (!newsletter.value) {
     return {
-      title: '뉴스레터' + NEWSLETTER_META_CONSTANTS.TITLE_SUFFIX,
+      title: '뉴스룸' + NEWSLETTER_META_CONSTANTS.TITLE_SUFFIX,
     }
   }
 
@@ -230,7 +230,7 @@ useHead(() => {
   }
 })
 
-// 관련 뉴스레터 클릭 핸들러
+// 관련 뉴스룸 클릭 핸들러
 const handleRelatedNewsletterClick = newsletterId => {
   lastClickedNewsletterId.value = newsletterId
 }

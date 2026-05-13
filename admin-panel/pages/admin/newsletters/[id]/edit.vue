@@ -26,11 +26,11 @@
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
-              {{ isEditing ? '뉴스레터 보기' : '뉴스레터 목록' }}
+              {{ isEditing ? '뉴스룸 보기' : '뉴스룸 목록' }}
             </NuxtLink>
             <div class="h-6 w-px bg-gray-300"></div>
             <h1 class="text-xl font-semibold text-gray-900">
-              {{ isEditing ? '뉴스레터 편집' : '새 뉴스레터 작성' }}
+              {{ isEditing ? '뉴스룸 편집' : '새 뉴스룸 작성' }}
             </h1>
           </div>
 
@@ -122,7 +122,7 @@
                   type="text"
                   required
                   class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  placeholder="뉴스레터 제목을 입력하세요"
+                  placeholder="뉴스룸 제목을 입력하세요"
                 />
               </div>
 
@@ -691,7 +691,7 @@ const form = reactive({
 // 에디터 참조 (사용하지 않음)
 // const editorRef = ref(null)
 
-// 뉴스레터 조회 (편집 모드일 때)
+// 뉴스룸 조회 (편집 모드일 때)
 const fetchNewsletter = async () => {
   if (!isEditing.value) {
     loading.value = false
@@ -778,8 +778,8 @@ const fetchNewsletter = async () => {
       }
     }
   } catch (err) {
-    console.error('뉴스레터 조회 실패:', err)
-    error.value = err.data?.message || '뉴스레터를 불러올 수 없습니다.'
+    console.error('뉴스룸 조회 실패:', err)
+    error.value = err.data?.message || '뉴스룸을 불러올 수 없습니다.'
   } finally {
     loading.value = false
     nextTick(() => {
@@ -978,7 +978,7 @@ const saveAndPublish = async () => {
     return
   }
 
-  if (confirm('뉴스레터를 저장하고 발행하시겠습니까?')) {
+  if (confirm('뉴스룸을 저장하고 발행하시겠습니까?')) {
     await saveNewsletter('published')
   }
 }
@@ -1007,7 +1007,7 @@ const openDatePicker = event => {
   }
 }
 
-// 뉴스레터 저장
+// 뉴스룸 저장
 const saveNewsletter = async status => {
   try {
     saving.value = true
@@ -1040,18 +1040,18 @@ const saveNewsletter = async status => {
 
     const message =
       status === 'published'
-        ? '뉴스레터가 발행되었습니다!'
-        : '뉴스레터가 저장되었습니다.'
+        ? '뉴스룸가 발행되었습니다!'
+        : '뉴스룸가 저장되었습니다.'
     alert(message)
 
-    // 생성된 경우 해당 뉴스레터의 상세 페이지로 이동
+    // 생성된 경우 해당 뉴스룸의 상세 페이지로 이동
     if (!isEditing.value) {
       navigateTo(`/admin/newsletters/${response.data.id}`)
     } else if (status === 'published') {
       navigateTo(`/admin/newsletters/${newsletterId}`)
     }
   } catch (error) {
-    console.error('뉴스레터 저장 실패:', error)
+    console.error('뉴스룸 저장 실패:', error)
     alert('저장 중 오류가 발생했습니다.')
   } finally {
     saving.value = false
@@ -1093,8 +1093,8 @@ onUnmounted(() => {
 
 // 메타 태그
 useHead({
-  title: () => (isEditing.value ? '뉴스레터 편집' : '새 뉴스레터 작성'),
-  meta: [{ name: 'description', content: '뉴스레터 편집 및 작성' }],
+  title: () => (isEditing.value ? '뉴스룸 편집' : '새 뉴스룸 작성'),
+  meta: [{ name: 'description', content: '뉴스룸 편집 및 작성' }],
 })
 </script>
 

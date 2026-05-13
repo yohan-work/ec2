@@ -3,8 +3,8 @@
     <!-- 페이지 헤더 -->
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-2xl font-semibold text-gray-900">뉴스레터 관리</h1>
-        <p class="text-sm text-gray-600 mt-1">뉴스레터를 작성하고 관리하세요</p>
+        <h1 class="text-2xl font-semibold text-gray-900">뉴스룸 관리</h1>
+        <p class="text-sm text-gray-600 mt-1">뉴스룸을 작성하고 관리하세요</p>
       </div>
       <div class="flex gap-2">
         <!-- <button
@@ -55,7 +55,7 @@
               d="M12 4v16m8-8H4"
             />
           </svg>
-          새 뉴스레터 작성
+          새 뉴스룸 작성
         </button>
       </div>
     </div>
@@ -122,14 +122,14 @@
         <div>
           <h3 class="text-sm font-medium text-orange-800">순서 편집 모드</h3>
           <p class="text-sm text-orange-700 mt-1">
-            발행된 뉴스레터의 순서를 변경할 수 있습니다. 드래그하여 순서를
+            발행된 뉴스룸의 순서를 변경할 수 있습니다. 드래그하여 순서를
             변경하거나 순서 번호를 직접 입력하세요.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- 뉴스레터 목록 -->
+    <!-- 뉴스룸 목록 -->
     <div v-if="!loading && newsletters.length > 0" class="space-y-4">
       <div
         v-for="(newsletter, index) in newsletters"
@@ -305,9 +305,9 @@
           d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
         />
       </svg>
-      <h3 class="mt-2 text-sm font-medium text-foreground">뉴스레터 없음</h3>
+      <h3 class="mt-2 text-sm font-medium text-foreground">뉴스룸 없음</h3>
       <p class="mt-1 text-sm text-muted-foreground">
-        첫 번째 뉴스레터를 작성해보세요.
+        첫 번째 뉴스룸을 작성해보세요.
       </p>
       <div class="mt-6">
         <button
@@ -327,7 +327,7 @@
               d="M12 4v16m8-8H4"
             />
           </svg>
-          새 뉴스레터 작성
+          새 뉴스룸 작성
         </button>
       </div>
     </div>
@@ -388,7 +388,7 @@ const pagination = ref({
   pages: 0,
 })
 
-// 뉴스레터 목록 조회
+// 뉴스룸 목록 조회
 const fetchNewsletters = async () => {
   try {
     loading.value = true
@@ -413,7 +413,7 @@ const fetchNewsletters = async () => {
     newsletters.value = response.data
     pagination.value = response.pagination
   } catch (error) {
-    console.error('뉴스레터 목록 조회 실패:', error)
+    console.error('뉴스룸 목록 조회 실패:', error)
     // TODO: 에러 알림 추가
   } finally {
     loading.value = false
@@ -485,7 +485,7 @@ const formatDate = dateString => {
   })
 }
 
-// 뉴스레터 액션들
+// 뉴스룸 액션들
 const createNewsletter = () => {
   navigateTo('/admin/newsletters/new/edit')
 }
@@ -499,10 +499,10 @@ const editNewsletter = newsletter => {
 }
 
 const deleteNewsletter = async newsletter => {
-  // 발행된 뉴스레터의 경우 더 강한 경고
-  let confirmMessage = `"${newsletter.title}" 뉴스레터를 삭제하시겠습니까?`
+  // 발행된 뉴스룸의 경우 더 강한 경고
+  let confirmMessage = `"${newsletter.title}" 뉴스룸를 삭제하시겠습니까?`
   if (newsletter.status === 'published') {
-    confirmMessage = `⚠️ 주의: "${newsletter.title}" 뉴스레터는 현재 발행 중입니다.\n\n삭제하시면 복구할 수 없습니다. 정말 삭제하시겠습니까?`
+    confirmMessage = `⚠️ 주의: "${newsletter.title}" 뉴스룸은 현재 발행 중입니다.\n\n삭제하시면 복구할 수 없습니다. 정말 삭제하시겠습니까?`
   }
 
   if (!confirm(confirmMessage)) {
@@ -524,9 +524,9 @@ const deleteNewsletter = async newsletter => {
 
     // 목록 새로고침
     await fetchNewsletters()
-    alert('뉴스레터가 성공적으로 삭제되었습니다.')
+    alert('뉴스룸가 성공적으로 삭제되었습니다.')
   } catch (error) {
-    console.error('뉴스레터 삭제 실패:', error)
+    console.error('뉴스룸 삭제 실패:', error)
     alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.')
   } finally {
     loading.value = false
@@ -537,7 +537,7 @@ const deleteNewsletter = async newsletter => {
 const toggleOrderMode = () => {
   orderMode.value = !orderMode.value
   if (orderMode.value) {
-    // 순서 편집 모드 진입 시 발행된 뉴스레터만 표시하도록 필터 설정
+    // 순서 편집 모드 진입 시 발행된 뉴스룸만 표시하도록 필터 설정
     statusFilter.value = 'published'
     fetchNewsletters()
   } else {
@@ -607,7 +607,7 @@ const handleDrop = async (targetNewsletter, targetIndex, event) => {
   }
 }
 
-// 전체 뉴스레터 순서 일괄 업데이트
+// 전체 뉴스룸 순서 일괄 업데이트
 const updateAllNewsletterOrders = async publishedNewsletters => {
   try {
     const userInfo = getUserInfo()
@@ -622,12 +622,12 @@ const updateAllNewsletterOrders = async publishedNewsletters => {
       },
     })
   } catch (error) {
-    console.error('뉴스레터 순서 일괄 업데이트 실패:', error)
+    console.error('뉴스룸 순서 일괄 업데이트 실패:', error)
     throw error
   }
 }
 
-// 개별 뉴스레터 순서 업데이트 (순서 편집 모드에서 직접 입력할 때 사용)
+// 개별 뉴스룸 순서 업데이트 (순서 편집 모드에서 직접 입력할 때 사용)
 const updateNewsletterOrder = async newsletter => {
   try {
     // 입력된 순서가 유효한지 확인
@@ -638,12 +638,12 @@ const updateNewsletterOrder = async newsletter => {
       return
     }
 
-    // 전체 발행된 뉴스레터 목록을 가져와서 순서 재정렬
+    // 전체 발행된 뉴스룸 목록을 가져와서 순서 재정렬
     const publishedNewsletters = newsletters.value.filter(
       n => n.status === 'published'
     )
 
-    // 현재 뉴스레터를 새로운 위치로 이동
+    // 현재 뉴스룸를 새로운 위치로 이동
     const currentNewsletter = publishedNewsletters.find(
       n => n.id === newsletter.id
     )
@@ -670,7 +670,7 @@ const updateNewsletterOrder = async newsletter => {
     // 목록 새로고침
     await fetchNewsletters()
   } catch (error) {
-    console.error('뉴스레터 순서 업데이트 실패:', error)
+    console.error('뉴스룸 순서 업데이트 실패:', error)
     alert('순서 변경에 실패했습니다. 다시 시도해주세요.')
     await fetchNewsletters()
   }
@@ -683,7 +683,7 @@ onMounted(() => {
 
 // 메타 태그
 useHead({
-  title: '뉴스레터 관리 - 관리자 대시보드',
-  meta: [{ name: 'description', content: '뉴스레터 콘텐츠 관리' }],
+  title: '뉴스룸 관리 - 관리자 대시보드',
+  meta: [{ name: 'description', content: '뉴스룸 콘텐츠 관리' }],
 })
 </script>

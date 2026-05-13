@@ -7,9 +7,9 @@
           to="/admin/newsletters"
           class="text-gray-600 hover:text-gray-900"
         >
-          ← 뉴스레터 목록
+          ← 뉴스룸 목록
         </NuxtLink>
-        <h1 class="text-2xl font-semibold text-gray-900">뉴스레터 보기</h1>
+        <h1 class="text-2xl font-semibold text-gray-900">뉴스룸 보기</h1>
       </div>
 
       <div class="flex items-center space-x-2" v-if="newsletter">
@@ -86,7 +86,7 @@
       <p class="text-muted-foreground mt-1">{{ error }}</p>
     </div>
 
-    <!-- 뉴스레터 내용 -->
+    <!-- 뉴스룸 내용 -->
     <div v-else-if="newsletter" class="space-y-6">
       <!-- 메타데이터 -->
       <div class="bg-card rounded-lg shadow p-6">
@@ -199,7 +199,7 @@ const loading = ref(true)
 const error = ref(null)
 const publishing = ref(false)
 
-// 뉴스레터 조회
+// 뉴스룸 조회
 const fetchNewsletter = async () => {
   try {
     loading.value = true
@@ -208,16 +208,16 @@ const fetchNewsletter = async () => {
     const response = await $fetch(`/api/admin/newsletters/${newsletterId}`)
     newsletter.value = response.data
   } catch (err) {
-    console.error('뉴스레터 조회 실패:', err)
-    error.value = err.data?.message || '뉴스레터를 불러올 수 없습니다.'
+    console.error('뉴스룸 조회 실패:', err)
+    error.value = err.data?.message || '뉴스룸을 불러올 수 없습니다.'
   } finally {
     loading.value = false
   }
 }
 
-// 뉴스레터 삭제
+// 뉴스룸 삭제
 const deleteNewsletter = async () => {
-  if (!confirm(`"${newsletter.value.title}" 뉴스레터를 삭제하시겠습니까?`)) {
+  if (!confirm(`"${newsletter.value.title}" 뉴스룸을 삭제하시겠습니까?`)) {
     return
   }
 
@@ -229,14 +229,14 @@ const deleteNewsletter = async () => {
     // 목록 페이지로 이동
     navigateTo('/admin/newsletters')
   } catch (error) {
-    console.error('뉴스레터 삭제 실패:', error)
+    console.error('뉴스룸 삭제 실패:', error)
     alert('삭제 중 오류가 발생했습니다.')
   }
 }
 
-// 뉴스레터 발행
+// 뉴스룸 발행
 const publishNewsletter = async () => {
-  if (!confirm(`"${newsletter.value.title}" 뉴스레터를 발행하시겠습니까?`)) {
+  if (!confirm(`"${newsletter.value.title}" 뉴스룸을 발행하시겠습니까?`)) {
     return
   }
 
@@ -251,9 +251,9 @@ const publishNewsletter = async () => {
     })
 
     newsletter.value = response.data
-    alert('뉴스레터가 성공적으로 발행되었습니다!')
+    alert('뉴스룸가 성공적으로 발행되었습니다!')
   } catch (error) {
-    console.error('뉴스레터 발행 실패:', error)
+    console.error('뉴스룸 발행 실패:', error)
     alert('발행 중 오류가 발생했습니다.')
   } finally {
     publishing.value = false
@@ -303,8 +303,8 @@ onMounted(() => {
 // 메타 태그
 useHead({
   title: () =>
-    newsletter.value ? `${newsletter.value.title} - 뉴스레터` : '뉴스레터 보기',
-  meta: [{ name: 'description', content: '뉴스레터 상세 보기' }],
+    newsletter.value ? `${newsletter.value.title} - 뉴스룸` : '뉴스룸 보기',
+  meta: [{ name: 'description', content: '뉴스룸 상세 보기' }],
 })
 </script>
 

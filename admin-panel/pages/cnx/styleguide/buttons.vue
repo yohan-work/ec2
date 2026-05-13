@@ -73,12 +73,12 @@
         <div class="button-items">
           <div class="button-item">
             <div class="button-preview">
-              <AppButton text="뉴스레터 보기" to="#" arrow />
+              <AppButton text="뉴스룸 보기" to="#" arrow />
             </div>
             <div class="button-info">
-              <span class="button-name">뉴스레터 보기</span>
+              <span class="button-name">뉴스룸 보기</span>
               <span class="button-code">to + arrow</span>
-              <span class="button-variable" @click="copyVariable('&lt;AppButton text=&quot;뉴스레터 보기&quot; to=&quot;/newsletters&quot; arrow /&gt;')" :title="'클릭하여 복사'">&lt;AppButton text="뉴스레터 보기" to="/newsletters" arrow /&gt;</span>
+              <span class="button-variable" @click="copyVariable('&lt;AppButton text=&quot;뉴스룸 보기&quot; to=&quot;/newsletters&quot; arrow /&gt;')" :title="'클릭하여 복사'">&lt;AppButton text="뉴스룸 보기" to="/newsletters" arrow /&gt;</span>
             </div>
           </div>
           <div class="button-item">
@@ -134,7 +134,7 @@
         </div>
         <div class="code-examples">
           <pre><code>&lt;!-- 내부 링크 (화살표 명시적) --&gt;
-&lt;AppButton text="뉴스레터 보기" to="/newsletters" arrow /&gt;
+&lt;AppButton text="뉴스룸 보기" to="/newsletters" arrow /&gt;
 
 &lt;AppButton text="더보기" to="/newsletters" arrow /&gt;
 
