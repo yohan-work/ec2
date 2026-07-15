@@ -61,7 +61,7 @@
             >
               <div 
                 v-for="(section, sectionIndex) in menu.sections" 
-                :key="section.title"
+                :key="section.id || section.title || sectionIndex"
                 class="side-nav-section"
               >
                 <!-- 2뎁스 섹션 타이틀 -->
@@ -146,8 +146,9 @@ const props = defineProps({
 // Emits
 const emit = defineEmits(['close'])
 
-// 네비게이션 composable 사용
-const { menuStructure } = useNavigation()
+// 네비게이션 composable 사용 (모바일: Services → Platforms 합침)
+const { getMenuStructure } = useNavigation()
+const menuStructure = computed(() => getMenuStructure('mobile'))
 
 
 // 아코디언 상태 관리 (푸터와 동일한 구조)
@@ -177,7 +178,7 @@ const toggleMenu = (menuKey) => {
     accordionState.value.openMenu = menuKey
     
     // 해당 메뉴의 섹션들을 확인
-    const menu = menuStructure[menuKey]
+    const menu = menuStructure.value[menuKey]
     if (menu && menu.sections) {
       // 2뎁스 타이틀이 있는 섹션이 있는지 확인 (빈 문자열 제외)
       const hasSectionsWithTitle = menu.sections.some(section => section.title && section.title.trim() !== '')

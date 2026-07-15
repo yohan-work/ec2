@@ -40,24 +40,28 @@
               >
                 <div 
                   v-for="(section, sectionIndex) in menu.sections" 
-                  :key="section.title"
+                  :key="section.id || section.title || sectionIndex"
                   class="footer-nav__section"
                 >
-                  <!-- 2뎁스 섹션 타이틀 -->
+                  <!-- 2뎁스 섹션 타이틀 (hideTitle이면 데스크톱에서 자리만 유지) -->
                   <div 
-                    v-if="section.title" 
+                    v-if="section.hideTitle || section.title" 
                     class="footer-nav__subtitle"
-                    :class="{ 'footer-nav__subtitle--mobile-clickable': true }"
-                    :tabindex="isMobile ? 0 : -1"
-                    :role="isMobile ? 'button' : undefined"
-                    :aria-expanded="isMobile ? (accordionState.openSection === `${key}-${sectionIndex}` ? 'true' : 'false') : undefined"
-                    :aria-controls="isMobile ? `footer-section-${key}-${sectionIndex}` : undefined"
-                    @click="toggleSection(`${key}-${sectionIndex}`)"
-                    @keydown="handleSectionKeydown($event, `${key}-${sectionIndex}`)"
+                    :class="{
+                      'footer-nav__subtitle--mobile-clickable': !section.hideTitle,
+                      'footer-nav__subtitle--placeholder': section.hideTitle
+                    }"
+                    :tabindex="isMobile && !section.hideTitle ? 0 : -1"
+                    :role="isMobile && !section.hideTitle ? 'button' : undefined"
+                    :aria-expanded="isMobile && !section.hideTitle ? (accordionState.openSection === `${key}-${sectionIndex}` ? 'true' : 'false') : undefined"
+                    :aria-controls="isMobile && !section.hideTitle ? `footer-section-${key}-${sectionIndex}` : undefined"
+                    :aria-hidden="section.hideTitle ? 'true' : undefined"
+                    @click="!section.hideTitle && toggleSection(`${key}-${sectionIndex}`)"
+                    @keydown="!section.hideTitle && handleSectionKeydown($event, `${key}-${sectionIndex}`)"
                   >
-                    <span>{{ section.title }}</span>
+                    <span>{{ section.hideTitle ? '\u00A0' : section.title }}</span>
                     <span 
-                      v-if="isMobile"
+                      v-if="isMobile && !section.hideTitle"
                       class="footer-nav__icon footer-nav__icon--mobile"
                       :class="{ 'footer-nav__icon--rotated': accordionState.openSection === `${key}-${sectionIndex}` }"
                       v-html="arrowIcon"
@@ -208,10 +212,15 @@ import xIcon from '~/public/assets/cnx/layouts/ico-sns-x.svg?raw'
 import youtubeIcon from '~/public/assets/cnx/layouts/ico-sns-youtube.svg?raw'
 
 // 네비게이션 composable 사용
-const { menuStructure } = useNavigation()
+const { getMenuStructure } = useNavigation()
 
 // 모바일 감지
 const isMobile = ref(false)
+
+// 데스크톱: Services 분리 / 모바일: Platforms에 합침
+const menuStructure = computed(() =>
+  getMenuStructure(isMobile.value ? 'mobile' : 'desktop')
+)
 
 // 윈도우 리사이즈 감지
 const checkMobile = () => {
@@ -248,10 +257,10 @@ const toggleMenu = (menuKey) => {
     accordionState.value.openMenu = menuKey
     
     // 해당 메뉴의 섹션들을 확인
-    const menu = menuStructure[menuKey]
+    const menu = menuStructure.value[menuKey]
     if (menu && menu.sections) {
       // 2뎁스 타이틀이 있는 섹션이 있는지 확인 (빈 문자열 제외)
-      const hasSectionsWithTitle = menu.sections.some(section => section.title && section.title.trim() !== '')
+      const hasSectionsWithTitle = menu.sections.some(section => section.title && section.title.trim() !== '' && !section.hideTitle)
       
       if (hasSectionsWithTitle) {
         // 2뎁스가 있는 경우: 모든 2뎁스를 닫힌 채로 열기
@@ -916,7 +925,12 @@ defineOptions({
       color: $s-teal;
       margin: 0 0 rem(12) 0;
       line-height: 120%;
-      
+
+      &--placeholder {
+        visibility: hidden;
+        pointer-events: none;
+      }
+
       &--mobile-clickable {
         cursor: pointer;
         display: flex;
@@ -924,7 +938,7 @@ defineOptions({
         align-items: center;
         padding: rem(8) 0;
         margin-bottom: 0;
-        
+
         @include tablet {
           cursor: default;
           padding: 0;

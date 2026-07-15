@@ -121,6 +121,7 @@ export const useNavigation = () => {
       path: null,
       sections: [
         {
+          id: 'strategy-and-design',
           title: 'Strategy & Design',
           path: null,
           items: [
@@ -129,6 +130,7 @@ export const useNavigation = () => {
           ]
         },
         {
+          id: 'data-and-analytics',
           title: 'Data & Analytics',
           path: null,
           items: [
@@ -140,7 +142,8 @@ export const useNavigation = () => {
           ]
         },
         {
-          title: 'Technology Platforms',
+          id: 'tech-platforms',
+          title: 'Enterprise Technology', //260715 title명 변경
           path: null,
           items: [
             { text: 'Commerce Platform', path: '/what-we-do/technology-platforms/commerce-platform' },
@@ -150,14 +153,18 @@ export const useNavigation = () => {
           ]
         },
         {
+          id: 'tech-services',
           title: 'Technology Services',
           path: null,
+          hideTitle: true, // 데스크톱: 라벨 숨기고 높이만 유지
+          mergeInto: 'tech-platforms', // 모바일: Platforms 아래로 합침
           items: [
             { text: 'System Integration & Architecting', path: '/what-we-do/technology-services/system-integration-and-architecting' },
             { text: 'AX Consulting & Implementation', path: '/what-we-do/technology-services/ax-consulting-and-implementation' }
           ]
         },
         {
+          id: 'digital-operations',
           title: 'Digital Operations',
           path: null,
           items: [
@@ -174,6 +181,7 @@ export const useNavigation = () => {
       path: null,
       sections: [
         {
+          id: 'about-us-overview',
           title: '',
           path: null,
           items: [
@@ -181,6 +189,7 @@ export const useNavigation = () => {
           ]
         },
         {
+          id: 'about-us-newsroom',
           title: '',
           path: null,
           items: [
@@ -200,7 +209,36 @@ export const useNavigation = () => {
       sections: []
     }
   }
-  
+
+  // 데스크톱: 섹션 그대로 유지 (hideTitle은 템플릿에서 처리)
+  const transformSectionsForDesktop = (sections = []) =>
+    sections.map((section) => ({ ...section, items: [...(section.items || [])] }))
+
+  // 모바일: mergeInto가 있는 섹션을 부모 items에 합치고 제거
+  const transformSectionsForMobile = (sections = []) => {
+    const merged = []
+
+    for (const section of sections) {
+      if (section.mergeInto) continue
+
+      const continuationItems = sections
+        .filter((candidate) => candidate.mergeInto === section.id)
+        .flatMap((candidate) => candidate.items || [])
+
+      merged.push({
+        ...section,
+        items: [...(section.items || []), ...continuationItems]
+      })
+    }
+
+    return merged
+  }
+
+  const transformSections = (sections = [], view = 'desktop') =>
+    view === 'mobile'
+      ? transformSectionsForMobile(sections)
+      : transformSectionsForDesktop(sections)
+
   const getAvailableRoutes = () => {
     const routes = router.getRoutes()
     return routes.filter(route => 
@@ -208,43 +246,65 @@ export const useNavigation = () => {
       !route.path.includes('[')
     )
   }
-  
-  const getMenuData = () => {
+
+  // 드롭다운용 (sections가 있는 메뉴만)
+  const getMenuData = (view = 'desktop') => {
     const filteredMenu = {}
-    
+
     for (const [key, menu] of Object.entries(menuStructure)) {
       if (menu.sections && menu.sections.length > 0) {
-        filteredMenu[key] = menu
+        filteredMenu[key] = {
+          ...menu,
+          sections: transformSections(menu.sections, view)
+        }
       }
     }
-    
+
     return filteredMenu
   }
-  
+
+  // Header GNB / SideNav / Footer용 전체 메뉴
+  const getMenuStructure = (view = 'desktop') => {
+    const result = {}
+
+    for (const [key, menu] of Object.entries(menuStructure)) {
+      if (menu.sections && menu.sections.length > 0) {
+        result[key] = {
+          ...menu,
+          sections: transformSections(menu.sections, view)
+        }
+      } else {
+        result[key] = { ...menu }
+      }
+    }
+
+    return result
+  }
+
   const getCurrentActiveMenu = () => {
     const route = useRoute()
     const currentPath = route.path
-    
-    const menuData = getMenuData()
-    
+
+    const menuData = getMenuData('desktop')
+
     for (const [key, menu] of Object.entries(menuData)) {
-      if (currentPath.startsWith(menu.path)) {
+      if (menu.path && currentPath.startsWith(menu.path)) {
         return key
       }
-      
+
       for (const section of menu.sections) {
-        if (currentPath.startsWith(section.path)) {
+        if (section.path && currentPath.startsWith(section.path)) {
           return key
         }
-        
-        for (const item of section.items) {
+
+        for (const item of section.items || []) {
           if (currentPath === item.path) {
             return key
           }
         }
       }
     }
-    
+
     return null
   }
   
@@ -281,9 +341,10 @@ export const useNavigation = () => {
   
   return {
     getMenuData,
+    getMenuStructure,
     getCurrentActiveMenu,
-    getPageMeta, // 새로 추가된 메타데이터 함수
-    normalizeDynamicMeta, // 동적 메타데이터 정규화 함수
+    getPageMeta,
+    normalizeDynamicMeta,
     menuStructure
   }
 }

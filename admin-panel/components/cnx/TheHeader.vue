@@ -70,12 +70,18 @@
         <div class="dropdown-title">{{ menu.title }}</div>
         <div class="dropdown-sections">
           <div 
-            v-for="section in menu.sections" 
-            :key="section.title" 
+            v-for="(section, sectionIndex) in menu.sections" 
+            :key="section.id || section.title || sectionIndex" 
             class="dropdown-section"
           >
-            <!-- 2depth: 빈 title이 아닌 경우만 표시 -->
-            <div v-if="section.title && !section.path" class="section-title">{{ section.title }}</div>
+            <!-- 2depth: hideTitle이면 자리만 유지, 그 외 title 표시 -->
+            <div
+              v-if="!section.path && (section.hideTitle || section.title)"
+              class="section-title"
+              :aria-hidden="section.hideTitle ? 'true' : undefined"
+            >
+              {{ section.hideTitle ? '\u00A0' : section.title }}
+            </div>
             <NuxtLink 
               v-else-if="section.title && section.path" 
               :to="section.path" 
@@ -135,8 +141,8 @@ const isSideNavOpen = ref(false)
 // 키보드 네비게이션을 위한 상태
 const isKeyboardNavigation = ref(false)
 
-// 라우터 기반 메뉴 데이터
-const dropdownMenus = computed(() => getMenuData())
+// 라우터 기반 메뉴 데이터 (데스크톱: hideTitle 컬럼 유지)
+const dropdownMenus = computed(() => getMenuData('desktop'))
 
 // 드롭다운 토글 함수
 const toggleDropdown = (dropdownName) => {
