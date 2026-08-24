@@ -67,7 +67,7 @@
   @include footer-nav;
 }
 
-:global(.a11y-hidden) {
+.a11y-hidden {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -80,14 +80,14 @@
 }
 
 // 스킵네비게이션 포커스 시 헤더 드롭다운 위치 조정
-:global(.cnx-layout.skip-link-focused .gnb-dropdown-menu) {
+.cnx-layout.skip-link-focused .gnb-dropdown-menu {
   @include desktop {
     top: rem(138) !important; // 헤더 높이(90) + 스킵네비게이션 높이(48)
   }
 }
 
 // Br 태그 반응형 유틸리티 클래스
-:global(.br-mo) {
+.br-mo {
   display: block;
 
   @include tablet {
@@ -95,7 +95,7 @@
   }
 }
 
-:global(.br-tab) {
+.br-tab {
   display: none;
 
   @include tablet {
@@ -107,7 +107,7 @@
   }
 }
 
-:global(.br-pc) {
+.br-pc {
   display: none;
 
   @include desktop {
@@ -116,7 +116,7 @@
 }
 
 // Br 태그 조합 클래스
-:global(.br-mo-tab) {
+.br-mo-tab {
   display: block;
 
   @include desktop {
@@ -124,7 +124,7 @@
   }
 }
 
-:global(.br-tab-pc) {
+.br-tab-pc {
   display: none;
 
   @include tablet {
@@ -132,7 +132,7 @@
   }
 }
 
-:global(.br-mo-pc) {
+.br-mo-pc {
   display: block;
 
   @include tablet {

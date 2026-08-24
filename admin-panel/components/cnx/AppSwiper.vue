@@ -175,7 +175,6 @@
   @use '~/layouts/scss/cnx/_functions' as *;
   @use '~/layouts/scss/cnx/_mixins' as *;
   @use '~/layouts/scss/cnx/_variables' as *;
-  @use '~/layouts/scss/cnx/_base' as *;
 
   .app-swiper-container {
     position: relative;

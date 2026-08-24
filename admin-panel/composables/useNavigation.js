@@ -147,8 +147,8 @@ export const useNavigation = () => {
           path: null,
           items: [
             { text: 'Commerce Platform', path: '/what-we-do/technology-platforms/commerce-platform' },
-            { text: 'Customer eXperience Platform', path: '/what-we-do/technology-platforms/customer-experience-platform' },
-            { text: 'Digital eXperience Platform', path: '/what-we-do/technology-platforms/digital-experience-platform' },
+            { text: 'Customer eXperience Platform', path: '/what-we-do/technology-platforms/customer-experience-platform', desktopBreakBefore: 'Platform' },
+            { text: 'Digital eXperience Platform', path: '/what-we-do/technology-platforms/digital-experience-platform', desktopBreakBefore: 'Platform' },
             { text: 'AI Platform', path: '/what-we-do/technology-platforms/ai-platform' }
           ]
         },
@@ -159,8 +159,8 @@ export const useNavigation = () => {
           hideTitle: true, // 데스크톱: 라벨 숨기고 높이만 유지
           mergeInto: 'tech-platforms', // 모바일: Platforms 아래로 합침
           items: [
-            { text: 'System Integration & Architecting', path: '/what-we-do/technology-services/system-integration-and-architecting' },
-            { text: 'AX Consulting & Implementation', path: '/what-we-do/technology-services/ax-consulting-and-implementation' }
+            { text: 'System Integration & Architecting', path: '/what-we-do/technology-services/system-integration-and-architecting', desktopBreakBefore: '&' },
+            { text: 'AX Consulting & Implementation', path: '/what-we-do/technology-services/ax-consulting-and-implementation', desktopBreakBefore: '&' }
           ]
         },
         {

@@ -86,6 +86,31 @@ export default defineNuxtConfig({
     },
   },
 
+  app: {
+    head: {
+      link: [
+        {
+          rel: 'preload',
+          href: '/assets/fonts/woff2/Pretendard-Regular.woff2',
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
+        {
+          rel: 'preload',
+          href: '/assets/fonts/woff2/Pretendard-Bold.woff2',
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
+        {
+          rel: 'stylesheet',
+          href: '/assets/fonts/pretendard.css',
+        },
+      ],
+    },
+  },
+
   // 전역 CSS (FOUC 방지를 위해 CNX 스타일 우선 로드)
   css: ['~/layouts/scss/cnx.scss'],
 
@@ -168,7 +193,6 @@ export default defineNuxtConfig({
                 @use "~/layouts/scss/cnx/_variables" as *;
                 @use "~/layouts/scss/cnx/_mixins" as *;
                 @use "~/layouts/scss/cnx/_functions" as *;
-                @use "~/layouts/scss/cnx/_base" as *;
                 ${content}
               `
             }

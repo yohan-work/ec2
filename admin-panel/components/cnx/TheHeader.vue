@@ -100,11 +100,16 @@
                 <NuxtLink 
                   v-if="item.path" 
                   :to="item.path"
+                  :aria-label="item.desktopBreakBefore ? item.text : undefined"
                   role="menuitem"
                   tabindex="0"
                   @keydown="handleDropdownItemKeydown"
                 >
-                  {{ item.text }}
+                  <template v-if="item.desktopBreakBefore">
+                    <span>{{ getDesktopLabelLines(item)[0] }}</span>
+                    <span class="menu-label-line--break">{{ getDesktopLabelLines(item)[1] }}</span>
+                  </template>
+                  <template v-else>{{ item.text }}</template>
                 </NuxtLink>
                 <span v-else class="menu-item-disabled">{{ item.text }}</span>
               </li>
@@ -124,9 +129,9 @@
 
 <script setup>
 import { onMounted, onUnmounted, nextTick, watch } from 'vue'
-import concentrixLogo from '~/components/assets/cnx/concentrix-logo.svg?raw'
+import concentrixLogo from '~/components/assets/cnx/concentrix-logo-w.svg?raw'
 import hamburgerIcon from '~/components/assets/cnx/hamburger.svg?raw'
-import dropdownIcon from '~/components/assets/cnx/dropdown.svg?raw'
+import dropdownIcon from '~/components/assets/cnx/dropdown-w.svg?raw'
 import TheSideNav from '~/components/cnx/TheSideNav.vue'
 
 // 네비게이션 composable 사용
@@ -143,6 +148,17 @@ const isKeyboardNavigation = ref(false)
 
 // 라우터 기반 메뉴 데이터 (데스크톱: hideTitle 컬럼 유지)
 const dropdownMenus = computed(() => getMenuData('desktop'))
+
+const getDesktopLabelLines = (item) => {
+  const breakIndex = item.text.indexOf(item.desktopBreakBefore)
+
+  if (breakIndex <= 0) return [item.text]
+
+  return [
+    item.text.slice(0, breakIndex).trimEnd(),
+    item.text.slice(breakIndex),
+  ]
+}
 
 // 드롭다운 토글 함수
 const toggleDropdown = (dropdownName) => {
@@ -470,28 +486,15 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .the-header {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  background: #ffffff;
-  border-bottom: rem(1) solid $gray-2;
-  z-index: 1000;
-  
-  height: rem(72);
-  @include tablet {
-    height: rem(72);
-  }
-  @include desktop {
-    height: rem(90);
-  }
-  
   .inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 100%;
+    padding: 0 rem(12) 0 rem(16);
+    @include desktop {
+      padding: 0 rem(90) 0 rem(38);
+    }
   }
   
   &__logo {
@@ -534,58 +537,56 @@ onUnmounted(() => {
       display: flex;
     }
     
-         .gnb-menu-item {
-           display: flex;
-           align-items: center;
-           justify-content: center;
-           padding: 0;
-           color: #000;
-           text-decoration: none;
-           font-size: rem(18);
-           font-weight: 400;
-           line-height: 1.5;
-           transition: color 0.2s ease;
-           background: none;
-           border: none;
-           cursor: pointer;
-           height: 100%;
-           width: auto;
-           flex-shrink: 0;
-           position: relative;
-           
-           // 기본 상태에서 width: 0인 굵은선
-           &::after {
-             content: '';
-             position: absolute;
-             bottom: 0;
-             left: 50%;
-             width: 0;
-             height: rem(3);
-             background-color: #333;
-             border-radius: rem(1.5);
-             z-index: 1001;
-             transform: translateX(-50%);
-             transition: width 0.3s ease-out;
-           }
-           
-           &:hover {
-             color: #000;
-             text-shadow: 0.5px 0 0 currentColor;
-             
-             &::after {
-               width: 100%;
-             }
-           }
-           
-           &.active {
-             color: #000;
-             text-shadow: 0.5px 0 0 currentColor;
-             
-             &::after {
-               width: 100%;
-             }
-           }
-         }
+    .gnb-menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      color: $d-white;
+      text-decoration: none;
+      font-size: rem(18);
+      font-weight: 400;
+      line-height: 1.5;
+      transition: color 0.2s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      height: 100%;
+      width: auto;
+      flex-shrink: 0;
+      position: relative;
+      
+      // 기본 상태에서 width: 0인 굵은선
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: rem(3);
+        background-color: $s-teal;
+        border-radius: rem(1.5);
+        z-index: 1001;
+        transform: translateX(-50%);
+        transition: width 0.3s ease-out;
+      }
+      
+      &:hover {
+        text-shadow: 0.5px 0 0 currentColor;
+        
+        &::after {
+          width: 100%;
+        }
+      }
+      
+      &.active {
+        text-shadow: 0.5px 0 0 currentColor;
+        
+        &::after {
+          width: 100%;
+        }
+      }
+    }
     
     // 드롭다운 트리거 스타일
     .gnb-dropdown-trigger {
@@ -618,20 +619,29 @@ onUnmounted(() => {
   // 헤더 바깥에 위치하는 드롭다운 메뉴
   .gnb-dropdown-menu {
     position: fixed;
-    top: rem(72);
+    top: rem(60);
     left: 0;
     width: 100%;
-    background: white;
+    background: $p-dark-green;
     box-shadow: 0 rem(2) rem(8) rgba(0, 0, 0, 0.1);
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
     z-index: 1000;
     padding: rem(40) 0;
-    
     // PC 이하에서는 완전히 숨김
     display: none;
     
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+    }
     @include desktop {
       display: block;
       top: rem(90);
@@ -642,10 +652,14 @@ onUnmounted(() => {
     &.active {
       opacity: 1;
       visibility: visible;
+      &::after {
+        border-top: 1px solid #444444;
+        border-bottom: 1px solid $p-blue;
+      }
     }
     
     .inner {
-      padding: rem(32) rem(100);
+      padding: rem(0) rem(40) rem(22);
       display: flex;
       align-items: flex-start;
       gap: rem(36);
@@ -653,16 +667,16 @@ onUnmounted(() => {
       .dropdown-title {
         font-size: $font-size-body2-desktop;
         font-weight: $font-weight-bold;
-        color: #333;
-        width: rem(190);
+        color: $d-white;
+        width: rem(232);
         line-height: rem(20);
         flex-shrink: 0;
       }
       
       .dropdown-sections {
         display: grid;
-        grid-template-columns: repeat(5, rem(190));
-        gap: rem(36);
+        grid-template-columns: repeat(5, rem(200));
+        gap: rem(32);
         flex: 1;
         
         // About Us는 2개 컬럼만 사용
@@ -672,11 +686,11 @@ onUnmounted(() => {
         
         .dropdown-section {
           .section-title {
-            font-size: rem(12);
+            font-size: rem(14);
             font-weight: $font-weight-bold;
-            color: $p-green;
-            margin: 0 0 rem(10) 0;
-            line-height: rem(20);
+            color: $s-teal;
+            margin-block-end: rem(16);
+            line-height: rem(22);
             display: block;
             
             // 링크인 경우에만 추가 스타일 적용
@@ -693,29 +707,32 @@ onUnmounted(() => {
               }
             }
           }
-          
-          
+                  
           ul {
             list-style: none;
             margin: 0;
             padding: 0;
             
             li {
-              margin-bottom: rem(10);
+              margin-bottom: rem(16);
               
-                a, span {
-                  color: #000;
-                  text-decoration: none;
-                  font-size: rem(14);
-                  font-weight: $font-weight-regular;
-                  line-height: 120%;
-                  transition: text-decoration 0.2s ease, text-shadow 0.2s ease;
-                  
-                  &:hover {
-                    text-decoration: underline;
-                    text-shadow: 0.5px 0 0 currentColor;
-                  }
+              > a, > span {
+                color: $d-white;
+                text-decoration: none;
+                font-size: rem(14);
+                font-weight: $font-weight-regular;
+                transition: text-decoration 0.2s ease, text-shadow 0.2s ease;
+                
+                &:hover {
+                  font-weight: $font-weight-bold;
+                  text-decoration: underline;
+                  text-shadow: 0.5px 0 0 currentColor;
                 }
+              }
+
+              .menu-label-line--break {
+                display: block;
+              }
             }
           }
         }
