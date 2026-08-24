@@ -6,15 +6,15 @@
         imageAlt="컴퓨터 화면을 보며 보안 작업을 하는 엔지니어"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
           title="Trust & Safety"
           text="당신의 브랜드를 위한 안전한 온라인 미래를 만듭니다<br><span class='weight-normal'>인터넷에서 단 1분 동안 전 세계에서 수많은 일이 벌어집니다. 수백만 건의 메시지가 오가고, 수십만 시간의 사용자 제작 콘텐츠가 업로드되며, 수십만 시간의 스트리밍 미디어가 소비됩니다.이 거대한 흐름 속에서 플랫폼과 사용자를 부적절한 콘텐츠, 허위 정보, 사기, 그리고 각종 악용으로부터 보호하는 일은 선택이 아닌 필수입니다. 우리는 안전하고 신뢰할 수 있는 디지털 환경을 구축해 브랜드와 고객의 가치를 지킵니다.</span>"/>
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- Content Moderation 섹션 -->
       <section class="content-section">

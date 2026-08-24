@@ -7,15 +7,15 @@
 밤의 도시를 배경으로 태블릿을 사용하는 비즈니스 여성"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
           title="Customer Service"
           text="혁신적인 고객 서비스 아웃소싱<br><span class='weight-normal'>모든 성공적인 비즈니스의 중심에는 만족한 고객이 있습니다. 우리의 목표는 고객 경험을 혁신하여, 당신의 브랜드가 돋보이도록 만드는 것입니다. 기술과 전문 인력이 결합된 하이브리드 방식으로, 모든 접점에서 진정성 있는 지원과 탁월한 서비스를 제공합니다.</span>"/>
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- Sales & Marketing​ 섹션 -->
       <section class="content-section">

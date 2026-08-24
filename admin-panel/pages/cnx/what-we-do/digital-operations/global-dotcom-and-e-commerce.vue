@@ -6,9 +6,6 @@
         imageAlt="노트북으로 글로벌 개발 작업을 하는 엔지니어"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
@@ -17,6 +14,9 @@
 이를 위해 지난 20여 년간 글로벌 Top-tier 전자, 자동차, 코스메틱 산업을 지원하며 축적된 <br class='br-pc'>풍부한 경험과 노하우를 최대한 활용하여 혁신적인 서비스를 속도감 있게 수행합니다.<br class='br-pc'>
 또한, AI, 자동화 솔루션을 적용하여, 복잡한 운영 프로세스는 간소화하고,<br class='br-pc'>콘텐츠/데이터/테크놀로지 환경을 통합적으로 관리함으로써,<br class='br-pc'>운영 효율성과 디지털 경험 제고를 동시에 실현하고 있습니다."/>
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- Global e-Commerce Development & Operation 섹션 -->
       <section class="content-section">

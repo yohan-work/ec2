@@ -6,15 +6,15 @@
         imageAlt="디지털 기술을 상징하는 푸른빛의 추상적인 배경"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
           title="Digital eXperience Platform"
           text="AEM, ION, OutSystems 기반의 Low-code · Headless Architecture로, 글로벌 브랜드의 웹사이트 · 포털 · 앱을 통합 관리하고,<br>멀티사이트 · 현지화 · 번역 · Workflow를 통해 운영 효율성과 일관된 고객 경험을 제공합니다.<br>또한 Commerce · 검색 · DAM · SSO와의 유기적 연동을 통해 디지털 자산과 서비스 전반을 하나의 경험으로 연결합니다."/>
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- SAP Commerce Cloud 섹션 -->
       <section class="content-section">

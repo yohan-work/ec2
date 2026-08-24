@@ -6,15 +6,15 @@
         imageAlt="Generative AI 기술을 적용한 거리 환경"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
           title="AX Consulting & <br>Implementation"
           text="Generative AX 컨설팅부터 Agentic AI 설계·구현, QA·운영까지, PoC에서 글로벌 확장까지 지원하며, <br>전략·데이터 거버넌스·보안·HITL (Human In the Loop) 기반의 안전한 AI 운영을 제공합니다."/>
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- AX(AI Transformation) 컨설팅 섹션 -->
       <section class="content-section">

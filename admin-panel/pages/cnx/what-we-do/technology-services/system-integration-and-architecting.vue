@@ -6,15 +6,15 @@
         imageAlt="디지털 기술을 조작하는 손의 클로즈업"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
           title="System Integration & <br>Architecting"
           text="대규모 B2B/B2C 시스템 구축과 Enterprise Architecture 설계를 기반으로, <br>On/Off-shore 하이브리드 모델을 통해 Commerce·DXP·CRM·데이터 플랫폼을 통합하고 <br>글로벌 Roll-out까지 안정적으로 수행합니다."/>
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- Architecture Design 섹션 -->
       <section class="content-section">

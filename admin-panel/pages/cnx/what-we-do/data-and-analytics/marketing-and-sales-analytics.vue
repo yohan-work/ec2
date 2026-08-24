@@ -7,9 +7,6 @@
         imageAlt="다채로운 색상의 빛줄기와 유동적인 선들이 흐르듯 이어지는 추상 패턴으로, 데이터 흐름과 마케팅·세일즈 분석의 역동성을 시각적으로 표현한 키비주얼"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
@@ -17,6 +14,9 @@
           text="AI와 데이터 분석을 기반으로 캠페인 기획부터 성과 측정, 채널 전략까지 마케팅과 세일즈 전 과정을 아우르는 통합 분석 솔루션을 제공합니다."
         />
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- 콘텐츠 섹션 -->
       <section class="content-section">

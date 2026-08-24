@@ -7,9 +7,6 @@
         imageAlt="어두운 배경에서 노트북 키보드를 조작하는 손가락의 근접 장면으로, 데이터 엔지니어링의 정밀한 기술 작업을 상징한 비주얼"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
@@ -17,6 +14,9 @@
           text="콘텐츠 크롤링부터 데이터 파이프라인 구축, 플랫폼 운영까지 AI 기반 기술을 통해 데이터를 보다 정교하게 수집, 정제, 변환하여<br class='br-pc' />분석과 서비스의 토대가 되는 안정적이고 유연한 데이터 인프라 솔루션을 제공합니다."
         />
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- 콘텐츠 섹션 -->
       <section class="content-section">

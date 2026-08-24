@@ -129,9 +129,18 @@ onMounted(() => {
 .app-key-visual {
   width: 100%;
   height: rem(150); // 모바일 기본 150px
+  background-color: lightgray;
   overflow: hidden;
   position: relative;
-  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 38, 50, 0.40) 60%, #002632 100%);
+  }
   // 태블릿 (1024px 이상)
   @include tablet {
     height: rem(230); // 230px

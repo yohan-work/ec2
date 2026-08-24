@@ -6,16 +6,16 @@
         imageAlt="어두운 배경 앞에서 미래를 바라보는 사람의 실루엣"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
           title="AI Platform"
           text="고객의 비즈니스 문제를 해결하기 위해 AI를 활용한 맞춤형 솔루션을 제공합니다.<br>반복적인 업무를 자동화하고 효율을 높이는 AI 에이전트 개발부터, 데이터 분석 및 예측 모델 개발에 이르기까지<br>혁신적인 AI 기술을 통해 기업의 경쟁력을 강화하고 새로운 가치를 창출합니다."/>
       </section>
+    </section>
 
+    <div class="inner">
+      
       <section class="content-section">
         <AppImgCont 
           title="iX Hello : AI Agent Platform"

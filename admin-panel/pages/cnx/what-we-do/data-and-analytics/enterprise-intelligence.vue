@@ -6,16 +6,15 @@
         imageAlt="지구를 중심으로 연결된 데이터 네트워크를 통해 전 세계적인 연결성과 인텔리전스를 상징한 비주얼"
         :animationDuration="1200"
       />
-    </section>
-
-    <!-- 타이틀 섹션 -->
-    <section class="title-section">
-      <div class="inner">
-        <AppTitle 
-          title="Enterprise Intelligence" 
-          text="BI 설계부터 대시보드 시각화까지 방대한 비즈니스 데이터를 연결하고 분석하여,<br class='br-pc' />조직이 보다 빠르고 정확한 의사결정을 내릴 수 있는 통합 Insight를 제공합니다."
-        />
-      </div>
+      <!-- 타이틀 섹션 -->
+      <section class="title-section">
+        <div class="inner">
+          <AppTitle
+            title="Enterprise Intelligence"
+            text="BI 설계부터 대시보드 시각화까지 방대한 비즈니스 데이터를 연결하고 분석하여,<br class='br-pc' />조직이 보다 빠르고 정확한 의사결정을 내릴 수 있는 통합 Insight를 제공합니다."
+          />
+        </div>
+      </section>
     </section>
 
     <!-- 콘텐츠 섹션 -->
