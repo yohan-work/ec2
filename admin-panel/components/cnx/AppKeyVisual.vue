@@ -129,6 +129,7 @@ onMounted(() => {
 .app-key-visual {
   width: 100%;
   height: rem(150); // 모바일 기본 150px
+  background-color: lightgray;
   overflow: hidden;
   position: relative;
   &::after {
