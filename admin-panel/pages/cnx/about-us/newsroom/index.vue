@@ -3,9 +3,9 @@
     <!-- 메인 콘텐츠 -->
     <main>
       <div class="newsletter">
+        <!-- 제목 -->
+        <AppTitle title="Newsroom" />
         <div class="inner">
-          <!-- 제목 -->
-          <AppTitle title="Newsroom" />
 
           <!-- 뉴스룸 목록 -->
           <NewsletterList

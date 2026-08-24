@@ -6,15 +6,15 @@
         imageAlt="전구 모형을 들고 아이디어를 공유하며 토론하는 팀의 협업을 표현한 Digital Advertising"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <section class="title-section">
         <AppTitle 
           title="Digital Advertising"
-          text="고객 여정 인사이트 기반의 광고 운영 및 최적화,<br>광고 소재 제작까지 End to End 디지털 광고 서비스를 제공합니다."
+          text="고객 여정 인사이트 기반의 광고 운영 및 최적화, 광고 소재 제작까지 End to End 디지털 광고 서비스를 제공합니다."
         />
       </section>
+    </section>
+
+    <div class="inner">
 
       <section class="content-section">
         <AppImgCont 

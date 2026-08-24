@@ -6,9 +6,6 @@
         imageAlt="헤드셋을 착용하고 고객 응대 서비스를 하는 직원들"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
@@ -16,6 +13,9 @@
           text="디지털 시대의 성공은 고객을 얼마나 깊이 이해하고 만족시키는지에 달려있습니다.<br>콘센트릭스 TPE본부는 Salesforce.com과 Adobe Experience Cloud라는 세계 최고 수준의 솔루션 공식 컨설팅 파트너로서, 고객 경험(Customer Experience)을 혁신하고 비즈니스 성장을 이끌어 나가는 전문가 그룹입니다."
         />
         </section>
+    </section>
+
+    <div class="inner">
 
       <!-- Sales 이미지 섹션 -->
       <section class="sales-image-section">

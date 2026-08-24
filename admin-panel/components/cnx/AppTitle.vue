@@ -93,20 +93,28 @@ useIntersectionObserver(
 
 <style lang="scss" scoped>
 .app-title {
-  padding: rem(64) 0;
+  padding: rem(64) rem(20);
   text-align: center; // 기본값을 center로 설정
-
+  word-break: keep-all;
+  background-color: $p-dark-green;
+  margin-block-end: rem(40);
+  border-radius: 0 0 rem(30) rem(30);
   @include tablet {
-    padding: rem(100) 0;
+    padding: rem(100) rem(20);
+    margin-block-end: rem(50);
+    border-radius: 0 0 rem(30) rem(30);
   }
 
   @include desktop {
-    padding: rem(120) 0;
+    padding: rem(75) rem(20) rem(100);
+    margin-block-end: rem(100);
+    border-radius: 0 0 rem(50) rem(50);
   }
 
   &-heading {
-    @include headline-01;
-    
+    @include headline-02;
+    font-weight: $font-weight-thin;
+    color: $d-white;
     // 초기 상태: 투명하고 아래에 위치
     opacity: 0;
     transform: translateY(30px);
@@ -127,7 +135,8 @@ useIntersectionObserver(
 
   &-text {
     @include body-01;
-    color: $gray-1;
+    font-weight: $font-weight-thin;
+    color: $d-white;
     
     // 초기 상태: 투명하고 아래에 위치
     opacity: 0;

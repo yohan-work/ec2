@@ -7,9 +7,6 @@
         imageAlt="데이터 분석과 연결성을 상징하는 그래픽 패턴 배경"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
@@ -17,6 +14,9 @@
           text="GA4, Adobe Analytics, Beusable, Optimizely 등 다양한 분석 솔루션들의 라이선스를 제공하고,<br class='br-pc' />이들 분석 솔루션들의 도입과 분석을 지원하여 데이터 기반 의사결정을 지원합니다."
         />
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- 콘텐츠 섹션 -->
       <section class="content-section">

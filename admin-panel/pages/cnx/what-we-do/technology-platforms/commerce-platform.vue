@@ -6,15 +6,15 @@
         imageAlt="사무실에서 편안하게 대화하는 비즈니스 팀원들"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
           title="Commerce Platform"
           text="SAP Commerce, Adobe Commerce, Shopify, COZE 기반 올인원  Commerce 플랫폼은 클라우드 SaaS Architeture로<br>글로벌 B2B · B2C 비즈니스를 통합 지원하며,멀티브랜드 · 다국가 운영에 최적화된 Headless · Composable 확장성을 제공합니다.<br>또한 자사 SI 전문성과 글로벌 법인 GDC 인력을 통해 맞춤형 구축과 안정적 Roll-out을 지원합니다."/>
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- SAP Commerce Cloud 섹션 -->
       <section class="content-section">

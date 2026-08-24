@@ -7,9 +7,6 @@
         imageAlt="빛과 데이터가 교차하며 흐르는 시각적 표현으로, 수많은 숫자와 데이터 스트림이 빛의 터널처럼 이어져 데이터 분석과 디지털 전환의 속도감과 연결성을 상징하는 비주얼"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
@@ -17,6 +14,9 @@
           text="디지털 채널의 방대한 데이터를 통합적으로 분석하여, 고객 행동의 맥락을 이해하고 마케팅, UX, 콘텐츠 전략 전반에 실행 가능한 인사이트를 제공합니다."
         />
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- 콘텐츠 섹션 -->
       <section class="content-section">

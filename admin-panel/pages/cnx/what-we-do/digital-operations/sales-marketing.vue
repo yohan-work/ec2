@@ -6,15 +6,15 @@
         imageAlt="회의를 하고있는 3명의 인물"
         :animationDuration="1200"
       />
-    </section>
-
-    <div class="inner">
       <!-- 타이틀 섹션 -->
       <section class="title-section">
         <AppTitle 
           title="Sales & Marketing"
           text="혁신적인 영업&middot;마케팅으로 지속 가능한 성장을 이끕니다<br><span class='weight-normal'>영업 및 마케팅은 빠르게 변하는 환경 속에서 유연한 대응과 전략적 판단이 필수입니다. 디지털 전환의 흐름을 선도해야 한다는 압박이 커지는 가운데, 혁신을 추구하면서도 고객과의 신뢰와 관계라는 본질을 지키는 균형이 중요합니다.</span>"/>
       </section>
+    </section>
+
+    <div class="inner">
 
       <!-- Sales & Marketing​ 섹션 -->
       <section class="content-section">
