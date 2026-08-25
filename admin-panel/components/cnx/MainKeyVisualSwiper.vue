@@ -1040,15 +1040,6 @@ onUnmounted(() => {
   }
 
   .slide-button {
-    margin-top: rem(8);
-
-    @include tablet {
-      margin-top: rem(12);
-    }
-
-    @include desktop {
-      margin-top: rem(16);
-    }
 
     :deep(button),
     :deep(a),
@@ -1225,6 +1216,7 @@ onUnmounted(() => {
 
   // Progress Bar
   .slide-progress-bar {
+    display: none;
     position: absolute;
     bottom: 0;
     left: 0;

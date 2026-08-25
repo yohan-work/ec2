@@ -502,7 +502,7 @@ defineOptions({
   right: 0;
   width: 100%;
   height: 100vh;
-  background: #001933;
+  background-color: $p-dark-green;
   color: $d-white;
   transform: translateX(100%);
   transition: transform 0.3s ease;
@@ -638,7 +638,7 @@ defineOptions({
 .side-nav-content-section {
   display: block;
   width: 100%;
-  background-color: #021326;
+  background-color: $p-dark-green;
   padding: 0 rem(24);
 }
 

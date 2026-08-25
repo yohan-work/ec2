@@ -44,6 +44,16 @@
             </div>
           </div>
           <div class="button-item">
+            <div class="button-preview" style="background:#2a2b2c;padding:12px;border-radius:8px;">
+              <AppButton text="자세히 보기" color="solid-teal" arrow />
+            </div>
+            <div class="button-info">
+              <span class="button-name">솔리드 틸 버튼</span>
+              <span class="button-code">color="solid-teal"</span>
+              <span class="button-variable" @click="copyVariable('&lt;AppButton text=&quot;자세히 보기&quot; color=&quot;solid-teal&quot; arrow /&gt;')" :title="'클릭하여 복사'">&lt;AppButton text="자세히 보기" color="solid-teal" arrow /&gt;</span>
+            </div>
+          </div>
+          <div class="button-item">
             <div class="button-preview">
               <AppButton text="화이트 버튼" color="white" />
             </div>
@@ -62,6 +72,8 @@
 &lt;AppButton text="그린 버튼" color="green" /&gt;
 
 &lt;AppButton text="틸 버튼" color="teal" /&gt;
+
+&lt;AppButton text="자세히 보기" color="solid-teal" arrow /&gt;
 
 &lt;AppButton text="화이트 버튼" color="white" /&gt;</code></pre>
         </div>

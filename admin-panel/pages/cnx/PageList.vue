@@ -133,17 +133,9 @@ const pages = ref([
         updatedBy: ''
       },
       {
-        title: 'Technology Platforms',
-        path: 'Technology Platforms',
-        filePath: '/what-we-do/technology-platforms',
-        createdAt: '',
-        updatedAt: '',
-        updatedBy: ''
-      },
-      {
-        title: 'Technology Services',
-        path: 'Technology Services',
-        filePath: '/what-we-do/technology-services',
+        title: 'Enterprise Technology',
+        path: 'Enterprise Technology',
+        filePath: '/what-we-do/enterprise-technology',
         createdAt: '',
         updatedAt: '',
         updatedBy: ''

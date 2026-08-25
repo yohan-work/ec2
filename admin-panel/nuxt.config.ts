@@ -117,6 +117,15 @@ export default defineNuxtConfig({
   // SSR 설정
   ssr: true,
 
+  routeRules: {
+    '/what-we-do/technology-platforms/commerce-platform': { redirect: { to: '/what-we-do/enterprise-technology/commerce-platform', statusCode: 301 } },
+    '/what-we-do/technology-platforms/customer-experience-platform': { redirect: { to: '/what-we-do/enterprise-technology/customer-experience-platform', statusCode: 301 } },
+    '/what-we-do/technology-platforms/digital-experience-platform': { redirect: { to: '/what-we-do/enterprise-technology/digital-experience-platform', statusCode: 301 } },
+    '/what-we-do/technology-platforms/ai-platform': { redirect: { to: '/what-we-do/enterprise-technology/ai-platform', statusCode: 301 } },
+    '/what-we-do/technology-services/system-integration-and-architecting': { redirect: { to: '/what-we-do/enterprise-technology/system-integration-and-architecting', statusCode: 301 } },
+    '/what-we-do/technology-services/ax-consulting-and-implementation': { redirect: { to: '/what-we-do/enterprise-technology/ax-consulting-and-implementation', statusCode: 301 } },
+  },
+
   // hook path
   hooks: {
     'pages:extend'(pages: any) {
@@ -200,6 +209,10 @@ export default defineNuxtConfig({
           },
         },
       },
+    },
+    server: {
+      // quick tunnel용: trycloudflare.com 하위 도메인 허용
+      allowedHosts: ['.trycloudflare.com'],
     },
   },
 })

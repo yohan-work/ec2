@@ -718,7 +718,7 @@ defineOptions({
 
 <style lang="scss" scoped>
 .the-footer {
-  background: $p-dark-blue;
+  background-color: $p-dark-green;
   color: $d-white;
   width: 100%;
 
@@ -778,7 +778,7 @@ defineOptions({
         }
 
         @include desktop {
-          width: rem(180);
+          width: rem(190);
         }
       }
       
@@ -793,7 +793,7 @@ defineOptions({
         
         @include desktop {
           .footer-nav__section {
-            width: rem(180);
+            width: rem(190);
           }
         }
       }
@@ -827,7 +827,7 @@ defineOptions({
         }
         
         @include desktop {
-          width: rem(180);
+          width: rem(190);
           padding: 0;
         }
       }
@@ -839,7 +839,7 @@ defineOptions({
             width: calc((100% - rem(80)) / 3);
           }
           @include desktop {
-            width: rem(180);
+            width: rem(190);
           }
         }
       }
@@ -915,7 +915,7 @@ defineOptions({
       }
       
       @include desktop {
-        width: rem(180);
+        width: rem(190);
       }
     }
     

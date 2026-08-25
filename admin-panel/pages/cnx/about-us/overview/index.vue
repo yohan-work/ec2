@@ -216,17 +216,12 @@
           ]
         },
         { 
-          title: 'Technology Platforms', 
+          title: 'Enterprise Technology', 
           content: [
             'Commerce Platform',
             'Customer eXperience Platform',
             'Digital eXperience Platform',
             'AI Platform',
-          ]
-        },
-        { 
-          title: 'Technology Services', 
-          content: [
             'System Integration & Architecting',
             'AX Consulting & Implementation',
           ]

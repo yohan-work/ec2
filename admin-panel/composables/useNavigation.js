@@ -43,32 +43,32 @@ export const useNavigation = () => {
       description: '엔터프라이즈 인텔리전스로 데이터 기반의 비즈니스 의사결정을 지원합니다. 디지털 콘텐츠 크롤링, 데이터 파이프라인 구축을 통해 시장 동향 분석, 경쟁사 분석, 트렌드 예측 등 End-to-End 디지털 마케팅 솔루션을 제공합니다.',
       ogImage: '/assets/cnx/share/enterprise-intelligence-share.png'
     },
-    '/what-we-do/technology-platforms/commerce-platform': {
+    '/what-we-do/enterprise-technology/commerce-platform': {
       title: 'Commerce Platform - Concentrix',
       description: '커머스 플랫폼으로 글로벌 B2B·B2C 비즈니스를 통합 지원합니다. SAP Commerce, Adobe Commerce, Shopify, COZE 기반 올인원 플랫폼으로 멀티브랜드·다국가 운영에 최적화된 Headless·Composable 확장성을 제공합니다.',
       ogImage: '/assets/cnx/share/commerce-platform-share.png'
     },
-    '/what-we-do/technology-platforms/customer-experience-platform': {
+    '/what-we-do/enterprise-technology/customer-experience-platform': {
       title: 'Customer eXperience Platform - Concentrix',
       description: '고객 경험 플랫폼으로 디지털 전환을 성공적으로 이끕니다. Salesforce와 Adobe Experience Cloud 공식 컨설팅 파트너로서 Sales Cloud, Service Cloud, SF CREAM을 통해 고객 경험 혁신과 비즈니스 성장을 지원합니다.',
       ogImage: '/assets/cnx/share/customer-experience-platform-share.png'
     },
-    '/what-we-do/technology-platforms/digital-experience-platform': {
+    '/what-we-do/enterprise-technology/digital-experience-platform': {
       title: 'Digital eXperience Platform - Concentrix',
       description: '디지털 경험 플랫폼으로 통합된 고객 경험을 제공합니다. AEM, ION, OutSystems 기반 Low-code·Headless Architecture로 멀티사이트·현지화·번역을 통해 운영 효율성과 일관된 고객 경험을 실현합니다.',
       ogImage: '/assets/cnx/share/digital-experience-platform-share.png'
     },
-    '/what-we-do/technology-platforms/ai-platform': {
+    '/what-we-do/enterprise-technology/ai-platform': {
       title: 'AI Platform - Concentrix',
       description: 'AI 플랫폼으로 비즈니스 혁신을 실현합니다. iX Hello AI Agent Platform과 AI Aura를 통해 코딩 없이 챗봇 구축, 업무 자동화, 데이터 분석 및 예측 모델 개발로 기업의 경쟁력을 강화합니다.',
       ogImage: '/assets/cnx/share/ai-platform-share.png'
     },
-    '/what-we-do/technology-services/system-integration-and-architecting': {
+    '/what-we-do/enterprise-technology/system-integration-and-architecting': {
       title: 'System Integration & Architecting - Concentrix',
       description: '대규모 B2B/B2C 시스템 구축과 Enterprise Architecture 설계 전문 서비스입니다. On/Off-shore 하이브리드 모델로 Commerce·DXP·CRM·데이터 플랫폼 통합 및 글로벌 Roll-out을 지원하며, 삼성전자, LG전자, 아모레퍼시픽 등 글로벌 기업 SI 프로젝트 경험을 바탕으로 안정적인 시스템 통합 서비스를 제공합니다.',
       ogImage: '/assets/cnx/share/system-integration-share.png'
     },
-    '/what-we-do/technology-services/ax-consulting-and-implementation': {
+    '/what-we-do/enterprise-technology/ax-consulting-and-implementation': {
       title: 'AX Consulting & Implementation - Concentrix',
       description: 'Generative AI 컨설팅부터 Agentic AI 설계·구현, QA·운영까지 지원하는 전문 서비스입니다. PoC에서 글로벌 확장까지 Onshore & GDC 협업 기반으로 제공하며, AI 전략 수립, 비즈니스 과제 발굴, 데이터 거버넌스·보안·HITL 기반의 안전한 AI 운영을 통해 기업의 AI 혁신을 지원합니다.',
       ogImage: '/assets/cnx/share/ax-consulting-share.png'
@@ -142,14 +142,14 @@ export const useNavigation = () => {
           ]
         },
         {
-          id: 'tech-platforms',
-          title: 'Enterprise Technology', //260715 title명 변경
+          id: 'enterprise-technology',
+          title: 'Enterprise Technology',
           path: null,
           items: [
-            { text: 'Commerce Platform', path: '/what-we-do/technology-platforms/commerce-platform' },
-            { text: 'Customer eXperience Platform', path: '/what-we-do/technology-platforms/customer-experience-platform', desktopBreakBefore: 'Platform' },
-            { text: 'Digital eXperience Platform', path: '/what-we-do/technology-platforms/digital-experience-platform', desktopBreakBefore: 'Platform' },
-            { text: 'AI Platform', path: '/what-we-do/technology-platforms/ai-platform' }
+            { text: 'Commerce Platform', path: '/what-we-do/enterprise-technology/commerce-platform' },
+            { text: 'Customer eXperience Platform', path: '/what-we-do/enterprise-technology/customer-experience-platform', desktopBreakBefore: 'Platform' },
+            { text: 'Digital eXperience Platform', path: '/what-we-do/enterprise-technology/digital-experience-platform', desktopBreakBefore: 'Platform' },
+            { text: 'AI Platform', path: '/what-we-do/enterprise-technology/ai-platform' }
           ]
         },
         {
@@ -157,10 +157,10 @@ export const useNavigation = () => {
           title: 'Technology Services',
           path: null,
           hideTitle: true, // 데스크톱: 라벨 숨기고 높이만 유지
-          mergeInto: 'tech-platforms', // 모바일: Platforms 아래로 합침
+          mergeInto: 'enterprise-technology', // 모바일: Enterprise Technology 아래로 합침
           items: [
-            { text: 'System Integration & Architecting', path: '/what-we-do/technology-services/system-integration-and-architecting', desktopBreakBefore: '&' },
-            { text: 'AX Consulting & Implementation', path: '/what-we-do/technology-services/ax-consulting-and-implementation', desktopBreakBefore: '&' }
+            { text: 'System Integration & Architecting', path: '/what-we-do/enterprise-technology/system-integration-and-architecting', desktopBreakBefore: '&' },
+            { text: 'AX Consulting & Implementation', path: '/what-we-do/enterprise-technology/ax-consulting-and-implementation', desktopBreakBefore: '&' }
           ]
         },
         {

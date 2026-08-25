@@ -119,7 +119,12 @@ useIntersectionObserver(
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    
+    @include tablet {
+      font-size: rem(48);
+    }
+    @include desktop {
+      font-size: rem(64);
+    }
     & + .app-title-text {
       margin-top: rem(8);
 
@@ -134,7 +139,7 @@ useIntersectionObserver(
   }
 
   &-text {
-    @include body-01;
+    font-size: rem(16);
     font-weight: $font-weight-thin;
     color: $d-white;
     
@@ -142,7 +147,12 @@ useIntersectionObserver(
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    
+    @include tablet {
+      font-size: rem(20);
+    }
+    @include desktop {
+      font-size: rem(22);
+    }
     :deep(.weight-normal) {
       font-weight: $font-weight-regular;
     }

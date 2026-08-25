@@ -20,10 +20,10 @@
       <!-- Sales 이미지 섹션 -->
       <section class="sales-image-section">
         <picture>
-          <source media="(min-width: 1480px)" srcset="/assets/cnx/what-we-do/technology-platforms/customer-experience-platform/salesforce.png">
-          <source media="(min-width: 768px)" srcset="/assets/cnx/what-we-do/technology-platforms/customer-experience-platform/salesforce_t.png">
+          <source media="(min-width: 1480px)" srcset="/assets/cnx/what-we-do/enterprise-technology/customer-experience-platform/salesforce.png">
+          <source media="(min-width: 768px)" srcset="/assets/cnx/what-we-do/enterprise-technology/customer-experience-platform/salesforce_t.png">
           <img 
-            src="/assets/cnx/what-we-do/technology-platforms/customer-experience-platform/salesforce_m.png" 
+            src="/assets/cnx/what-we-do/enterprise-technology/customer-experience-platform/salesforce_m.png" 
             alt="Salesforce와 Adobe Experience Cloud의 공식 파트너 로고"
             class="sales-image"
             loading="lazy"

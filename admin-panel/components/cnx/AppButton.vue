@@ -41,7 +41,7 @@ defineOptions({ inheritAttrs: false })
 const props = defineProps({
   text: { type: String, required: true },
   variant: { type: String as PropType<'primary' | 'circle'>, default: undefined },
-  color: { type: String as PropType<'default' | 'green' | 'teal' | 'white'>, default: 'default' },
+  color: { type: String as PropType<'default' | 'green' | 'teal' | 'solid-teal' | 'white'>, default: 'default' },
   effect: { type: String as PropType<'left' | 'right'>, default: 'left' },
   disabled: { type: Boolean, default: false },
   href: { type: String, default: undefined },
@@ -375,6 +375,24 @@ a {
     }
   }
 
+  // solid-teal: teal 배경 + 어두운 텍스트 (filled)
+  &.solid-teal {
+    border: 0;
+    background-color: $s-teal;
+    color: $p-blue;
+
+    &.hover-left::before,
+    &.hover-right::before {
+      background: $p-blue;
+    }
+
+    &.hover-left:hover,
+    &.hover-right:hover {
+      background-color: $p-blue;
+      color: $d-white;
+    }
+  }
+
   // Hover 애니메이션(0.35s) 종료 후 배경 채우기 지연 적용
   &.hover-left:hover,
   &.hover-right:hover {
@@ -391,6 +409,13 @@ a {
     }
   }
 
+  // solid-teal hover 배경 (맵 루프보다 우선)
+  &.solid-teal.hover-left:hover,
+  &.solid-teal.hover-right:hover {
+    background-color: $p-dark-green;
+    color: $d-white;
+  }
+
   // Hover 효과 - 방향별로 다른 효과 적용
   &.hover-left:hover {
     @include hover-left;
@@ -404,6 +429,11 @@ a {
   &.hover-left:hover,
   &.hover-right:hover {
     color: $d-white;
+  }
+
+  // solid-teal 기본 텍스트는 어두운색, hover에서만 흰색
+  &.solid-teal:not(:hover) {
+    color: $p-dark-green;
   }
 
 }

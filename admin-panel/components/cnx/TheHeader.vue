@@ -513,10 +513,18 @@ onUnmounted(() => {
     }
     
     .logo {
-      max-width: 100%;
-      width: 100% !important;
       display: block;
       color: #003d5b;
+
+      width : rem(105);
+
+      @include desktop {
+        width : rem(146);
+      }
+
+      @include desktop {
+        width : rem(176);
+      }
 
       /* SVG 스타일링 */
       :deep(svg) {

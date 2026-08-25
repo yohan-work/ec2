@@ -249,12 +249,8 @@ const businessItems = ref([
     title: 'Global SI',
     detail: [
       {
-        title: 'Technology Platforms',
-        content: 'Commerce · Experience Platforms · AI를 아우르는 디지털 플랫폼으로 전략-구현-운영을 일원화하며, 글로벌 표준 아키텍처와 실전 레퍼런스를 기반으로 빠른 가치 실현과 지속 가능한 확장을 이끕니다.​'
-      },
-      {
-        title: 'Technology Services',
-        content: '엔터프라이즈 SI와 AI 컨설팅 역량을 기반으로 전략-아키텍처-구현-운영까지 End-to-End를 책임지며, 글로벌 딜리버리 경험으로 고객의 디지털 전환을 안정적이고 지속 가능한 성과로 연결합니다.​'
+        title: 'Enterprise Technology',
+        content: 'Commerce · Experience · AI 플랫폼과 Enterprise SI, AX Consulting 역량을 아우르는 통합 기술 서비스로 전략-아키텍처-구현-운영까지 End-to-End를 책임지며, 글로벌 표준 아키텍처와 실전 레퍼런스를 기반으로 빠른 가치 실현과 지속 가능한 디지털 전환을 지원합니다.'
       }
     ]
   },
@@ -791,17 +787,6 @@ const customerServiceQnaItems = ref([
 
     @include desktop {
       padding-bottom: rem(120);
-    }
-  }
-
-  :deep(.careers-custom-title) {
-    .app-title-heading {
-      @include headline-01;
-    }
-
-    .app-title-text {
-      @include body-01;
-      margin: rem(24) 0 0;
     }
   }
 

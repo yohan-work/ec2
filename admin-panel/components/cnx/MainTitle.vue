@@ -24,16 +24,17 @@ const props = defineProps({
 
   &__heading {
     @include headline-02;
-    color: $d-black;
+    font-weight: $font-weight-thin;
+    color: $d-white;
   }
 
   &__description {
     @include body-01;
-    color: $gray-1;
+    font-weight: $font-weight-thin;
+    color: $d-white;
     line-height: 140%;
     margin-top: rem(24);
     font-size: rem(16);
-    font-weight: 400;
     word-break: keep-all;
     
     @include tablet {
@@ -42,7 +43,7 @@ const props = defineProps({
     }
     
     @include desktop {
-      font-size: $font-size-body1-desktop;
+      font-size: rem(32);
       margin-top: rem(17);
     }
   }

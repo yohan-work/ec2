@@ -4,123 +4,125 @@
     <MainKeyVisualSwiper :slides="slides" />
     
     <!-- 콘텐츠 섹션 -->
-    <!-- 첫 번째 섹션 -->
-    <section class="content-section">
-      <div class="inner">
-        <MainTitle 
-          title="What we do"
-          description="콘센트릭스는 디지털 세상에서 기업과 함께 더 나은 고객 경험을 만들어 갑니다.<br/><br class='br-mo'/>디지털마케팅/이커머스에 있어, 전략, UX/UI, 광고, 분석, 구축, 운영, 고객 경험 관리와 서비스 혁신까지 아우르는 <br class='br-pc'/>통합 서비스로 기업의 성과를 높입니다."
-        />
-        
-        <!-- 5개의 박스 컨테이너 -->
-        <div class="what-we-do-boxes">
-          <div 
-            v-for="(box, index) in whatWeDoBoxes" 
-            :key="index"
-            @click="toggleBox(index)"
-            :class="['what-we-do-box', `what-we-do-box--${index}`, { 'active': activeBoxIndexes.includes(index) }]"
-          >
-            <!-- 타이틀과 디스크립션 영역 -->
-            <div class="what-we-do-box__header">
-              <h3 class="what-we-do-box__title" v-html="box.title"></h3>
-              <p class="what-we-do-box__description" v-html="box.description"></p>
-            </div>
-            
-            <!-- 링크 영역 -->
-            <div class="what-we-do-box__content">
-              <div class="what-we-do-box__links">
-                <a 
-                  v-for="(link, linkIndex) in box.links" 
-                  :key="linkIndex"
-                  :href="link.href"
-                  class="what-we-do-box__link"
-                >
-                  {{ link.text }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 두 번째 섹션 -->
-    <section class="content-section">
-      <div class="inner">
-          <!-- 텍스트 섹션 -->
-          <div class="stats-section">
-            <div class="stats-section__text">
-              <p class="stats-section__text-line">새롭게 주목받는 첨단산업부터 글로벌 대표 브랜드까지 주요 기업들의 신뢰를 받고 있습니다</p>
-            </div>
-          
-          <!-- 통계 박스 섹션 -->
-          <div class="stats-grid">
-            <div 
-              v-for="(stat, index) in statsData" 
-              :key="index"
-              class="stats-grid__item"
-            >
-              <div class="stats-grid__icon">
-                <img :src="stat.icon" :alt="stat.label" />
-              </div>
-              <div class="stats-grid__number" v-html="stat.number"></div>
-              <div class="stats-grid__label">{{ stat.label }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 세 번째 섹션 -->
-    <section class="content-section content-section--careers">
-      <div class="inner">
-        <MainTitle title="Careers" />
-        <!-- 세 번째 섹션 콘텐츠 -->
-        <div class="careers-box-container">
-          <div class="careers-box careers-box--1">
-            <h3 class="careers-box__title" v-html="careersBox1Title"></h3>
-            <p class="careers-box__description" v-html="careersBox1Description"></p>
-            <AppButton 
-              v-if="careersBox1Button"
-              :to="careersBox1Button.href"
-              :text="careersBox1Button.text"
-              color="green"
-              arrow
-              effect="left"
-            />
-          </div>
-          <div class="careers-box careers-box--2">
-            <h3 class="careers-box__title" v-html="careersBox2Title"></h3>
-            <p class="careers-box__description" v-html="careersBox2Description"></p>
-            <AppButton 
-              v-if="careersBox2Button"
-              :to="careersBox2Button.href"
-              :text="careersBox2Button.text"
-              color="green"
-              arrow
-              effect="left"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 네 번째 섹션 -->
-    <section class="content-section content-section--with-bg" :style="{ backgroundImage: `url(${customSectionBgImage})` }">
-      <div class="inner">
-        <div class="custom-title-section">
-          <h2 class="custom-title-section__heading" v-html="customSectionTitle"></h2>
-          <p class="custom-title-section__description" v-html="customSectionDescription"></p>
-          <AppButton 
-            v-if="customSectionButton"
-            :href="customSectionButton.href"
-            :text="customSectionButton.text"
-            color="white"
-            effect="left"
+    <div class="section-wrap">
+      <!-- 첫 번째 섹션 -->
+      <section class="content-section content-section--what-we-do">
+        <div class="inner">
+          <MainTitle 
+            title="What we do"
+            description="콘센트릭스는 디지털 세상에서 기업과 함께 더 나은 고객 경험을 만들어 갑니다.<br/><br class='br-mo'/>디지털마케팅/이커머스에 있어, 전략, UX/UI, 광고, 분석, 구축, 운영, 고객 경험 관리와 서비스 혁신까지 아우르는 통합 서비스로 기업의 성과를 높입니다."
           />
+          
+          <!-- What we do 박스 -->
+          <div class="what-we-do-boxes">
+            <div 
+              v-for="(box, index) in whatWeDoBoxes" 
+              :key="index"
+              @click="toggleBox(index)"
+              :class="['what-we-do-box', `what-we-do-box--${index}`, { 'active': activeBoxIndexes.includes(index), 'what-we-do-box--many-links': box.links.length > 4 }]"
+            >
+              <!-- 타이틀과 디스크립션 영역 -->
+              <div class="what-we-do-box__header">
+                <h3 class="what-we-do-box__title" v-html="box.title"></h3>
+                <p class="what-we-do-box__description" v-html="box.description"></p>
+              </div>
+              
+              <!-- 링크 영역 -->
+              <div class="what-we-do-box__content">
+                <div class="what-we-do-box__links">
+                  <a 
+                    v-for="(link, linkIndex) in box.links" 
+                    :key="linkIndex"
+                    :href="link.href"
+                    class="what-we-do-box__link"
+                  >
+                    {{ link.text }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <!-- 두 번째 섹션 -->
+      <section class="content-section">
+        <div class="inner">
+            <!-- 텍스트 섹션 -->
+            <div class="stats-section">
+              <div class="stats-section__text">
+                <p class="stats-section__text-line">새롭게 주목받는 첨단산업부터 글로벌 대표 브랜드까지 주요 기업들의 신뢰를 받고 있습니다</p>
+              </div>
+            
+            <!-- 통계 박스 섹션 -->
+            <div class="stats-grid">
+              <div 
+                v-for="(stat, index) in statsData" 
+                :key="index"
+                class="stats-grid__item"
+              >
+                <div class="stats-grid__icon">
+                  <img :src="stat.icon" :alt="stat.label" />
+                </div>
+                <div class="stats-grid__number" v-html="stat.number"></div>
+                <div class="stats-grid__label">{{ stat.label }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 세 번째 섹션 -->
+      <section class="content-section content-section--careers">
+        <div class="inner">
+          <MainTitle title="Careers" />
+          <!-- 세 번째 섹션 콘텐츠 -->
+          <div class="careers-box-container">
+            <div class="careers-box careers-box--1">
+              <h3 class="careers-box__title" v-html="careersBox1Title"></h3>
+              <p class="careers-box__description" v-html="careersBox1Description"></p>
+              <AppButton 
+                v-if="careersBox1Button"
+                :to="careersBox1Button.href"
+                :text="careersBox1Button.text"
+                color="solid-teal"
+                arrow
+                effect="left"
+              />
+            </div>
+            <div class="careers-box careers-box--2">
+              <h3 class="careers-box__title" v-html="careersBox2Title"></h3>
+              <p class="careers-box__description" v-html="careersBox2Description"></p>
+              <AppButton 
+                v-if="careersBox2Button"
+                :to="careersBox2Button.href"
+                :text="careersBox2Button.text"
+                color="solid-teal"
+                arrow
+                effect="left"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 네 번째 섹션 -->
+      <section class="content-section content-section--with-bg" :style="{ backgroundImage: `url(${customSectionBgImage})` }">
+        <div class="inner">
+          <div class="custom-title-section">
+            <h2 class="custom-title-section__heading" v-html="customSectionTitle"></h2>
+            <p class="custom-title-section__description" v-html="customSectionDescription"></p>
+            <AppButton 
+              v-if="customSectionButton"
+              :href="customSectionButton.href"
+              :text="customSectionButton.text"
+              color="teal"
+              effect="left"
+            />
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -136,8 +138,8 @@ definePageMeta({
   layout: 'concentrix',
 })
 
-// useNavigation에서 menuStructure 가져오기
-const { menuStructure } = useNavigation()
+// useNavigation에서 메뉴 데이터 가져오기 (모바일 IA: Enterprise Technology 통합)
+const { getMenuStructure } = useNavigation()
 
 // 두 번째 섹션 통계 데이터
 const statsData = ref([
@@ -170,7 +172,7 @@ const slides = ref([
     desktopVideo: '/assets/cnx/main/MAIN_KV3.mp4',
     imageAlt: 'Main Key Visual Video 3',
     title: 'The Future<br>of CX',
-    description: "See how Concentrix is disrupting <br>the moment and rewriting the rules for<br>what's next in CX.",
+    description: "See how Concentrix is disrupting the moment and <br>rewriting the rules for what's next in CX.",
     button: {
       text: 'Unlock the Future',
       href: 'https://www.concentrix.com/future-of-cx/',
@@ -210,14 +212,13 @@ const customSectionBgImage = computed(() => {
 const descriptions = {
   'Strategy & Design': '우리는 브랜드와 사용자의 접점을 전략적으로 설계하여 지속 가능한 성장을 만들어냅니다.',
   'Data & Analytics': '디지털마케팅·이커머스 성과 극대화를 위해 데이터 환경 구축, 거버넌스, 인사이트 분석, AI 기반 분석 솔루션을 제공합니다.',
-  'Technology Platforms': 'Commerce·Experience·AI 플랫폼 기반 및 글로벌 표준 아키텍처와 레퍼런스로 빠른 가치 실현과 확장을 지원합니다.',
-  'Technology Services': 'Enterprise SI와 AX Consulting 기반으로 전략부터 운영까지 End-to-End을 지원해 안정적 디지털 전환을 가속화합니다.',
+  'Enterprise Technology': '글로벌 표준 AI·커머스 플랫폼과 End-to-end 컨설팅을 결합해 빠르고 안정적인 기업의 디지털 전환을 가속화합니다.',
   'Digital Operations': '상상이상의 결과를 만들어 내기위해 그냥 하던 대로 하지 않습니다.<br class="br-pc"> 고객사를 위한 혁신적인 솔루션을 적용하여 운영합니다.'
 }
 
-// menuStructure를 활용하여 whatWeDoBoxes를 동적으로 생성
+// menuStructure를 활용하여 whatWeDoBoxes를 동적으로 생성 (4박스)
 const whatWeDoBoxes = computed(() => {
-  const sections = menuStructure.whatwedo.sections
+  const sections = getMenuStructure('mobile').whatwedo.sections
   return sections.map(section => ({
     title: section.title,
     description: descriptions[section.title] || '',
@@ -266,6 +267,15 @@ const toggleBox = (index) => {
 
 .main-page {
   width: 100%;
+  background-color: $p-dark-green;
+}
+
+.section-wrap {
+  width: 100%;
+  background-image: url('/assets/cnx/main/main_bg.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 
 .content-section {
@@ -278,6 +288,18 @@ const toggleBox = (index) => {
   
   @include desktop {
     padding-top: rem(120);
+  }
+
+  &--what-we-do {
+    padding-top: rem(50);
+    
+    @include tablet {
+      padding-top: rem(80);
+    }
+    
+    @include desktop {
+      padding-top: rem(61);
+    }
   }
 
   &--careers {
@@ -348,7 +370,7 @@ const toggleBox = (index) => {
   
   @include desktop {
     gap: rem(24);
-    margin-top: rem(50);
+    margin-top: rem(77);
   }
 }
 
@@ -358,13 +380,15 @@ const toggleBox = (index) => {
   display: flex;
   flex-direction: column;
   padding: rem(20);
-  background-color: $gray-3;
   border-radius: rem(8);
-  transition: background 0.6s ease-out, height 0.6s ease-out;
+  transition: height 0.6s ease-out;
   overflow: hidden;
   cursor: pointer;
   position: relative;
-  
+  background-color: rgba($d-white, 0.1);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+
   @include tablet {
     height: rem(107);
     padding: rem(36) rem(44);
@@ -431,18 +455,6 @@ const toggleBox = (index) => {
   }
   
   &.what-we-do-box--3::before {
-    background-image: url('/assets/cnx/main/main_ts_m.png');
-    
-    @include tablet {
-      background-image: url('/assets/cnx/main/main_ts_t.png');
-    }
-    
-    @include desktop {
-      background-image: url('/assets/cnx/main/main_ts.png');
-    }
-  }
-  
-  &.what-we-do-box--4::before {
     background-image: url('/assets/cnx/main/main_do_m.png');
     
     @include tablet {
@@ -453,21 +465,8 @@ const toggleBox = (index) => {
       background-image: url('/assets/cnx/main/main_do.png');
     }
   }
-  
-  &:hover:not(.active) {
-    background: linear-gradient(95deg, #003D5B 0%, #005979 100%);
     
-    .what-we-do-box__title {
-      color: $d-white;
-    }
-    
-    .what-we-do-box__description {
-      color: $d-white;
-    }
-  }
-  
   &.active {
-    background: linear-gradient(95deg, #003D5B 0%, #005979 100%);
     height: rem(435);
     
     @include tablet {
@@ -477,18 +476,25 @@ const toggleBox = (index) => {
     @include desktop {
       height: rem(432);
     }
+
+    &.what-we-do-box--many-links {
+      height: rem(520);
+
+      @include tablet {
+        height: rem(510);
+      }
+
+      @include desktop {
+        height: rem(500);
+      }
+    }
     
     &::before {
       opacity: 1;
       transition: opacity 0.4s ease-out 0.2s; // 박스 확장 시 조금 늦게 시작
     }
     
-    .what-we-do-box__title {
-      color: $d-white;
-    }
-    
     .what-we-do-box__description {
-      color: $d-white;
       display: block;
     }
     
@@ -512,7 +518,7 @@ const toggleBox = (index) => {
   }
   
   &__title {
-    color: $p-blue;
+    color: $s-teal;
     font-size: rem(22);
     font-weight: 700;
     line-height: 110%;
@@ -530,7 +536,7 @@ const toggleBox = (index) => {
   }
   
   &__description {
-    color: #555;
+    color: $d-white;
     font-size: rem(14);
     font-weight: 600;
     line-height: 130%;
@@ -651,7 +657,7 @@ const toggleBox = (index) => {
   }
   
   &__text-line {
-    color: $d-black;
+    color: $d-white;
     font-size: rem(16);
     font-weight: 300;
     line-height: 140%;
@@ -691,7 +697,7 @@ const toggleBox = (index) => {
 }
 
 .stats-grid__number {
-  color: $p-blue;
+  color: $d-white;
   font-size: rem(32);
   font-weight: 700;
   line-height: 100%;
@@ -720,7 +726,7 @@ const toggleBox = (index) => {
 }
 
 .stats-grid__label {
-  color: $p-blue;
+  color: $d-white;
   font-size: rem(9);
   font-weight: 600;
   line-height: 140%;
@@ -744,7 +750,9 @@ const toggleBox = (index) => {
   align-items: center;
   justify-content: center;
   margin-bottom: rem(12);
-  
+  backdrop-filter: blur(25px);
+  border-radius: 50%;
+
   @include tablet {
     width: rem(160);
     height: rem(160);
@@ -754,7 +762,7 @@ const toggleBox = (index) => {
   @include desktop {
     width: rem(230);
     height: rem(230);
-    margin-bottom: rem(20);
+    margin-bottom: rem(32);
   }
   
   img {
@@ -788,7 +796,9 @@ const toggleBox = (index) => {
 .careers-box {
   width: 100%;
   height: rem(300);
-  background-color: #f7f7f7;
+  background-color: rgba($d-white, 0.1);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.20);
   border-radius: rem(8);
   padding: rem(20);
   background-repeat: no-repeat;
@@ -808,46 +818,41 @@ const toggleBox = (index) => {
   @include desktop {
     width: calc((100% - rem(32)) / 2);
     height: rem(616);
+    padding: rem(48);
   }
 
   &__title {
     @include sub-headline-02;
     margin: 0 0 rem(8) 0;
-    color: $d-black;
+    color: $d-white;
     
     @include tablet {
       margin-bottom: rem(12);
     }
     
     @include desktop {
-      margin-bottom: rem(12);
+      margin-bottom: rem(16);
     }
   }
 
   &__description {
-    @include body-01;
     margin: 0;
-    color: $gray-1;
+    color: $d-white;
     word-break: keep-all;
     font-size: rem(16);
-    font-weight: 700;
+    font-weight: $font-weight-thin;
     line-height: 140%;
     
     @include tablet {
-      font-size: inherit;
-      font-weight: inherit;
-      line-height: inherit;
+      font-size: rem(22);
     }
   }
 
   button,
   a {
+    min-width: unset;
     align-self: flex-start;
     margin-top: rem(20);
-    
-    @include tablet {
-      background-color: #f7f7f7;
-    }
     
     @include desktop {
       margin-top: rem(30);
@@ -855,6 +860,11 @@ const toggleBox = (index) => {
   }
 
   &--1 {
+    .careers-box__title {
+      @include desktop {
+        font-size: rem(26);
+      }
+    }
     background-image: url('/assets/cnx/main/main_careers_bg1_m.png');
     
     @include tablet {
@@ -863,6 +873,10 @@ const toggleBox = (index) => {
     
     @include desktop {
       background-image: url('/assets/cnx/main/main_careers_bg1.png');
+      button,
+      a {
+        margin-top: rem(39);
+      }
     }
   }
 
