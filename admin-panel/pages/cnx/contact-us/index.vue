@@ -299,22 +299,6 @@ const customerServiceCenters = [
         imageAltTexts: ['신도림1센터 대회의실', '신도림1센터 회의공간 (그룹회의실)', '신도림1센터 휴계공간']
     },
     {
-        name: '신도림2센터',
-        location: '서울 구로구 신도림동 692 Space K 18층',
-        phone: '02-6741-5104',
-        mapOptions: {
-            lat: 37.5086046,
-            lng: 126.8889310,
-            zoom: 17,
-        },
-        images: {
-            pc: ['/assets/cnx/contact-us/shindorim-2/center_shindorim-2-pc-1.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-pc-2.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-pc-3.png'],
-            tablet: ['/assets/cnx/contact-us/shindorim-2/center_shindorim-2-tb-1.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-tb-2.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-tb-3.png'],
-            mobile: ['/assets/cnx/contact-us/shindorim-2/center_shindorim-2-mo-1.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-mo-2.png', '/assets/cnx/contact-us/shindorim-2/center_shindorim-2-mo-3.png']
-        },
-        imageAltTexts: ['신도림2센터 입구 데스크 및 라운지', '신도림2센터 대회의실', '신도림2센터 사무실 책상 및 의자']
-    },
-    {
         name: '구로센터',
         location: '서울 디지털로 300, 지밸리 비즈플라자 16층',
         phone: '02-6342-2300',
