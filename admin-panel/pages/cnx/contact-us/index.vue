@@ -232,7 +232,7 @@ const contactTabs = [
 const digitalTechCenters = [
     {
         name: '강남센터',
-        location: '서울시 강남구 테헤란로 509, NC타워1, 5층',
+        location: '서울시 강남구 테헤란로 509, SEMA빌딩1, 5층',
         phone: '02-6328-1900',
         mapOptions: {
             lat: 37.5077819,
