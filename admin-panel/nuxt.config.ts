@@ -210,9 +210,5 @@ export default defineNuxtConfig({
         },
       },
     },
-    server: {
-      // quick tunnel용: trycloudflare.com 하위 도메인 허용
-      allowedHosts: ['.trycloudflare.com'],
-    },
   },
 })
