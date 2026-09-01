@@ -156,8 +156,8 @@ const createOrganizationSchema = () => {
       addressCountry: 'KR',
       addressLocality: '서울특별시 강남구',
       addressRegion: '서울특별시',
-      streetAddress: '테헤란로 509, 5층 (삼성동, 엔씨타워1)',
-      postalCode: '06164',
+      streetAddress: '테헤란로 509, 5층 (삼성동, SEMA Tower)',
+      postalCode: '06169',
     },
     sameAs: [
       'https://www.youtube.com/user/CNXCorporation',
