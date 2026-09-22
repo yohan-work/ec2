@@ -474,7 +474,8 @@ onBeforeUnmount(() => {
   }
 
   &-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     padding: 0;
     border: 0;
@@ -492,12 +493,16 @@ onBeforeUnmount(() => {
     }
 
     &-thumb {
+      order: 1;
       overflow: hidden;
+      margin-top: rem(24);
       border-radius: rem(16);
       aspect-ratio: 300 / 378;
       background: $n-gray;
 
       @include tablet {
+        order: 0;
+        margin-top: 0;
         border-radius: rem(24);
       }
 
@@ -511,18 +516,19 @@ onBeforeUnmount(() => {
     }
 
     &-title {
-      margin: rem(12) 0 0;
+      margin: 0;
       color: $d-black;
       font-size: rem(13);
       font-weight: $font-weight-bold;
       line-height: $line-height-relaxed;
 
       @include tablet {
-        margin-top: rem(16);
+        margin-top: rem(24);
         font-size: rem(16);
       }
 
       @include desktop {
+        margin-top: rem(32);
         font-size: rem(18);
       }
     }

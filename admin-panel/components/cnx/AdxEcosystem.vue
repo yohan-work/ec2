@@ -129,7 +129,7 @@ useIntersectionObserver(
 .adx-eco {
   display: flex;
   flex-direction: column;
-  gap: rem(38);
+  gap: rem(24);
   margin-bottom: rem(48);
   word-break: keep-all;
 
@@ -146,18 +146,16 @@ useIntersectionObserver(
   }
 
   &-text {
-    flex: 1;
     display: flex;
     flex-direction: column;
     gap: rem(24);
-    order: 2;
+    width: 100%;
+    order: 1;
 
     @include tablet {
-      order: 1;
-    }
-
-    @include desktop {
-      padding-right: rem(100);
+      flex: 1 1 0;
+      min-width: 0;
+      width: 50%;
     }
   }
 
@@ -197,7 +195,7 @@ useIntersectionObserver(
     justify-content: center;
     width: 100%;
     overflow: hidden;
-    order: 1;
+    order: 2;
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -209,12 +207,10 @@ useIntersectionObserver(
     }
 
     @include tablet {
-      flex: 1;
+      flex: 1 1 0;
+      min-width: 0;
+      width: 50%;
       order: 2;
-    }
-
-    @include desktop {
-      flex: 1;
     }
   }
 
