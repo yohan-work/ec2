@@ -133,10 +133,14 @@ $adx-sub: #178ac5;
     word-break: keep-all;
   }
 
-  margin-bottom: rem(60);
+  margin-bottom: rem(48);
 
   @include tablet {
-    margin-block: rem(100) rem(80);
+    margin-bottom: rem(120);
+  }
+
+  @include desktop {
+    margin-bottom: rem(180);
   }
 
   &-title {

@@ -62,6 +62,16 @@ useIntersectionObserver(
     word-break: keep-all;
   }
 
+  margin-bottom: rem(48);
+
+  @include tablet {
+    margin-bottom: rem(120);
+  }
+
+  @include desktop {
+    margin-bottom: rem(180);
+  }
+
   &-title {
     margin: 0 auto rem(24);
     font-size: rem(22);
@@ -90,14 +100,10 @@ useIntersectionObserver(
     display: flex;
     flex-direction: column;
     gap: rem(15);
-    margin: 0 0 rem(60);
+    margin: 0;
     padding: 0;
     list-style: none;
     counter-reset: card;
-
-    @include tablet {
-      margin-bottom: rem(80);
-    }
 
     @media (min-width: 1024px) {
       flex-direction: row;

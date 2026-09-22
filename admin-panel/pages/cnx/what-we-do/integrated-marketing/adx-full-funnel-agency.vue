@@ -58,10 +58,21 @@
           :groups="orgGroups"
         />
       </section>
-    </div>
-    <section class="operation-example-section">
+
+      <section class="ecosystem-section">
+        <AdxEcosystem
+          title="미디어·솔루션·AI, SaaS가<br>ADX의 성장 운영을 확장합니다"
+          text="ADX는 미디어, 기술 파트너십, AI SaaS를 하나의 운영 체계로 결합합니다. 모든 신호와 실행은 고객의 비즈니스 목표를 향합니다."
+          caption="CONNECT FOR BUSINESS GROWTH"
+          imageName="ecosystem"
+          imageAlt="미디어·솔루션·AI SaaS 파트너와 연결된 ADX 성장 운영 구조"
+        />
+      </section>
+
+    <section class="operation-example-section inner">
       <AdxOperationExample />
     </section>
+    </div>
   </div>
 </template>
 
@@ -71,6 +82,7 @@ import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AdxCardList from '~/components/cnx/AdxCardList.vue'
 import AdxOrgChart from '~/components/cnx/AdxOrgChart.vue'
+import AdxEcosystem from '~/components/cnx/AdxEcosystem.vue'
 import AdxOperationExample from '~/components/cnx/AdxOperationExample.vue'
 
 definePageMeta({
