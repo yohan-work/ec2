@@ -59,7 +59,9 @@
         />
       </section>
     </div>
-    
+    <section class="operation-example-section">
+      <AdxOperationExample />
+    </section>
   </div>
 </template>
 
@@ -69,6 +71,7 @@ import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AdxCardList from '~/components/cnx/AdxCardList.vue'
 import AdxOrgChart from '~/components/cnx/AdxOrgChart.vue'
+import AdxOperationExample from '~/components/cnx/AdxOperationExample.vue'
 
 definePageMeta({
   layout: 'concentrix'
