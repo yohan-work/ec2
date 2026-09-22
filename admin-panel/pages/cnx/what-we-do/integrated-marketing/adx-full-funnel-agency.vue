@@ -46,8 +46,16 @@
 
       <section class="card-list-section">
         <AdxCardList
-          title="ADX는 성장 목표를 중심으로<br>전략·크리에이티브·미디어·CX·데이터를 하나의 운영 범위로 설계합니다."
+          title="ADX는 성장 목표를 중심으로<br class='br-tab-pc'>전략·크리에이티브·미디어·CX·데이터를 하나의 운영 범위로 설계합니다."
           :items="capabilityItems"
+        />
+      </section>
+
+      <section class="org-chart-section">
+        <AdxOrgChart
+          title="전략·크리에이티브·미디어 운영이<br class='br-tab-pc'> 하나의 목표 아래 연결된 ADX 전담 조직입니다."
+          :hub="orgHub"
+          :groups="orgGroups"
         />
       </section>
     </div>
@@ -60,6 +68,7 @@ import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AdxCardList from '~/components/cnx/AdxCardList.vue'
+import AdxOrgChart from '~/components/cnx/AdxOrgChart.vue'
 
 definePageMeta({
   layout: 'concentrix'
@@ -104,6 +113,44 @@ const capabilityItems = [
       'KPI Decisioning',
     ],
     footer: '고객 목표에 맞춘 커스텀 에이전트로 운영을 고도화해, 성과를 다음 성장의 실행으로 연결합니다.',
+  },
+]
+
+const orgHub = {
+  title: 'ADX',
+  subtitle: 'AI & Data AD Experience',
+}
+
+const orgGroups = [
+  {
+    id: 1,
+    title: 'ADX INTELLIGENCE GROUP',
+    items: [
+      'Data & Customer Insight',
+      'Marketing Data & Automation',
+      'AI Agent Development',
+      'Custom Dashboard Development',
+    ],
+  },
+  {
+    id: 2,
+    title: 'ADX CREATIVE GROUP',
+    items: [
+      'AI Automation Production',
+      'AI Models & Influencers',
+      'Branding Content Production',
+      'TVCF Production',
+    ],
+  },
+  {
+    id: 3,
+    title: 'ADX MEDIA & OPERATIONS GROUP',
+    items: [
+      'Media Strategy & Campaign Operations',
+      'Performance Media Optimization',
+      'Data-Driven Campaign Operations',
+      'Media Performance & Reporting',
+    ],
   },
 ]
 </script>

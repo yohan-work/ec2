@@ -96,7 +96,7 @@ useIntersectionObserver(
     counter-reset: card;
 
     @include tablet {
-      margin-bottom: rem(120);
+      margin-bottom: rem(80);
     }
 
     @media (min-width: 1024px) {
