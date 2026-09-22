@@ -13,6 +13,11 @@ export const useNavigation = () => {
       description: 'CiX(CiX interactive eXperience)는 Concentrix의 UX/UI와 Contents 제작을 전담하는 Creative 조직입니다. UX/BX 컨설팅, 디지털 채널 구축/운영, 디지털마케팅 콘텐츠 제작을 통해 브랜드 웹사이트, 이커머스 플랫폼, 앱 서비스, 소셜 콘텐츠, 온라인 전시 등 다양한 디지털 경험을 제공합니다.',
       ogImage: '/assets/cnx/share/concentrix-share.png'
     },
+    '/what-we-do/integrated-marketing/adx-full-funnel-agency': {
+      title: 'ADX - Full-Funnel Agency - Concentrix',
+      description: '',
+      ogImage: '/assets/cnx/share/concentrix-share.png'
+    },
     '/what-we-do/strategy-and-design/digital-advertising': {
       title: 'Digital Advertising - Concentrix',
       description: '데이터 기반의 디지털 광고 전략으로 브랜드의 성장을 이끌어갑니다. 고객 여정 데이터 인사이트 분석을 통한 디지털 마케팅 전략 수립, 브랜딩, 유저 획득, 데이터 분석, 타겟 최적화 크리에이티브까지 Full Funnel Performance를 제공합니다.',
