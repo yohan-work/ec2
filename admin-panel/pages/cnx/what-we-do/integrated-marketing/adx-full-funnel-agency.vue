@@ -43,6 +43,13 @@
           imageAlt="Strategy, Media Planning, Analytics, Optimization의 4단계로 구성된 퍼포먼스 마케팅 전략 프로세스를 시각화한 Full Funnel Performance 구조"
         />
       </section>
+
+      <section class="card-list-section">
+        <AdxCardList
+          title="ADX는 성장 목표를 중심으로<br>전략·크리에이티브·미디어·CX·데이터를 하나의 운영 범위로 설계합니다."
+          :items="capabilityItems"
+        />
+      </section>
     </div>
     
   </div>
@@ -52,13 +59,53 @@
 import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
 import AppImgCont from '~/components/cnx/AppImgCont.vue'
-import AppSubCont from '~/components/cnx/AppSubCont.vue'
-import { Swiper, SwiperSlide } from 'swiper/vue'
+import AdxCardList from '~/components/cnx/AdxCardList.vue'
 
-// 레이아웃 설정
 definePageMeta({
   layout: 'concentrix'
 })
+
+const capabilityItems = [
+  {
+    id: 1,
+    title: 'STRATEGISTS',
+    description: '브랜드 성장 전략 설계',
+    list: [
+      'Market & Consumer Insight',
+      'Brand Strategy',
+      'Data Interpretation',
+      'Action Design',
+    ],
+    footer: '시장과 고객을 읽고, 성장 목표를 실행 가능한 전략으로 바꿉니다.',
+  },
+  {
+    id: 2,
+    title: 'CREATIVE & EXPERIENCE',
+    description: '크리에이티브와 경험 설계',
+    list: [
+      'Visual Identity',
+      'Campaign Creative',
+      'UX Direction',
+      'Contents',
+      'Branding',
+      'Performance Creative System',
+    ],
+    footer: '브랜드 경험과 성과를 동시에 만드는 크리에이티브를 설계합니다.',
+  },
+  {
+    id: 3,
+    title: 'MEDIA & GROWTH',
+    description: '미디어 운영과 성장 최적화',
+    list: [
+      'Media Planning',
+      'Performance Operation',
+      'Conversion Optimization',
+      'Custom Search Agent',
+      'CRM Marketing',
+    ],
+    footer: '미디어와 CRM을 하나의 성장 운영으로 연결합니다.',
+  },
+]
 </script>
 
 <style lang="scss" scoped>
