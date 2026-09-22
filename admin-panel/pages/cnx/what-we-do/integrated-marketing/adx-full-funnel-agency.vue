@@ -56,9 +56,9 @@
         />
       </section>
 
-    <section class="operation-example-section inner">
-      <AdxOperationExample />
-    </section>
+      <section class="operation-example-section">
+        <AdxOperationExample />
+      </section>
     </div>
   </div>
 </template>
