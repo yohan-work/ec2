@@ -16,7 +16,7 @@ export const useNavigation = () => {
     '/what-we-do/integrated-marketing/adx-full-funnel-agency': {
       title: 'ADX - Full-Funnel Agency - Concentrix',
       description: '',
-      ogImage: '/assets/cnx/share/concentrix-share.png'
+      ogImage: '/assets/cnx/share/adx-full-funnel-agency-share.png'
     },
     '/what-we-do/strategy-and-design/digital-advertising': {
       title: 'Digital Advertising - Concentrix',

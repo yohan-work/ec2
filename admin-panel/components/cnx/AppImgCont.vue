@@ -41,55 +41,61 @@
       </div>
     </div>
     
-    <!-- 이미지/비디오 컨텐츠 -->
-    <div class="image-content" :class="{ 'video-content': vimeoId }" ref="imageContentRef">
-      <!-- 비메오 비디오 -->
-      <iframe 
-        v-if="vimeoId"
-        :src="`https://player.vimeo.com/video/${vimeoId}`"
-        :title="imageAlt || title || 'Video'"
-        :aria-label="imageAlt || title || 'Video'"
-        frameborder="0"
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen
-        class="content-video"
-      ></iframe>
-      
-      <!-- 이미지 -->
-      <template v-else>
-        <picture>
-          <source 
-            v-if="desktopImage"
-            :srcset="desktopImage" 
-            media="(min-width: 1480px)"
-          />
-          <source 
-            v-if="tabletImage"
-            :srcset="tabletImage" 
-            media="(min-width: 768px)"
-          />
-          <img 
-            :src="mobileImage || desktopImage" 
-            :alt="imageAlt || title || 'Image'"
-            class="content-image"
-            loading="lazy"
-            @load="onImageLoad"
-            @error="onImageError"
-            ref="imageRef"
-          />
-        </picture>
-        <!-- 스켈레톤 오버레이 -->
-        <div 
-          class="skeleton-overlay"
-          :class="{ 'hidden': isImageLoaded }"
-        ></div>
-      </template>
+    <!-- 이미지/비디오/커스텀 비주얼 -->
+    <div
+      class="image-content"
+      :class="{ 'video-content': vimeoId, 'custom-visual': hasCustomVisual }"
+      ref="imageContentRef"
+    >
+      <slot>
+        <!-- 비메오 비디오 -->
+        <iframe 
+          v-if="vimeoId"
+          :src="`https://player.vimeo.com/video/${vimeoId}`"
+          :title="imageAlt || title || 'Video'"
+          :aria-label="imageAlt || title || 'Video'"
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          class="content-video"
+        ></iframe>
+        
+        <!-- 이미지 -->
+        <template v-else>
+          <picture>
+            <source 
+              v-if="desktopImage"
+              :srcset="desktopImage" 
+              media="(min-width: 1480px)"
+            />
+            <source 
+              v-if="tabletImage"
+              :srcset="tabletImage" 
+              media="(min-width: 768px)"
+            />
+            <img 
+              :src="mobileImage || desktopImage" 
+              :alt="imageAlt || title || 'Image'"
+              class="content-image"
+              loading="lazy"
+              @load="onImageLoad"
+              @error="onImageError"
+              ref="imageRef"
+            />
+          </picture>
+          <!-- 스켈레톤 오버레이 -->
+          <div 
+            class="skeleton-overlay"
+            :class="{ 'hidden': isImageLoaded }"
+          ></div>
+        </template>
+      </slot>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, useSlots } from 'vue'
 import { useRoute } from 'vue-router'
 import { findResponsiveImagePaths } from '~/utils/cnx/image-utils'
 import { useIntersectionObserver } from '@vueuse/core'
@@ -162,6 +168,9 @@ const subItemsRef = ref(null)
 const subItemRefs = ref([])
 const unifiedItemsRef = ref(null)
 
+const slots = useSlots()
+const hasCustomVisual = computed(() => !!slots.default)
+
 const route = useRoute()
 // imagePath가 제공되면 사용, 아니면 현재 페이지 경로 사용
 const baseImagePath = props.imagePath || `/assets/cnx${route.path}`
@@ -193,8 +202,8 @@ const onImageError = () => {
 
 // 이미지 경로 확인 및 캐시된 이미지 체크
 const checkImageStatus = () => {
-  // 비메오 비디오인 경우 스켈레톤 숨김
-  if (props.vimeoId) {
+  // 슬롯 비주얼·비메오인 경우 스켈레톤 숨김
+  if (hasCustomVisual.value || props.vimeoId) {
     isImageLoaded.value = true
     return
   }
@@ -267,8 +276,8 @@ useIntersectionObserver(
   }
 )
 
-// 이미지 경로 초기화 (SSR 지원) - 비메오 ID가 없을 때만
-if (props.imageName && !props.vimeoId) {
+// 이미지 경로 초기화 (SSR 지원) - 슬롯/비메오가 없을 때만
+if (props.imageName && !props.vimeoId && !hasCustomVisual.value) {
   // 유틸 함수를 사용하여 반응형 이미지 경로들 생성
   const imagePaths = findResponsiveImagePaths(props.imageName, baseImagePath)
   desktopImage.value = imagePaths.desktopImage
@@ -513,6 +522,10 @@ onMounted(() => {
         opacity: 0;
         pointer-events: none;
       }
+    }
+
+    &.custom-visual {
+      overflow: visible;
     }
 
     // 비메오 비디오 스타일
