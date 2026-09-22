@@ -114,6 +114,28 @@
                 <span v-else class="menu-item-disabled">{{ item.text }}</span>
               </li>
             </ul>
+
+            <div
+              v-for="stacked in (section.stackedSections || [])"
+              :key="stacked.id || stacked.title"
+              class="dropdown-section dropdown-section--stacked"
+            >
+              <div v-if="stacked.title" class="section-title">{{ stacked.title }}</div>
+              <ul v-if="stacked.items && stacked.items.length > 0" role="none">
+                <li v-for="item in stacked.items" :key="item.text" role="none">
+                  <NuxtLink
+                    v-if="item.path"
+                    :to="item.path"
+                    role="menuitem"
+                    tabindex="0"
+                    @keydown="handleDropdownItemKeydown"
+                  >
+                    {{ item.text }}
+                  </NuxtLink>
+                  <span v-else class="menu-item-disabled">{{ item.text }}</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -693,6 +715,10 @@ onUnmounted(() => {
         }
         
         .dropdown-section {
+          .dropdown-section--stacked {
+            margin-top: rem(16);
+          }
+
           .section-title {
             font-size: rem(14);
             font-weight: $font-weight-bold;

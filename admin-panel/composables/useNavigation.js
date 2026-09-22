@@ -125,8 +125,17 @@ export const useNavigation = () => {
           title: 'Strategy & Design',
           path: null,
           items: [
-            { text: 'Contents and Design', path: '/what-we-do/strategy-and-design/contents-and-design' },
-            { text: 'Digital Advertising', path: '/what-we-do/strategy-and-design/digital-advertising' }
+            { text: 'Contents and Design', path: '/what-we-do/strategy-and-design/contents-and-design' }
+            // { text: 'Digital Advertising', path: '/what-we-do/strategy-and-design/digital-advertising' }
+          ]
+        },
+        {
+          id: 'integrated-marketing',
+          title: 'Integrated Marketing',
+          path: null,
+          stackUnder: 'strategy-and-design', // 데스크톱: Strategy & Design 칼럼 아래 배치
+          items: [
+            { text: 'ADX - Full-Funnel Agency', path: '/what-we-do/integrated-marketing/adx-full-funnel-agency' }
           ]
         },
         {
@@ -210,9 +219,25 @@ export const useNavigation = () => {
     }
   }
 
-  // 데스크톱: 섹션 그대로 유지 (hideTitle은 템플릿에서 처리)
-  const transformSectionsForDesktop = (sections = []) =>
-    sections.map((section) => ({ ...section, items: [...(section.items || [])] }))
+  // 데스크톱: stackUnder 섹션은 부모 칼럼 아래로 붙이고, hideTitle은 템플릿에서 처리
+  const transformSectionsForDesktop = (sections = []) => {
+    const stackedByParent = new Map()
+
+    for (const section of sections) {
+      if (!section.stackUnder) continue
+      const stacked = stackedByParent.get(section.stackUnder) || []
+      stacked.push({ ...section, items: [...(section.items || [])] })
+      stackedByParent.set(section.stackUnder, stacked)
+    }
+
+    return sections
+      .filter((section) => !section.stackUnder)
+      .map((section) => ({
+        ...section,
+        items: [...(section.items || [])],
+        stackedSections: stackedByParent.get(section.id) || []
+      }))
+  }
 
   // 모바일: mergeInto가 있는 섹션을 부모 items에 합치고 제거
   const transformSectionsForMobile = (sections = []) => {
@@ -300,6 +325,14 @@ export const useNavigation = () => {
         for (const item of section.items || []) {
           if (currentPath === item.path) {
             return key
+          }
+        }
+
+        for (const stacked of section.stackedSections || []) {
+          for (const item of stacked.items || []) {
+            if (currentPath === item.path) {
+              return key
+            }
           }
         }
       }

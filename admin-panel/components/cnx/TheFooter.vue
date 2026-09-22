@@ -94,6 +94,33 @@
                       <span v-else class="menu-item-disabled">{{ item.text }}</span>
                     </li>
                   </ul>
+
+                  <template v-for="stacked in (section.stackedSections || [])" :key="stacked.id || stacked.title">
+                    <div class="footer-nav__subtitle footer-nav__subtitle--stacked">
+                      <span>{{ stacked.title }}</span>
+                    </div>
+                    <ul
+                      v-if="stacked.items && stacked.items.length > 0"
+                      class="footer-nav__list"
+                    >
+                      <li
+                        v-for="item in stacked.items"
+                        :key="item.text"
+                        class="footer-nav__list-item"
+                      >
+                        <NuxtLink
+                          v-if="item.path"
+                          :to="item.path"
+                          class="footer-nav__list-link"
+                          @keydown="handleLinkKeydown"
+                          tabindex="0"
+                        >
+                          {{ item.text }}
+                        </NuxtLink>
+                        <span v-else class="menu-item-disabled">{{ item.text }}</span>
+                      </li>
+                    </ul>
+                  </template>
                 </div>
               </div>
             </template>
@@ -929,6 +956,10 @@ defineOptions({
       &--placeholder {
         visibility: hidden;
         pointer-events: none;
+      }
+
+      &--stacked {
+        margin-top: rem(16);
       }
 
       &--mobile-clickable {
