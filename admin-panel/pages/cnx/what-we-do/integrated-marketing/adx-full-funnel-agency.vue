@@ -1,7 +1,7 @@
 <template>
   <div class="digital-advertising-page">
     <!-- 키 비주얼 섹션 -->
-    <!--    <section class="key-visual-section">
+    <section class="key-visual-section">
       <AppKeyVisual
         imageAlt="ADX가 적힌 민트색 퍼즐 조각과 금색 열쇠로, AI와 디지털 플랫폼을 연결하는 마케팅을 표현한 키비주얼"
         :animationDuration="1200"
@@ -15,14 +15,14 @@
     </section>
 
     <div class="inner">
-      <!~~ CX 흐름 ~~>
+      <!-- CX 흐름 -->
       <AdxCxFlow />
-      <!~~ AI · Data · Experience 성장 시스템 ~~>
+      <!-- AI · Data · Experience 성장 시스템 -->
       <AdxGrowthSystem />
-    </div>-->
+    </div>
 
     <!-- 종합광고 채널 -->
-    <!-- <AdxChannels /> -->
+    <AdxChannels />
 
     <div class="inner">
       <!-- 통합 시스템 -->
