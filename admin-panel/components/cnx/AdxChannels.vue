@@ -121,144 +121,124 @@ useIntersectionObserver(
 
 <style lang="scss" scoped>
 .adx-channels {
-  margin-bottom: rem(66);
+  margin-bottom: rem(60);
 
   @include tablet {
-    margin-bottom: rem(60);
-  }
-
-  @include desktop {
     margin-bottom: rem(120);
   }
-}
 
-.adx-channels-head {
-  text-align: center;
-}
-
-.adx-channels-title {
-  @include sub-headline-01;
-  margin: 0;
-  color: $d-black;
-  opacity: 0;
-  transform: translateY(30px);
-  transition:
-    opacity 0.8s ease-out,
-    transform 0.8s ease-out;
-}
-
-.adx-channels-text {
-  @include body-02;
-  margin: rem(22) 0 0;
-  color: $d-black;
-  line-height: 1.6;
-  opacity: 0;
-  transform: translateY(30px);
-  transition:
-    opacity 0.8s ease-out 0.15s,
-    transform 0.8s ease-out 0.15s;
-}
-
-.adx-channels-subtitle {
-  margin: rem(24) 0 0;
-  color: #0400ad;
-  font-weight: $font-weight-bold;
-  font-size: rem(26);
-  line-height: 1.2;
-  opacity: 0;
-  transform: translateY(30px);
-  transition:
-    opacity 0.8s ease-out 0.3s,
-    transform 0.8s ease-out 0.3s;
-
-  @include tablet {
-    font-size: rem(36);
+  &-head {
+    text-align: center;
+    padding-top: rem(60);
   }
 
-  @include desktop {
-    font-size: rem(48);
-  }
-}
-
-.adx-channels-visual {
-  display: none;
-  width: 100%;
-  max-width: 1920px;
-  margin: rem(40) auto 0;
-  opacity: 0;
-  transform: translateY(50px);
-  transition:
-    opacity 0.8s ease-out,
-    transform 0.8s ease-out;
-
-  @include tablet {
-    display: block;
-    margin-top: rem(48);
+  &-title,
+  &-text,
+  &-subtitle,
+  &-visual,
+  &-list-item {
+    opacity: 0;
+    transform: translateY(rem(30));
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   }
 
-  img {
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
+  &-title {
+    @include sub-headline-01;
+    margin: 0;
+    color: $d-black;
   }
-}
 
-.adx-channels-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin: rem(32) 0 0;
-  padding: 0;
-  list-style: none;
-
-  @include tablet {
-    display: none;
+  &-text {
+    @include body-02;
+    margin: rem(24) 0 0;
+    color: $d-black;
+    transition-delay: 0.15s;
   }
-}
 
-.adx-channels-list-item {
-  padding: 15px 16px;
-  border: 1px solid #e1e7ed;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 10px 22px -18px rgba(21, 42, 61, 0.28);
-  opacity: 0;
-  transform: translateY(30px);
-  transition:
-    opacity 0.8s ease-out,
-    transform 0.8s ease-out;
-
-  @for $i from 1 through 10 {
-    &:nth-child(#{$i}) {
-      transition-delay: #{0.2 + ($i - 1) * 0.06}s;
+  &-subtitle {
+    @include sub-headline-01;
+    margin: rem(24) 0 0;
+    // color: #0400ad;
+    background: linear-gradient(90deg, #0097A7 0%, #0400AD 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+    transition-delay: 0.3s;
+    @include tablet {
+      margin-top: rem(60);
     }
   }
-}
 
-.adx-channels-list-title {
-  display: block;
-  margin-bottom: 4px;
-  font-size: rem(14);
-  font-weight: 800;
-  letter-spacing: -0.015em;
-  color: $d-black;
-}
+  &-visual {
+    display: none;
+    width: 100%;
+    max-width: rem(1920);
+    margin: rem(40) auto 0;
+    transform: translateY(rem(50));
 
-.adx-channels-list-desc {
-  font-size: rem(12.5);
-  line-height: 1.55;
-  color: $gray-1;
-}
+    @include tablet {
+      display: block;
+      margin-top: rem(60);
+    }
 
-.adx-channels.is-in {
-  .adx-channels-title,
-  .adx-channels-text,
-  .adx-channels-subtitle,
-  .adx-channels-visual,
-  .adx-channels-list-item {
-    opacity: 1;
-    transform: none;
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  &-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: rem(10);
+    margin: rem(32) 0 0;
+    padding: 0;
+    list-style: none;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  &-list-item {
+    padding: rem(15) rem(16);
+    border: 1px solid $gray-2;
+    border-radius: rem(12);
+    background: $d-white;
+    box-shadow: 0 rem(10) rem(22) rem(-18) rgba(21, 42, 61, 0.28);
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        transition-delay: #{0.2 + ($i - 1) * 0.06}s;
+      }
+    }
+  }
+
+  &-list-title {
+    @include body-03;
+    display: block;
+    margin-bottom: rem(4);
+    font-weight: $font-weight-bold;
+    color: $d-black;
+  }
+
+  &-list-desc {
+    @include body-03;
+    color: $gray-1;
+  }
+
+  &.is-in {
+    .adx-channels-title,
+    .adx-channels-text,
+    .adx-channels-subtitle,
+    .adx-channels-visual,
+    .adx-channels-list-item {
+      opacity: 1;
+      transform: none;
+    }
   }
 }
 

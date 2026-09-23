@@ -53,188 +53,149 @@ defineProps({
 
 const flowRef = ref(null)
 const isIn = ref(false)
-let lastScrollY = 0
-let isFirstCheck = true
 
 useIntersectionObserver(
   flowRef,
   ([{ isIntersecting }]) => {
-    const currentScrollY = window.scrollY || window.pageYOffset
-    const isScrollingDown = currentScrollY > lastScrollY
-    const isNearTop = currentScrollY < 100
-    lastScrollY = currentScrollY
-
-    if (isIntersecting && (isScrollingDown || isFirstCheck || isNearTop)) {
-      isIn.value = true
-      isFirstCheck = false
-    } else if (!isIntersecting && !isScrollingDown) {
-      isIn.value = false
-    }
+    if (isIntersecting) isIn.value = true
   },
   {
-    threshold: 0.2,
-    rootMargin: '-50px',
+    threshold: 0.15,
   }
 )
 </script>
 
 <style lang="scss" scoped>
-.adx-cx-flow {
-  width: 100%;
+.adx-cx {
+  &-flow {
+    width: 100%;
 
-  &.in {
-    .adx-cx-steps::before {
-      transform: scaleY(1);
-    }
-
-    .adx-cx-step {
-      opacity: 1;
-      transform: none;
-
-      &:nth-child(1) {
-        transition-delay: 0.2s;
+    &.in {
+      .adx-cx-steps::before {
+        transform: scaleY(1);
       }
 
-      &:nth-child(2) {
-        transition-delay: 0.35s;
-      }
+      .adx-cx-step {
+        opacity: 1;
+        transform: none;
 
-      &:nth-child(3) {
-        transition-delay: 0.5s;
-      }
-
-      &:nth-child(1) .adx-cx-step-key::after {
-        transition-delay: 0.6s;
-        transform: translate(50%, -50%) scale(1);
-      }
-
-      &:nth-child(2) .adx-cx-step-key::after {
-        transition-delay: 0.75s;
-        transform: translate(50%, -50%) scale(1);
-      }
-
-      &:nth-child(3) .adx-cx-step-key::after {
-        transition-delay: 0.9s;
-        transform: translate(50%, -50%) scale(1);
+        @for $i from 1 through 3 {
+          &:nth-child(#{$i}) {
+            transition-delay: #{0.05 + $i * 0.15}s;
+          }
+        }
       }
     }
   }
-}
 
-.adx-cx-steps {
-  --ink: #152a3d;
-  --grey: #6b7c8c;
-  --line: #e1e7ed;
-  --paper-2: #ffffff;
+  &-steps {
+    position: relative;
+    display: grid;
+    gap: rem(12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
 
-  position: relative;
-  display: grid;
-  gap: clamp(12px, 1.4vw, 18px);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: clamp(46px, 4.4vw, 60px);
-    top: 26px;
-    bottom: 26px;
-    width: 2px;
-    border-radius: 2px;
-    background: linear-gradient(#7fd4ee, #35e0c4 50%, #8fb0ff);
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform 1s ease-out 0.2s;
-  }
-}
-
-.adx-cx-step {
-  --ac: #35e0c4;
-  position: relative;
-  display: grid;
-  grid-template-columns: 124px 1fr;
-  gap: clamp(14px, 1.8vw, 26px);
-  align-items: center;
-  padding: clamp(18px, 2vw, 24px) clamp(20px, 2.2vw, 26px);
-  border-radius: 14px;
-  background: linear-gradient(160deg, #ffffff 0%, #f7fafc 100%);
-  border: 1px solid var(--line);
-  box-shadow: 0 8px 22px -16px rgba(21, 42, 61, 0.3);
-  opacity: 0;
-  transform: translateY(30px);
-  transition:
-    opacity 0.8s ease-out,
-    transform 0.8s ease-out,
-    box-shadow 0.3s,
-    border-color 0.3s;
-
-  &:nth-child(1) {
-    --ac: #2fb6d9;
-  }
-
-  &:nth-child(3) {
-    --ac: #8fb0ff;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 14px;
-    bottom: 14px;
-    width: 3px;
-    border-radius: 0 3px 3px 0;
-    background: var(--ac);
-    transform: scaleY(0);
-    transform-origin: center;
-    transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-
-  &:hover {
-    border-color: rgba(18, 169, 143, 0.4);
-    box-shadow: 0 18px 34px -18px rgba(21, 42, 61, 0.4);
+    @include tablet {
+      gap: rem(18);
+    }
 
     &::before {
-      transform: scaleY(1);
+      content: '';
+      display: none;
+      position: absolute;
+      inset: rem(26) auto rem(26) rem(46);
+      width: rem(2);
+      border-radius: rem(2);
+      background: linear-gradient(#7fd4ee, #35e0c4 50%, #8fb0ff);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 1s ease-out 0.2s;
+
+      @include tablet {
+        display: block;
+        left: rem(60);
+      }
     }
   }
-}
 
-.adx-cx-step-key {
-  position: relative;
-  z-index: 1;
-  font-size: 12.5px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  color: var(--ac);
-  white-space: nowrap;
-}
-
-.adx-cx-step-title {
-  margin: 0;
-  font-size: clamp(16.5px, 1.7vw, 21px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.4;
-  color: var(--ink);
-}
-
-.adx-cx-step-desc {
-  margin: 7px 0 0;
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--grey);
-}
-
-@media (max-width: 767px) {
-  .adx-cx-step {
+  &-step {
+    --ac: #35e0c4;
+    position: relative;
+    display: grid;
     grid-template-columns: 1fr;
-    gap: 8px;
-  }
+    gap: rem(8);
+    align-items: center;
+    padding: rem(18) rem(20);
+    border: 1px solid $gray-2;
+    border-radius: rem(14);
+    background: linear-gradient(160deg, $d-white 0%, #f7fafc 100%);
+    box-shadow: 0 rem(8) rem(22) rem(-16) rgba(21, 42, 61, 0.3);
+    opacity: 0;
+    transform: translateY(rem(30));
+    transition:
+      opacity 0.8s ease-out,
+      transform 0.8s ease-out,
+      box-shadow 0.3s,
+      border-color 0.3s;
 
-  .adx-cx-steps::before {
-    display: none;
+    @include tablet {
+      grid-template-columns: rem(124) 1fr;
+      gap: rem(26);
+      padding: rem(24) rem(26);
+    }
+
+    &:nth-child(1) {
+      --ac: #2fb6d9;
+    }
+
+    &:nth-child(3) {
+      --ac: #8fb0ff;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: rem(14) auto rem(14) 0;
+      width: rem(3);
+      border-radius: 0 rem(3) rem(3) 0;
+      background: var(--ac);
+      transform: scaleY(0);
+      transform-origin: center;
+      transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    &:hover {
+      border-color: rgba(18, 169, 143, 0.4);
+      box-shadow: 0 rem(18) rem(34) rem(-18) rgba(21, 42, 61, 0.4);
+
+      &::before {
+        transform: scaleY(1);
+      }
+    }
+
+    &-key {
+      @include body-03;
+      position: relative;
+      z-index: 1;
+      font-weight: $font-weight-bold;
+      letter-spacing: 0.14em;
+      color: var(--ac);
+      white-space: nowrap;
+    }
+
+    &-title {
+      @include body-01;
+      margin: 0;
+      letter-spacing: -0.03em;
+      color: $d-black;
+    }
+
+    &-desc {
+      @include body-03;
+      margin: rem(7) 0 0;
+      color: $gray-1;
+    }
   }
 }
 

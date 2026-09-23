@@ -1,6 +1,11 @@
 <template>
-  <AppImgCont :title="title" :text="text" :reverse="true">
-    <div ref="visualRef" class="adx-integrated-visual" :class="{ 'is-in': isIn }">
+  <section ref="sectionRef" class="adx-integrated" :class="{ 'is-in': isIn }">
+    <div class="adx-integrated-copy">
+      <h2 class="adx-integrated-title" v-html="title"></h2>
+      <p class="adx-integrated-text" v-html="text"></p>
+    </div>
+
+    <div class="adx-integrated-visual">
       <svg
         ref="svgRef"
         class="adx-integrated-diagram"
@@ -134,13 +139,12 @@
         <span class="adx-integrated-pill is-growth">BUSINESS GROWTH</span>
       </div>
     </div>
-  </AppImgCont>
+  </section>
 </template>
 
 <script setup>
 import { onMounted, ref, useId } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import { applySvgPop } from '~/utils/cnx/svg-pop'
 
 defineProps({
@@ -170,17 +174,17 @@ const ids = {
 
 const urlRef = (id) => `url(#${id})`
 
-const visualRef = ref(null)
+const sectionRef = ref(null)
 const svgRef = ref(null)
 const isIn = ref(false)
 
 useIntersectionObserver(
-  visualRef,
+  sectionRef,
   ([{ isIntersecting }]) => {
     if (isIntersecting) isIn.value = true
   },
   {
-    threshold: 0.2,
+    threshold: 0.15,
   }
 )
 
@@ -190,158 +194,224 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.adx-integrated-visual {
-  position: relative;
-  width: 100%;
+.adx-integrated {
+  display: flex;
+  flex-direction: column;
+  gap: rem(38);
+  margin-bottom: rem(66);
 
-  &::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 74%;
-    aspect-ratio: 1;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    border-radius: 50%;
-    background: radial-gradient(
-      closest-side,
-      rgba(23, 138, 197, 0.16),
-      rgba(53, 224, 196, 0.09) 52%,
-      transparent 72%
-    );
+  @include tablet {
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    gap: rem(24);
+    margin-bottom: rem(60);
   }
-}
 
-.adx-integrated-diagram {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  max-width: 940px;
-  height: auto;
-  margin: 0 auto;
+  @include desktop {
+    gap: rem(32);
+    margin-bottom: rem(120);
+  }
 
-  :deep(.pop) {
+  &-copy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: rem(22);
+
+    @include desktop {
+      padding-left: rem(100);
+    }
+  }
+
+  &-title,
+  &-text,
+  &-visual {
     opacity: 0;
-    transform: scale(0.72);
+    transform: translateY(rem(30));
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  &-title {
+    @include sub-headline-02;
+    margin: 0;
+    color: $d-black;
+  }
+
+  &-text {
+    @include body-02;
+    margin: 0;
+    color: $gray-1;
+    transition-delay: 0.15s;
+  }
+
+  &-visual {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    transform: translateY(rem(50));
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 74%;
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      border-radius: 50%;
+      background: radial-gradient(
+        closest-side,
+        rgba(23, 138, 197, 0.16),
+        rgba(53, 224, 196, 0.09) 52%,
+        transparent 72%
+      );
+    }
+  }
+
+  &.is-in {
+    .adx-integrated-title,
+    .adx-integrated-text,
+    .adx-integrated-visual {
+      opacity: 1;
+      transform: none;
+    }
+
+    .adx-integrated-diagram :deep(.pop) {
+      opacity: var(--pop-opacity, 1);
+      transform: none;
+    }
+
+    .adx-integrated-node:hover {
+      transform: scale(1.09);
+      stroke: #12a98f;
+    }
+  }
+
+  &-diagram {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    max-width: rem(940);
+    height: auto;
+    margin: 0 auto;
+
+    :deep(.pop) {
+      opacity: 0;
+      transform: scale(0.72);
+      transform-origin: center;
+      transform-box: fill-box;
+      transition:
+        opacity 0.5s ease,
+        transform 0.55s cubic-bezier(0.34, 1.4, 0.5, 1);
+    }
+
+    @media (max-width: 640px) {
+      display: none;
+    }
+  }
+
+  &-node {
     transform-origin: center;
     transform-box: fill-box;
-    transition:
-      opacity 0.5s ease,
-      transform 0.55s cubic-bezier(0.34, 1.4, 0.5, 1);
-  }
-}
-
-.adx-integrated-visual.is-in .adx-integrated-diagram :deep(.pop) {
-  opacity: var(--pop-opacity, 1);
-  transform: none;
-}
-
-.adx-integrated-node {
-  transform-origin: center;
-  transform-box: fill-box;
-  transition:
-    transform 0.3s cubic-bezier(0.34, 1.4, 0.5, 1),
-    stroke 0.3s;
-}
-
-.adx-integrated-visual.is-in .adx-integrated-node:hover {
-  transform: scale(1.09);
-  stroke: #12a98f;
-}
-
-.adx-integrated-mobile {
-  display: none;
-  position: relative;
-  z-index: 1;
-  text-align: center;
-}
-
-.adx-integrated-pill {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 100px;
-  font-weight: 800;
-  font-size: 13px;
-  letter-spacing: 0.02em;
-
-  &.is-goal {
-    border: 2px solid #0a1728;
-    color: #0a1728;
-    background: #fff;
+    transition: transform 0.3s cubic-bezier(0.34, 1.4, 0.5, 1), stroke 0.3s;
   }
 
-  &.is-growth {
-    background: #0a1728;
-    color: #fff;
-  }
-}
-
-.adx-integrated-arrow {
-  margin: 10px 0;
-  color: #12a98f;
-  font-size: 20px;
-  line-height: 1;
-}
-
-.adx-integrated-hub {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  max-width: 280px;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #2296ce, #0f5f94);
-  box-shadow: 0 14px 30px -18px rgba(21, 42, 61, 0.4);
-}
-
-.adx-integrated-hub-item {
-  padding: 16px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #fff;
-  font-weight: 800;
-  font-size: 12.5px;
-  letter-spacing: -0.01em;
-}
-
-.adx-integrated-nodes {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 9px;
-  max-width: 340px;
-  margin: 16px auto 0;
-  padding: 0;
-  list-style: none;
-  text-align: left;
-}
-
-.adx-integrated-nodes-item {
-  position: relative;
-  padding-left: 14px;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #152a3d;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.5em;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #12a98f;
-  }
-}
-
-@media (max-width: 640px) {
-  .adx-integrated-diagram {
+  &-mobile {
     display: none;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+
+    @media (max-width: 640px) {
+      display: block;
+    }
   }
 
-  .adx-integrated-mobile {
-    display: block;
+  &-pill {
+    @include body-03;
+    display: inline-block;
+    padding: rem(10) rem(20);
+    border-radius: rem(100);
+    font-weight: $font-weight-bold;
+    letter-spacing: 0.02em;
+
+    &.is-goal {
+      border: rem(2) solid #0a1728;
+      color: #0a1728;
+      background: $d-white;
+    }
+
+    &.is-growth {
+      background: #0a1728;
+      color: $d-white;
+    }
+  }
+
+  &-arrow {
+    margin: rem(10) 0;
+    color: #12a98f;
+    font-size: rem(20);
+    line-height: 1;
+  }
+
+  &-hub {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: rem(280);
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: rem(14);
+    background: linear-gradient(135deg, #2296ce, #0f5f94);
+    box-shadow: 0 rem(14) rem(30) rem(-18) rgba(21, 42, 61, 0.4);
+
+    &-item {
+      @include body-03;
+      padding: rem(16) rem(8);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: $d-white;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &-nodes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: rem(9);
+    max-width: rem(340);
+    margin: rem(16) auto 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+
+    &-item {
+      @include body-03;
+      position: relative;
+      padding-left: rem(14);
+      font-weight: $font-weight-bold;
+      color: $d-black;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.5em;
+        width: rem(5);
+        height: rem(5);
+        border-radius: 50%;
+        background: #12a98f;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adx-integrated-title,
+  .adx-integrated-text,
+  .adx-integrated-visual {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 </style>

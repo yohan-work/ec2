@@ -66,7 +66,6 @@
 <script setup>
 import AppKeyVisual from '~/components/cnx/AppKeyVisual.vue'
 import AppTitle from '~/components/cnx/AppTitle.vue'
-import AppImgCont from '~/components/cnx/AppImgCont.vue'
 import AdxCxFlow from '~/components/cnx/AdxCxFlow.vue'
 import AdxGrowthSystem from '~/components/cnx/AdxGrowthSystem.vue'
 import AdxChannels from '~/components/cnx/AdxChannels.vue'
