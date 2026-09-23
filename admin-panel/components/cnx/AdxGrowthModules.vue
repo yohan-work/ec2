@@ -31,11 +31,11 @@
           <h3 class="adx-modules-view-title">{{ item.title }}</h3>
           <p class="adx-modules-view-summary">{{ item.summary }}</p>
           <div class="adx-modules-block">
-            <span class="adx-modules-label">WHAT IT DOES</span>
+            <span class="adx-modules-label">What it does</span>
             <p class="adx-modules-block-text" v-html="item.does"></p>
           </div>
           <div class="adx-modules-block">
-            <span class="adx-modules-label">WHY IT MATTERS</span>
+            <span class="adx-modules-label">Why it matters</span>
             <p class="adx-modules-block-text" v-html="item.matters"></p>
           </div>
         </div>
@@ -313,7 +313,6 @@ useIntersectionObserver(
     display: block;
     color: #12a98f;
     font-weight: $font-weight-bold;
-    letter-spacing: 0.14em;
   }
 
   &-block-text {

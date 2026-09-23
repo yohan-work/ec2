@@ -1,17 +1,19 @@
 <template>
-  <AppImgCont :title="title" :text="text" :reverse="true">
-    <div ref="flowRef" class="adx-cx-flow" :class="{ in: isIn }">
-      <ol class="adx-cx-steps">
-        <li v-for="(step, index) in steps" :key="step.key || index" class="adx-cx-step">
-          <span class="adx-cx-step-key">{{ step.key }}</span>
-          <div class="adx-cx-step-body">
-            <h3 class="adx-cx-step-title">{{ step.title }}</h3>
-            <p class="adx-cx-step-desc">{{ step.description }}</p>
-          </div>
-        </li>
-      </ol>
-    </div>
-  </AppImgCont>
+  <div class="adx-cx">
+    <AppImgCont :title="title" :text="text" :reverse="true">
+      <div ref="flowRef" class="adx-cx-flow" :class="{ in: isIn }">
+        <ol class="adx-cx-steps">
+          <li v-for="(step, index) in steps" :key="step.key || index" class="adx-cx-step">
+            <span class="adx-cx-step-key">{{ step.key }}</span>
+            <div class="adx-cx-step-body">
+              <h3 class="adx-cx-step-title">{{ step.title }}</h3>
+              <p class="adx-cx-step-desc">{{ step.description }}</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </AppImgCont>
+  </div>
 </template>
 
 <script setup>
@@ -67,6 +69,10 @@ useIntersectionObserver(
 
 <style lang="scss" scoped>
 .adx-cx {
+  :deep(.app-img-cont .text-content .description) {
+    color: $gray-1;
+  }
+
   &-flow {
     width: 100%;
 
@@ -79,10 +85,16 @@ useIntersectionObserver(
         opacity: 1;
         transform: none;
 
-        @for $i from 1 through 3 {
-          &:nth-child(#{$i}) {
-            transition-delay: #{0.05 + $i * 0.15}s;
-          }
+        &:nth-child(1) {
+          transition-delay: 0.2s;
+        }
+
+        &:nth-child(2) {
+          transition-delay: 0.35s;
+        }
+
+        &:nth-child(3) {
+          transition-delay: 0.5s;
         }
       }
     }
@@ -140,10 +152,15 @@ useIntersectionObserver(
       border-color 0.3s;
 
     @include tablet {
-      grid-template-columns: rem(124) 1fr;
-      gap: rem(26);
+      grid-template-columns: rem(120) 1fr;
+       gap: rem(26);
       padding: rem(24) rem(26);
     }
+
+    @include desktop {
+      grid-template-columns: rem(160) 1fr;
+    }
+
 
     &:nth-child(1) {
       --ac: #2fb6d9;
