@@ -13,7 +13,7 @@
           :key="item.id"
           type="button"
           class="adx-modules-tab"
-          :class="{ 'is-on': activeId === item.id }"
+          :class="{ 'is-active': activeId === item.id }"
           :aria-selected="activeId === item.id"
           @click="activeId = item.id"
         >
@@ -31,11 +31,11 @@
           <h3 class="adx-modules-view-title">{{ item.title }}</h3>
           <p class="adx-modules-view-summary">{{ item.summary }}</p>
           <div class="adx-modules-block">
-            <span class="adx-modules-label">WHAT IT DOES</span>
+            <span class="adx-modules-label">What it does</span>
             <p class="adx-modules-block-text" v-html="item.does"></p>
           </div>
           <div class="adx-modules-block">
-            <span class="adx-modules-label">WHY IT MATTERS</span>
+            <span class="adx-modules-label">Why it matters</span>
             <p class="adx-modules-block-text" v-html="item.matters"></p>
           </div>
         </div>
@@ -56,9 +56,7 @@
           <div class="adx-modules-card-name">{{ item.cardName }}</div>
           <div class="adx-modules-stats">
             <div v-for="stat in item.stats" :key="stat.label" class="adx-modules-stat">
-              <strong class="adx-modules-stat-value">
-                {{ stat.value }}<span class="adx-modules-stat-unit">{{ stat.unit }}</span>
-              </strong>
+              <strong class="adx-modules-stat-value">{{ stat.value }}</strong>
               <span class="adx-modules-stat-label">{{ stat.label }}</span>
             </div>
           </div>
@@ -86,8 +84,8 @@ const modules = [
     image: `${assetBase}/growth01.png`,
     imageAlt: '소재 스튜디오 화면과 자동 생성된 광고 소재 갤러리',
     stats: [
-      { value: '28', unit: '장', label: '1회차 카피 산출' },
-      { value: '22', unit: '판형', label: 'DA 소재 템플릿' },
+      { value: '28장', label: '1회차 카피 산출' },
+      { value: '22판형', label: 'DA 소재 템플릿' },
     ],
   },
   {
@@ -101,8 +99,8 @@ const modules = [
     image: `${assetBase}/growth02.png`,
     imageAlt: '검색 여정 분석 대시보드와 키워드별 수요 단계 흐름도',
     stats: [
-      { value: '643', unit: '개', label: '수집 키워드' },
-      { value: '1,127', unit: '개', label: '키워드 연결' },
+      { value: '643개', label: '수집 키워드' },
+      { value: '1,127개', label: '키워드 연결' },
     ],
   },
   {
@@ -115,7 +113,7 @@ const modules = [
     cardName: '사이트 개인화',
     image: `${assetBase}/growth03.png`,
     imageAlt: '유입 채널별로 첫 화면 카피가 교체되는 온사이트 개인화 화면',
-    stats: [{ value: '10', unit: 'Type', label: 'A/B TEST Site' }],
+    stats: [{ value: '10 Type', label: 'A/B TEST Site' }],
   },
   {
     id: '4',
@@ -128,8 +126,8 @@ const modules = [
     image: `${assetBase}/growth04.png`,
     imageAlt: '경쟁 광고주의 집행 소재와 물량을 정리한 인텔리전스 대시보드',
     stats: [
-      { value: '234', unit: '건', label: '수집 경쟁 소재' },
-      { value: '51', unit: '곳', label: '집행 중 광고주' },
+      { value: '234건', label: '수집 경쟁 소재' },
+      { value: '51곳', label: '집행 중 광고주' },
     ],
   },
   {
@@ -143,8 +141,8 @@ const modules = [
     image: `${assetBase}/growth05.png`,
     imageAlt: '12주 채널 운영 계획표와 컷 단위 크리에이티브 승인 화면',
     stats: [
-      { value: '12', unit: '주', label: '채널 운영 계획' },
-      { value: '109', unit: '개', label: '컨텐츠 제작 갯수' },
+      { value: '12주', label: '채널 운영 계획' },
+      { value: '109개', label: '컨텐츠 제작 갯수' },
     ],
   },
   {
@@ -158,8 +156,8 @@ const modules = [
     image: `${assetBase}/growth06.png`,
     imageAlt: 'AI 상담 리드 DB와 통화 기록·녹취 관리 화면',
     stats: [
-      { value: '3', unit: '회', label: '리드당 시도 한도' },
-      { value: '100', unit: '%', label: '통화 기록·적재' },
+      { value: '3회', label: '리드당 시도 한도' },
+      { value: '100%', label: '통화 기록·적재' },
     ],
   },
 ]
@@ -197,293 +195,213 @@ useIntersectionObserver(
   display: flex;
   flex-direction: column;
   gap: rem(38);
-  margin-bottom: rem(66);
-
+  margin-bottom: rem(80);
   @include tablet {
     flex-direction: row;
     align-items: flex-start;
-    gap: rem(48);
-    margin-bottom: rem(60);
+    gap: rem(24 );    
   }
 
   @include desktop {
-    gap: rem(88);
+    gap: rem(32);
     margin-bottom: rem(120);
+    padding-block:rem(80);
   }
-}
 
-.adx-modules-copy {
-  flex: 1;
-  min-width: 0;
-}
-
-.adx-modules-title {
-  @include sub-headline-02;
-  margin: 0;
-  color: $d-black;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.adx-modules-text {
-  @include body-02;
-  margin: rem(22) 0 0;
-  color: $gray-1;
-  line-height: 1.6;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out 0.15s, transform 0.8s ease-out 0.15s;
-}
-
-.adx-modules-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-top: rem(28);
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out 0.25s, transform 0.8s ease-out 0.25s;
-
-  @include tablet {
-    margin-top: rem(38);
+  &-copy {
+    flex: 1;
+    min-width: 0;
   }
-}
 
-.adx-modules-tab {
-  padding: 10px 18px;
-  border: 1px solid #e1e7ed;
-  border-radius: 100px;
-  background: linear-gradient(160deg, #ffffff 0%, #f3f7fa 100%);
-  box-shadow: 0 3px 8px -4px rgba(21, 42, 61, 0.18);
-  color: $gray-1;
-  font-size: rem(13.5);
-  font-weight: 700;
-  letter-spacing: -0.005em;
-  cursor: pointer;
-  transition:
-    background 0.22s,
-    border-color 0.22s,
-    color 0.22s,
-    transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1),
-    box-shadow 0.22s;
+  &-title,
+  &-text,
+  &-tabs,
+  &-panel,
+  &-card {
+    opacity: 0;
+    transform: translateY(rem(30));
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
 
-  &:hover {
-    border-color: rgba(18, 169, 143, 0.5);
+  &-title {
+    @include sub-headline-02;
+    margin: 0;
     color: $d-black;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px -10px rgba(21, 42, 61, 0.3);
   }
 
-  &.is-on {
-    background: #0a1728;
-    border-color: #0a1728;
-    color: #fff;
-    box-shadow: 0 12px 24px -10px rgba(10, 23, 40, 0.5);
+  &-text {
+    @include body-02;
+    margin: rem(22) 0 0;
+    color: $gray-1;
+    transition-delay: 0.15s;
+  }
 
-    &:hover {
-      transform: none;
+  &-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: rem(8) rem(4);
+    margin-top: rem(24);
+    transition-delay: 0.25s;
+
+    @include desktop {
+      gap: rem(12);
     }
   }
 
-  &:focus-visible {
-    outline: 3px solid #12a98f;
-    outline-offset: 3px;
-  }
-}
+  &-tab {
+    padding: rem(6.5) rem(16);
+    border: 1px solid $gray-1;
+    border-radius: rem(32);
+    background: transparent;
+    color: $gray-1;
+    font-size: rem(14);
+    font-weight: 500;
+    cursor: pointer;
 
-.adx-modules-panel {
-  margin-top: rem(26);
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out 0.35s, transform 0.8s ease-out 0.35s;
+    &:focus-visible {
+      outline-offset: 3px;
+    }
 
-  @include tablet {
-    margin-top: rem(34);
-  }
-}
-
-.adx-modules-view-title {
-  margin: 0;
-  color: #0a1728;
-  font-size: rem(22);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-
-  @include tablet {
-    font-size: rem(24);
+    &.is-active {
+      background-color: $p-dark-blue;
+      border-color: $p-dark-blue;
+      color: $d-white;
+    }
   }
 
-  @include desktop {
-    font-size: rem(28);
+  &-panel {
+    margin-top: rem(48);
+    transition-delay: 0.35s;
+
+    @include tablet {
+      margin-top: rem(24);
+    }
   }
-}
 
-.adx-modules-view-summary {
-  @include body-03;
-  margin: rem(8) 0 0;
-  color: $gray-1;
-  line-height: 1.6;
-}
-
-.adx-modules-block {
-  position: relative;
-  margin-top: rem(22);
-  padding-left: rem(14);
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 2px;
-    bottom: 2px;
-    width: 3px;
-    border-radius: 2px;
-    background: #0b7a66;
+  &-view-title {
+    @include body-01;
+    margin: 0;
+    color: $d-black;
   }
-}
 
-.adx-modules-label {
-  display: block;
-  color: #12a98f;
-  font-size: rem(11);
-  font-weight: 800;
-  letter-spacing: 0.14em;
-}
-
-.adx-modules-block-text {
-  margin: rem(10) 0 0;
-  color: $gray-1;
-  font-size: rem(15.5);
-  line-height: 1.7;
-}
-
-.adx-modules-card {
-  position: relative;
-  overflow: hidden;
-  flex: 1.12;
-  min-width: 0;
-  border-radius: 18px;
-  background: #0a1728;
-  color: #fff;
-  box-shadow: 0 22px 48px -26px rgba(10, 23, 40, 0.55);
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 2;
-    height: 3px;
-    background: linear-gradient(90deg, #2fb6d9, #35e0c4);
+  &-view-summary {
+    @include body-02;
+    margin: rem(24) 0 0;
+    color: $gray-1;
   }
-}
 
-.adx-modules-media {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 1100 / 881;
-  background: #0a1728;
+  &-block {
+    position: relative;
+    margin-top: rem(24);
+    padding-left: rem(14);
 
-  img {
+    &::before {
+      content: '';
+      position: absolute;
+      background:#12A98F;
+      width: rem(4);
+      height: rem(4);
+      border-radius: 50%;
+      left: 0;
+      top: rem(10);
+    }
+  }
+
+  &-label {
+    @include body-03;
     display: block;
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-  }
-}
-
-.adx-modules-card-body {
-  padding: rem(22) rem(22) rem(26);
-
-  @include desktop {
-    padding: 30px 30px 32px;
-  }
-}
-
-.adx-modules-card-name {
-  position: relative;
-  margin-bottom: rem(20);
-  padding-bottom: rem(16);
-  color: #35e0c4;
-  font-size: rem(11);
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.12);
-  }
-}
-
-.adx-modules-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-}
-
-.adx-modules-stat {
-  padding: 0 22px;
-
-  &:first-child {
-    padding-left: 0;
+    color: #12a98f;
+    font-weight: $font-weight-bold;
   }
 
-  &:not(:first-child) {
-    border-left: 1px solid rgba(255, 255, 255, 0.12);
+  &-block-text {
+    @include body-03;
+    color: $gray-1;
   }
-}
 
-.adx-modules-stat-value {
-  display: block;
-  color: #35e0c4;
-  font-size: rem(26);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
+  &-card {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
+    border-radius: rem(8);
+    background: $p-dark-blue;
+    color: $d-white;
+    transform: translateY(rem(50));
 
-  @include desktop {
-    font-size: rem(32);
+    &-body {
+      padding-top: rem(16);
+
+      @include desktop {
+        padding-top: rem(30);
+      }
+    }
   }
-}
 
-.adx-modules-stat-unit {
-  margin-left: 2px;
-  color: #93a6b8;
-  font-size: rem(14);
-  font-weight: 700;
-}
+  &-card-view {
+    padding: rem(16);
 
-.adx-modules-stat-label {
-  display: block;
-  margin-top: rem(8);
-  color: #93a6b8;
-  font-size: rem(12.5);
-  font-weight: 700;
-}
+    @include desktop {
+      padding: rem(40);
+    }
+  }
 
-.adx-modules.is-in {
-  .adx-modules-title,
-  .adx-modules-text,
-  .adx-modules-tabs,
-  .adx-modules-panel,
-  .adx-modules-card {
-    opacity: 1;
-    transform: none;
+  &-media {
+    border-radius: rem(4);
+    overflow: hidden;
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &-card-name {
+    @include body-03;
+    position: relative;
+    margin-bottom: rem(20);
+    padding-bottom: rem(16);
+    color: $d-white;
+    font-weight: $font-weight-bold;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  &-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(rem(120), 1fr));
+  }
+
+  &-stat-value {
+    @include body-01;
+    display: block;
+    color: $s-teal;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &-stat-label {
+    @include body-03;
+    display: block;
+    margin-top: rem(8);
+    color: $d-white;
+  }
+
+  &.is-in {
+    .adx-modules-title,
+    .adx-modules-text,
+    .adx-modules-tabs,
+    .adx-modules-panel,
+    .adx-modules-card {
+      opacity: 1;
+      transform: none;
+    }
   }
 }
 
