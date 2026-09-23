@@ -1,7 +1,9 @@
 <template>
   <div ref="sectionRef" class="adx-ops">
     <h2 class="adx-ops-title">운영사례</h2>
-    <p class="adx-ops-desc">고객의 대표 파트너사 선정과 실제 운영 성과로 정리했습니다.</p>
+    <p class="adx-ops-desc">
+      고객의 대표 파트너사 선정과 실제 운영 성과로 정리했습니다.
+    </p>
 
     <ul class="adx-ops-grid">
       <li v-for="(item, index) in items" :key="item.id">
@@ -15,7 +17,7 @@
           @keydown.space.prevent="openPopup(index)"
         >
           <div class="adx-ops-card-thumb">
-            <img :src="item.image" :alt="item.imageAlt" loading="lazy">
+            <img :src="item.image" :alt="item.imageAlt" loading="lazy" />
           </div>
           <h3 class="adx-ops-card-title">{{ item.title }}</h3>
           <p class="adx-ops-card-category" v-html="item.category"></p>
@@ -35,31 +37,39 @@
           :aria-label="activeItem?.title"
           @click.self="closePopup"
         >
-          <AppButton
+          <button
             v-if="isDesktop"
+            type="button"
             class="adx-ops-popup-nav prev"
-            variant="circle"
-            arrow="reverse"
-            color="white"
-            text=""
             aria-label="이전 운영사례"
             @click="slidePrev"
-          />
-
-          <swiper
-            v-if="isDesktop"
-            class="adx-ops-popup-swiper"
-            :modules="swiperModules"
-            :loop="true"
-            :speed="450"
-            :keyboard="{ enabled: true }"
-            :initial-slide="activeIndex"
-            @swiper="onSwiperInit"
           >
-            <swiper-slide v-for="item in items" :key="item.id">
-              <AdxOperationDetail :item="item" />
-            </swiper-slide>
-          </swiper>
+            <span></span>
+          </button>
+
+          <div v-if="isDesktop" class="adx-ops-popup-stage">
+            <button
+              type="button"
+              class="adx-ops-popup-close"
+              aria-label="운영사례 닫기"
+              @click="closePopup"
+            >
+              <span aria-hidden="true"></span>
+            </button>
+            <swiper
+              class="adx-ops-popup-swiper"
+              :modules="swiperModules"
+              :loop="true"
+              :speed="450"
+              :keyboard="{ enabled: true }"
+              :initial-slide="activeIndex"
+              @swiper="onSwiperInit"
+            >
+              <swiper-slide v-for="item in items" :key="item.id">
+                <AdxOperationDetail :item="item" />
+              </swiper-slide>
+            </swiper>
+          </div>
 
           <div v-else class="adx-ops-popup-mobile">
             <button
@@ -73,16 +83,15 @@
             <AdxOperationDetail :item="activeItem" />
           </div>
 
-          <AppButton
+          <button
             v-if="isDesktop"
+            type="button"
             class="adx-ops-popup-nav next"
-            variant="circle"
-            arrow
-            color="white"
-            text=""
             aria-label="다음 운영사례"
             @click="slideNext"
-          />
+          >
+            <span></span>
+          </button>
         </div>
       </Teleport>
     </ClientOnly>
@@ -94,11 +103,11 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Keyboard, A11y } from 'swiper/modules'
-import AppButton from '~/components/cnx/AppButton.vue'
 import AdxOperationDetail from '~/components/cnx/AdxOperationDetail.vue'
 import 'swiper/css'
 
-const IMAGE_BASE = '/assets/cnx/what-we-do/integrated-marketing/adx-full-funnel-agency'
+const IMAGE_BASE =
+  '/assets/cnx/what-we-do/integrated-marketing/adx-full-funnel-agency'
 const DESKTOP_QUERY = '(min-width: 1024px)'
 
 const swiperModules = [Keyboard, A11y]
@@ -113,8 +122,9 @@ const items = [
   {
     id: 1,
     title: '롯데손해보험 Wonderer',
-    category: 'FINANCE Growth · Data Pipeline',
-    popupCategory: 'FINANCE Growth · Data Pipeline',
+    category: '<strong>FINANCE</strong><span> Growth · Data Pipeline</span>',
+    popupCategory:
+      '<strong>FINANCE</strong><span> Growth · Data Pipeline</span>',
     summary: '퍼널 기반 Growth 및 데이터 파이프라인 구축',
     image: `${IMAGE_BASE}/case-01.jpg`,
     imageAlt: 'wonderer 앱이 켜진 스마트폰을 들고 미소 짓는 여성',
@@ -131,13 +141,19 @@ const items = [
       text: '데이터 리포팅 자동화 · MMP + BigQuery 기반 파이프라인',
     },
     client: '롯데손해보험',
-    media: [{ src: `${IMAGE_BASE}/popup-01.jpg`, alt: 'wonderer 앱이 켜진 스마트폰을 들고 미소 짓는 여성' }],
+    media: [
+      {
+        src: `${IMAGE_BASE}/popup-01.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-01_m.png`,
+        alt: 'wonderer 앱이 켜진 스마트폰을 들고 미소 짓는 여성',
+      },
+    ],
   },
   {
     id: 2,
     title: '삼성카드 다이렉트 오토',
-    category: 'FINANCE Performance Campaign',
-    popupCategory: 'FINANCE Performance Campaign',
+    category: '<strong>FINANCE</strong><span> Performance Campaign</span>',
+    popupCategory: '<strong>FINANCE</strong><span> Performance Campaign</span>',
     summary: '브랜드 인지도 및 한도조회 전환 캠페인',
     image: `${IMAGE_BASE}/case-02.jpg`,
     imageAlt: '야경 속 흰색 카니발과 삼성카드 다이렉트 오토 캠페인 카피',
@@ -154,13 +170,21 @@ const items = [
       { value: '12.4%', label: '월평균 사이트 유입 상승' },
     ],
     client: '삼성카드',
-    media: [{ src: `${IMAGE_BASE}/popup-02.jpg`, alt: '삼성카드 다이렉트 오토 캠페인 비주얼' }],
+    media: [
+      {
+        src: `${IMAGE_BASE}/popup-02.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-02_m.png`,
+        alt: '삼성카드 다이렉트 오토 캠페인 비주얼',
+      },
+    ],
   },
   {
     id: 3,
     title: 'LG Vehicle Solution',
-    category: 'IT & ELECTRONICS<br>Global B2B Campaign',
-    popupCategory: 'IT & ELECTRONICS Global B2B Campaign',
+    category:
+      '<strong>IT & ELECTRONICS</strong><br><span>Global B2B Campaign</span>',
+    popupCategory:
+      '<strong>IT & ELECTRONICS</strong><span> Global B2B Campaign</span>',
     summary: '글로벌 OEM 타깃 B2B 디지털 마케팅 운영',
     image: `${IMAGE_BASE}/case-03.jpg`,
     imageAlt: 'LG 로고가 있는 전기차와 두 사람이 마주 보는 장면',
@@ -174,16 +198,28 @@ const items = [
     performances: [
       { value: '16.3배', label: 'CTR 상승' },
       { value: '76.2%', label: 'CPC 절감' },
-      { value: '+96%', label: 'LinkedIn 팔로워 증가 · 2024.12 7.7만 명 대비 +7.3만 명 (2026.08)' },
+      {
+        value: '+96%',
+        label:
+          'LinkedIn 팔로워 증가 · 2024.12 7.7만 명 대비 +7.3만 명 (2026.08)',
+      },
     ],
     client: 'LG전자',
-    media: [{ src: `${IMAGE_BASE}/popup-03.jpg`, alt: 'LG Vehicle Solution 캠페인 비주얼' }],
+    media: [
+      {
+        src: `${IMAGE_BASE}/popup-03.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-03_m.png`,
+        alt: 'LG Vehicle Solution 캠페인 비주얼',
+      },
+    ],
   },
   {
     id: 4,
     title: 'LG 키친',
-    category: 'IT & ELECTRONICS<br>Global Social Campaign',
-    popupCategory: 'IT & ELECTRONICS Global Social Campaign',
+    category:
+      '<strong>IT & ELECTRONICS</strong><br><span>Global Social Campaign</span>',
+    popupCategory:
+      '<strong>IT & ELECTRONICS</strong><span> Global Social Campaign</span>',
     summary: 'LG 키친 글로벌 소셜 채널 통합 운영',
     image: `${IMAGE_BASE}/case-04.jpg`,
     imageAlt: 'LG 냉장고 앞에서 조리 준비를 하는 여성과 키친 캠페인 카피',
@@ -198,13 +234,21 @@ const items = [
       { value: '+124%', label: '팔로워 증가' },
     ],
     client: 'LG전자',
-    media: [{ src: `${IMAGE_BASE}/popup-04.jpg`, alt: 'LG 키친 글로벌 소셜 캠페인 비주얼' }],
+    media: [
+      {
+        src: `${IMAGE_BASE}/popup-04.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-04_m.png`,
+        alt: 'LG 키친 글로벌 소셜 캠페인 비주얼',
+      },
+    ],
   },
   {
     id: 5,
     title: 'LG 사이언스파크',
-    category: 'IT & ELECTRONICS LinkedIn Campaign',
-    popupCategory: 'IT & ELECTRONICS LinkedIn Campaign',
+    category:
+      '<strong>IT & ELECTRONICS</strong><span> LinkedIn Campaign</span>',
+    popupCategory:
+      '<strong>IT & ELECTRONICS</strong><span> LinkedIn Campaign</span>',
     summary: 'LinkedIn 채널 성장 캠페인',
     image: `${IMAGE_BASE}/case-05.jpg`,
     imageAlt: 'LG 사이언스파크 Highlights를 소개하는 로봇과 디바이스 비주얼',
@@ -216,16 +260,27 @@ const items = [
       '캠페인별 성과 분석을 기반으로 예산과 운영 전략을 최적화했습니다.',
     ],
     performances: [
-      { value: '+20%', label: 'LinkedIn 팔로워 상승 · 2025년 대비 4,000명 상승 (20,000명 → 24,000명)' },
+      {
+        value: '+20%',
+        label:
+          'LinkedIn 팔로워 상승 · 2025년 대비 4,000명 상승 (20,000명 → 24,000명)',
+      },
     ],
     client: 'LG전자',
-    media: [{ src: `${IMAGE_BASE}/popup-05.jpg`, alt: 'LG 사이언스파크 LinkedIn 캠페인 비주얼' }],
+    media: [
+      {
+        src: `${IMAGE_BASE}/popup-05.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-05_m.png`,
+        alt: 'LG 사이언스파크 LinkedIn 캠페인 비주얼',
+      },
+    ],
   },
   {
     id: 6,
     title: '한국타이어',
-    category: 'MOBILITY Global Social Campaign',
-    popupCategory: 'MOBILITY Global Social Campaign',
+    category: '<strong>MOBILITY</strong><span> Global Social Campaign</span>',
+    popupCategory:
+      '<strong>MOBILITY</strong><span> Global Social Campaign</span>',
     summary: '글로벌·국내 SNS 채널 부스팅 캠페인',
     image: `${IMAGE_BASE}/case-06.jpg`,
     imageAlt: '한국타이어 ventus evo가 장착된 스포츠카 휠 클로즈업',
@@ -237,19 +292,31 @@ const items = [
       '타깃과 캠페인 목적별 성과 분석으로 광고 효율을 최적화하고 채널 성장을 견인했습니다.',
     ],
     performances: [
-      { value: '+58%', label: '운영 채널 성장 (Instagram · Facebook · LinkedIn · TikTok) 2024.01 대비 2026.07 · 약 97만 명 성장' },
+      {
+        value: '+58%',
+        label:
+          '운영 채널 성장 (Instagram · Facebook · LinkedIn · TikTok) 2024.01 대비 2026.07 · 약 97만 명 성장',
+      },
     ],
     client: '한국앤컴퍼니',
-    media: [{ src: `${IMAGE_BASE}/popup-06.jpg`, alt: '한국타이어 ventus evo 캠페인 비주얼' }],
+    media: [
+      {
+        src: `${IMAGE_BASE}/popup-06.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-06_m.png`,
+        alt: '한국타이어 ventus evo 캠페인 비주얼',
+      },
+    ],
   },
   {
     id: 7,
     title: '한국배터리',
-    category: 'MOBILITY Brand Awareness Campaign',
-    popupCategory: 'MOBILITY Brand Awareness Campaign',
+    category: '<strong>MOBILITY</strong><span> Brand Awareness Campaign</span>',
+    popupCategory:
+      '<strong>MOBILITY</strong><span> Brand Awareness Campaign</span>',
     summary: '브랜드 SNS 채널 확대 및 인지도 제고',
     image: `${IMAGE_BASE}/case-07.jpg`,
-    imageAlt: '야구장 마운드 위 한국배터리와 야구공, STRIKE ZONE 팝업 이벤트 안내',
+    imageAlt:
+      '야구장 마운드 위 한국배터리와 야구공, STRIKE ZONE 팝업 이벤트 안내',
     projectTitle: '브랜드 SNS 채널 확대 및 인지도 제고',
     projectItems: [
       '한국배터리 브랜드 인지도를 강화하고 트래픽과 SNS 채널 팔로워를 증대했습니다.',
@@ -263,13 +330,20 @@ const items = [
       { value: '+8,204명', label: '인스타그램 참여 증가' },
     ],
     client: '한국앤컴퍼니',
-    media: [{ src: `${IMAGE_BASE}/popup-07.jpg`, alt: '한국배터리 브랜드 캠페인 비주얼' }],
+    media: [
+      {
+        src: `${IMAGE_BASE}/popup-07.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-07_m.png`,
+        alt: '한국배터리 브랜드 캠페인 비주얼',
+      },
+    ],
   },
   {
     id: 8,
     title: '아모레퍼시픽 WPCC',
-    category: 'BEAUTY Global Website Operation',
-    popupCategory: 'BEAUTY Global Website Operation',
+    category: '<strong>BEAUTY</strong><span> Global Website Operation</span>',
+    popupCategory:
+      '<strong>BEAUTY</strong><span> Global Website Operation</span>',
     summary: '12개 브랜드 50개 글로벌 웹사이트 통합 운영',
     image: `${IMAGE_BASE}/case-08.jpg`,
     imageAlt: 'HERA SIGNIA 제품과 글로벌 뷰티 웹사이트 화면',
@@ -286,23 +360,35 @@ const items = [
       { value: '+37%', label: 'PMO 당월 평균 처리 티켓' },
     ],
     client: '아모레퍼시픽',
-    media: [{ src: `${IMAGE_BASE}/popup-08.jpg`, alt: '아모레퍼시픽 글로벌 웹사이트 운영 비주얼' }],
+    media: [
+      {
+        src: `${IMAGE_BASE}/popup-08.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-08_m.png`,
+        alt: '아모레퍼시픽 글로벌 웹사이트 운영 비주얼',
+      },
+    ],
   },
   {
     id: 9,
     title: '한국타이어 벤투스',
-    category: 'AI MODEL R&D<br>AI Model Contents R&D',
-    popupCategory: 'MOBILITY AI Model Contents R&D',
-    summary: '제품·주행 이미지를 촬영 없이 자동 생성 파이프라인으로 연결한 실험',
+    category:
+      '<strong>AI MODEL R&D</strong><span> AI Model Contents R&D</span>',
+    popupCategory:
+      '<strong>AI MODEL R&D</strong><span> AI Model Contents R&D</span>',
+    summary:
+      '제품·주행 이미지를 촬영 없이 자동 생성 파이프라인으로 연결한 실험',
     image: `${IMAGE_BASE}/case-09.jpg`,
     imageAlt: '트랙을 주행하는 한국타이어 모터스포츠 차량',
-    projectTitle: '제품·주행 이미지를 촬영 없이 자동 생성 파이프라인으로 연결한 실험',
-    projectText: '속도감 있는 주행 장면과 타이어 제품 컷을 촬영 없이 자동 생성 방식으로 구성해, 제작 리드타임 단축 가능성을 검증했습니다.',
+    projectTitle:
+      '제품·주행 이미지를 촬영 없이 자동 생성 파이프라인으로 연결한 실험',
+    projectText:
+      '속도감 있는 주행 장면과 타이어 제품 컷을 촬영 없이 자동 생성 방식으로 구성해, 제작 리드타임 단축 가능성을 검증했습니다.',
     brand: '한국타이어',
     status: 'R&D',
     media: [
       {
         src: `${IMAGE_BASE}/popup-09.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-09_m.png`,
         alt: '생성형 비디오로 만든 한국타이어 주행 장면',
         caption: 'GENERATIVE VIDEO 자동생성',
         meta: '28s',
@@ -312,24 +398,28 @@ const items = [
   {
     id: 10,
     title: '롯데손해보험 Wonderer · AI 크리에이티브',
-    category: 'AI CREATIVE AI 광고 Creative',
-    popupCategory: 'AI CREATIVE AI 광고 Creative',
+    category: '<strong>AI CREATIVE</strong><span> AI 광고 Creative</span>',
+    popupCategory: '<strong>AI CREATIVE</strong><span> AI 광고 Creative</span>',
     summary: '여성·남성·통합 버전으로 타깃별 공감 포인트와 서비스 경험을 변주',
     image: `${IMAGE_BASE}/case-10.jpg`,
     imageAlt: 'wonderer 앱을 소개하는 남성과 놀란 표정으로 바라보는 동료들',
-    projectTitle: '여성·남성·통합 버전으로 타깃별 공감 포인트와 서비스 경험을 변주',
-    projectText: '보험을 어렵게 느끼지 않도록 디지털 플랫폼 경험을 인물 일상 시나리오로 전달하고, AI 가상 모델 생성 후 모델 일관성을 유지했습니다.',
+    projectTitle:
+      '여성·남성·통합 버전으로 타깃별 공감 포인트와 서비스 경험을 변주',
+    projectText:
+      '보험을 어렵게 느끼지 않도록 디지털 플랫폼 경험을 인물 일상 시나리오로 전달하고, AI 가상 모델 생성 후 모델 일관성을 유지했습니다.',
     brand: '롯데손해보험',
     status: '제작 진행 중',
     media: [
       {
         src: `${IMAGE_BASE}/popup-10-a.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-10-a_m.png`,
         alt: '스마트폰을 바라보는 여성 타깃 버전 장면',
         caption: 'TARGET A 여성버전',
         meta: '39s',
       },
       {
         src: `${IMAGE_BASE}/popup-10-b.jpg`,
+        srcMobile: `${IMAGE_BASE}/popup-10-b_m.png`,
         alt: '마이크 앞에서 안경을 고쳐 쓰는 남성 타깃 버전 장면',
         caption: 'TARGET B 남성버전',
         meta: '40s',
@@ -341,14 +431,15 @@ const items = [
 const activeItem = computed(() => items[activeIndex.value] || items[0])
 
 const syncDesktop = () => {
-  isDesktop.value = mediaQuery?.matches ?? window.matchMedia(DESKTOP_QUERY).matches
+  isDesktop.value =
+    mediaQuery?.matches ?? window.matchMedia(DESKTOP_QUERY).matches
 }
 
-const onSwiperInit = (swiper) => {
+const onSwiperInit = swiper => {
   swiperInstance.value = swiper
 }
 
-const openPopup = (index) => {
+const openPopup = index => {
   activeIndex.value = index
   isOpen.value = true
   document.body.style.overflow = 'hidden'
@@ -361,7 +452,7 @@ const closePopup = () => {
   document.removeEventListener('keydown', onEscape)
 }
 
-const onEscape = (event) => {
+const onEscape = event => {
   if (event.key === 'Escape') closePopup()
 }
 
@@ -416,7 +507,9 @@ onBeforeUnmount(() => {
   &-card {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
   }
 
   &-title {
@@ -450,14 +543,14 @@ onBeforeUnmount(() => {
 
     @include desktop {
       font-size: rem(18);
-      margin: rem(16) auto rem(48);
+      margin: rem(24) auto rem(36);
     }
   }
 
   &-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: rem(20) rem(12);
+    gap: rem(32) rem(10);
     margin: 0 0 rem(60);
     padding: 0;
     list-style: none;
@@ -470,6 +563,10 @@ onBeforeUnmount(() => {
     @media (min-width: 1024px) {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: rem(40) rem(24);
+    }
+    @include desktop {
+      margin-top: rem(84);
+      gap: rem(40) rem(20);
     }
   }
 
@@ -493,9 +590,9 @@ onBeforeUnmount(() => {
     }
 
     &-thumb {
-      order: 1;
+      order: 0;
       overflow: hidden;
-      margin-top: rem(24);
+
       border-radius: rem(16);
       aspect-ratio: 300 / 378;
       background: $n-gray;
@@ -504,6 +601,7 @@ onBeforeUnmount(() => {
         order: 0;
         margin-top: 0;
         border-radius: rem(24);
+        margin-top: rem(24);
       }
 
       img {
@@ -516,9 +614,9 @@ onBeforeUnmount(() => {
     }
 
     &-title {
-      margin: 0;
+      margin: rem(12) 0 0;
       color: $d-black;
-      font-size: rem(13);
+      font-size: rem(14);
       font-weight: $font-weight-bold;
       line-height: $line-height-relaxed;
 
@@ -528,32 +626,49 @@ onBeforeUnmount(() => {
       }
 
       @include desktop {
-        margin-top: rem(32);
-        font-size: rem(18);
+        margin-top: rem(20);
+        font-size: rem(16);
       }
     }
 
     &-category {
-      margin: rem(4) 0 0;
-      color: $p-green;
-      font-size: rem(12);
-      font-weight: $font-weight-bold;
+      // margin: rem(4) 0 0;
+      color: #12a98f;
+      font-size: rem(14);
+      font-weight: $font-weight-regular;
       line-height: $line-height-relaxed;
+
+      :deep(strong) {
+        font-weight: $font-weight-bold;
+      }
 
       @include tablet {
         font-size: rem(14);
+      }
+      @include desktop {
+        font-size: rem(16);
       }
     }
 
     &-summary {
       margin: rem(4) 0 0;
       color: $n-dark-gray;
-      font-size: rem(12);
+      font-size: rem(14);
       font-weight: $font-weight-regular;
       line-height: $line-height-loose;
 
-      @include tablet {
+      @media (max-width: 768px) {
         font-size: rem(14);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+      }
+      @include desktop {
+        font-size: rem(16);
+        margin-top: rem(6);
       }
     }
   }
@@ -583,35 +698,91 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: rem(16);
-  overflow: auto;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.45);
 
   @media (min-width: 1024px) {
     align-items: center;
-    gap: rem(16);
-    padding: rem(32);
+    justify-content: center;
+    gap: rem(28);
+    height: 100%;
+    padding: rem(40) rem(32);
   }
-  @media (min-width: 768px) {
+
+  @media (min-width: 768px) and (max-width: 1023px) {
     padding: 0;
   }
 
+  &-stage {
+    position: relative;
+    width: min(1180px, calc(100vw - 200px));
+    display: flex;
+    align-items: center;
+    margin-block: auto;
+
+    @media (min-width: 1024px) {
+      height: rem(820);
+    }
+  }
+
   &-swiper {
-    width: min(1080px, calc(100vw - 180px));
+    width: 100%;
+
+    @media (min-width: 1024px) {
+      height: rem(820);
+    }
+
+    :deep(.swiper-wrapper) {
+      @media (min-width: 1024px) {
+        height: 100%;
+      }
+    }
 
     :deep(.swiper-slide) {
       height: auto;
+
+      @media (min-width: 1024px) {
+        height: 100%;
+      }
     }
   }
 
   &-nav {
+    display: flex;
     flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: rem(56);
+    height: rem(56);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: $d-white;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+
+    span {
+      display: block;
+      width: rem(10);
+      height: rem(10);
+      border-right: 2px solid $d-black;
+      border-bottom: 2px solid $d-black;
+    }
+
+    &.prev span {
+      transform: translateX(2px) rotate(135deg);
+    }
+
+    &.next span {
+      transform: translateX(-2px) rotate(-45deg);
+    }
   }
 
   &-mobile {
     position: relative;
     width: 100%;
     margin: 0;
+    height: 100%;
+    overflow: auto;
   }
 
   &-close {
@@ -626,15 +797,33 @@ onBeforeUnmount(() => {
     background: transparent;
     cursor: pointer;
 
+    @media (min-width: 1024px) {
+      top: rem(0);
+      right: rem(-20);
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+    }
+
     span,
     span::before,
     span::after {
       position: absolute;
-      left: 50%;
-      top: 50%;
+      left: rem(10);
+      top: rem(10);
       width: 16px;
       height: 1.5px;
       background: $d-white;
+    }
+
+    @media (min-width: 1024px) {
+      span,
+      span::before,
+      span::after {
+        width: 15px;
+        height: 2px;
+      }
     }
 
     span {
