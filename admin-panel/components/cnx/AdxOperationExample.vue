@@ -6,15 +6,15 @@
     </p>
 
     <ul class="adx-ops-grid">
-      <li v-for="(item, index) in items" :key="item.id">
+      <li v-for="item in visibleItems" :key="item.id">
         <article
           class="adx-ops-card clickable"
           role="button"
           tabindex="0"
           :aria-label="`${item.title} 상세 보기`"
-          @click="openPopup(index)"
-          @keydown.enter.prevent="openPopup(index)"
-          @keydown.space.prevent="openPopup(index)"
+          @click="openPopup(itemIndex(item))"
+          @keydown.enter.prevent="openPopup(itemIndex(item))"
+          @keydown.space.prevent="openPopup(itemIndex(item))"
         >
           <div class="adx-ops-card-thumb">
             <img :src="item.image" :alt="item.imageAlt" loading="lazy" />
@@ -25,6 +25,15 @@
         </article>
       </li>
     </ul>
+
+    <button
+      v-if="hiddenCount > 0"
+      type="button"
+      class="adx-ops-more"
+      @click="isExpanded = true"
+    >
+      더보기 <span>+{{ hiddenCount }}</span>
+    </button>
 
     <ClientOnly>
       <Teleport to="body">
@@ -37,61 +46,61 @@
           :aria-label="activeItem?.title"
           @click.self="closePopup"
         >
-          <button
-            v-if="isDesktop"
-            type="button"
-            class="adx-ops-popup-nav prev"
-            aria-label="이전 운영사례"
-            @click="slidePrev"
-          >
-            <span></span>
-          </button>
-
-          <div v-if="isDesktop" class="adx-ops-popup-stage">
+          <div class="adx-ops-popup-inner">
             <button
               type="button"
-              class="adx-ops-popup-close"
-              aria-label="운영사례 닫기"
-              @click="closePopup"
+              class="adx-ops-popup-nav prev"
+              aria-label="이전 운영사례"
+              @click="slidePrev"
             >
-              <span aria-hidden="true"></span>
+              <span></span>
             </button>
-            <swiper
-              class="adx-ops-popup-swiper"
-              :modules="swiperModules"
-              :loop="true"
-              :speed="450"
-              :keyboard="{ enabled: true }"
-              :initial-slide="activeIndex"
-              @swiper="onSwiperInit"
-            >
-              <swiper-slide v-for="item in items" :key="item.id">
-                <AdxOperationDetail :item="item" />
-              </swiper-slide>
-            </swiper>
-          </div>
 
-          <div v-else class="adx-ops-popup-mobile">
+            <div v-if="isDesktop" class="adx-ops-popup-stage">
+              <button
+                type="button"
+                class="adx-ops-popup-close"
+                aria-label="운영사례 닫기"
+                @click="closePopup"
+              >
+                <span aria-hidden="true"></span>
+              </button>
+              <swiper
+                class="adx-ops-popup-swiper"
+                :modules="swiperModules"
+                :loop="true"
+                :speed="450"
+                :keyboard="{ enabled: true }"
+                :initial-slide="activeIndex"
+                @swiper="onSwiperInit"
+              >
+                <swiper-slide v-for="item in items" :key="item.id">
+                  <AdxOperationDetail :item="item" />
+                </swiper-slide>
+              </swiper>
+            </div>
+
+            <div v-else class="adx-ops-popup-mobile">
+              <button
+                type="button"
+                class="adx-ops-popup-close"
+                aria-label="운영사례 닫기"
+                @click="closePopup"
+              >
+                <span aria-hidden="true"></span>
+              </button>
+              <AdxOperationDetail :item="activeItem" />
+            </div>
+
             <button
               type="button"
-              class="adx-ops-popup-close"
-              aria-label="운영사례 닫기"
-              @click="closePopup"
+              class="adx-ops-popup-nav next"
+              aria-label="다음 운영사례"
+              @click="slideNext"
             >
-              <span aria-hidden="true"></span>
+              <span></span>
             </button>
-            <AdxOperationDetail :item="activeItem" />
           </div>
-
-          <button
-            v-if="isDesktop"
-            type="button"
-            class="adx-ops-popup-nav next"
-            aria-label="다음 운영사례"
-            @click="slideNext"
-          >
-            <span></span>
-          </button>
         </div>
       </Teleport>
     </ClientOnly>
@@ -109,11 +118,13 @@ import 'swiper/css'
 const IMAGE_BASE =
   '/assets/cnx/what-we-do/integrated-marketing/adx-full-funnel-agency'
 const DESKTOP_QUERY = '(min-width: 1024px)'
+const MOBILE_PREVIEW_COUNT = 6
 
 const swiperModules = [Keyboard, A11y]
 const sectionRef = ref(null)
 const isDesktop = ref(false)
 const isOpen = ref(false)
+const isExpanded = ref(false)
 const activeIndex = ref(0)
 const swiperInstance = ref(null)
 let mediaQuery = null
@@ -430,6 +441,18 @@ const items = [
 
 const activeItem = computed(() => items[activeIndex.value] || items[0])
 
+const visibleItems = computed(() => {
+  if (isDesktop.value || isExpanded.value) return items
+  return items.slice(0, MOBILE_PREVIEW_COUNT)
+})
+
+const hiddenCount = computed(() => {
+  if (isDesktop.value || isExpanded.value) return 0
+  return Math.max(items.length - MOBILE_PREVIEW_COUNT, 0)
+})
+
+const itemIndex = item => items.findIndex(current => current.id === item.id)
+
 const syncDesktop = () => {
   isDesktop.value =
     mediaQuery?.matches ?? window.matchMedia(DESKTOP_QUERY).matches
@@ -457,11 +480,19 @@ const onEscape = event => {
 }
 
 const slidePrev = () => {
-  swiperInstance.value?.slidePrev()
+  if (isDesktop.value) {
+    swiperInstance.value?.slidePrev()
+    return
+  }
+  activeIndex.value = (activeIndex.value - 1 + items.length) % items.length
 }
 
 const slideNext = () => {
-  swiperInstance.value?.slideNext()
+  if (isDesktop.value) {
+    swiperInstance.value?.slideNext()
+    return
+  }
+  activeIndex.value = (activeIndex.value + 1) % items.length
 }
 
 let lastScrollY = 0
@@ -547,22 +578,50 @@ onBeforeUnmount(() => {
     }
   }
 
+  &-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: rem(6);
+    width: fit-content;
+    margin: 0 auto rem(60);
+    padding: rem(12) rem(22);
+    border: 1px solid #555;
+    border-radius: rem(40);
+    background: $d-white;
+    color: #555;
+    font-size: rem(14);
+    font-weight: $font-weight-regular;
+    line-height: 1;
+    cursor: pointer;
+    span {
+      color: #007380;
+      font-size: rem(12);
+      font-weight: $font-weight-bold;
+    }
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
   &-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: rem(32) rem(10);
-    margin: 0 0 rem(60);
+    margin: 0 0 rem(32);
     padding: 0;
     list-style: none;
 
     @include tablet {
       gap: rem(32) rem(20);
-      margin-bottom: rem(120);
+      margin-bottom: rem(40);
     }
 
     @media (min-width: 1024px) {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: rem(40) rem(24);
+      margin-bottom: rem(120);
     }
     @include desktop {
       margin-top: rem(84);
@@ -696,20 +755,28 @@ onBeforeUnmount(() => {
   inset: 0;
   z-index: 1000;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
+  padding: rem(20);
   background: rgba(0, 0, 0, 0.45);
 
   @media (min-width: 1024px) {
-    align-items: center;
-    justify-content: center;
-    gap: rem(28);
     height: 100%;
     padding: rem(40) rem(32);
   }
 
-  @media (min-width: 768px) and (max-width: 1023px) {
-    padding: 0;
+  &-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // width: min(rem(360), 100%);
+
+    @media (min-width: 1024px) {
+      gap: rem(28);
+      width: auto;
+      max-width: 100%;
+    }
   }
 
   &-stage {
@@ -751,21 +818,32 @@ onBeforeUnmount(() => {
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: rem(56);
-    height: rem(56);
+    width: rem(40);
+    height: rem(40);
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: $d-white;
+    background: rgba(0, 0, 0, 0.5);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     cursor: pointer;
+    z-index: 3;
+
+    @media (min-width: 1024px) {
+      width: rem(56);
+      height: rem(56);
+      background: $d-white;
+    }
 
     span {
       display: block;
       width: rem(10);
       height: rem(10);
-      border-right: 2px solid $d-black;
-      border-bottom: 2px solid $d-black;
+      border-right: 2px solid $d-white;
+      border-bottom: 2px solid $d-white;
+      @media (min-width: 1024px) {
+        border-right: 2px solid $d-black;
+        border-bottom: 2px solid $d-black;
+      }
     }
 
     &.prev span {
@@ -775,14 +853,31 @@ onBeforeUnmount(() => {
     &.next span {
       transform: translateX(-2px) rotate(-45deg);
     }
+
+    @media (max-width: 1023px) {
+      position: absolute;
+      top: 50%;
+      z-index: 4;
+
+      &.prev {
+        left: 0;
+        transform: translate(-50%, -50%);
+      }
+
+      &.next {
+        right: 0;
+        transform: translate(50%, -50%);
+      }
+    }
   }
 
   &-mobile {
     position: relative;
     width: 100%;
+    max-height: calc(100vh - rem(48));
     margin: 0;
-    height: 100%;
     overflow: auto;
+    border-radius: rem(20);
   }
 
   &-close {
