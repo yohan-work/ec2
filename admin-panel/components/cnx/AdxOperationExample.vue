@@ -746,7 +746,7 @@ $adx-dim-strong: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-
+    width: 100%;
     @include adx-wide {
       gap: rem(28);
       width: auto;
