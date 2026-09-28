@@ -6,15 +6,15 @@
     </p>
 
     <ul class="adx-ops-grid">
-      <li v-for="item in visibleItems" :key="item.id">
+      <li v-for="(item, index) in visibleItems" :key="item.id">
         <article
-          class="adx-ops-card clickable"
+          class="adx-ops-card"
           role="button"
           tabindex="0"
           :aria-label="`${item.title} 상세 보기`"
-          @click="openPopup(itemIndex(item))"
-          @keydown.enter.prevent="openPopup(itemIndex(item))"
-          @keydown.space.prevent="openPopup(itemIndex(item))"
+          @click="openPopup(index)"
+          @keydown.enter.prevent="openPopup(index)"
+          @keydown.space.prevent="openPopup(index)"
         >
           <div class="adx-ops-card-thumb">
             <img :src="item.image" :alt="item.imageAlt" loading="lazy" />
@@ -40,7 +40,6 @@
         <div
           v-if="isOpen"
           class="adx-ops-popup"
-          :class="{ 'is-desktop': isDesktop }"
           role="dialog"
           aria-modal="true"
           :aria-label="activeItem?.title"
@@ -51,7 +50,7 @@
               type="button"
               class="adx-ops-popup-nav prev"
               aria-label="이전 운영사례"
-              @click="slidePrev"
+              @click="slideBy(-1)"
             >
               <span></span>
             </button>
@@ -96,7 +95,7 @@
               type="button"
               class="adx-ops-popup-nav next"
               aria-label="다음 운영사례"
-              @click="slideNext"
+              @click="slideBy(1)"
             >
               <span></span>
             </button>
@@ -134,8 +133,6 @@ const items = [
     id: 1,
     title: '롯데손해보험 Wonderer',
     category: '<strong>FINANCE</strong><span> Growth · Data Pipeline</span>',
-    popupCategory:
-      '<strong>FINANCE</strong><span> Growth · Data Pipeline</span>',
     summary: '퍼널 기반 Growth 및 데이터 파이프라인 구축',
     image: `${IMAGE_BASE}/case-01.jpg`,
     imageAlt: 'wonderer 앱이 켜진 스마트폰을 들고 미소 짓는 여성',
@@ -164,7 +161,6 @@ const items = [
     id: 2,
     title: '삼성카드 다이렉트 오토',
     category: '<strong>FINANCE</strong><span> Performance Campaign</span>',
-    popupCategory: '<strong>FINANCE</strong><span> Performance Campaign</span>',
     summary: '브랜드 인지도 및 한도조회 전환 캠페인',
     image: `${IMAGE_BASE}/case-02.jpg`,
     imageAlt: '야경 속 흰색 카니발과 삼성카드 다이렉트 오토 캠페인 카피',
@@ -194,8 +190,6 @@ const items = [
     title: 'LG Vehicle Solution',
     category:
       '<strong>IT & ELECTRONICS</strong><br><span>Global B2B Campaign</span>',
-    popupCategory:
-      '<strong>IT & ELECTRONICS</strong><span> Global B2B Campaign</span>',
     summary: '글로벌 OEM 타깃 B2B 디지털 마케팅 운영',
     image: `${IMAGE_BASE}/case-03.jpg`,
     imageAlt: 'LG 로고가 있는 전기차와 두 사람이 마주 보는 장면',
@@ -229,8 +223,6 @@ const items = [
     title: 'LG 키친',
     category:
       '<strong>IT & ELECTRONICS</strong><br><span>Global Social Campaign</span>',
-    popupCategory:
-      '<strong>IT & ELECTRONICS</strong><span> Global Social Campaign</span>',
     summary: 'LG 키친 글로벌 소셜 채널 통합 운영',
     image: `${IMAGE_BASE}/case-04.jpg`,
     imageAlt: 'LG 냉장고 앞에서 조리 준비를 하는 여성과 키친 캠페인 카피',
@@ -257,8 +249,6 @@ const items = [
     id: 5,
     title: 'LG 사이언스파크',
     category:
-      '<strong>IT & ELECTRONICS</strong><span> LinkedIn Campaign</span>',
-    popupCategory:
       '<strong>IT & ELECTRONICS</strong><span> LinkedIn Campaign</span>',
     summary: 'LinkedIn 채널 성장 캠페인',
     image: `${IMAGE_BASE}/case-05.jpg`,
@@ -290,8 +280,6 @@ const items = [
     id: 6,
     title: '한국타이어',
     category: '<strong>MOBILITY</strong><span> Global Social Campaign</span>',
-    popupCategory:
-      '<strong>MOBILITY</strong><span> Global Social Campaign</span>',
     summary: '글로벌·국내 SNS 채널 부스팅 캠페인',
     image: `${IMAGE_BASE}/case-06.jpg`,
     imageAlt: '한국타이어 ventus evo가 장착된 스포츠카 휠 클로즈업',
@@ -322,8 +310,6 @@ const items = [
     id: 7,
     title: '한국배터리',
     category: '<strong>MOBILITY</strong><span> Brand Awareness Campaign</span>',
-    popupCategory:
-      '<strong>MOBILITY</strong><span> Brand Awareness Campaign</span>',
     summary: '브랜드 SNS 채널 확대 및 인지도 제고',
     image: `${IMAGE_BASE}/case-07.jpg`,
     imageAlt:
@@ -353,8 +339,6 @@ const items = [
     id: 8,
     title: '아모레퍼시픽 WPCC',
     category: '<strong>BEAUTY</strong><span> Global Website Operation</span>',
-    popupCategory:
-      '<strong>BEAUTY</strong><span> Global Website Operation</span>',
     summary: '12개 브랜드 50개 글로벌 웹사이트 통합 운영',
     image: `${IMAGE_BASE}/case-08.jpg`,
     imageAlt: 'HERA SIGNIA 제품과 글로벌 뷰티 웹사이트 화면',
@@ -384,8 +368,6 @@ const items = [
     title: '한국타이어 벤투스',
     category:
       '<strong>AI MODEL R&D</strong><span> AI Model Contents R&D</span>',
-    popupCategory:
-      '<strong>AI MODEL R&D</strong><span> AI Model Contents R&D</span>',
     summary:
       '제품·주행 이미지를 촬영 없이 자동 생성 파이프라인으로 연결한 실험',
     image: `${IMAGE_BASE}/case-09.jpg`,
@@ -410,7 +392,6 @@ const items = [
     id: 10,
     title: '롯데손해보험 Wonderer · AI 크리에이티브',
     category: '<strong>AI CREATIVE</strong><span> AI 광고 Creative</span>',
-    popupCategory: '<strong>AI CREATIVE</strong><span> AI 광고 Creative</span>',
     summary: '여성·남성·통합 버전으로 타깃별 공감 포인트와 서비스 경험을 변주',
     image: `${IMAGE_BASE}/case-10.jpg`,
     imageAlt: 'wonderer 앱을 소개하는 남성과 놀란 표정으로 바라보는 동료들',
@@ -451,8 +432,6 @@ const hiddenCount = computed(() => {
   return Math.max(items.length - MOBILE_PREVIEW_COUNT, 0)
 })
 
-const itemIndex = item => items.findIndex(current => current.id === item.id)
-
 const syncDesktop = () => {
   isDesktop.value =
     mediaQuery?.matches ?? window.matchMedia(DESKTOP_QUERY).matches
@@ -479,20 +458,15 @@ const onEscape = event => {
   if (event.key === 'Escape') closePopup()
 }
 
-const slidePrev = () => {
+const slideBy = direction => {
   if (isDesktop.value) {
-    swiperInstance.value?.slidePrev()
+    direction < 0
+      ? swiperInstance.value?.slidePrev()
+      : swiperInstance.value?.slideNext()
     return
   }
-  activeIndex.value = (activeIndex.value - 1 + items.length) % items.length
-}
-
-const slideNext = () => {
-  if (isDesktop.value) {
-    swiperInstance.value?.slideNext()
-    return
-  }
-  activeIndex.value = (activeIndex.value + 1) % items.length
+  activeIndex.value =
+    (activeIndex.value + direction + items.length) % items.length
 }
 
 let lastScrollY = 0
@@ -528,6 +502,19 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
+$adx-wide: 1024px;
+$adx-popup-height: rem(820);
+$adx-green: #12a98f;
+$adx-more: #555;
+$adx-dim: rgba(0, 0, 0, 0.45);
+$adx-dim-strong: rgba(0, 0, 0, 0.5);
+
+@mixin adx-wide {
+  @media (min-width: $adx-wide) {
+    @content;
+  }
+}
+
 .adx-ops {
   * {
     word-break: keep-all;
@@ -586,21 +573,22 @@ onBeforeUnmount(() => {
     width: fit-content;
     margin: 0 auto rem(60);
     padding: rem(12) rem(22);
-    border: 1px solid #555;
+    border: 1px solid $adx-more;
     border-radius: rem(40);
     background: $d-white;
-    color: #555;
+    color: $adx-more;
     font-size: rem(14);
     font-weight: $font-weight-regular;
     line-height: 1;
     cursor: pointer;
+
     span {
-      color: #007380;
+      color: $p-green;
       font-size: rem(12);
       font-weight: $font-weight-bold;
     }
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       display: none;
     }
   }
@@ -618,11 +606,12 @@ onBeforeUnmount(() => {
       margin-bottom: rem(40);
     }
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: rem(40) rem(24);
       margin-bottom: rem(120);
     }
+
     @include desktop {
       margin-top: rem(84);
       gap: rem(40) rem(20);
@@ -638,29 +627,22 @@ onBeforeUnmount(() => {
     background: transparent;
     text-align: left;
     color: inherit;
+    cursor: pointer;
 
-    &.clickable {
-      cursor: pointer;
-
-      &:hover .adx-ops-card-thumb img,
-      &:focus-visible .adx-ops-card-thumb img {
-        transform: scale(1.03);
-      }
+    &:hover .adx-ops-card-thumb img,
+    &:focus-visible .adx-ops-card-thumb img {
+      transform: scale(1.03);
     }
 
     &-thumb {
-      order: 0;
       overflow: hidden;
-
       border-radius: rem(16);
       aspect-ratio: 300 / 378;
       background: $n-gray;
 
       @include tablet {
-        order: 0;
-        margin-top: 0;
-        border-radius: rem(24);
         margin-top: rem(24);
+        border-radius: rem(24);
       }
 
       img {
@@ -686,13 +668,11 @@ onBeforeUnmount(() => {
 
       @include desktop {
         margin-top: rem(20);
-        font-size: rem(16);
       }
     }
 
     &-category {
-      // margin: rem(4) 0 0;
-      color: #12a98f;
+      color: $adx-green;
       font-size: rem(14);
       font-weight: $font-weight-regular;
       line-height: $line-height-relaxed;
@@ -701,9 +681,6 @@ onBeforeUnmount(() => {
         font-weight: $font-weight-bold;
       }
 
-      @include tablet {
-        font-size: rem(14);
-      }
       @include desktop {
         font-size: rem(16);
       }
@@ -716,8 +693,7 @@ onBeforeUnmount(() => {
       font-weight: $font-weight-regular;
       line-height: $line-height-loose;
 
-      @media (max-width: 768px) {
-        font-size: rem(14);
+      @media (max-width: #{$tab}) {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -725,9 +701,10 @@ onBeforeUnmount(() => {
         text-overflow: ellipsis;
         white-space: normal;
       }
+
       @include desktop {
-        font-size: rem(16);
         margin-top: rem(6);
+        font-size: rem(16);
       }
     }
   }
@@ -758,10 +735,9 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   padding: rem(20);
-  background: rgba(0, 0, 0, 0.45);
+  background: $adx-dim;
 
-  @media (min-width: 1024px) {
-    height: 100%;
+  @include adx-wide {
     padding: rem(40) rem(32);
   }
 
@@ -770,9 +746,8 @@ onBeforeUnmount(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    // width: min(rem(360), 100%);
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       gap: rem(28);
       width: auto;
       max-width: 100%;
@@ -781,25 +756,25 @@ onBeforeUnmount(() => {
 
   &-stage {
     position: relative;
-    width: min(1180px, calc(100vw - 200px));
     display: flex;
     align-items: center;
+    width: min(1180px, calc(100vw - 200px));
     margin-block: auto;
 
-    @media (min-width: 1024px) {
-      height: rem(820);
+    @include adx-wide {
+      height: $adx-popup-height;
     }
   }
 
   &-swiper {
     width: 100%;
 
-    @media (min-width: 1024px) {
-      height: rem(820);
+    @include adx-wide {
+      height: $adx-popup-height;
     }
 
     :deep(.swiper-wrapper) {
-      @media (min-width: 1024px) {
+      @include adx-wide {
         height: 100%;
       }
     }
@@ -807,7 +782,7 @@ onBeforeUnmount(() => {
     :deep(.swiper-slide) {
       height: auto;
 
-      @media (min-width: 1024px) {
+      @include adx-wide {
         height: 100%;
       }
     }
@@ -823,12 +798,12 @@ onBeforeUnmount(() => {
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.5);
+    background: $adx-dim-strong;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     cursor: pointer;
     z-index: 3;
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       width: rem(56);
       height: rem(56);
       background: $d-white;
@@ -840,9 +815,9 @@ onBeforeUnmount(() => {
       height: rem(10);
       border-right: 2px solid $d-white;
       border-bottom: 2px solid $d-white;
-      @media (min-width: 1024px) {
-        border-right: 2px solid $d-black;
-        border-bottom: 2px solid $d-black;
+
+      @include adx-wide {
+        border-color: $d-black;
       }
     }
 
@@ -854,7 +829,7 @@ onBeforeUnmount(() => {
       transform: translateX(-2px) rotate(-45deg);
     }
 
-    @media (max-width: 1023px) {
+    @media (max-width: #{$adx-wide - 1px}) {
       position: absolute;
       top: 50%;
       z-index: 4;
@@ -885,19 +860,19 @@ onBeforeUnmount(() => {
     top: rem(16);
     right: rem(16);
     z-index: 2;
-    width: 32px;
-    height: 32px;
+    width: rem(32);
+    height: rem(32);
     padding: 0;
     border: 0;
     background: transparent;
     cursor: pointer;
 
-    @media (min-width: 1024px) {
-      top: rem(0);
+    @include adx-wide {
+      top: 0;
       right: rem(-20);
-      width: 40px;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.5);
+      width: rem(40);
+      height: rem(40);
+      background: $adx-dim-strong;
       border-radius: 50%;
     }
 
@@ -907,16 +882,16 @@ onBeforeUnmount(() => {
       position: absolute;
       left: rem(10);
       top: rem(10);
-      width: 16px;
+      width: rem(16);
       height: 1.5px;
       background: $d-white;
     }
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       span,
       span::before,
       span::after {
-        width: 15px;
+        width: rem(15);
         height: 2px;
       }
     }

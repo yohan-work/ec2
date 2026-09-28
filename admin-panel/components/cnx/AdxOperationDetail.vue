@@ -1,7 +1,7 @@
 <template>
   <article class="adx-ops-detail">
     <div class="adx-ops-detail-copy">
-      <p class="adx-ops-detail-category" v-html="item.popupCategory"></p>
+      <p class="adx-ops-detail-category" v-html="popupCategory"></p>
       <h3 class="adx-ops-detail-title">{{ item.title }}</h3>
 
       <div class="adx-ops-detail-block">
@@ -80,29 +80,50 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   item: {
     type: Object,
     required: true,
   },
 })
+
+const popupCategory = computed(() =>
+  props.item.category
+    .replace(/<br\s*\/?>/gi, '')
+    .replace(/<span>\s*/, '<span> ')
+)
 </script>
 
 <style lang="scss" scoped>
+$adx-wide: 1024px;
+$adx-popup-height: rem(820);
+$adx-panel: #0b1220;
+$adx-line: rgba(255, 255, 255, 0.3);
+$adx-muted: rgba(255, 255, 255, 0.5);
+
+@mixin adx-wide {
+  @media (min-width: $adx-wide) {
+    @content;
+  }
+}
+
 .adx-ops-detail {
   display: flex;
   flex-direction: column;
-  background: #0b1220;
+  background: $adx-panel;
   color: $d-white;
   border-radius: rem(20);
+  word-break: keep-all;
 
-  @media (min-width: 1024px) {
+  @include adx-wide {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(420px, 1.05fr);
     align-items: stretch;
     gap: rem(48);
     height: 100%;
-    min-height: rem(820);
+    min-height: $adx-popup-height;
     padding: rem(50);
     border-radius: rem(40);
   }
@@ -112,7 +133,7 @@ defineProps({
     flex-direction: column;
     padding: rem(24) rem(20) rem(8);
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       padding: 0;
     }
   }
@@ -121,18 +142,17 @@ defineProps({
     display: flex;
     gap: rem(20);
     margin: 0;
-    // padding-right: rem(36);
-    color: #fff;
+    color: $d-white;
     font-size: rem(12);
     font-weight: $font-weight-regular;
     letter-spacing: 0.02em;
 
     :deep(strong) {
       font-weight: $font-weight-bold;
-      color: #25e2cc;
+      color: $s-teal;
     }
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       padding-right: rem(40);
       font-size: rem(14);
     }
@@ -140,20 +160,19 @@ defineProps({
 
   &-title {
     margin: rem(8) 0 0;
-    color: #fff;
-    // padding-right: rem(36);
     padding-bottom: rem(16);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid $adx-line;
+    color: $d-white;
     font-size: rem(24);
     font-weight: $font-weight-bold;
     line-height: $line-height-normal;
-    word-break: keep-all;
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       margin-top: rem(20);
       padding-bottom: rem(20);
       font-size: rem(32);
     }
+
     @include desktop {
       font-size: rem(42);
     }
@@ -162,8 +181,9 @@ defineProps({
   &-block {
     margin-top: rem(18);
     padding-bottom: rem(18);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    @media (min-width: 1024px) {
+    border-bottom: 1px solid $adx-line;
+
+    @include adx-wide {
       margin-top: rem(20);
       padding-bottom: rem(20);
     }
@@ -171,13 +191,13 @@ defineProps({
 
   &-label {
     margin: 0 0 rem(8);
-    color: #25e2cc;
+    color: $s-teal;
     font-size: rem(12);
     font-weight: $font-weight-bold;
     text-transform: uppercase;
     letter-spacing: 0.04em;
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       margin-bottom: rem(20);
       font-size: rem(14);
     }
@@ -188,9 +208,8 @@ defineProps({
     font-size: rem(14);
     font-weight: $font-weight-bold;
     line-height: $line-height-relaxed;
-    word-break: keep-all;
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       font-size: rem(20);
     }
   }
@@ -198,12 +217,11 @@ defineProps({
   &-text,
   &-list {
     margin: rem(8) 0 0;
-    color: rgba(255, 255, 255, 0.5);
+    color: $adx-muted;
     font-size: rem(14);
     line-height: 1.6;
-    word-break: keep-all;
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       margin-top: rem(20);
       font-size: rem(16);
     }
@@ -227,10 +245,12 @@ defineProps({
 
   &-note {
     margin-top: rem(18);
+
     .adx-ops-detail-heading {
-      color: #25e2cc;
+      color: $s-teal;
     }
-    @media (min-width: 1024px) {
+
+    @include adx-wide {
       margin-top: 0;
       padding-top: rem(24);
     }
@@ -242,7 +262,7 @@ defineProps({
     gap: rem(8);
     padding-top: rem(16);
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       flex-direction: row;
       flex-wrap: wrap;
       gap: rem(24) rem(32);
@@ -256,13 +276,11 @@ defineProps({
     }
 
     dt {
-      // width: rem(64);
-      color: rgba(255, 255, 255, 0.5);
+      color: $adx-muted;
       font-size: rem(14);
       font-weight: $font-weight-bold;
 
-      @media (min-width: 1024px) {
-        // width: rem(72);
+      @include adx-wide {
         font-size: rem(16);
       }
     }
@@ -272,7 +290,7 @@ defineProps({
       font-size: rem(14);
       font-weight: $font-weight-bold;
 
-      @media (min-width: 1024px) {
+      @include adx-wide {
         font-size: rem(16);
       }
     }
@@ -284,7 +302,7 @@ defineProps({
     gap: rem(12);
     padding: rem(16) rem(16) rem(20);
 
-    @media (min-width: 1024px) {
+    @include adx-wide {
       flex-direction: row;
       align-items: center;
       padding: rem(8) 0 0;
@@ -297,12 +315,9 @@ defineProps({
     }
 
     figure {
+      position: relative;
       width: 100%;
       margin: 0;
-      position: relative;
-      // @media (min-width: 1024px) {
-      //   height: 100%;
-      // }
     }
 
     img {
@@ -312,10 +327,8 @@ defineProps({
       object-fit: cover;
       transform: scale(1.02);
 
-      @media (min-width: 1024px) {
-        // height: 100%;
+      @include adx-wide {
         border-radius: rem(32);
-        object-fit: cover;
         transform: none;
       }
     }
@@ -323,14 +336,15 @@ defineProps({
     figcaption {
       position: absolute;
       bottom: 0;
-      width: 100%;
       display: flex;
       justify-content: space-between;
       gap: rem(12);
+      width: 100%;
       margin-top: rem(8);
-      color: #fff;
-      font-size: rem(12);
       padding: rem(10);
+      color: $d-white;
+      font-size: rem(12);
+
       .meta {
         color: $s-teal;
         font-weight: $font-weight-bold;
@@ -341,46 +355,45 @@ defineProps({
       }
     }
   }
-}
 
-.adx-ops-metrics {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: rem(14) rem(12);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  .adx-ops-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: rem(14) rem(12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
 
-  > li:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-
-  @media (min-width: 1024px) {
-    gap: rem(18) rem(16);
-  }
-
-  strong {
-    display: block;
-    color: #25e2cc;
-    font-size: rem(24);
-    font-weight: $font-weight-bold;
-    line-height: 1.2;
-
-    @media (min-width: 1024px) {
-      font-size: rem(32);
+    > li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
     }
-  }
 
-  span {
-    display: block;
-    margin-top: rem(4);
-    color: rgba(255, 255, 255, 0.5);
-    font-size: rem(12);
-    line-height: $line-height-relaxed;
-    word-break: keep-all;
+    @include adx-wide {
+      gap: rem(18) rem(16);
+    }
 
-    @media (min-width: 1024px) {
-      font-size: rem(14);
+    strong {
+      display: block;
+      color: $s-teal;
+      font-size: rem(24);
+      font-weight: $font-weight-bold;
+      line-height: 1.2;
+
+      @include adx-wide {
+        font-size: rem(32);
+      }
+    }
+
+    span {
+      display: block;
+      margin-top: rem(4);
+      color: $adx-muted;
+      font-size: rem(12);
+      line-height: $line-height-relaxed;
+
+      @include adx-wide {
+        font-size: rem(14);
+      }
     }
   }
 }
