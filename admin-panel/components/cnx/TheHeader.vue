@@ -716,7 +716,7 @@ onUnmounted(() => {
         
         .dropdown-section {
           .dropdown-section--stacked {
-            margin-top: rem(16);
+            margin-top: rem(56);
           }
 
           .section-title {
