@@ -959,7 +959,7 @@ defineOptions({
       }
 
       &--stacked {
-        margin-top: rem(16);
+        margin-top: rem(40);
       }
 
       &--mobile-clickable {

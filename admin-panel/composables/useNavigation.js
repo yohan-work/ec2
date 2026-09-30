@@ -14,8 +14,8 @@ export const useNavigation = () => {
       ogImage: '/assets/cnx/share/concentrix-share.png'
     },
     '/what-we-do/integrated-marketing/adx-full-funnel-agency': {
-      title: 'ADX - Full-Funnel Agency - Concentrix',
-      description: '',
+      title: 'Integrated Marketing - Concentrix',
+      description: 'ADX는 AI, 데이터, 광고 경험을 결합한 Concentrix의 풀퍼널 마케팅 전문 조직입니다. 전략부터 크리에이티브, 미디어 운영, 성과 분석까지 하나의 팀이 연결해 실행하며, 축적된 데이터를 바탕으로 지속 가능한 성장 구조를 만듭니다.',
       ogImage: '/assets/cnx/share/adx-full-funnel-agency-share.png'
     },
     '/what-we-do/strategy-and-design/digital-advertising': {
