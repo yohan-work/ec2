@@ -211,6 +211,7 @@ const customSectionBgImage = computed(() => {
 // descriptions 객체: 각 섹션의 description을 별도로 관리
 const descriptions = {
   'Strategy & Design': '우리는 브랜드와 사용자의 접점을 전략적으로 설계하여 지속 가능한 성장을 만들어냅니다.',
+  'Integrated Marketing': 'AI와 데이터로 전략부터 크리에이티브, 미디어, 성과까지 연결해 지속 가능한 성장을 만듭니다. ',
   'Data & Analytics': '디지털마케팅·이커머스 성과 극대화를 위해 데이터 환경 구축, 거버넌스, 인사이트 분석, AI 기반 분석 솔루션을 제공합니다.',
   'Enterprise Technology': '글로벌 표준 AI·커머스 플랫폼과 End-to-end 컨설팅을 결합해 빠르고 안정적인 기업의 디지털 전환을 가속화합니다.',
   'Digital Operations': '상상이상의 결과를 만들어 내기위해 그냥 하던 대로 하지 않습니다.<br class="br-pc"> 고객사를 위한 혁신적인 솔루션을 적용하여 운영합니다.'
@@ -431,6 +432,18 @@ const toggleBox = (index) => {
   }
   
   &.what-we-do-box--1::before {
+    background-image: url('/assets/cnx/main/main_im_m.png');
+    
+    @include tablet {
+      background-image: url('/assets/cnx/main/main_im_t.png');
+    }
+    
+    @include desktop {
+      background-image: url('/assets/cnx/main/main_im.png');
+    }
+  }
+
+  &.what-we-do-box--2::before {
     background-image: url('/assets/cnx/main/main_dna_m.png');
     
     @include tablet {
@@ -442,7 +455,7 @@ const toggleBox = (index) => {
     }
   }
   
-  &.what-we-do-box--2::before {
+  &.what-we-do-box--3::before {
     background-image: url('/assets/cnx/main/main_tp_m.png');
     
     @include tablet {
@@ -454,7 +467,7 @@ const toggleBox = (index) => {
     }
   }
   
-  &.what-we-do-box--3::before {
+  &.what-we-do-box--4::before {
     background-image: url('/assets/cnx/main/main_do_m.png');
     
     @include tablet {
