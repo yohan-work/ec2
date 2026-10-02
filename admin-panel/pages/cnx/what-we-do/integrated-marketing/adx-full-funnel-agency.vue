@@ -8,7 +8,7 @@
       />
       <section class="title-section">
         <AppTitle
-          title="ADX"
+          title="ADX (AI & Data AD Experience)"
           text="콘센트릭스 ADX조직은 AI(AI), 데이터(Data), 광고 경험(AD Experience)을 결합한 풀퍼널 마케팅 전문 조직입니다.<br>전략 수립부터 크리에이티브 제작, 미디어 운영, 성과 분석까지 광고의 전 과정을 하나의 팀이 수행하며, 각 단계에서 축적된 데이터를 다음 실행의 기준으로 되돌립니다.<br>이를 통해 단발성 캠페인이 아닌, 반복 가능한 성장 구조를 고객사와 함께 만들어 갑니다."
         />
       </section>

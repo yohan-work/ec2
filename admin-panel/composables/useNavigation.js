@@ -140,7 +140,7 @@ export const useNavigation = () => {
           path: null,
           stackUnder: 'strategy-and-design', // 데스크톱: Strategy & Design 칼럼 아래 배치
           items: [
-            { text: 'ADX - Full-Funnel Agency', path: '/what-we-do/integrated-marketing/adx-full-funnel-agency' }
+            { text: 'Digital Advertisement', path: '/what-we-do/integrated-marketing/adx-full-funnel-agency' }
           ]
         },
         {
